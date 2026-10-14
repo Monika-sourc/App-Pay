@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANTEX Admin - Créer un accès client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-container">
+
+    <!-- EN-TÊTE -->
+    <header class="admin-header">
+        <div class="admin-logo">
+            <i class="fa-solid fa-landmark"></i>
+            <div>
+                <h1>VANTEX <span class="badge-admin">ADMIN</span></h1>
+                <p>Panneau d'administration</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- FORMULAIRE DE CRÉATION -->
+    <section class="form-section">
+        <div class="section-badge">
+            <i class="fa-solid fa-user-plus"></i>
+            Créer un accès flash compte client v2
+        </div>
+
+        <form id="create-client-form">
+            <h3 class="section-title">Informations sur le client :</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom <span class="required">. requis</span></label>
+                    <input type="text" id="c-lastname" required placeholder="Nom de famille">
+                </div>
+                <div class="form-group">
+                    <label>Prénom(s) <span class="required">. requis</span></label>
+                    <input type="text" id="c-firstname" required placeholder="Prénom(s)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Pays de résidence <span class="required">. requis</span></label>
+                <select id="c-country" required>
+                    <option value="">-- Sélectionner un pays --</option>
+                    <option value="France" data-flag="🇫🇷" selected>🇫🇷 France</option>
+                    <option value="Pologne" data-flag="🇵🇱">🇵🇱 Pologne</option>
+                    <option value="Bénin" data-flag="🇧🇯">🇧🇯 Bénin</option>
+                    <option value="Côte d'Ivoire" data-flag="🇨🇮">🇨🇮 Côte d'Ivoire</option>
+                    <option value="Sénégal" data-flag="🇸🇳">🇸🇳 Sénégal</option>
+                    <option value="Togo" data-flag="🇹🇬">🇹🇬 Togo</option>
+                    <option value="Cameroun" data-flag="🇨🇲">🇨🇲 Cameroun</option>
+                    <option value="Allemagne" data-flag="🇩🇪">🇩🇪 Allemagne</option>
+                    <option value="Belgique" data-flag="🇧🇪">🇧🇪 Belgique</option>
+                    <option value="Suisse" data-flag="🇨🇭">🇨🇭 Suisse</option>
+                    <option value="Canada" data-flag="🇨🇦">🇨🇦 Canada</option>
+                    <option value="États-Unis" data-flag="🇺🇸">🇺🇸 États-Unis</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Adresse de résidence <span class="optional">. facultatif</span></label>
+                <input type="text" id="c-address" placeholder="Adresse complète">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Adresse e-mail <span class="required">. requis</span></label>
+                    <input type="email" id="c-email" required placeholder="client@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Numéro de téléphone <span class="optional">. facultatif</span></label>
+                    <input type="tel" id="c-phone" placeholder="+229 01 23 45 67 89">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Langue d'affichage du compte <span class="required">. requis</span></label>
+                <select id="c-language" required>
+                    <option value="Français" selected>Français</option>
+                    <option value="English">English</option>
+                    <option value="Polski">Polski</option>
+                    <option value="Español">Español</option>
+                </select>
+            </div>
+
+            <h3 class="section-title">Solde et devise du compte :</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Solde initial <span class="optional">. facultatif</span></label>
+                    <input type="number" id="c-balance" value="0.00" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Devise <span class="required">. requis</span></label>
+                    <select id="c-currency" required>
+                        <option value="zł" selected>zł - Zloty polonais</option>
+                        <option value="€">€ - Euro</option>
+                        <option value="FCFA">FCFA - Franc CFA</option>
+                        <option value="$">$ - Dollar américain</option>
+                        <option value="CHF">CHF - Franc suisse</option>
+                        <option value="£">£ - Livre sterling</option>
+                    </select>
+                </div>
+            </div>
+
+            <h3 class="section-title">Sécurité du compte :</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Code PIN de connexion <span class="required">. requis</span></label>
+                    <input type="text" id="c-pin" required minlength="4" maxlength="8" pattern="[0-9]+" placeholder="4 à 8 chiffres">
+                    <small>Le client utilisera ce code pour se connecter avec son e-mail.</small>
+                </div>
+                <div class="form-group">
+                    <label>Code d'activation virement <span class="required">. requis</span></label>
+                    <input type="text" id="c-activation" required minlength="4" maxlength="20" placeholder="Ex: ACT-8899">
+                    <small>Le client utilisera ce code pour valider ses virements.</small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-create">
+                <i class="fa-solid fa-circle-check"></i> Créer le compte et générer le lien
+            </button>
+        </form>
+    </section>
+
+    <!-- LISTE DES CLIENTS CRÉÉS -->
+    <section class="clients-section">
+        <div class="section-header-flex">
+            <h3 class="section-title">Clients créés <span id="client-count" class="count-badge">0</span></h3>
+            <button class="btn-clear" onclick="clearAllClients()">
+                <i class="fa-solid fa-trash"></i> Tout effacer
+            </button>
+        </div>
+        <div id="clients-list" class="clients-list">
+            <p class="empty-state">Aucun client créé pour le moment.</p>
+        </div>
+    </section>
+
+</div>
+
+<!-- MODAL DE LIEN GÉNÉRÉ -->
+<div class="modal-overlay" id="link-modal">
+    <div class="modal-card">
+        <div class="modal-icon-success">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <h2>Compte client créé avec succès !</h2>
+        <p>Voici le lien unique à transmettre au client. Il devra utiliser son adresse e-mail et son code PIN pour se connecter.</p>
+
+        <div class="link-box">
+            <input type="text" id="generated-link" readonly>
+            <button onclick="copyGeneratedLink()" id="copy-btn">
+                <i class="fa-regular fa-copy"></i> Copier
+            </button>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeModal()">Fermer</button>
+            <button class="btn-primary" onclick="openGeneratedLink()">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Tester le lien
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
