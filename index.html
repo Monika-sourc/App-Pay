@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANTEX - Banque en ligne</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ============================================= -->
+    <!-- ÉCRAN 1 : CONNEXION (TRANSFERWIRE)            -->
+    <!-- ============================================= -->
+    <div class="screen active" id="login-screen">
+        <div class="login-card">
+            <div class="logo-container">
+                <div class="logo-graphic">
+                    <div class="dot blue-dark"></div>
+                    <div class="dot blue-dark"></div>
+                    <div class="dot blue-mid"></div>
+                    <div class="dot green"></div>
+                    <div class="dot green-light"></div>
+                    <div class="dot blue-dark"></div>
+                    <div class="dot blue-light"></div>
+                    <div class="dot green"></div>
+                    <div class="dot green-light"></div>
+                    <div class="dot blue-light"></div>
+                    <div class="dot blue-mid"></div>
+                    <div class="dot blue-mid"></div>
+                    <div class="dot blue-light"></div>
+                    <div class="dot blue-light"></div>
+                    <div class="dot blue-dark"></div>
+                </div>
+                <div class="logo-text">TRANSFERWIRE</div>
+            </div>
+
+            <h1 class="login-title">Connexion à votre compte</h1>
+
+            <div class="user-badge" id="user-badge">
+                <i class="fa-solid fa-id-card-clip"></i> <span id="badge-text">EMMANUEL SOGNIHOUE</span>
+            </div>
+
+            <form class="login-form" id="login-form">
+                <div class="input-group">
+                    <div class="input-icon-box">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <input type="email" id="login-email" placeholder="Votre adresse e-mail" required>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-icon-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <input type="password" id="login-password" placeholder="Votre code d'accès" required>
+                </div>
+
+                <div class="login-error" id="login-error"></div>
+
+                <button type="submit" class="btn-login">
+                    Se connecter &rarr;
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- ÉCRAN 2 : APPLICATION VANTEX                  -->
+    <!-- ============================================= -->
+    <div class="screen" id="app-screen">
+
+        <!-- Barre latérale -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="logo-vantex">
+                    <i class="fa-solid fa-landmark"></i> VANTEX
+                </div>
+                <ul class="nav-links" id="nav-links">
+                    <li data-view="dashboard" class="active"><i class="fa-solid fa-wallet"></i> Portefeuille</li>
+                    <li data-view="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> Virement</li>
+                    <li data-view="card"><i class="fa-regular fa-credit-card"></i> Carte Virtuelle</li>
+                    <li data-view="account"><i class="fa-regular fa-user"></i> Mon Compte</li>
+                </ul>
+            </div>
+            <div class="logout-container">
+                <ul>
+                    <li onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <div class="header">
+                <div class="header-icons">
+                    <button class="icon-btn" id="notif-btn">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notif-dot"></span>
+                    </button>
+                    <div class="user-avatar" id="header-avatar">KP</div>
+                </div>
+
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div class="notif-dropdown-header">Notifications</div>
+                    <div class="notif-item">
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <div class="notif-item-text">
+                            <strong>Virement reçu</strong>
+                            + 10 000,00 zł de Mbank
+                        </div>
+                    </div>
+                    <div class="notif-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div class="notif-item-text">
+                            <strong>Sécurité</strong>
+                            Votre compte a été vérifié avec succès
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="views-container"></div>
+        </main>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- TEMPLATES DES VUES                            -->
+    <!-- ============================================= -->
+
+    <template id="tpl-dashboard">
+        <div class="dashboard-body">
+            <h1 class="welcome-title">Bienvenue, <span id="welcome-name">KWIATKOWSKI PW</span></h1>
+
+            <div class="balance-card">
+                <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+                <div class="balance-header">
+                    <span>Solde disponible</span>
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="balance-amount" id="balance-display">8 000,00 zł</div>
+                <div class="balance-subtitle">Compte pour tous vos besoins</div>
+
+                <div class="balance-actions">
+                    <button class="action-chip" onclick="showToast('IBAN copié : PL76 2490 0005 0000 4000 8360 7823', 'success')">
+                        <i class="fa-regular fa-credit-card"></i> Voir mon iban
+                    </button>
+                    <button class="action-chip" onclick="navigateTo('transfer')">
+                        <i class="fa-solid fa-paper-plane"></i> Effectuer un virement
+                    </button>
+                    <button class="action-chip" onclick="navigateTo('card')">
+                        <i class="fa-solid fa-wallet"></i> Voir ma carte virtuelle
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="section-title">
+                <i class="fa-solid fa-list"></i> Historique des transactions
+            </h3>
+
+            <div class="transactions-card" id="tx-list"></div>
+        </div>
+    </template>
+
+    <template id="tpl-transfer">
+        <div class="dashboard-body">
+            <h1 class="welcome-title">Effectuer un virement</h1>
+
+            <div class="transfer-card">
+                <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+
+                <div class="transfer-info-top">
+                    Solde disponible : <strong id="transfer-balance">8 000,00 zł</strong>
+                </div>
+
+                <div class="international-link">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i> Envoyer un virement international
+                </div>
+
+                <form id="transfer-form">
+                    <div class="form-group">
+                        <label>Montant du virement</label>
+                        <div class="input-with-addon">
+                            <input type="number" id="tf-amount" step="0.01" min="0.01" placeholder="0.00" required>
+                            <div class="input-addon" id="tf-currency">zł</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nom du bénéficiaire</label>
+                        <input type="text" class="standard-input" id="tf-beneficiary" placeholder="Nom complet" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>IBAN / Numéro de Compte</label>
+                        <input type="text" class="standard-input" id="tf-iban" placeholder="PL00 0000 0000 0000 0000 0000 0000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Code Banque (BIC / SWIFT)</label>
+                        <input type="text" class="standard-input" id="tf-bic" placeholder="BIC" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nom de la Banque</label>
+                        <input type="text" class="standard-input" id="tf-bank" placeholder="Nom de la banque" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Raison du virement</label>
+                        <input type="text" class="standard-input" id="tf-reason" placeholder="Motif du virement" required>
+                    </div>
+
+                    <button type="submit" class="btn-continue">Continuer &rarr;</button>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-verification">
+        <div class="dashboard-body">
+            <h1 class="welcome-title">Vérification d'identité</h1>
+
+            <div class="verification-card">
+                <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+                <div class="card-header-title">
+                    <i class="fa-regular fa-file-lines"></i> Détails du virement en attente
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Montant du virement :</div>
+                    <div class="detail-value" id="vf-amount">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Nom du bénéficiaire :</div>
+                    <div class="detail-value" id="vf-beneficiary">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">IBAN / Numéro de Compte :</div>
+                    <div class="detail-value" id="vf-iban">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Code Banque (BIC / SWIFT) :</div>
+                    <div class="detail-value" id="vf-bic">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Nom de la Banque :</div>
+                    <div class="detail-value" id="vf-bank">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Raison du virement :</div>
+                    <div class="detail-value" id="vf-reason">-</div>
+                </div>
+
+                <button class="btn-cancel" onclick="cancelTransfer()">
+                    Annuler le virement &rarr;
+                </button>
+            </div>
+
+            <div class="activation-section-title">
+                <i class="fa-solid fa-lock"></i> Veuillez saisir le code d'activation du virement
+            </div>
+
+            <form id="verify-form">
+                <div class="form-group">
+                    <label>Code d'activation</label>
+                    <input type="password" class="standard-input" id="vf-code" placeholder="Entrez votre code secret" required autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn-continue">Continuer &rarr;</button>
+            </form>
+        </div>
+    </template>
+
+    <template id="tpl-progress">
+        <div class="dashboard-body">
+            <h1 class="welcome-title">Votre ordre de virement en cours...</h1>
+
+            <div class="progress-card">
+                <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+
+                <div class="success-message-title">
+                    <i class="fa-regular fa-user"></i> Vérification d'identité effectuée avec succès.
+                </div>
+
+                <p class="progress-desc">
+                    Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.
+                </p>
+
+                <div class="progress-container">
+                    <div class="progress-bar-fill" id="progress-fill">0%</div>
+                </div>
+
+                <div class="details-section-title">
+                    <i class="fa-regular fa-file-lines"></i> Détails du virement en cours
+                </div>
+
+                <div class="inner-details-box">
+                    <div class="detail-row">
+                        <div class="detail-label">Montant du virement :</div>
+                        <div class="detail-value" id="pf-amount">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Nom du bénéficiaire :</div>
+                        <div class="detail-value" id="pf-beneficiary">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">IBAN / Numéro de Compte :</div>
+                        <div class="detail-value" id="pf-iban">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Nom de la Banque :</div>
+                        <div class="detail-value" id="pf-bank">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-success">
+        <div class="dashboard-body">
+            <div class="success-card">
+                <div class="success-icon-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="success-title">Virement effectué avec succès</div>
+                <div class="success-subtitle">
+                    Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.
+                </div>
+
+                <div class="success-summary">
+                    <div class="detail-row">
+                        <div class="detail-label">Montant envoyé :</div>
+                        <div class="detail-value" id="sf-amount">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Bénéficiaire :</div>
+                        <div class="detail-value" id="sf-beneficiary">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Date :</div>
+                        <div class="detail-value" id="sf-date">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Référence :</div>
+                        <div class="detail-value" id="sf-ref">-</div>
+                    </div>
+                </div>
+
+                <button class="btn-continue" onclick="navigateTo('dashboard')">
+                    Retour au tableau de bord &rarr;
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-card">
+        <div class="dashboard-body">
+            <h1 class="welcome-title">Ma carte virtuelle</h1>
+
+            <div class="virtual-card-wrapper">
+                <div class="virtual-card">
+                    <div class="vc-top">
+                        <div class="vc-logo">
+                            <i class="fa-solid fa-landmark"></i> VANTEX
+                        </div>
+                        <div class="vc-chip"></div>
+                    </div>
+                    <div class="vc-number" id="vc-number-display">•••• •••• •••• 4823</div>
+                    <div class="vc-bottom">
+                        <div>
+                            <div class="vc-label">Titulaire</div>
+                            <div class="vc-value" id="vc-holder">KWIATKOWSKI PW</div>
+                        </div>
+                        <div>
+                            <div class="vc-label">Expire</div>
+                            <div class="vc-value">12/28</div>
+                        </div>
+                        <div class="vc-brand">
+                            <i class="fa-brands fa-cc-visa"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vc-actions">
+                <button class="action-chip" onclick="toggleCardNumber()">
+                    <i class="fa-regular fa-eye"></i> <span id="vc-toggle-label">Afficher les détails</span>
+                </button>
+                <button class="action-chip" onclick="showToast('Carte gelée avec succès', 'success')">
+                    <i class="fa-solid fa-snowflake"></i> Geler la carte
+                </button>
+                <button class="action-chip" onclick="showToast('Paramètres de la carte ouverts', 'info')">
+                    <i class="fa-solid fa-gear"></i> Paramètres
+                </button>
+            </div>
+
+            <div class="vc-info-grid">
+                <div class="vc-info-item">
+                    <div class="vc-info-label">Plafond mensuel</div>
+                    <div class="vc-info-value">10 000,00 zł</div>
+                </div>
+                <div class="vc-info-item">
+                    <div class="vc-info-label">Dépenses du mois</div>
+                    <div class="vc-info-value">2 000,00 zł</div>
+                </div>
+                <div class="vc-info-item">
+                    <div class="vc-info-label">Statut</div>
+                    <div class="vc-info-value" style="color:#03543f;">Active</div>
+                </div>
+                <div class="vc-info-item">
+                    <div class="vc-info-label">Type</div>
+                    <div class="vc-info-value">Visa Premium</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-account">
+        <div class="dashboard-body">
+            <h1 class="welcome-title">Mon compte</h1>
+
+            <div class="account-header">
+                <div class="account-avatar-lg" id="account-initials">KP</div>
+                <div>
+                    <div class="account-name" id="account-fullname">
+                        KWIATKOWSKI PW
+                        <span class="account-verified"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
+                    </div>
+                    <div class="account-role" id="account-role">Titulaire du compte • Client Premium</div>
+                </div>
+            </div>
+
+            <div class="transactions-card" style="padding: 25px;">
+                <div class="detail-row">
+                    <div class="detail-label">Nom complet</div>
+                    <div class="detail-value" id="account-name">KWIATKOWSKI PW</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Adresse e-mail</div>
+                    <div class="detail-value" id="account-email">kwiatkowski@vantex.pl</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Numéro de téléphone</div>
+                    <div class="detail-value" id="account-phone">+48 ••• ••• •••</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">IBAN principal</div>
+                    <div class="detail-value" id="account-iban">PL76 2490 0005 0000 4000 8360 7823</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Type de compte</div>
+                    <div class="detail-value">Compte courant Premium</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date d'ouverture</div>
+                    <div class="detail-value" id="account-created">15/01/2024</div>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+                <button class="action-chip" onclick="showToast('Modification du profil', 'info')">
+                    <i class="fa-solid fa-pen"></i> Modifier le profil
+                </button>
+                <button class="action-chip" onclick="showToast('Paramètres de sécurité ouverts', 'info')">
+                    <i class="fa-solid fa-shield-halved"></i> Sécurité
+                </button>
+                <button class="action-chip" onclick="showToast('Préférences de notifications', 'info')">
+                    <i class="fa-regular fa-bell"></i> Notifications
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
