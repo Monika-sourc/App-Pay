@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + couleur dynamique)
+// APP PAY - Logique client (Firebase + i18n + persistance session)
 // ============================================================
 
 import {
@@ -21,6 +21,9 @@ const appState = {
     pendingTransfer: null,
     lang: 'fr'
 };
+
+// Clé de stockage de session
+const SESSION_KEY = 'apppay_session';
 
 // ============================================================
 // TRADUCTIONS (i18n)
@@ -474,6 +477,44 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
 }
 
+// ============================================================
+// GESTION DE SESSION (persistance après actualisation)
+// ============================================================
+function saveSession() {
+    if (!appState.clientId) return;
+    try {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+            clientId: appState.clientId,
+            loggedIn: true,
+            savedAt: Date.now()
+        }));
+    } catch (e) {
+        console.warn('Impossible de sauvegarder la session', e);
+    }
+}
+
+function getSession() {
+    try {
+        const raw = sessionStorage.getItem(SESSION_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        // Session valable 24h
+        if (Date.now() - data.savedAt > 24 * 60 * 60 * 1000) {
+            sessionStorage.removeItem(SESSION_KEY);
+            return null;
+        }
+        return data;
+    } catch {
+        return null;
+    }
+}
+
+function clearSession() {
+    try {
+        sessionStorage.removeItem(SESSION_KEY);
+    } catch {}
+}
+
 // ✅ Affiche l'écran de blocage si l'admin a bloqué l'accès
 function showBlockedScreen(client) {
     const card = document.querySelector('#invalid-screen .invalid-card');
@@ -531,8 +572,9 @@ async function loadClientFromFirestore() {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        // ✅ Vérification si l'accès est bloqué par l'admin
+        // Vérification si l'accès est bloqué
         if (client.blocked === true) {
+            clearSession();
             showBlockedScreen(client);
             return null;
         }
@@ -545,6 +587,14 @@ async function loadClientFromFirestore() {
         }
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = client.email;
+
+        // ✅ Vérifier si une session existe déjà → connexion automatique
+        const session = getSession();
+        if (session && session.loggedIn && session.clientId === clientId) {
+            console.log('✅ Session restaurée : connexion automatique');
+            loginSuccess();
+            return client;
+        }
 
         showScreen('login-screen');
         console.log('✅ Client chargé :', client.firstName, client.lastName);
@@ -570,8 +620,8 @@ function handleLogin(event) {
         return;
     }
 
-    // Re-vérifier le blocage à chaque tentative de connexion
     if (client.blocked === true) {
+        clearSession();
         showBlockedScreen(client);
         return;
     }
@@ -587,6 +637,13 @@ function handleLogin(event) {
     }
 
     errorEl.textContent = '';
+    saveSession(); // ✅ Sauvegarder la session
+    loginSuccess();
+}
+
+// ✅ Fonction centrale : affiche l'app après connexion
+function loginSuccess() {
+    const client = appState.client;
     showScreen('app-screen');
 
     const initials = ((client.firstName || 'X')[0] + (client.lastName || 'X')[0]).toUpperCase();
@@ -596,13 +653,13 @@ function handleLogin(event) {
 
     setTimeout(() => {
         navigateTo('dashboard');
-        showToast(t('login_success'), 'success');
     }, 200);
 }
 
 // ---------- DÉCONNEXION ----------
 function handleLogout() {
     if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+    clearSession(); // ✅ Effacer la session
     showScreen('login-screen');
     document.getElementById('login-form').reset();
     document.getElementById('login-error').textContent = '';
@@ -700,8 +757,10 @@ function renderDashboard() {
         btnGoCard.addEventListener('click', () => navigateTo('card'));
     }
 
-    // Historique des transactions
+    // Historique des transactions (dans history-card > history-list)
     const txList = document.getElementById('tx-list');
+    if (!txList) return;
+
     txList.innerHTML = '';
 
     if (!appState.transactions || appState.transactions.length === 0) {
@@ -915,6 +974,9 @@ function renderCardView() {
     const limit = appState.balance * (percentLimit / 100);
     const limitEl = document.getElementById('card-limit');
     if (limitEl) limitEl.textContent = formatMoney(limit);
+
+    // Réinitialiser l'état d'affichage
+    cardNumberVisible = false;
 }
 
 function toggleCardNumber() {
