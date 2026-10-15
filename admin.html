@@ -907,18 +907,21 @@
             <small id="access-status-info" style="margin-top:8px;">Statut actuel : <strong>Actif</strong></small>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- AJOUTER UN VIREMENT (Libellé SUPPRIMÉ, Banque OBLIGATOIRE)   -->
+        <!-- ============================================================ -->
         <h3 class="section-title">Ajouter un virement au compte client :</h3>
 
         <div class="form-row">
             <div class="form-group">
-                <label>Montant du virement</label>
+                <label>Montant du virement <span class="required">. requis</span></label>
                 <div class="input-with-addon">
-                    <input type="number" id="m-tx-amount" step="0.01" placeholder="0.00">
+                    <input type="number" id="m-tx-amount" step="0.01" placeholder="0.00" required>
                     <div class="input-addon" id="m-tx-currency-display">zł</div>
                 </div>
             </div>
             <div class="form-group">
-                <label>Type d'opération</label>
+                <label>Type d'opération <span class="required">. requis</span></label>
                 <select id="m-tx-type">
                     <option value="credit">Crédit (+) - Ajouter au solde</option>
                     <option value="debit">Débit (-) - Retirer du solde</option>
@@ -927,20 +930,15 @@
         </div>
 
         <div class="form-group">
-            <label>Libellé du virement</label>
-            <input type="text" id="m-tx-label" placeholder="Ex: Virement reçu de Mbank">
-        </div>
-
-        <div class="form-group">
-            <label>🏦 Banque (logo affiché côté client)</label>
-            <select id="m-tx-bank">
-                <option value="">-- Aucune banque (pas de logo) --</option>
+            <label>🏦 Banque <span class="required">. requis</span></label>
+            <select id="m-tx-bank" required>
+                <option value="">-- Sélectionner une banque --</option>
             </select>
-            <small>Sélectionnez la banque pour afficher son logo dans l'historique du client.</small>
+            <small>Le nom et le logo de la banque seront affichés dans l'historique du client.</small>
         </div>
 
         <div class="form-group">
-            <label>Date et heure</label>
+            <label>Date et heure <span class="optional">. facultatif</span></label>
             <input type="text" id="m-tx-date" placeholder="Ex: 23/09/2026 • 01:24">
         </div>
 
