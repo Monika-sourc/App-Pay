@@ -21,7 +21,7 @@ body {
     color: #333;
     height: 100vh;
     overflow: hidden;
-    zoom: 0.5;
+    zoom: 0.6;
 }
 
 .screen {
@@ -43,7 +43,7 @@ body {
 
 .invalid-card {
     background: white;
-    border-radius: 10px;
+    border-radius: 14px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 480px;
@@ -82,7 +82,7 @@ body {
 .invalid-info {
     background-color: #f8f9fa;
     border-left: 4px solid #ff7a00;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 14px 18px;
     display: flex;
     align-items: center;
@@ -108,7 +108,7 @@ body {
 
 .login-card {
     background: white;
-    border-radius: 10px;
+    border-radius: 14px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     width: 100%;
     max-width: 440px;
@@ -165,7 +165,7 @@ body {
     background-color: #e4e6eb;
     color: #333;
     padding: 8px 18px;
-    border-radius: 6px;
+    border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
     display: flex;
@@ -200,7 +200,7 @@ body {
     display: flex;
     align-items: center;
     border: 1px solid #dcdfe6;
-    border-radius: 6px;
+    border-radius: 10px;
     background-color: #fff;
     overflow: hidden;
     transition: border-color 0.2s;
@@ -244,7 +244,7 @@ body {
     background-color: #1a73e8;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 14px;
     font-size: 15px;
     font-weight: 600;
@@ -285,7 +285,6 @@ body {
     display: flex;
 }
 
-/* Barre latérale */
 .sidebar {
     width: 210px;
     background-color: var(--primary-color);
@@ -371,7 +370,6 @@ body {
     margin-right: 10px;
 }
 
-/* Contenu principal */
 .main-content {
     flex: 1;
     display: flex;
@@ -447,7 +445,7 @@ body {
     right: 0;
     width: 320px;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     padding: 8px 0;
     z-index: 100;
@@ -513,7 +511,7 @@ body {
 /* ============ CARTE DE SOLDE (CENTRÉE) ============ */
 .balance-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 35px 25px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     margin-bottom: 20px;
@@ -564,7 +562,7 @@ body {
     background-color: #f1f2f5;
     border: none;
     padding: 9px 16px;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 500;
     color: #333;
@@ -605,7 +603,7 @@ body {
 
 .stat-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 20px 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     text-align: center;
@@ -623,7 +621,7 @@ body {
     width: 44px;
     height: 44px;
     margin: 0 auto 12px auto;
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: var(--primary-color-soft);
     color: var(--primary-color);
     display: flex;
@@ -664,7 +662,7 @@ body {
 
 .transactions-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 10px 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
@@ -690,7 +688,7 @@ body {
 .tx-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -742,7 +740,7 @@ body {
 /* ============ FORMULAIRE DE VIREMENT ============ */
 .transfer-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     position: relative;
@@ -791,7 +789,7 @@ body {
     display: flex;
     align-items: center;
     border: 1px solid #dcdfe6;
-    border-radius: 6px;
+    border-radius: 10px;
     background-color: #fff;
     overflow: hidden;
     transition: border-color 0.2s;
@@ -825,7 +823,7 @@ body {
 .standard-input {
     width: 100%;
     border: 1px solid #dcdfe6;
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 12px 14px;
     font-size: 15px;
     color: #333;
@@ -844,7 +842,7 @@ body {
     background-color: var(--primary-color-light);
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 14px;
     font-size: 15px;
     font-weight: 600;
@@ -867,7 +865,7 @@ body {
 /* ============ VÉRIFICATION ============ */
 .verification-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 25px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     margin-bottom: 25px;
@@ -912,7 +910,7 @@ body {
     border: 1px solid #f5c6cb;
     color: #e02424;
     padding: 8px 14px;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
@@ -945,7 +943,7 @@ body {
 /* ============ PROGRESSION ============ */
 .progress-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 25px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     position: relative;
@@ -976,7 +974,7 @@ body {
 .progress-container {
     width: 100%;
     border: 1.5px solid var(--primary-color-light);
-    border-radius: 6px;
+    border-radius: 12px;
     height: 42px;
     padding: 3px;
     margin-bottom: 25px;
@@ -988,7 +986,7 @@ body {
     width: 0%;
     background-color: var(--primary-color-light);
     height: 100%;
-    border-radius: 4px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1016,14 +1014,14 @@ body {
 
 .inner-details-box {
     background-color: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 20px;
 }
 
 /* ============ SUCCÈS ============ */
 .success-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 40px 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     text-align: center;
@@ -1061,7 +1059,7 @@ body {
 
 .success-summary {
     background-color: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 18px;
     margin-bottom: 25px;
     text-align: left;
@@ -1076,7 +1074,7 @@ body {
 .virtual-card {
     width: 100%;
     aspect-ratio: 1.586 / 1;
-    border-radius: 10px;
+    border-radius: 14px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-light) 100%);
     color: white;
     padding: 25px;
@@ -1132,7 +1130,7 @@ body {
     width: 42px;
     height: 32px;
     background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
-    border-radius: 4px;
+    border-radius: 6px;
     position: relative;
 }
 .vc-chip::after {
@@ -1196,7 +1194,7 @@ body {
 .vc-info-item {
     background: white;
     padding: 16px 18px;
-    border-radius: 8px;
+    border-radius: 14px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
@@ -1219,7 +1217,7 @@ body {
     gap: 20px;
     padding: 25px;
     background: white;
-    border-radius: 8px;
+    border-radius: 14px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     margin-bottom: 25px;
 }
@@ -1259,7 +1257,7 @@ body {
     background-color: #def7ec;
     color: #03543f;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: 10px;
     margin-left: 8px;
     font-weight: 500;
 }
@@ -1290,7 +1288,7 @@ body {
     background-color: #111;
     color: white;
     padding: 14px 20px;
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 13px;
     z-index: 9999;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
