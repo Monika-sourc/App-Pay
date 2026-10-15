@@ -128,7 +128,9 @@
         </main>
     </div>
     
-<!-- TEMPLATES DES VUES -->
+<!-- ============================================= -->
+<!-- TEMPLATES DES VUES                            -->
+<!-- ============================================= -->
 
 <template id="tpl-dashboard">
     <div class="dashboard-body">
@@ -181,11 +183,14 @@
             </div>
         </div>
 
-        <h3 class="section-title">
-            <i class="fa-solid fa-list"></i> <span data-i18n="transactions_history">Historique des transactions</span>
-        </h3>
-
-        <div class="transactions-card" id="tx-list"></div>
+        <!-- HISTORIQUE DANS UNE CARTE (titre + liste ensemble) -->
+        <div class="history-card">
+            <div class="history-card-header">
+                <i class="fa-solid fa-list"></i>
+                <span data-i18n="transactions_history">Historique des transactions</span>
+            </div>
+            <div class="history-list" id="tx-list"></div>
+        </div>
     </div>
 </template>
 
