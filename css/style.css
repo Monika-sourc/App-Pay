@@ -287,9 +287,9 @@ body {
     display: flex;
 }
 
-/* Barre latérale (couleur dynamique) */
+/* Barre latérale (couleur dynamique) - LARGEUR RÉDUITE À 210px */
 .sidebar {
-    width: 260px;
+    width: 210px;
     background-color: var(--primary-color);
     color: white;
     display: flex;
@@ -308,14 +308,14 @@ body {
 .logo-apppay {
     display: flex;
     align-items: center;
-    padding: 0 20px 20px 20px;
-    font-size: 20px;
+    padding: 0 18px 20px 18px;
+    font-size: 18px;
     font-weight: bold;
     letter-spacing: 1px;
 }
 
 .logo-apppay i {
-    font-size: 24px;
+    font-size: 22px;
     margin-right: 10px;
 }
 
@@ -325,19 +325,19 @@ body {
 }
 
 .nav-links li {
-    padding: 14px 20px;
+    padding: 13px 18px;
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
     transition: background 0.2s;
     user-select: none;
 }
 
 .nav-links li i {
-    margin-right: 12px;
-    font-size: 16px;
-    width: 20px;
+    margin-right: 10px;
+    font-size: 15px;
+    width: 18px;
     text-align: center;
 }
 
@@ -345,7 +345,7 @@ body {
     background-color: rgba(255, 255, 255, 0.15);
     font-weight: 500;
     border-left: 4px solid white;
-    padding-left: 16px;
+    padding-left: 14px;
 }
 
 .nav-links li:hover:not(.active) {
@@ -353,14 +353,14 @@ body {
 }
 
 .logout-container {
-    padding: 0 20px;
+    padding: 0 18px;
 }
 
 .logout-container li {
     padding: 14px 0;
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
     transition: opacity 0.2s;
 }
@@ -370,7 +370,7 @@ body {
 }
 
 .logout-container li i {
-    margin-right: 12px;
+    margin-right: 10px;
 }
 
 /* Contenu principal */
@@ -499,7 +499,7 @@ body {
 /* Corps du dashboard */
 .dashboard-body {
     padding: 10px 30px 30px 30px;
-    max-width: 800px;
+    max-width: 900px;
     width: 100%;
     animation: fadeIn 0.3s ease;
 }
@@ -517,7 +517,7 @@ body {
     border-radius: 16px;
     padding: 25px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     position: relative;
     overflow: hidden;
 }
@@ -589,6 +589,61 @@ body {
     top: 25px;
     font-size: 45px;
     color: #f0f2f5;
+}
+
+/* ============ 3 MINI CARTES DE STATS ============ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 12px auto;
+    border-radius: 12px;
+    background-color: var(--primary-color-soft);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.stat-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
 }
 
 /* Section titre */
@@ -1253,4 +1308,11 @@ body {
 /* Hidden utilitaire */
 .hidden {
     display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
 }
