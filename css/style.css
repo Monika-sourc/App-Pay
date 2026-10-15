@@ -555,7 +555,6 @@ body {
     text-align: center;
 }
 
-/* ============ BOUTONS DE LA GRANDE CARTE ============ */
 .balance-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -606,9 +605,6 @@ body {
     color: #444;
     font-size: 12px;
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .action-chip span {
@@ -682,48 +678,126 @@ body {
 }
 
 /* ============================================================
-   CARTE HISTORIQUE
+   ✅ NOUVELLE CARTE HISTORIQUE — Style "app moderne"
    ============================================================ */
 .history-card {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
+/* En-tête de la carte historique */
 .history-card-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 16px 20px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
+    justify-content: space-between;
+    padding: 18px 22px;
     border-bottom: 1px solid #f0f0f0;
-    background-color: #fafbfc;
+    gap: 12px;
 }
 
-.history-card-header i {
+.history-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.history-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-color-soft) 0%, rgba(255, 122, 0, 0.18) 100%);
     color: var(--primary-color);
-    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+    transition: background 0.3s, color 0.3s;
 }
 
+.history-card-header-left span {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.history-count-badge {
+    background-color: #f0f0f3;
+    color: #555;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.history-view-all {
+    color: #8e24aa;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.history-view-all:hover {
+    opacity: 0.7;
+}
+
+/* Liste des transactions */
 .history-list {
-    padding: 0 20px;
-    max-height: 400px;
+    padding: 0;
+    max-height: 550px;
     overflow-y: auto;
 }
 
+/* Barre de séparation date */
+.history-date-separator {
+    padding: 14px 22px 8px 22px;
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+/* ============================================================
+   TRANSACTION ITEM — Style "app moderne"
+   ============================================================ */
 .transaction-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 16px 22px;
+    gap: 14px;
+    transition: background 0.15s;
+    border-bottom: 1px solid #f5f5f5;
 }
 
 .transaction-item:last-child {
     border-bottom: none;
+}
+
+/* ✅ Fond coloré léger selon le type */
+.transaction-item.is-credit {
+    background: linear-gradient(90deg, rgba(0, 200, 83, 0.06) 0%, rgba(0, 200, 83, 0.02) 100%);
+}
+
+.transaction-item.is-debit {
+    background: linear-gradient(90deg, rgba(224, 36, 36, 0.06) 0%, rgba(224, 36, 36, 0.02) 100%);
 }
 
 .transaction-left {
@@ -736,13 +810,13 @@ body {
 
 /* ============ ICÔNES DE TRANSACTION ============ */
 .tx-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 18px;
     flex-shrink: 0;
 }
 
@@ -753,14 +827,14 @@ body {
 
 .tx-icon.green {
     background-color: #def7ec;
-    color: #03543f;
+    color: #00a04a;
 }
 
-/* ✅ Nouveau : logo de la banque */
+/* ✅ Logo de la banque dans un carré blanc arrondi */
 .tx-icon-bank {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
     background-color: #ffffff;
     border: 1px solid #e8eaee;
     display: flex;
@@ -769,7 +843,8 @@ body {
     overflow: hidden;
     flex-shrink: 0;
     padding: 5px;
-    transition: background-color 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .tx-icon-bank img {
@@ -779,44 +854,64 @@ body {
     height: auto;
     object-fit: contain;
     display: block;
+    border-radius: 4px;
 }
 
-/* Fallback : si le logo ne charge pas */
 .tx-icon-bank.fallback {
     background-color: var(--primary-color-soft);
     color: var(--primary-color);
-    font-size: 16px;
+    font-size: 18px;
     padding: 0;
 }
 
+/* ============ DÉTAILS DE LA TRANSACTION ============ */
 .tx-details {
     min-width: 0;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .tx-details h4 {
-    font-size: 13px;
-    font-weight: 500;
-    color: #222;
-    margin-bottom: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .tx-details p {
-    font-size: 11px;
-    color: #888;
+    font-size: 12px;
+    color: #666;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.tx-details .tx-time {
+    font-size: 11px;
+    color: #999;
+    font-weight: 400;
+}
+
+/* ============ MONTANT + BADGE RÉALISÉ ============ */
+.tx-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+    margin-left: 10px;
 }
 
 .tx-amount {
-    font-size: 13px;
-    font-weight: 600;
-    flex-shrink: 0;
-    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 700;
     white-space: nowrap;
 }
 
@@ -825,14 +920,31 @@ body {
 }
 
 .tx-amount.green {
-    color: #03543f;
+    color: #00a04a;
 }
 
+.tx-status {
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.tx-status.red {
+    color: #c0392b;
+    opacity: 0.85;
+}
+
+.tx-status.green {
+    color: #00a04a;
+    opacity: 0.85;
+}
+
+/* Empty state */
 .tx-empty {
     text-align: center;
     color: #999;
     font-size: 13px;
-    padding: 30px 0;
+    padding: 40px 20px;
 }
 
 /* ============ FORMULAIRE DE VIREMENT ============ */
@@ -868,7 +980,6 @@ body {
 .international-link i {
     color: var(--primary-color);
     font-size: 15px;
-    transition: color 0.3s;
 }
 
 .form-group {
@@ -983,7 +1094,6 @@ body {
 .card-header-title i {
     color: var(--primary-color);
     font-size: 16px;
-    transition: color 0.3s;
 }
 
 .detail-row {
@@ -1077,7 +1187,6 @@ body {
     padding: 3px;
     margin-bottom: 25px;
     background-color: #fff;
-    transition: border-color 0.3s;
 }
 
 .progress-bar-fill {
@@ -1107,7 +1216,6 @@ body {
 .details-section-title i {
     color: var(--primary-color);
     font-size: 15px;
-    transition: color 0.3s;
 }
 
 .inner-details-box {
@@ -1131,7 +1239,7 @@ body {
     height: 80px;
     border-radius: 50%;
     background-color: #def7ec;
-    color: #03543f;
+    color: #00a04a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1182,7 +1290,6 @@ body {
     position: relative;
     overflow: hidden;
     box-shadow: 0 12px 30px var(--primary-color-soft);
-    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .virtual-card::before {
@@ -1332,7 +1439,6 @@ body {
     font-weight: 700;
     font-size: 24px;
     flex-shrink: 0;
-    transition: background 0.3s;
 }
 
 .account-name {
@@ -1353,7 +1459,7 @@ body {
     gap: 5px;
     font-size: 11px;
     background-color: #def7ec;
-    color: #03543f;
+    color: #00a04a;
     padding: 3px 8px;
     border-radius: 10px;
     margin-left: 8px;
@@ -1406,13 +1512,12 @@ body {
     color: #e02424;
 }
 
-/* Hidden utilitaire */
 .hidden {
     display: none !important;
 }
 
 /* ============================================================
-   RESPONSIVE — Les 3 cartes restent TOUJOURS sur une seule ligne
+   RESPONSIVE
    ============================================================ */
 @media (max-width: 400px) {
     .stats-grid {
@@ -1433,6 +1538,22 @@ body {
     }
     .stat-label {
         font-size: 8px;
-        letter-spacing: 0.3px;
+    }
+    .history-card-header {
+        padding: 14px 16px;
+    }
+    .transaction-item {
+        padding: 14px 16px;
+        gap: 10px;
+    }
+    .tx-icon, .tx-icon-bank {
+        width: 40px;
+        height: 40px;
+    }
+    .tx-details h4 {
+        font-size: 13px;
+    }
+    .tx-amount {
+        font-size: 13px;
     }
 }
