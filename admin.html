@@ -907,16 +907,16 @@
             <small id="access-status-info" style="margin-top:8px;">Statut actuel : <strong>Actif</strong></small>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- AJOUTER UN VIREMENT (Libellé SUPPRIMÉ, Banque OBLIGATOIRE)   -->
-        <!-- ============================================================ -->
+        <!-- ============================================ -->
+        <!-- AJOUTER UN VIREMENT (Banque obligatoire)     -->
+        <!-- ============================================ -->
         <h3 class="section-title">Ajouter un virement au compte client :</h3>
 
         <div class="form-row">
             <div class="form-group">
                 <label>Montant du virement <span class="required">. requis</span></label>
                 <div class="input-with-addon">
-                    <input type="number" id="m-tx-amount" step="0.01" placeholder="0.00" required>
+                    <input type="number" id="m-tx-amount" step="0.01" placeholder="0.00">
                     <div class="input-addon" id="m-tx-currency-display">zł</div>
                 </div>
             </div>
@@ -931,7 +931,7 @@
 
         <div class="form-group">
             <label>🏦 Banque <span class="required">. requis</span></label>
-            <select id="m-tx-bank" required>
+            <select id="m-tx-bank">
                 <option value="">-- Sélectionner une banque --</option>
             </select>
             <small>Le nom et le logo de la banque seront affichés dans l'historique du client.</small>
@@ -957,10 +957,16 @@
     </div>
 </section>
 
-    <!-- LISTE DES CLIENTS CRÉÉS -->
+    <!-- ============================================= -->
+    <!-- LISTE DES CLIENTS CRÉÉS - NOUVEAU DESIGN      -->
+    <!-- ============================================= -->
     <section class="clients-section">
         <div class="section-header-flex">
-            <h3 class="section-title">Clients créés <span id="client-count" class="count-badge">0</span></h3>
+            <h3 class="section-title">
+                <i class="fa-solid fa-users"></i>
+                Liste de vos clients
+                <span id="client-count" class="count-badge">0</span>
+            </h3>
             <button class="btn-clear" onclick="clearAllClients()">
                 <i class="fa-solid fa-trash"></i> Tout effacer
             </button>
@@ -972,7 +978,155 @@
 
 </div>
 
-<!-- MODAL DE LIEN GÉNÉRÉ -->
+<!-- ============================================= -->
+<!-- MODAL : DÉTAILS DU CLIENT                      -->
+<!-- ============================================= -->
+<div class="modal-overlay" id="client-detail-modal">
+    <div class="modal-card modal-client-card">
+        <button class="modal-close-btn" onclick="closeClientDetail()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="client-detail-header">
+            <div class="client-detail-avatar" id="cd-avatar">--</div>
+            <div>
+                <h2 class="client-detail-name" id="cd-name">--</h2>
+                <div class="client-detail-meta" id="cd-meta">--</div>
+            </div>
+            <span class="client-detail-status" id="cd-status">Actif</span>
+        </div>
+
+        <div class="client-detail-body">
+
+            <!-- Identité -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-user"></i> Identité
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Nom complet</div>
+                    <div class="cd-value" id="cd-fullname">--</div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Pays</div>
+                    <div class="cd-value" id="cd-country">--</div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Adresse</div>
+                    <div class="cd-value" id="cd-address">--</div>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-envelope"></i> Contact
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Adresse e-mail</div>
+                    <div class="cd-value-copy">
+                        <span id="cd-email">--</span>
+                        <button class="copy-btn" onclick="copyField('cd-email')" title="Copier">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Téléphone</div>
+                    <div class="cd-value" id="cd-phone">--</div>
+                </div>
+            </div>
+
+            <!-- Compte -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-wallet"></i> Compte
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Solde</div>
+                    <div class="cd-value" id="cd-balance">--</div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Devise</div>
+                    <div class="cd-value" id="cd-currency">--</div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Langue</div>
+                    <div class="cd-value" id="cd-language">--</div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Pourcentage limite</div>
+                    <div class="cd-value" id="cd-percent">--</div>
+                </div>
+            </div>
+
+            <!-- Sécurité -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-shield-halved"></i> Sécurité
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Code PIN</div>
+                    <div class="cd-value-copy">
+                        <span id="cd-pin" class="cd-code">••••</span>
+                        <button class="copy-btn" onclick="copyField('cd-pin', true)" title="Copier">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Code d'activation</div>
+                    <div class="cd-value-copy">
+                        <span id="cd-activation" class="cd-code">••••</span>
+                        <button class="copy-btn" onclick="copyField('cd-activation', true)" title="Copier">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lien d'accès -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-link"></i> Lien d'accès client
+                </div>
+
+                <div class="cd-link-box">
+                    <input type="text" id="cd-link" readonly>
+                    <button class="copy-btn copy-btn-primary" onclick="copyField('cd-link')" title="Copier le lien">
+                        <i class="fa-regular fa-copy"></i> Copier
+                    </button>
+                </div>
+                <small class="cd-hint">Ce lien est unique et personnel. Transmettez-le au client.</small>
+            </div>
+
+        </div>
+
+        <div class="client-detail-footer">
+            <button class="btn-secondary" onclick="closeClientDetail()">
+                <i class="fa-solid fa-xmark"></i> Fermer
+            </button>
+            <button class="btn-primary" onclick="editClientFromDetail()">
+                <i class="fa-solid fa-pen"></i> Modifier ce client
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================= -->
+<!-- MODAL : LIEN GÉNÉRÉ (après création)          -->
+<!-- ============================================= -->
 <div class="modal-overlay" id="link-modal">
     <div class="modal-card">
         <div class="modal-icon-success">
