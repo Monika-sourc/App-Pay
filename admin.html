@@ -235,7 +235,7 @@
                     <option value="Zimbabwe" data-flag="🇿🇼">🇿🇼 Zimbabwe</option>
                 </select>
             </div>
-            
+           
         <div class="form-group">
             <label>Adresse de résidence <span class="optional">. facultatif</span></label>
             <input type="text" id="c-address" placeholder="Adresse complète">
@@ -302,16 +302,107 @@
             <div class="form-group">
                 <label>Devise <span class="required">. requis</span></label>
                 <select id="c-currency" required>
-                    <option value="zł" selected>zł - Zloty polonais</option>
-                    <option value="€">€ - Euro</option>
-                    <option value="FCFA">FCFA - Franc CFA</option>
-                    <option value="$">$ - Dollar américain</option>
-                    <option value="CHF">CHF - Franc suisse</option>
-                    <option value="£">£ - Livre sterling</option>
-                    <option value="¥">¥ - Yen japonais</option>
-                    <option value="₹">₹ - Roupie indienne</option>
-                    <option value="₦">₦ - Naira nigérian</option>
-                    <option value="R">R - Rand sud-africain</option>
+                    <optgroup label="🌍 Devises principales">
+                        <option value="zł" selected>zł - Zloty polonais</option>
+                        <option value="€">€ - Euro</option>
+                        <option value="$">$ - Dollar américain</option>
+                        <option value="£">£ - Livre sterling</option>
+                        <option value="CHF">CHF - Franc suisse</option>
+                        <option value="¥">¥ - Yen japonais</option>
+                        <option value="CNY">CNY - Yuan chinois</option>
+                        <option value="CAD">CAD - Dollar canadien</option>
+                        <option value="AUD">AUD - Dollar australien</option>
+                    </optgroup>
+                    <optgroup label="🌍 Afrique">
+                        <option value="FCFA">FCFA - Franc CFA (UEMOA)</option>
+                        <option value="XAF">XAF - Franc CFA (CEMAC)</option>
+                        <option value="NGN">₦ - Naira nigérian</option>
+                        <option value="GHS">₵ - Cedi ghanéen</option>
+                        <option value="KES">KSh - Shilling kényan</option>
+                        <option value="ZAR">R - Rand sud-africain</option>
+                        <option value="MAD">MAD - Dirham marocain</option>
+                        <option value="DZD">DZD - Dinar algérien</option>
+                        <option value="TND">TND - Dinar tunisien</option>
+                        <option value="EGP">E£ - Livre égyptienne</option>
+                        <option value="ETB">ETB - Birr éthiopien</option>
+                        <option value="UGX">UGX - Shilling ougandais</option>
+                        <option value="TZS">TZS - Shilling tanzanien</option>
+                        <option value="RWF">RWF - Franc rwandais</option>
+                        <option value="CDF">CDF - Franc congolais</option>
+                        <option value="GNF">GNF - Franc guinéen</option>
+                        <option value="MGA">MGA - Ariary malgache</option>
+                        <option value="MUR">MUR - Roupie mauricienne</option>
+                        <option value="XOF">XOF - Franc CFA BCEAO</option>
+                    </optgroup>
+                    <optgroup label="🌎 Amériques">
+                        <option value="MXN">MXN - Peso mexicain</option>
+                        <option value="BRL">R$ - Réal brésilien</option>
+                        <option value="ARS">ARS - Peso argentin</option>
+                        <option value="CLP">CLP - Peso chilien</option>
+                        <option value="COP">COP - Peso colombien</option>
+                        <option value="PEN">S/ - Sol péruvien</option>
+                        <option value="UYU">UYU - Peso uruguayen</option>
+                        <option value="BOB">BOB - Boliviano</option>
+                        <option value="PYG">PYG - Guarani paraguayen</option>
+                        <option value="VES">VES - Bolivar vénézuélien</option>
+                        <option value="DOP">DOP - Peso dominicain</option>
+                        <option value="HTG">HTG - Gourde haïtienne</option>
+                        <option value="JMD">JMD - Dollar jamaïcain</option>
+                        <option value="TTD">TTD - Dollar de Trinité</option>
+                    </optgroup>
+                    <optgroup label="🌏 Asie & Moyen-Orient">
+                        <option value="₹">₹ - Roupie indienne</option>
+                        <option value="PKR">₨ - Roupie pakistanaise</option>
+                        <option value="BDT">৳ - Taka bangladais</option>
+                        <option value="LKR">Rs - Roupie srilankaise</option>
+                        <option value="NPR">Rs - Roupie népalaise</option>
+                        <option value="IDR">Rp - Roupie indonésienne</option>
+                        <option value="MYR">RM - Ringgit malaisien</option>
+                        <option value="SGD">S$ - Dollar singapourien</option>
+                        <option value="THB">฿ - Baht thaïlandais</option>
+                        <option value="VND">₫ - Dong vietnamien</option>
+                        <option value="PHP">₱ - Peso philippin</option>
+                        <option value="KRW">₩ - Won sud-coréen</option>
+                        <option value="HKD">HK$ - Dollar de Hong Kong</option>
+                        <option value="TWD">NT$ - Dollar taïwanais</option>
+                        <option value="AED">د.إ - Dirham des Émirats</option>
+                        <option value="SAR">﷼ - Riyal saoudien</option>
+                        <option value="QAR">﷼ - Riyal qatari</option>
+                        <option value="KWD">KD - Dinar koweïtien</option>
+                        <option value="BHD">BD - Dinar bahreïni</option>
+                        <option value="OMR">﷼ - Rial omanais</option>
+                        <option value="JOD">JD - Dinar jordanien</option>
+                        <option value="LBP">ل.ل - Livre libanaise</option>
+                        <option value="ILS">₪ - Shekel israélien</option>
+                        <option value="IRR">﷼ - Rial iranien</option>
+                        <option value="IQD">ع.د - Dinar irakien</option>
+                    </optgroup>
+                    <optgroup label="🌍 Europe (autres)">
+                        <option value="SEK">kr - Couronne suédoise</option>
+                        <option value="NOK">kr - Couronne norvégienne</option>
+                        <option value="DKK">kr - Couronne danoise</option>
+                        <option value="ISK">kr - Couronne islandaise</option>
+                        <option value="CZK">Kč - Couronne tchèque</option>
+                        <option value="HUF">Ft - Forint hongrois</option>
+                        <option value="RON">lei - Leu roumain</option>
+                        <option value="BGN">лв - Lev bulgare</option>
+                        <option value="HRK">kn - Kuna croate</option>
+                        <option value="RSD">дин - Dinar serbe</option>
+                        <option value="RUB">₽ - Rouble russe</option>
+                        <option value="UAH">₴ - Hryvnia ukrainienne</option>
+                        <option value="TRY">₺ - Livre turque</option>
+                        <option value="GEL">₾ - Lari géorgien</option>
+                    </optgroup>
+                    <optgroup label="🌊 Océanie">
+                        <option value="NZD">NZ$ - Dollar néo-zélandais</option>
+                        <option value="FJD">FJ$ - Dollar fidjien</option>
+                        <option value="PGK">K - Kina papouane</option>
+                    </optgroup>
+                    <optgroup label="💎 Cryptomonnaies">
+                        <option value="BTC">₿ - Bitcoin</option>
+                        <option value="ETH">Ξ - Ethereum</option>
+                        <option value="USDT">₮ - Tether</option>
+                    </optgroup>
                 </select>
             </div>
         </div>
