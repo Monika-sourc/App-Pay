@@ -183,11 +183,19 @@
             </div>
         </div>
 
-        <!-- HISTORIQUE DANS UNE CARTE (titre + liste ensemble) -->
+        <!-- HISTORIQUE REDESIGNÉ -->
         <div class="history-card">
             <div class="history-card-header">
-                <i class="fa-solid fa-list"></i>
-                <span data-i18n="transactions_history">Historique des transactions</span>
+                <div class="history-card-header-left">
+                    <div class="history-card-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <span data-i18n="transactions_history">Historique des transactions</span>
+                </div>
+                <div class="history-card-header-right">
+                    <span class="history-count-badge" id="history-count">0</span>
+                    <span class="history-view-all" id="history-view-all">Voir tout</span>
+                </div>
             </div>
             <div class="history-list" id="tx-list"></div>
         </div>
