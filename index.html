@@ -9,9 +9,7 @@
 </head>
 <body>
 
-    <!-- ============================================= -->
-    <!-- ÉCRAN 0 : LIEN INVALIDE (aucun lien admin)     -->
-    <!-- ============================================= -->
+    <!-- ÉCRAN 0 : LIEN INVALIDE -->
     <div class="screen" id="invalid-screen">
         <div class="invalid-card">
             <div class="invalid-icon">
@@ -28,9 +26,7 @@
         </div>
     </div>
 
-    <!-- ============================================= -->
-    <!-- ÉCRAN 1 : CONNEXION (TRANSFERWIRE)            -->
-    <!-- ============================================= -->
+    <!-- ÉCRAN 1 : CONNEXION -->
     <div class="screen" id="login-screen">
         <div class="login-card">
             <div class="logo-container">
@@ -83,62 +79,56 @@
             </form>
         </div>
     </div>
-    
-<!-- ============================================= -->
-<!-- ÉCRAN 2 : APPLICATION APP PAY                 -->
-<!-- ============================================= -->
-<div class="screen" id="app-screen">
 
-    <!-- Barre latérale -->
-    <aside class="sidebar" id="app-sidebar">
-        <div class="sidebar-top">
-            <div class="logo-apppay">
-                <i class="fa-solid fa-landmark"></i> APP PAY
+    <!-- ÉCRAN 2 : APPLICATION -->
+    <div class="screen" id="app-screen">
+
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-top">
+                <div class="logo-apppay">
+                    <i class="fa-solid fa-landmark"></i> APP PAY
+                </div>
+                <ul class="nav-links" id="nav-links">
+                    <li data-view="dashboard" class="active"><i class="fa-solid fa-wallet"></i> Portefeuille</li>
+                    <li data-view="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> Virement</li>
+                    <li data-view="card"><i class="fa-regular fa-credit-card"></i> Carte Virtuelle</li>
+                    <li data-view="account"><i class="fa-regular fa-user"></i> Mon Compte</li>
+                </ul>
             </div>
-            <ul class="nav-links" id="nav-links">
-                <li data-view="dashboard" class="active"><i class="fa-solid fa-wallet"></i> Portefeuille</li>
-                <li data-view="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> Virement</li>
-                <li data-view="card"><i class="fa-regular fa-credit-card"></i> Carte Virtuelle</li>
-                <li data-view="account"><i class="fa-regular fa-user"></i> Mon Compte</li>
-            </ul>
-        </div>
-        <div class="logout-container">
-            <ul>
-                <li onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</li>
-            </ul>
-        </div>
-    </aside>
-
-    <!-- Contenu principal -->
-    <main class="main-content">
-        <div class="header">
-            <div class="header-icons">
-                <button class="icon-btn" id="notif-btn">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="notif-dot"></span>
-                </button>
-                <div class="user-avatar" id="header-avatar">--</div>
+            <div class="logout-container">
+                <ul>
+                    <li onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</li>
+                </ul>
             </div>
+        </aside>
 
-            <div class="notif-dropdown" id="notif-dropdown">
-                <div class="notif-dropdown-header">Notifications</div>
-                <div class="notif-item">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <div class="notif-item-text">
-                        <strong>Sécurité</strong>
-                        Votre compte a été vérifié avec succès
+        <main class="main-content">
+            <div class="header">
+                <div class="header-icons">
+                    <button class="icon-btn" id="notif-btn">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notif-dot"></span>
+                    </button>
+                    <div class="user-avatar" id="header-avatar">--</div>
+                </div>
+
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div class="notif-dropdown-header">Notifications</div>
+                    <div class="notif-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div class="notif-item-text">
+                            <strong>Sécurité</strong>
+                            Votre compte a été vérifié avec succès
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="views-container"></div>
-    </main>
-</div>
-
-<!-- ============================================= -->
-<!-- TEMPLATES DES VUES                            -->
-<!-- ============================================= -->
+            <div id="views-container"></div>
+        </main>
+    </div>
+    
+<!-- TEMPLATES DES VUES -->
 
 <template id="tpl-dashboard">
     <div class="dashboard-body">
@@ -157,12 +147,37 @@
                 <button class="action-chip" id="btn-show-iban">
                     <i class="fa-regular fa-credit-card"></i> <span data-i18n="see_iban">Voir mon IBAN</span>
                 </button>
-                <button class="action-chip" onclick="navigateTo('transfer')">
+                <button class="action-chip" id="btn-go-transfer">
                     <i class="fa-solid fa-paper-plane"></i> <span data-i18n="make_transfer">Effectuer un virement</span>
                 </button>
-                <button class="action-chip" onclick="navigateTo('card')">
+                <button class="action-chip" id="btn-go-card">
                     <i class="fa-solid fa-wallet"></i> <span data-i18n="see_card">Voir ma carte virtuelle</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- 3 MINI CARTES DE STATISTIQUES -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-coins"></i>
+                </div>
+                <div class="stat-value" id="stat-balance">--</div>
+                <div class="stat-label" data-i18n="total_balance">Solde total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <div class="stat-value" id="stat-transactions">0</div>
+                <div class="stat-label" data-i18n="transactions_label">Transactions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-value" id="stat-currency">--</div>
+                <div class="stat-label" data-i18n="currency_label">Devise</div>
             </div>
         </div>
 
