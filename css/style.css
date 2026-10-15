@@ -607,6 +607,7 @@ body {
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: default;
+    min-width: 0;
 }
 
 .stat-card:hover {
@@ -1310,9 +1311,28 @@ body {
     display: none !important;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
+/* ============================================================
+   RESPONSIVE — Les 3 cartes restent TOUJOURS sur une seule ligne
+   ============================================================ */
+@media (max-width: 400px) {
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    .stat-card {
+        padding: 15px 8px;
+    }
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+    .stat-value {
+        font-size: 14px;
+    }
+    .stat-label {
+        font-size: 9px;
+        letter-spacing: 0.3px;
     }
 }
