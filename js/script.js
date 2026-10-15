@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + persistance)
+// APP PAY - Logique client (Firebase + i18n + persistance + logos banques)
 // ============================================================
 
 import {
@@ -478,7 +478,7 @@ function showScreen(screenId) {
 }
 
 // ============================================================
-// GESTION DE SESSION (localStorage = très fiable sur mobile)
+// GESTION DE SESSION (localStorage)
 // ============================================================
 function saveSession() {
     if (!appState.clientId) return;
@@ -488,7 +488,7 @@ function saveSession() {
             loggedIn: true,
             savedAt: Date.now()
         }));
-        console.log('✅ Session sauvegardée dans localStorage');
+        console.log('✅ Session sauvegardée');
     } catch (e) {
         console.warn('Impossible de sauvegarder la session', e);
     }
@@ -499,7 +499,6 @@ function getSession() {
         const raw = localStorage.getItem(SESSION_KEY);
         if (!raw) return null;
         const data = JSON.parse(raw);
-        // Session valable 7 jours
         if (Date.now() - data.savedAt > 7 * 24 * 60 * 60 * 1000) {
             localStorage.removeItem(SESSION_KEY);
             return null;
@@ -517,7 +516,7 @@ function clearSession() {
     } catch {}
 }
 
-// ✅ Affiche l'écran de blocage si l'admin a bloqué l'accès
+// ✅ Affiche l'écran de blocage
 function showBlockedScreen(client) {
     const card = document.querySelector('#invalid-screen .invalid-card');
     if (card) {
@@ -545,7 +544,7 @@ function showBlockedScreen(client) {
 }
 
 // ============================================================
-// CHARGEMENT DU CLIENT DEPUIS FIRESTORE (FORCÉ DEPUIS LE SERVEUR)
+// CHARGEMENT DU CLIENT DEPUIS FIRESTORE (FORCÉ SERVEUR)
 // ============================================================
 async function loadClientFromFirestore(options = {}) {
     const { autoLogin = false } = options;
@@ -562,14 +561,13 @@ async function loadClientFromFirestore(options = {}) {
     try {
         await authPromise;
 
-        // ✅ FORCER la lecture depuis le serveur (pas de cache)
         const docRef = doc(db, 'clients', clientId);
         let docSnap;
         try {
             docSnap = await getDocFromServer(docRef);
             console.log('✅ Données lues depuis le SERVEUR');
         } catch (err) {
-            console.warn('⚠️ Lecture serveur échouée, utilisation du cache', err);
+            console.warn('⚠️ Lecture serveur échouée, fallback cache', err);
             const { getDoc } = await import('./firebase-config.js');
             docSnap = await getDoc(docRef);
         }
@@ -587,12 +585,10 @@ async function loadClientFromFirestore(options = {}) {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        // ✅ Debug : log du nombre de transactions
         console.log(`📊 Client chargé : ${client.firstName} ${client.lastName}`);
         console.log(`💰 Solde : ${appState.balance} ${appState.currency}`);
         console.log(`📜 Transactions : ${appState.transactions.length}`);
 
-        // Vérification si l'accès est bloqué
         if (client.blocked === true) {
             clearSession();
             showBlockedScreen(client);
@@ -608,7 +604,6 @@ async function loadClientFromFirestore(options = {}) {
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = client.email;
 
-        // ✅ Vérifier si une session existe déjà
         const session = getSession();
         const shouldAutoLogin = autoLogin || (session && session.loggedIn && session.clientId === clientId);
 
@@ -662,7 +657,7 @@ function handleLogin(event) {
     loginSuccess();
 }
 
-// ✅ Fonction centrale : affiche l'app après connexion
+// ✅ Fonction centrale
 function loginSuccess() {
     const client = appState.client;
     showScreen('app-screen');
@@ -731,6 +726,33 @@ function navigateTo(viewName, data = {}) {
 }
 
 // ============================================================
+// ✅ GÉNÉRATION DU LOGO DE LA BANQUE (ou icône de secours)
+// ============================================================
+function buildTransactionIcon(tx) {
+    const isDebit = tx.amount < 0;
+
+    // Si le virement a un logo de banque → l'afficher
+    if (tx.bankLogo) {
+        return `
+            <div class="tx-icon-bank">
+                <img src="${tx.bankLogo}"
+                     alt="${tx.bankName || 'Banque'}"
+                     loading="lazy"
+                     onerror="this.parentNode.classList.add('fallback'); this.parentNode.innerHTML='<i class=\\'fa-solid fa-building-columns\\'></i>';">
+            </div>
+        `;
+    }
+
+    // Sinon → icône générique
+    return `
+        <div class="tx-icon ${isDebit ? 'red' : 'green'}">
+            <i class="fa-solid ${isDebit ? 'fa-arrow-trend-up' : 'fa-arrow-right-arrow-left'}"
+               ${isDebit ? 'style="transform: rotate(90deg);"' : ''}></i>
+        </div>
+    `;
+}
+
+// ============================================================
 // VUE : DASHBOARD
 // ============================================================
 function renderDashboard() {
@@ -795,12 +817,10 @@ function renderDashboard() {
         item.className = 'transaction-item';
         item.innerHTML = `
             <div class="transaction-left">
-                <div class="tx-icon ${isDebit ? 'red' : 'green'}">
-                    <i class="fa-solid ${isDebit ? 'fa-arrow-trend-up' : 'fa-arrow-right-arrow-left'}" ${isDebit ? 'style="transform: rotate(90deg);"' : ''}></i>
-                </div>
+                ${buildTransactionIcon(tx)}
                 <div class="tx-details">
                     <h4>${tx.title}</h4>
-                    <p>${tx.date}</p>
+                    <p>${tx.date}${tx.bankName ? ' • ' + tx.bankName : ''}</p>
                 </div>
             </div>
             <div class="tx-amount ${isDebit ? 'red' : 'green'}">
@@ -1042,40 +1062,36 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
-// ✅ RAFRAÎCHISSEMENT AUTOMATIQUE QUAND ON REVIENT SUR L'ONGLET
+// ✅ RAFRAÎCHISSEMENT AUTO QUAND ON REVIENT SUR L'ONGLET
 // ============================================================
 let isAppReady = false;
 
 async function refreshClientData() {
-    // Ne rien faire si l'utilisateur n'est pas connecté ou si on charge déjà
     if (!isAppReady || !appState.clientId) return;
 
-    // Vérifier qu'il est bien connecté (pas sur l'écran de connexion)
     const appScreen = document.getElementById('app-screen');
     if (!appScreen || !appScreen.classList.contains('active')) return;
 
     try {
-        console.log('🔄 Rafraîchissement des données depuis Firestore...');
+        console.log('🔄 Rafraîchissement des données...');
         const docRef = doc(db, 'clients', appState.clientId);
         let docSnap;
         try {
             docSnap = await getDocFromServer(docRef);
         } catch {
-            return; // Silence si hors ligne
+            return;
         }
 
         if (!docSnap.exists()) return;
 
         const client = docSnap.data();
 
-        // Vérifier si le client a été bloqué entretemps
         if (client.blocked === true) {
             clearSession();
             showBlockedScreen(client);
             return;
         }
 
-        // Mettre à jour l'état
         const oldBalance = appState.balance;
         const oldTxCount = appState.transactions.length;
 
@@ -1085,21 +1101,16 @@ async function refreshClientData() {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        // Appliquer la couleur si elle a changé
         applyClientColor(client.color);
 
-        // Rafraîchir la vue actuelle
         const activeView = document.querySelector('#nav-links li.active');
         const viewName = activeView ? activeView.dataset.view : 'dashboard';
 
-        console.log(`🔄 Vue active : ${viewName}`);
         console.log(`💰 Solde : ${oldBalance} → ${appState.balance}`);
         console.log(`📜 Transactions : ${oldTxCount} → ${appState.transactions.length}`);
 
-        // Redessiner la vue actuelle
         navigateTo(viewName);
 
-        // Notifier l'utilisateur si nouvelles transactions
         if (appState.transactions.length > oldTxCount) {
             showToast('Nouvelle transaction reçue !', 'success');
         }
@@ -1108,7 +1119,6 @@ async function refreshClientData() {
     }
 }
 
-// ✅ Écoute du retour sur l'onglet (visible)
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
         console.log('👁️ Onglet redevenu visible');
@@ -1116,14 +1126,13 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// ✅ Écoute du focus de la fenêtre (au cas où)
 window.addEventListener('focus', () => {
     console.log('🎯 Fenêtre focus');
     refreshClientData();
 });
 
 // ============================================================
-// EXPOSITION GLOBALE (pour onclick dans le HTML)
+// EXPOSITION GLOBALE
 // ============================================================
 window.navigateTo = navigateTo;
 window.handleLogout = handleLogout;
@@ -1166,7 +1175,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     await loadClientFromFirestore();
-
-    // ✅ Marquer que l'app est prête pour le rafraîchissement auto
     isAppReady = true;
 });
