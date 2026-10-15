@@ -474,6 +474,33 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
 }
 
+// ✅ Affiche l'écran de blocage si l'admin a bloqué l'accès
+function showBlockedScreen(client) {
+    const card = document.querySelector('#invalid-screen .invalid-card');
+    if (card) {
+        const iconBox = card.querySelector('.invalid-icon');
+        iconBox.innerHTML = '<i class="fa-solid fa-lock"></i>';
+        iconBox.style.backgroundColor = '#fef3c7';
+        iconBox.style.color = '#d97706';
+
+        card.querySelector('.invalid-title').textContent = 'Compte temporairement bloqué';
+
+        const name = client
+            ? `${client.firstName || ''} ${client.lastName || ''}`.trim()
+            : '';
+
+        card.querySelector('.invalid-message').textContent = name
+            ? `Bonjour ${name}, votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`
+            : `Votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`;
+
+        const infoSpan = card.querySelector('.invalid-info span');
+        if (infoSpan) {
+            infoSpan.textContent = 'Veuillez contacter l\'administrateur pour rétablir votre accès.';
+        }
+    }
+    showScreen('invalid-screen');
+}
+
 // ---------- CHARGEMENT DU CLIENT ----------
 async function loadClientFromFirestore() {
     const clientId = getClientIdFromURL();
@@ -503,6 +530,12 @@ async function loadClientFromFirestore() {
         appState.currency = client.currency || 'zł';
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
+
+        // ✅ Vérification si l'accès est bloqué par l'admin
+        if (client.blocked === true) {
+            showBlockedScreen(client);
+            return null;
+        }
 
         applyClientColor(client.color);
 
@@ -534,6 +567,12 @@ function handleLogin(event) {
 
     if (!client) {
         errorEl.textContent = t('err_client_not_found');
+        return;
+    }
+
+    // Re-vérifier le blocage à chaque tentative de connexion
+    if (client.blocked === true) {
+        showBlockedScreen(client);
         return;
     }
 
@@ -624,7 +663,7 @@ function renderDashboard() {
         welcomeName.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
     }
 
-    // ✅ Remplir les 3 mini-cartes
+    // Remplir les 3 mini-cartes
     const statBalance = document.getElementById('stat-balance');
     const statTx = document.getElementById('stat-transactions');
     const statCurr = document.getElementById('stat-currency');
@@ -632,7 +671,7 @@ function renderDashboard() {
     if (statTx) statTx.textContent = (appState.transactions || []).length;
     if (statCurr) statCurr.textContent = appState.currency;
 
-    // ✅ Bouton "Voir mon IBAN"
+    // Bouton "Voir mon IBAN"
     const btnIban = document.getElementById('btn-show-iban');
     if (btnIban) {
         btnIban.addEventListener('click', () => {
@@ -649,13 +688,13 @@ function renderDashboard() {
         });
     }
 
-    // ✅ Bouton "Effectuer un virement"
+    // Bouton "Effectuer un virement"
     const btnGoTransfer = document.getElementById('btn-go-transfer');
     if (btnGoTransfer) {
         btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
     }
 
-    // ✅ Bouton "Voir ma carte virtuelle"
+    // Bouton "Voir ma carte virtuelle"
     const btnGoCard = document.getElementById('btn-go-card');
     if (btnGoCard) {
         btnGoCard.addEventListener('click', () => navigateTo('card'));
@@ -921,7 +960,7 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
-// ✅ EXPOSITION GLOBALE (nécessaire pour onclick dans le HTML)
+// EXPOSITION GLOBALE (pour onclick dans le HTML)
 // ============================================================
 window.navigateTo = navigateTo;
 window.handleLogout = handleLogout;
