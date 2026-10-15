@@ -14,6 +14,7 @@ body {
     color: #333;
     min-height: 100vh;
     padding: 20px;
+    zoom: 0.6;
 }
 
 .admin-container {
@@ -534,7 +535,7 @@ body {
 }
 
 /* ============================================================
-   LISTE DES CLIENTS - NOUVEAU DESIGN
+   LISTE DES CLIENTS
    ============================================================ */
 .section-header-flex {
     display: flex;
@@ -592,7 +593,7 @@ body {
     border: 1px dashed #dcdfe6;
 }
 
-/* ✅ Carte client cliquable */
+/* Carte client cliquable */
 .client-row {
     display: flex;
     align-items: center;
@@ -739,7 +740,6 @@ body {
     color: #e02424;
 }
 
-/* En-tête coloré du modal */
 .client-detail-header {
     display: flex;
     align-items: center;
@@ -812,7 +812,6 @@ body {
     color: #e02424;
 }
 
-/* Corps du modal */
 .client-detail-body {
     padding: 25px 30px;
     overflow-y: auto;
@@ -899,7 +898,6 @@ body {
     font-weight: 700;
 }
 
-/* Bouton copier */
 .copy-btn {
     background-color: #f0f2f5;
     border: none;
@@ -941,7 +939,6 @@ body {
     background-color: #e66d00;
 }
 
-/* Boîte du lien */
 .cd-link-box {
     display: flex;
     gap: 8px;
@@ -972,7 +969,6 @@ body {
     line-height: 1.4;
 }
 
-/* Pied du modal */
 .client-detail-footer {
     display: flex;
     gap: 10px;
@@ -998,7 +994,7 @@ body {
 }
 
 /* ============================================================
-   MODAL GÉNÉRIQUE (Lien généré)
+   MODAL GÉNÉRIQUE
    ============================================================ */
 .modal-overlay {
     position: fixed;
