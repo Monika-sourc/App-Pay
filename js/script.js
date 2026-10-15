@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + persistance session)
+// APP PAY - Logique client (Firebase + i18n + persistance)
 // ============================================================
 
 import {
@@ -7,7 +7,7 @@ import {
     authPromise,
     collection,
     doc,
-    getDoc,
+    getDocFromServer,
     updateDoc
 } from './firebase-config.js';
 
@@ -22,8 +22,8 @@ const appState = {
     lang: 'fr'
 };
 
-// Clé de stockage de session
-const SESSION_KEY = 'apppay_session';
+// Clé de stockage de session (localStorage = plus fiable)
+const SESSION_KEY = 'apppay_session_v2';
 
 // ============================================================
 // TRADUCTIONS (i18n)
@@ -478,16 +478,17 @@ function showScreen(screenId) {
 }
 
 // ============================================================
-// GESTION DE SESSION (persistance après actualisation)
+// GESTION DE SESSION (localStorage = très fiable sur mobile)
 // ============================================================
 function saveSession() {
     if (!appState.clientId) return;
     try {
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+        localStorage.setItem(SESSION_KEY, JSON.stringify({
             clientId: appState.clientId,
             loggedIn: true,
             savedAt: Date.now()
         }));
+        console.log('✅ Session sauvegardée dans localStorage');
     } catch (e) {
         console.warn('Impossible de sauvegarder la session', e);
     }
@@ -495,12 +496,12 @@ function saveSession() {
 
 function getSession() {
     try {
-        const raw = sessionStorage.getItem(SESSION_KEY);
+        const raw = localStorage.getItem(SESSION_KEY);
         if (!raw) return null;
         const data = JSON.parse(raw);
-        // Session valable 24h
-        if (Date.now() - data.savedAt > 24 * 60 * 60 * 1000) {
-            sessionStorage.removeItem(SESSION_KEY);
+        // Session valable 7 jours
+        if (Date.now() - data.savedAt > 7 * 24 * 60 * 60 * 1000) {
+            localStorage.removeItem(SESSION_KEY);
             return null;
         }
         return data;
@@ -511,7 +512,8 @@ function getSession() {
 
 function clearSession() {
     try {
-        sessionStorage.removeItem(SESSION_KEY);
+        localStorage.removeItem(SESSION_KEY);
+        console.log('🗑️ Session effacée');
     } catch {}
 }
 
@@ -542,8 +544,11 @@ function showBlockedScreen(client) {
     showScreen('invalid-screen');
 }
 
-// ---------- CHARGEMENT DU CLIENT ----------
-async function loadClientFromFirestore() {
+// ============================================================
+// CHARGEMENT DU CLIENT DEPUIS FIRESTORE (FORCÉ DEPUIS LE SERVEUR)
+// ============================================================
+async function loadClientFromFirestore(options = {}) {
+    const { autoLogin = false } = options;
     const clientId = getClientIdFromURL();
 
     if (!clientId) {
@@ -556,8 +561,18 @@ async function loadClientFromFirestore() {
 
     try {
         await authPromise;
+
+        // ✅ FORCER la lecture depuis le serveur (pas de cache)
         const docRef = doc(db, 'clients', clientId);
-        const docSnap = await getDoc(docRef);
+        let docSnap;
+        try {
+            docSnap = await getDocFromServer(docRef);
+            console.log('✅ Données lues depuis le SERVEUR');
+        } catch (err) {
+            console.warn('⚠️ Lecture serveur échouée, utilisation du cache', err);
+            const { getDoc } = await import('./firebase-config.js');
+            docSnap = await getDoc(docRef);
+        }
 
         if (!docSnap.exists()) {
             console.warn('Client introuvable :', clientId);
@@ -571,6 +586,11 @@ async function loadClientFromFirestore() {
         appState.currency = client.currency || 'zł';
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
+
+        // ✅ Debug : log du nombre de transactions
+        console.log(`📊 Client chargé : ${client.firstName} ${client.lastName}`);
+        console.log(`💰 Solde : ${appState.balance} ${appState.currency}`);
+        console.log(`📜 Transactions : ${appState.transactions.length}`);
 
         // Vérification si l'accès est bloqué
         if (client.blocked === true) {
@@ -588,16 +608,17 @@ async function loadClientFromFirestore() {
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = client.email;
 
-        // ✅ Vérifier si une session existe déjà → connexion automatique
+        // ✅ Vérifier si une session existe déjà
         const session = getSession();
-        if (session && session.loggedIn && session.clientId === clientId) {
+        const shouldAutoLogin = autoLogin || (session && session.loggedIn && session.clientId === clientId);
+
+        if (shouldAutoLogin) {
             console.log('✅ Session restaurée : connexion automatique');
             loginSuccess();
             return client;
         }
 
         showScreen('login-screen');
-        console.log('✅ Client chargé :', client.firstName, client.lastName);
         return client;
 
     } catch (err) {
@@ -637,7 +658,7 @@ function handleLogin(event) {
     }
 
     errorEl.textContent = '';
-    saveSession(); // ✅ Sauvegarder la session
+    saveSession();
     loginSuccess();
 }
 
@@ -659,7 +680,7 @@ function loginSuccess() {
 // ---------- DÉCONNEXION ----------
 function handleLogout() {
     if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-    clearSession(); // ✅ Effacer la session
+    clearSession();
     showScreen('login-screen');
     document.getElementById('login-form').reset();
     document.getElementById('login-error').textContent = '';
@@ -757,7 +778,7 @@ function renderDashboard() {
         btnGoCard.addEventListener('click', () => navigateTo('card'));
     }
 
-    // Historique des transactions (dans history-card > history-list)
+    // Historique des transactions
     const txList = document.getElementById('tx-list');
     if (!txList) return;
 
@@ -975,7 +996,6 @@ function renderCardView() {
     const limitEl = document.getElementById('card-limit');
     if (limitEl) limitEl.textContent = formatMoney(limit);
 
-    // Réinitialiser l'état d'affichage
     cardNumberVisible = false;
 }
 
@@ -1022,6 +1042,87 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
+// ✅ RAFRAÎCHISSEMENT AUTOMATIQUE QUAND ON REVIENT SUR L'ONGLET
+// ============================================================
+let isAppReady = false;
+
+async function refreshClientData() {
+    // Ne rien faire si l'utilisateur n'est pas connecté ou si on charge déjà
+    if (!isAppReady || !appState.clientId) return;
+
+    // Vérifier qu'il est bien connecté (pas sur l'écran de connexion)
+    const appScreen = document.getElementById('app-screen');
+    if (!appScreen || !appScreen.classList.contains('active')) return;
+
+    try {
+        console.log('🔄 Rafraîchissement des données depuis Firestore...');
+        const docRef = doc(db, 'clients', appState.clientId);
+        let docSnap;
+        try {
+            docSnap = await getDocFromServer(docRef);
+        } catch {
+            return; // Silence si hors ligne
+        }
+
+        if (!docSnap.exists()) return;
+
+        const client = docSnap.data();
+
+        // Vérifier si le client a été bloqué entretemps
+        if (client.blocked === true) {
+            clearSession();
+            showBlockedScreen(client);
+            return;
+        }
+
+        // Mettre à jour l'état
+        const oldBalance = appState.balance;
+        const oldTxCount = appState.transactions.length;
+
+        appState.client = client;
+        appState.balance = Number(client.balance) || 0;
+        appState.currency = client.currency || 'zł';
+        appState.transactions = client.transactions || [];
+        appState.lang = client.language || 'fr';
+
+        // Appliquer la couleur si elle a changé
+        applyClientColor(client.color);
+
+        // Rafraîchir la vue actuelle
+        const activeView = document.querySelector('#nav-links li.active');
+        const viewName = activeView ? activeView.dataset.view : 'dashboard';
+
+        console.log(`🔄 Vue active : ${viewName}`);
+        console.log(`💰 Solde : ${oldBalance} → ${appState.balance}`);
+        console.log(`📜 Transactions : ${oldTxCount} → ${appState.transactions.length}`);
+
+        // Redessiner la vue actuelle
+        navigateTo(viewName);
+
+        // Notifier l'utilisateur si nouvelles transactions
+        if (appState.transactions.length > oldTxCount) {
+            showToast('Nouvelle transaction reçue !', 'success');
+        }
+    } catch (err) {
+        console.warn('Erreur rafraîchissement :', err);
+    }
+}
+
+// ✅ Écoute du retour sur l'onglet (visible)
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        console.log('👁️ Onglet redevenu visible');
+        refreshClientData();
+    }
+});
+
+// ✅ Écoute du focus de la fenêtre (au cas où)
+window.addEventListener('focus', () => {
+    console.log('🎯 Fenêtre focus');
+    refreshClientData();
+});
+
+// ============================================================
 // EXPOSITION GLOBALE (pour onclick dans le HTML)
 // ============================================================
 window.navigateTo = navigateTo;
@@ -1065,4 +1166,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     await loadClientFromFirestore();
+
+    // ✅ Marquer que l'app est prête pour le rafraîchissement auto
+    isAppReady = true;
 });
