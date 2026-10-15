@@ -28,7 +28,7 @@ const appState = {
 const SESSION_KEY = 'apppay_session_v2';
 
 // ============================================================
-// TRADUCTIONS (i18n)
+// TRADUCTIONS (i18n) - AVEC NOUVELLES CLÉS POUR L'HISTORIQUE
 // ============================================================
 const TRANSLATIONS = {
     fr: {
@@ -41,6 +41,12 @@ const TRANSLATIONS = {
         total_balance: "Solde total",
         transactions_label: "Transactions",
         currency_label: "Devise",
+        view_all: "Voir tout",
+        today: "Aujourd'hui",
+        yesterday: "Hier",
+        transfer_received: "Virement reçu",
+        transfer_sent: "Virement envoyé",
+        completed: "Réalisé",
         amount: "Montant du virement",
         beneficiary_name: "Nom du bénéficiaire",
         iban: "IBAN / Numéro de Compte",
@@ -112,6 +118,12 @@ const TRANSLATIONS = {
         total_balance: "Total balance",
         transactions_label: "Transactions",
         currency_label: "Currency",
+        view_all: "View all",
+        today: "Today",
+        yesterday: "Yesterday",
+        transfer_received: "Transfer received",
+        transfer_sent: "Transfer sent",
+        completed: "Completed",
         amount: "Transfer amount",
         beneficiary_name: "Beneficiary name",
         iban: "IBAN / Account number",
@@ -183,6 +195,12 @@ const TRANSLATIONS = {
         total_balance: "Saldo total",
         transactions_label: "Transacciones",
         currency_label: "Moneda",
+        view_all: "Ver todo",
+        today: "Hoy",
+        yesterday: "Ayer",
+        transfer_received: "Transferencia recibida",
+        transfer_sent: "Transferencia enviada",
+        completed: "Completado",
         amount: "Importe de la transferencia",
         beneficiary_name: "Nombre del beneficiario",
         iban: "IBAN / Número de cuenta",
@@ -254,6 +272,12 @@ const TRANSLATIONS = {
         total_balance: "Gesamtguthaben",
         transactions_label: "Transaktionen",
         currency_label: "Währung",
+        view_all: "Alle anzeigen",
+        today: "Heute",
+        yesterday: "Gestern",
+        transfer_received: "Überweisung erhalten",
+        transfer_sent: "Überweisung gesendet",
+        completed: "Abgeschlossen",
         amount: "Überweisungsbetrag",
         beneficiary_name: "Name des Begünstigten",
         iban: "IBAN / Kontonummer",
@@ -325,6 +349,12 @@ const TRANSLATIONS = {
         total_balance: "Całkowite saldo",
         transactions_label: "Transakcje",
         currency_label: "Waluta",
+        view_all: "Zobacz wszystko",
+        today: "Dzisiaj",
+        yesterday: "Wczoraj",
+        transfer_received: "Przelew otrzymany",
+        transfer_sent: "Przelew wysłany",
+        completed: "Zrealizowane",
         amount: "Kwota przelewu",
         beneficiary_name: "Nazwa odbiorcy",
         iban: "IBAN / Numer konta",
@@ -403,6 +433,10 @@ function applyLanguage() {
         const key = el.dataset.i18n;
         el.textContent = t(key);
     });
+
+    // ✅ Traduire aussi "Voir tout" et autres textes non marqués data-i18n
+    const viewAllEl = document.getElementById('history-view-all');
+    if (viewAllEl) viewAllEl.textContent = t('view_all');
 }
 
 // ---------- COULEUR DYNAMIQUE ----------
@@ -479,6 +513,35 @@ function showScreen(screenId) {
 }
 
 // ============================================================
+// ✅ GROUPEMENT DES TRANSACTIONS PAR DATE
+// ============================================================
+function getDateGroupLabel(dateStr, lang) {
+    if (!dateStr) return '';
+
+    // Format de date attendu : "15/10/2026 • 15:46" ou "15/10/2026"
+    const datePart = dateStr.split(' • ')[0].trim();
+
+    // Extraire jour/mois/année
+    const parts = datePart.split('/');
+    if (parts.length !== 3) return datePart;
+
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = parseInt(parts[2], 10);
+
+    const txDate = new Date(year, month, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    txDate.setHours(0, 0, 0, 0);
+
+    const diffDays = Math.floor((today - txDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return t('today');
+    if (diffDays === 1) return t('yesterday');
+    return datePart;
+}
+
+// ============================================================
 // SESSION (localStorage)
 // ============================================================
 function saveSession() {
@@ -489,7 +552,6 @@ function saveSession() {
             loggedIn: true,
             savedAt: Date.now()
         }));
-        console.log('✅ Session sauvegardée');
     } catch (e) {}
 }
 
@@ -511,7 +573,6 @@ function getSession() {
 function clearSession() {
     try {
         localStorage.removeItem(SESSION_KEY);
-        console.log('🗑️ Session effacée');
     } catch {}
 }
 
@@ -550,7 +611,6 @@ async function loadClientFromFirestore(options = {}) {
     const clientId = getClientIdFromURL();
 
     if (!clientId) {
-        console.warn('Aucun ID dans l\'URL');
         showScreen('invalid-screen');
         return null;
     }
@@ -730,14 +790,10 @@ function buildTransactionIcon(tx) {
         const urls = getBankLogoUrls(tx.bankDomain);
         const urlsJson = JSON.stringify(urls).replace(/"/g, '&quot;');
 
-        // Icône générique en cas d'échec total
-        const fallbackIcon = isDebit ? 'fa-arrow-trend-up' : 'fa-arrow-right-arrow-left';
-        const fallbackRotate = isDebit ? 'transform: rotate(90deg);' : '';
-
         return `
             <div class="tx-icon-bank" data-urls='${urlsJson}' data-idx="0">
                 <img src="${urls[0]}"
-                     alt="${tx.bankName || 'Banque'}"
+                     alt="${tx.bankName || 'Bank'}"
                      loading="lazy"
                      onerror="handleBankLogoError(this);">
             </div>
@@ -753,7 +809,7 @@ function buildTransactionIcon(tx) {
     `;
 }
 
-// ✅ Fonction globale appelée si le logo échoue → essaie l'URL suivante, puis fallback icône
+// ✅ Fonction globale appelée si le logo échoue
 window.handleBankLogoError = function (img) {
     const parent = img.parentNode;
     if (!parent) return;
@@ -764,7 +820,6 @@ window.handleBankLogoError = function (img) {
         idx++;
 
         if (idx < urls.length) {
-            // Essayer l'URL suivante
             parent.dataset.idx = idx;
             img.src = urls[idx];
             return;
@@ -773,13 +828,13 @@ window.handleBankLogoError = function (img) {
         console.warn('Erreur parsing URLs banque', e);
     }
 
-    // Plus d'URLs → afficher l'icône fallback
+    // Plus d'URLs → fallback icône
     parent.classList.add('fallback');
     parent.innerHTML = '<i class="fa-solid fa-building-columns"></i>';
 };
 
 // ============================================================
-// VUE : DASHBOARD
+// VUE : DASHBOARD (avec groupement par date)
 // ============================================================
 function renderDashboard() {
     document.getElementById('balance-display').textContent = formatMoney(appState.balance);
@@ -797,6 +852,10 @@ function renderDashboard() {
     if (statTx) statTx.textContent = (appState.transactions || []).length;
     if (statCurr) statCurr.textContent = appState.currency;
 
+    // Badge compteur dans l'en-tête de l'historique
+    const historyCount = document.getElementById('history-count');
+    if (historyCount) historyCount.textContent = (appState.transactions || []).length;
+
     // Bouton "Voir mon IBAN"
     const btnIban = document.getElementById('btn-show-iban');
     if (btnIban) {
@@ -804,12 +863,12 @@ function renderDashboard() {
             const id = appState.client?.id || '--';
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(id).then(() => {
-                    showToast('ID copié : ' + id, 'success');
+                    showToast('ID: ' + id, 'success');
                 }).catch(() => {
-                    showToast('ID : ' + id, 'info');
+                    showToast('ID: ' + id, 'info');
                 });
             } else {
-                showToast('ID : ' + id, 'info');
+                showToast('ID: ' + id, 'info');
             }
         });
     }
@@ -837,23 +896,56 @@ function renderDashboard() {
         return;
     }
 
+    // ✅ Grouper les transactions par date
+    const grouped = {};
     appState.transactions.forEach(tx => {
-        const isDebit = tx.amount < 0;
-        const item = document.createElement('div');
-        item.className = 'transaction-item';
-        item.innerHTML = `
-            <div class="transaction-left">
-                ${buildTransactionIcon(tx)}
-                <div class="tx-details">
-                    <h4>${tx.title || 'Virement'}</h4>
-                    <p>${tx.date || ''}${tx.bankName && tx.bankName !== tx.title ? ' • ' + tx.bankName : ''}</p>
+        const datePart = (tx.date || '').split(' • ')[0].trim() || '—';
+        if (!grouped[datePart]) grouped[datePart] = [];
+        grouped[datePart].push(tx);
+    });
+
+    // Rendre chaque groupe
+    Object.entries(grouped).forEach(([datePart, txs]) => {
+        // Séparateur de date
+        const separator = document.createElement('div');
+        separator.className = 'history-date-separator';
+        separator.textContent = getDateGroupLabel(datePart + ' • 00:00', appState.lang);
+        txList.appendChild(separator);
+
+        // Transactions du groupe
+        txs.forEach(tx => {
+            const isDebit = tx.amount < 0;
+
+            // Extraire l'heure (format "15/10/2026 • 15:46")
+            const timePart = (tx.date || '').split(' • ')[1] || '';
+
+            // Déterminer si c'est un virement reçu ou envoyé
+            const txLabel = isDebit ? t('transfer_sent') : t('transfer_received');
+
+            // Le titre affiché = libellé (Virement reçu/envoyé) puis bénéficiaire ou banque
+            const displayTitle = txLabel;
+            const displaySubtitle = tx.bankName || tx.title || '';
+
+            const item = document.createElement('div');
+            item.className = 'transaction-item ' + (isDebit ? 'is-debit' : 'is-credit');
+            item.innerHTML = `
+                <div class="transaction-left">
+                    ${buildTransactionIcon(tx)}
+                    <div class="tx-details">
+                        <h4>${displayTitle}</h4>
+                        <p>${displaySubtitle}</p>
+                        <span class="tx-time">${timePart}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="tx-amount ${isDebit ? 'red' : 'green'}">
-                ${isDebit ? '-' : '+'} ${formatMoney(Math.abs(tx.amount))}
-            </div>
-        `;
-        txList.appendChild(item);
+                <div class="tx-right">
+                    <div class="tx-amount ${isDebit ? 'red' : 'green'}">
+                        ${isDebit ? '−' : '+'}${formatMoney(Math.abs(tx.amount))}
+                    </div>
+                    <div class="tx-status ${isDebit ? 'red' : 'green'}">${t('completed')}</div>
+                </div>
+            `;
+            txList.appendChild(item);
+        });
     });
 }
 
@@ -978,7 +1070,7 @@ async function finalizeTransfer() {
 
     appState.transactions.unshift({
         type: 'debit',
-        title: 'Virement envoyé à ' + tr.beneficiary,
+        title: tr.beneficiary,
         date: dateStr,
         amount: -tr.amount
     });
@@ -991,10 +1083,8 @@ async function finalizeTransfer() {
             balance: appState.balance,
             transactions: appState.transactions
         });
-        console.log('✅ Virement sauvegardé');
     } catch (err) {
         console.error('Erreur sauvegarde virement :', err);
-        showToast('Erreur de synchronisation', 'error');
     }
 
     navigateTo('success', {
@@ -1118,7 +1208,6 @@ async function refreshClientData() {
             return;
         }
 
-        const oldBalance = appState.balance;
         const oldTxCount = appState.transactions.length;
 
         appState.client = client;
@@ -1132,9 +1221,8 @@ async function refreshClientData() {
         const activeView = document.querySelector('#nav-links li.active');
         const viewName = activeView ? activeView.dataset.view : 'dashboard';
 
-        console.log(`💰 Solde : ${oldBalance} → ${appState.balance}`);
-        console.log(`📜 Transactions : ${oldTxCount} → ${appState.transactions.length}`);
-
+        // Réappliquer la langue avant de redessiner
+        applyLanguage();
         navigateTo(viewName);
 
         if (appState.transactions.length > oldTxCount) {
@@ -1147,13 +1235,11 @@ async function refreshClientData() {
 
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-        console.log('👁️ Onglet redevenu visible');
         refreshClientData();
     }
 });
 
 window.addEventListener('focus', () => {
-    console.log('🎯 Fenêtre focus');
     refreshClientData();
 });
 
