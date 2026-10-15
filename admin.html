@@ -235,7 +235,7 @@
                     <option value="Zimbabwe" data-flag="🇿🇼">🇿🇼 Zimbabwe</option>
                 </select>
             </div>
-           
+            
         <div class="form-group">
             <label>Adresse de résidence <span class="optional">. facultatif</span></label>
             <input type="text" id="c-address" placeholder="Adresse complète">
@@ -464,6 +464,491 @@
             <i class="fa-solid fa-circle-check"></i> Créer le compte et générer le lien
         </button>
     </form>
+</section>
+
+<!-- ============================================= -->
+<!-- NOUVELLE SECTION : MODIFIER UN CLIENT EXISTANT -->
+<!-- ============================================= -->
+<section class="form-section modify-section">
+    <div class="section-badge">
+        <i class="fa-solid fa-pen-to-square"></i>
+        Modifier un client existant
+    </div>
+
+    <div class="form-group">
+        <label>Sélectionner un client <span class="required">. requis</span></label>
+        <select id="m-select-client">
+            <option value="">-- Choisir un client --</option>
+        </select>
+        <small>Sélectionnez le client dont vous souhaitez modifier les informations.</small>
+    </div>
+
+    <div id="modify-fields" class="hidden">
+        <h3 class="section-title">Informations personnelles :</h3>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nom</label>
+                <input type="text" id="m-lastname" placeholder="Nom de famille">
+            </div>
+            <div class="form-group">
+                <label>Prénom(s)</label>
+                <input type="text" id="m-firstname" placeholder="Prénom(s)">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Pays de résidence</label>
+            <select id="m-country">
+                <option value="">-- Sélectionner un pays --</option>
+                <option value="Afghanistan" data-flag="🇦🇫">🇦🇫 Afghanistan</option>
+                <option value="Afrique du Sud" data-flag="🇿🇦">🇿🇦 Afrique du Sud</option>
+                <option value="Albanie" data-flag="🇦🇱">🇦🇱 Albanie</option>
+                <option value="Algérie" data-flag="🇩🇿">🇩🇿 Algérie</option>
+                <option value="Allemagne" data-flag="🇩🇪">🇩🇪 Allemagne</option>
+                <option value="Andorre" data-flag="🇦🇩">🇦🇩 Andorre</option>
+                <option value="Angola" data-flag="🇦🇴">🇦🇴 Angola</option>
+                <option value="Arabie Saoudite" data-flag="🇸🇦">🇸🇦 Arabie Saoudite</option>
+                <option value="Argentine" data-flag="🇦🇷">🇦🇷 Argentine</option>
+                <option value="Arménie" data-flag="🇦🇲">🇦🇲 Arménie</option>
+                <option value="Australie" data-flag="🇦🇺">🇦🇺 Australie</option>
+                <option value="Autriche" data-flag="🇦🇹">🇦🇹 Autriche</option>
+                <option value="Azerbaïdjan" data-flag="🇦🇿">🇦🇿 Azerbaïdjan</option>
+                <option value="Bahamas" data-flag="🇧🇸">🇧🇸 Bahamas</option>
+                <option value="Bahreïn" data-flag="🇧🇭">🇧🇭 Bahreïn</option>
+                <option value="Bangladesh" data-flag="🇧🇩">🇧🇩 Bangladesh</option>
+                <option value="Barbade" data-flag="🇧🇧">🇧🇧 Barbade</option>
+                <option value="Belgique" data-flag="🇧🇪">🇧🇪 Belgique</option>
+                <option value="Belize" data-flag="🇧🇿">🇧🇿 Belize</option>
+                <option value="Bénin" data-flag="🇧🇯">🇧🇯 Bénin</option>
+                <option value="Bhoutan" data-flag="🇧🇹">🇧🇹 Bhoutan</option>
+                <option value="Biélorussie" data-flag="🇧🇾">🇧🇾 Biélorussie</option>
+                <option value="Birmanie" data-flag="🇲🇲">🇲🇲 Birmanie</option>
+                <option value="Bolivie" data-flag="🇧🇴">🇧🇴 Bolivie</option>
+                <option value="Bosnie-Herzégovine" data-flag="🇧🇦">🇧🇦 Bosnie-Herzégovine</option>
+                <option value="Botswana" data-flag="🇧🇼">🇧🇼 Botswana</option>
+                <option value="Brésil" data-flag="🇧🇷">🇧🇷 Brésil</option>
+                <option value="Brunei" data-flag="🇧🇳">🇧🇳 Brunei</option>
+                <option value="Bulgarie" data-flag="🇧🇬">🇧🇬 Bulgarie</option>
+                <option value="Burkina Faso" data-flag="🇧🇫">🇧🇫 Burkina Faso</option>
+                <option value="Burundi" data-flag="🇧🇮">🇧🇮 Burundi</option>
+                <option value="Cambodge" data-flag="🇰🇭">🇰🇭 Cambodge</option>
+                <option value="Cameroun" data-flag="🇨🇲">🇨🇲 Cameroun</option>
+                <option value="Canada" data-flag="🇨🇦">🇨🇦 Canada</option>
+                <option value="Cap-Vert" data-flag="🇨🇻">🇨🇻 Cap-Vert</option>
+                <option value="Chili" data-flag="🇨🇱">🇨🇱 Chili</option>
+                <option value="Chine" data-flag="🇨🇳">🇨🇳 Chine</option>
+                <option value="Chypre" data-flag="🇨🇾">🇨🇾 Chypre</option>
+                <option value="Colombie" data-flag="🇨🇴">🇨🇴 Colombie</option>
+                <option value="Comores" data-flag="🇰🇲">🇰🇲 Comores</option>
+                <option value="Congo" data-flag="🇨🇬">🇨🇬 Congo</option>
+                <option value="Corée du Nord" data-flag="🇰🇵">🇰🇵 Corée du Nord</option>
+                <option value="Corée du Sud" data-flag="🇰🇷">🇰🇷 Corée du Sud</option>
+                <option value="Costa Rica" data-flag="🇨🇷">🇨🇷 Costa Rica</option>
+                <option value="Côte d'Ivoire" data-flag="🇨🇮">🇨🇮 Côte d'Ivoire</option>
+                <option value="Croatie" data-flag="🇭🇷">🇭🇷 Croatie</option>
+                <option value="Cuba" data-flag="🇨🇺">🇨🇺 Cuba</option>
+                <option value="Danemark" data-flag="🇩🇰">🇩🇰 Danemark</option>
+                <option value="Djibouti" data-flag="🇩🇯">🇩🇯 Djibouti</option>
+                <option value="Égypte" data-flag="🇪🇬">🇪🇬 Égypte</option>
+                <option value="Émirats Arabes Unis" data-flag="🇦🇪">🇦🇪 Émirats Arabes Unis</option>
+                <option value="Équateur" data-flag="🇪🇨">🇪🇨 Équateur</option>
+                <option value="Érythrée" data-flag="🇪🇷">🇪🇷 Érythrée</option>
+                <option value="Espagne" data-flag="🇪🇸">🇪🇸 Espagne</option>
+                <option value="Estonie" data-flag="🇪🇪">🇪🇪 Estonie</option>
+                <option value="Eswatini" data-flag="🇸🇿">🇸🇿 Eswatini</option>
+                <option value="États-Unis" data-flag="🇺🇸">🇺🇸 États-Unis</option>
+                <option value="Éthiopie" data-flag="🇪🇹">🇪🇹 Éthiopie</option>
+                <option value="Fidji" data-flag="🇫🇯">🇫🇯 Fidji</option>
+                <option value="Finlande" data-flag="🇫🇮">🇫🇮 Finlande</option>
+                <option value="France" data-flag="🇫🇷">🇫🇷 France</option>
+                <option value="Gabon" data-flag="🇬🇦">🇬🇦 Gabon</option>
+                <option value="Gambie" data-flag="🇬🇲">🇬🇲 Gambie</option>
+                <option value="Géorgie" data-flag="🇬🇪">🇬🇪 Géorgie</option>
+                <option value="Ghana" data-flag="🇬🇭">🇬🇭 Ghana</option>
+                <option value="Grèce" data-flag="🇬🇷">🇬🇷 Grèce</option>
+                <option value="Guatemala" data-flag="🇬🇹">🇬🇹 Guatemala</option>
+                <option value="Guinée" data-flag="🇬🇳">🇬🇳 Guinée</option>
+                <option value="Guinée-Bissau" data-flag="🇬🇼">🇬🇼 Guinée-Bissau</option>
+                <option value="Guinée équatoriale" data-flag="🇬🇶">🇬🇶 Guinée équatoriale</option>
+                <option value="Guyana" data-flag="🇬🇾">🇬🇾 Guyana</option>
+                <option value="Haïti" data-flag="🇭🇹">🇭🇹 Haïti</option>
+                <option value="Honduras" data-flag="🇭🇳">🇭🇳 Honduras</option>
+                <option value="Hongrie" data-flag="🇭🇺">🇭🇺 Hongrie</option>
+                <option value="Inde" data-flag="🇮🇳">🇮🇳 Inde</option>
+                <option value="Indonésie" data-flag="🇮🇩">🇮🇩 Indonésie</option>
+                <option value="Irak" data-flag="🇮🇶">🇮🇶 Irak</option>
+                <option value="Iran" data-flag="🇮🇷">🇮🇷 Iran</option>
+                <option value="Irlande" data-flag="🇮🇪">🇮🇪 Irlande</option>
+                <option value="Islande" data-flag="🇮🇸">🇮🇸 Islande</option>
+                <option value="Israël" data-flag="🇮🇱">🇮🇱 Israël</option>
+                <option value="Italie" data-flag="🇮🇹">🇮🇹 Italie</option>
+                <option value="Jamaïque" data-flag="🇯🇲">🇯🇲 Jamaïque</option>
+                <option value="Japon" data-flag="🇯🇵">🇯🇵 Japon</option>
+                <option value="Jordanie" data-flag="🇯🇴">🇯🇴 Jordanie</option>
+                <option value="Kazakhstan" data-flag="🇰🇿">🇰🇿 Kazakhstan</option>
+                <option value="Kenya" data-flag="🇰🇪">🇰🇪 Kenya</option>
+                <option value="Kirghizistan" data-flag="🇰🇬">🇰🇬 Kirghizistan</option>
+                <option value="Kiribati" data-flag="🇰🇮">🇰🇮 Kiribati</option>
+                <option value="Koweït" data-flag="🇰🇼">🇰🇼 Koweït</option>
+                <option value="Laos" data-flag="🇱🇦">🇱🇦 Laos</option>
+                <option value="Lesotho" data-flag="🇱🇸">🇱🇸 Lesotho</option>
+                <option value="Lettonie" data-flag="🇱🇻">🇱🇻 Lettonie</option>
+                <option value="Liban" data-flag="🇱🇧">🇱🇧 Liban</option>
+                <option value="Libéria" data-flag="🇱🇷">🇱🇷 Libéria</option>
+                <option value="Libye" data-flag="🇱🇾">🇱🇾 Libye</option>
+                <option value="Liechtenstein" data-flag="🇱🇮">🇱🇮 Liechtenstein</option>
+                <option value="Lituanie" data-flag="🇱🇹">🇱🇹 Lituanie</option>
+                <option value="Luxembourg" data-flag="🇱🇺">🇱🇺 Luxembourg</option>
+                <option value="Macédoine du Nord" data-flag="🇲🇰">🇲🇰 Macédoine du Nord</option>
+                <option value="Madagascar" data-flag="🇲🇬">🇲🇬 Madagascar</option>
+                <option value="Malaisie" data-flag="🇲🇾">🇲🇾 Malaisie</option>
+                <option value="Malawi" data-flag="🇲🇼">🇲🇼 Malawi</option>
+                <option value="Maldives" data-flag="🇲🇻">🇲🇻 Maldives</option>
+                <option value="Mali" data-flag="🇲🇱">🇲🇱 Mali</option>
+                <option value="Malte" data-flag="🇲🇹">🇲🇹 Malte</option>
+                <option value="Maroc" data-flag="🇲🇦">🇲🇦 Maroc</option>
+                <option value="Maurice" data-flag="🇲🇺">🇲🇺 Maurice</option>
+                <option value="Mauritanie" data-flag="🇲🇷">🇲🇷 Mauritanie</option>
+                <option value="Mexique" data-flag="🇲🇽">🇲🇽 Mexique</option>
+                <option value="Moldavie" data-flag="🇲🇩">🇲🇩 Moldavie</option>
+                <option value="Monaco" data-flag="🇲🇨">🇲🇨 Monaco</option>
+                <option value="Mongolie" data-flag="🇲🇳">🇲🇳 Mongolie</option>
+                <option value="Monténégro" data-flag="🇲🇪">🇲🇪 Monténégro</option>
+                <option value="Mozambique" data-flag="🇲🇿">🇲🇿 Mozambique</option>
+                <option value="Namibie" data-flag="🇳🇦">🇳🇦 Namibie</option>
+                <option value="Népal" data-flag="🇳🇵">🇳🇵 Népal</option>
+                <option value="Nicaragua" data-flag="🇳🇮">🇳🇮 Nicaragua</option>
+                <option value="Niger" data-flag="🇳🇪">🇳🇪 Niger</option>
+                <option value="Nigéria" data-flag="🇳🇬">🇳🇬 Nigéria</option>
+                <option value="Norvège" data-flag="🇳🇴">🇳🇴 Norvège</option>
+                <option value="Nouvelle-Zélande" data-flag="🇳🇿">🇳🇿 Nouvelle-Zélande</option>
+                <option value="Oman" data-flag="🇴🇲">🇴🇲 Oman</option>
+                <option value="Ouganda" data-flag="🇺🇬">🇺🇬 Ouganda</option>
+                <option value="Ouzbékistan" data-flag="🇺🇿">🇺🇿 Ouzbékistan</option>
+                <option value="Pakistan" data-flag="🇵🇰">🇵🇰 Pakistan</option>
+                <option value="Palaos" data-flag="🇵🇼">🇵🇼 Palaos</option>
+                <option value="Palestine" data-flag="🇵🇸">🇵🇸 Palestine</option>
+                <option value="Panama" data-flag="🇵🇦">🇵🇦 Panama</option>
+                <option value="Papouasie-Nouvelle-Guinée" data-flag="🇵🇬">🇵🇬 Papouasie-Nouvelle-Guinée</option>
+                <option value="Paraguay" data-flag="🇵🇾">🇵🇾 Paraguay</option>
+                <option value="Pays-Bas" data-flag="🇳🇱">🇳🇱 Pays-Bas</option>
+                <option value="Pérou" data-flag="🇵🇪">🇵🇪 Pérou</option>
+                <option value="Philippines" data-flag="🇵🇭">🇵🇭 Philippines</option>
+                <option value="Pologne" data-flag="🇵🇱">🇵🇱 Pologne</option>
+                <option value="Portugal" data-flag="🇵🇹">🇵🇹 Portugal</option>
+                <option value="Qatar" data-flag="🇶🇦">🇶🇦 Qatar</option>
+                <option value="République Centrafricaine" data-flag="🇨🇫">🇨🇫 République Centrafricaine</option>
+                <option value="République Démocratique du Congo" data-flag="🇨🇩">🇨🇩 République Démocratique du Congo</option>
+                <option value="République Dominicaine" data-flag="🇩🇴">🇩🇴 République Dominicaine</option>
+                <option value="République Tchèque" data-flag="🇨🇿">🇨🇿 République Tchèque</option>
+                <option value="Roumanie" data-flag="🇷🇴">🇷🇴 Roumanie</option>
+                <option value="Royaume-Uni" data-flag="🇬🇧">🇬🇧 Royaume-Uni</option>
+                <option value="Russie" data-flag="🇷🇺">🇷🇺 Russie</option>
+                <option value="Rwanda" data-flag="🇷🇼">🇷🇼 Rwanda</option>
+                <option value="Saint-Marin" data-flag="🇸🇲">🇸🇲 Saint-Marin</option>
+                <option value="Sainte-Lucie" data-flag="🇱🇨">🇱🇨 Sainte-Lucie</option>
+                <option value="Salvador" data-flag="🇸🇻">🇸🇻 Salvador</option>
+                <option value="Samoa" data-flag="🇼🇸">🇼🇸 Samoa</option>
+                <option value="Sao Tomé-et-Principe" data-flag="🇸🇹">🇸🇹 Sao Tomé-et-Principe</option>
+                <option value="Sénégal" data-flag="🇸🇳">🇸🇳 Sénégal</option>
+                <option value="Serbie" data-flag="🇷🇸">🇷🇸 Serbie</option>
+                <option value="Seychelles" data-flag="🇸🇨">🇸🇨 Seychelles</option>
+                <option value="Sierra Leone" data-flag="🇸🇱">🇸🇱 Sierra Leone</option>
+                <option value="Singapour" data-flag="🇸🇬">🇸🇬 Singapour</option>
+                <option value="Slovaquie" data-flag="🇸🇰">🇸🇰 Slovaquie</option>
+                <option value="Slovénie" data-flag="🇸🇮">🇸🇮 Slovénie</option>
+                <option value="Somalie" data-flag="🇸🇴">🇸🇴 Somalie</option>
+                <option value="Soudan" data-flag="🇸🇩">🇸🇩 Soudan</option>
+                <option value="Soudan du Sud" data-flag="🇸🇸">🇸🇸 Soudan du Sud</option>
+                <option value="Sri Lanka" data-flag="🇱🇰">🇱🇰 Sri Lanka</option>
+                <option value="Suède" data-flag="🇸🇪">🇸🇪 Suède</option>
+                <option value="Suisse" data-flag="🇨🇭">🇨🇭 Suisse</option>
+                <option value="Suriname" data-flag="🇸🇷">🇸🇷 Suriname</option>
+                <option value="Syrie" data-flag="🇸🇾">🇸🇾 Syrie</option>
+                <option value="Tadjikistan" data-flag="🇹🇯">🇹🇯 Tadjikistan</option>
+                <option value="Tanzanie" data-flag="🇹🇿">🇹🇿 Tanzanie</option>
+                <option value="Tchad" data-flag="🇹🇩">🇹🇩 Tchad</option>
+                <option value="Thaïlande" data-flag="🇹🇭">🇹🇭 Thaïlande</option>
+                <option value="Timor oriental" data-flag="🇹🇱">🇹🇱 Timor oriental</option>
+                <option value="Togo" data-flag="🇹🇬">🇹🇬 Togo</option>
+                <option value="Tonga" data-flag="🇹🇴">🇹🇴 Tonga</option>
+                <option value="Trinité-et-Tobago" data-flag="🇹🇹">🇹🇹 Trinité-et-Tobago</option>
+                <option value="Tunisie" data-flag="🇹🇳">🇹🇳 Tunisie</option>
+                <option value="Turkménistan" data-flag="🇹🇲">🇹🇲 Turkménistan</option>
+                <option value="Turquie" data-flag="🇹🇷">🇹🇷 Turquie</option>
+                <option value="Tuvalu" data-flag="🇹🇻">🇹🇻 Tuvalu</option>
+                <option value="Ukraine" data-flag="🇺🇦">🇺🇦 Ukraine</option>
+                <option value="Uruguay" data-flag="🇺🇾">🇺🇾 Uruguay</option>
+                <option value="Vanuatu" data-flag="🇻🇺">🇻🇺 Vanuatu</option>
+                <option value="Vatican" data-flag="🇻🇦">🇻🇦 Vatican</option>
+                <option value="Venezuela" data-flag="🇻🇪">🇻🇪 Venezuela</option>
+                <option value="Vietnam" data-flag="🇻🇳">🇻🇳 Vietnam</option>
+                <option value="Yémen" data-flag="🇾🇪">🇾🇪 Yémen</option>
+                <option value="Zambie" data-flag="🇿🇲">🇿🇲 Zambie</option>
+                <option value="Zimbabwe" data-flag="🇿🇼">🇿🇼 Zimbabwe</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Adresse de résidence</label>
+            <input type="text" id="m-address" placeholder="Adresse complète">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Adresse e-mail</label>
+                <input type="email" id="m-email" placeholder="client@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>Numéro de téléphone</label>
+                <input type="tel" id="m-phone" placeholder="+229 01 23 45 67 89">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Langue d'affichage</label>
+            <select id="m-language">
+                <option value="fr">🇫🇷 Français</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="pt">🇵🇹 Português</option>
+                <option value="pl">🇵🇱 Polski</option>
+                <option value="nl">🇳🇱 Nederlands</option>
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="ar">🇸🇦 العربية</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="hi">🇮🇳 हिन्दी</option>
+                <option value="tr">🇹🇷 Türkçe</option>
+                <option value="sv">🇸🇪 Svenska</option>
+                <option value="no">🇳🇴 Norsk</option>
+                <option value="da">🇩🇰 Dansk</option>
+                <option value="fi">🇫🇮 Suomi</option>
+                <option value="el">🇬🇷 Ελληνικά</option>
+                <option value="cs">🇨🇿 Čeština</option>
+                <option value="ro">🇷🇴 Română</option>
+                <option value="hu">🇭🇺 Magyar</option>
+                <option value="uk">🇺🇦 Українська</option>
+                <option value="he">🇮🇱 עברית</option>
+                <option value="th">🇹🇭 ไทย</option>
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="id">🇮🇩 Bahasa Indonesia</option>
+                <option value="ms">🇲🇾 Bahasa Melayu</option>
+                <option value="sw">🇰🇪 Kiswahili</option>
+                <option value="ha">🇳🇬 Hausa</option>
+                <option value="yo">🇳🇬 Yorùbá</option>
+                <option value="am">🇪🇹 አማርኛ</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Solde actuel</label>
+                <input type="number" id="m-balance" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label>Devise</label>
+                <select id="m-currency">
+                    <option value="zł">zł - Zloty polonais</option>
+                    <option value="€">€ - Euro</option>
+                    <option value="$">$ - Dollar américain</option>
+                    <option value="£">£ - Livre sterling</option>
+                    <option value="CHF">CHF - Franc suisse</option>
+                    <option value="¥">¥ - Yen japonais</option>
+                    <option value="CNY">CNY - Yuan chinois</option>
+                    <option value="CAD">CAD - Dollar canadien</option>
+                    <option value="AUD">AUD - Dollar australien</option>
+                    <option value="FCFA">FCFA - Franc CFA (UEMOA)</option>
+                    <option value="XAF">XAF - Franc CFA (CEMAC)</option>
+                    <option value="NGN">₦ - Naira nigérian</option>
+                    <option value="GHS">₵ - Cedi ghanéen</option>
+                    <option value="KES">KSh - Shilling kényan</option>
+                    <option value="ZAR">R - Rand sud-africain</option>
+                    <option value="MAD">MAD - Dirham marocain</option>
+                    <option value="DZD">DZD - Dinar algérien</option>
+                    <option value="TND">TND - Dinar tunisien</option>
+                    <option value="EGP">E£ - Livre égyptienne</option>
+                    <option value="ETB">ETB - Birr éthiopien</option>
+                    <option value="UGX">UGX - Shilling ougandais</option>
+                    <option value="TZS">TZS - Shilling tanzanien</option>
+                    <option value="RWF">RWF - Franc rwandais</option>
+                    <option value="CDF">CDF - Franc congolais</option>
+                    <option value="GNF">GNF - Franc guinéen</option>
+                    <option value="MGA">MGA - Ariary malgache</option>
+                    <option value="MUR">MUR - Roupie mauricienne</option>
+                    <option value="XOF">XOF - Franc CFA BCEAO</option>
+                    <option value="MXN">MXN - Peso mexicain</option>
+                    <option value="BRL">R$ - Réal brésilien</option>
+                    <option value="ARS">ARS - Peso argentin</option>
+                    <option value="CLP">CLP - Peso chilien</option>
+                    <option value="COP">COP - Peso colombien</option>
+                    <option value="PEN">S/ - Sol péruvien</option>
+                    <option value="UYU">UYU - Peso uruguayen</option>
+                    <option value="BOB">BOB - Boliviano</option>
+                    <option value="PYG">PYG - Guarani paraguayen</option>
+                    <option value="VES">VES - Bolivar vénézuélien</option>
+                    <option value="DOP">DOP - Peso dominicain</option>
+                    <option value="HTG">HTG - Gourde haïtienne</option>
+                    <option value="JMD">JMD - Dollar jamaïcain</option>
+                    <option value="TTD">TTD - Dollar de Trinité</option>
+                    <option value="₹">₹ - Roupie indienne</option>
+                    <option value="PKR">₨ - Roupie pakistanaise</option>
+                    <option value="BDT">৳ - Taka bangladais</option>
+                    <option value="LKR">Rs - Roupie srilankaise</option>
+                    <option value="NPR">Rs - Roupie népalaise</option>
+                    <option value="IDR">Rp - Roupie indonésienne</option>
+                    <option value="MYR">RM - Ringgit malaisien</option>
+                    <option value="SGD">S$ - Dollar singapourien</option>
+                    <option value="THB">฿ - Baht thaïlandais</option>
+                    <option value="VND">₫ - Dong vietnamien</option>
+                    <option value="PHP">₱ - Peso philippin</option>
+                    <option value="KRW">₩ - Won sud-coréen</option>
+                    <option value="HKD">HK$ - Dollar de Hong Kong</option>
+                    <option value="TWD">NT$ - Dollar taïwanais</option>
+                    <option value="AED">د.إ - Dirham des Émirats</option>
+                    <option value="SAR">﷼ - Riyal saoudien</option>
+                    <option value="QAR">﷼ - Riyal qatari</option>
+                    <option value="KWD">KD - Dinar koweïtien</option>
+                    <option value="BHD">BD - Dinar bahreïni</option>
+                    <option value="OMR">﷼ - Rial omanais</option>
+                    <option value="JOD">JD - Dinar jordanien</option>
+                    <option value="LBP">ل.ل - Livre libanaise</option>
+                    <option value="ILS">₪ - Shekel israélien</option>
+                    <option value="IRR">﷼ - Rial iranien</option>
+                    <option value="IQD">ع.د - Dinar irakien</option>
+                    <option value="SEK">kr - Couronne suédoise</option>
+                    <option value="NOK">kr - Couronne norvégienne</option>
+                    <option value="DKK">kr - Couronne danoise</option>
+                    <option value="ISK">kr - Couronne islandaise</option>
+                    <option value="CZK">Kč - Couronne tchèque</option>
+                    <option value="HUF">Ft - Forint hongrois</option>
+                    <option value="RON">lei - Leu roumain</option>
+                    <option value="BGN">лв - Lev bulgare</option>
+                    <option value="HRK">kn - Kuna croate</option>
+                    <option value="RSD">дин - Dinar serbe</option>
+                    <option value="RUB">₽ - Rouble russe</option>
+                    <option value="UAH">₴ - Hryvnia ukrainienne</option>
+                    <option value="TRY">₺ - Livre turque</option>
+                    <option value="GEL">₾ - Lari géorgien</option>
+                    <option value="NZD">NZ$ - Dollar néo-zélandais</option>
+                    <option value="FJD">FJ$ - Dollar fidjien</option>
+                    <option value="PGK">K - Kina papouane</option>
+                    <option value="BTC">₿ - Bitcoin</option>
+                    <option value="ETH">Ξ - Ethereum</option>
+                    <option value="USDT">₮ - Tether</option>
+                </select>
+            </div>
+        </div>
+
+        <h3 class="section-title">Sécurité :</h3>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Code PIN de connexion</label>
+                <input type="text" id="m-pin" minlength="4" maxlength="8" pattern="[0-9]+" placeholder="4 à 8 chiffres">
+            </div>
+            <div class="form-group">
+                <label>Code d'activation virement</label>
+                <input type="text" id="m-activation" minlength="4" maxlength="20" placeholder="Ex: ACT-8899">
+            </div>
+        </div>
+
+        <h3 class="section-title">Paramètres du virement :</h3>
+
+        <div class="form-group">
+            <label>Pourcentage appliqué</label>
+            <div class="percentage-row">
+                <span class="percentage-label">Si inférieur ou égal à</span>
+                <input type="number" id="m-percent-value" min="0" max="100" value="100">
+                <span class="percentage-label">%</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Message affiché après le virement</label>
+            <textarea id="m-message" rows="3" placeholder="Message personnalisé..."></textarea>
+        </div>
+
+        <h3 class="section-title">Couleur du thème :</h3>
+
+        <div class="form-group">
+            <label>Couleur principale</label>
+            <div class="color-picker" id="m-color-picker">
+                <div class="color-option" data-color="#ff7a00" style="background-color:#ff7a00;" title="Orange"></div>
+                <div class="color-option" data-color="#1a73e8" style="background-color:#1a73e8;" title="Bleu"></div>
+                <div class="color-option" data-color="#00c853" style="background-color:#00c853;" title="Vert"></div>
+                <div class="color-option" data-color="#e02424" style="background-color:#e02424;" title="Rouge"></div>
+                <div class="color-option" data-color="#8e24aa" style="background-color:#8e24aa;" title="Violet"></div>
+                <div class="color-option" data-color="#00838f" style="background-color:#00838f;" title="Cyan foncé"></div>
+                <div class="color-option" data-color="#f9a825" style="background-color:#f9a825;" title="Jaune doré"></div>
+                <div class="color-option" data-color="#37474f" style="background-color:#37474f;" title="Gris ardoise"></div>
+                <div class="color-option" data-color="#d81b60" style="background-color:#d81b60;" title="Rose foncé"></div>
+                <div class="color-option" data-color="#43a047" style="background-color:#43a047;" title="Vert émeraude"></div>
+            </div>
+            <input type="hidden" id="m-color" value="#ff7a00">
+        </div>
+
+        <h3 class="section-title">Accès du client :</h3>
+
+        <div class="form-group">
+            <label>Statut du compte</label>
+            <div class="access-buttons">
+                <button type="button" class="btn-access btn-block" id="btn-block-access">
+                    <i class="fa-solid fa-ban"></i> Bloquer l'accès
+                </button>
+                <button type="button" class="btn-access btn-unblock" id="btn-unblock-access">
+                    <i class="fa-solid fa-unlock"></i> Débloquer l'accès
+                </button>
+            </div>
+            <small id="access-status-info" style="margin-top:8px;">Statut actuel : <strong>Actif</strong></small>
+        </div>
+
+        <h3 class="section-title">Ajouter un virement au compte client :</h3>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Montant du virement</label>
+                <div class="input-with-addon">
+                    <input type="number" id="m-tx-amount" step="0.01" placeholder="0.00">
+                    <div class="input-addon" id="m-tx-currency-display">zł</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Type d'opération</label>
+                <select id="m-tx-type">
+                    <option value="credit">Crédit (+) - Ajouter au solde</option>
+                    <option value="debit">Débit (-) - Retirer du solde</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Libellé du virement</label>
+            <input type="text" id="m-tx-label" placeholder="Ex: Virement reçu de Mbank">
+        </div>
+
+        <div class="form-group">
+            <label>Date et heure</label>
+            <input type="text" id="m-tx-date" placeholder="Ex: 23/09/2026 • 01:24">
+        </div>
+
+        <button type="button" class="btn-access btn-add-tx" id="btn-add-transaction">
+            <i class="fa-solid fa-plus"></i> Ajouter ce virement au compte
+        </button>
+
+        <h3 class="section-title" style="margin-top:25px;">Historique des virements du client :</h3>
+        <div id="m-tx-list" class="m-tx-list">
+            <p class="empty-state">Aucun virement pour le moment.</p>
+        </div>
+
+        <button type="button" class="btn-save-changes" id="btn-save-changes">
+            <i class="fa-solid fa-floppy-disk"></i> Enregistrer toutes les modifications
+        </button>
+    </div>
 </section>
 
     <!-- LISTE DES CLIENTS CRÉÉS -->
