@@ -13,14 +13,13 @@ import {
 
 // ---------- ÉTAT GLOBAL ----------
 const appState = {
-    client: null,          // Client chargé depuis Firestore
-    clientId: null,        // ID du client (?id=...)
+    client: null,
+    clientId: null,
     balance: 0,
     currency: 'zł',
     transactions: [],
     pendingTransfer: null,
-    lang: 'fr',
-    i18n: {}               // Traductions chargées
+    lang: 'fr'
 };
 
 // ============================================================
@@ -34,6 +33,9 @@ const TRANSLATIONS = {
         make_transfer: "Effectuer un virement",
         see_card: "Voir ma carte virtuelle",
         transactions_history: "Historique des transactions",
+        total_balance: "Solde total",
+        transactions_label: "Transactions",
+        currency_label: "Devise",
         amount: "Montant du virement",
         beneficiary_name: "Nom du bénéficiaire",
         iban: "IBAN / Numéro de Compte",
@@ -81,7 +83,6 @@ const TRANSLATIONS = {
         security: "Sécurité",
         notifications: "Notifications",
         no_transactions: "Aucune transaction pour le moment",
-        // Messages
         err_email: "Adresse e-mail incorrecte.",
         err_pin: "Code PIN incorrect.",
         err_amount: "Montant invalide.",
@@ -103,6 +104,9 @@ const TRANSLATIONS = {
         make_transfer: "Make a transfer",
         see_card: "See my virtual card",
         transactions_history: "Transaction history",
+        total_balance: "Total balance",
+        transactions_label: "Transactions",
+        currency_label: "Currency",
         amount: "Transfer amount",
         beneficiary_name: "Beneficiary name",
         iban: "IBAN / Account number",
@@ -171,6 +175,9 @@ const TRANSLATIONS = {
         make_transfer: "Hacer una transferencia",
         see_card: "Ver mi tarjeta virtual",
         transactions_history: "Historial de transacciones",
+        total_balance: "Saldo total",
+        transactions_label: "Transacciones",
+        currency_label: "Moneda",
         amount: "Importe de la transferencia",
         beneficiary_name: "Nombre del beneficiario",
         iban: "IBAN / Número de cuenta",
@@ -239,6 +246,9 @@ const TRANSLATIONS = {
         make_transfer: "Überweisung durchführen",
         see_card: "Virtuelle Karte anzeigen",
         transactions_history: "Transaktionsverlauf",
+        total_balance: "Gesamtguthaben",
+        transactions_label: "Transaktionen",
+        currency_label: "Währung",
         amount: "Überweisungsbetrag",
         beneficiary_name: "Name des Begünstigten",
         iban: "IBAN / Kontonummer",
@@ -307,6 +317,9 @@ const TRANSLATIONS = {
         make_transfer: "Wykonaj przelew",
         see_card: "Zobacz kartę wirtualną",
         transactions_history: "Historia transakcji",
+        total_balance: "Całkowite saldo",
+        transactions_label: "Transakcje",
+        currency_label: "Waluta",
         amount: "Kwota przelewu",
         beneficiary_name: "Nazwa odbiorcy",
         iban: "IBAN / Numer konta",
@@ -374,28 +387,23 @@ const TRANSLATIONS = {
 function t(key, vars = {}) {
     const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.fr;
     let text = dict[key] || TRANSLATIONS.fr[key] || key;
-    // Remplacer les variables {xxx}
     Object.keys(vars).forEach(k => {
         text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
     });
     return text;
 }
 
-// ---------- APPLICATION DE LA LANGUE À L'INTERFACE ----------
+// ---------- APPLICATION DE LA LANGUE ----------
 function applyLanguage() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
         el.textContent = t(key);
     });
-    // Titre de la page de connexion
-    const loginTitle = document.getElementById('login-title-text');
-    if (loginTitle) loginTitle.textContent = t('identity_verification').replace('Vérification', 'Connexion à votre compte');
 }
 
 // ---------- APPLICATION DE LA COULEUR DYNAMIQUE ----------
 function applyClientColor(color) {
     if (!color) color = '#ff7a00';
-    // Générer la variante claire et sombre
     const light = lightenColor(color, 15);
     const dark = darkenColor(color, 15);
     const soft = hexToRgba(color, 0.1);
@@ -406,7 +414,6 @@ function applyClientColor(color) {
     document.documentElement.style.setProperty('--primary-color-soft', soft);
 }
 
-// Utilitaires couleur
 function hexToRgb(hex) {
     const h = hex.replace('#', '');
     return {
@@ -423,7 +430,6 @@ function rgbToHex(r, g, b) {
 }
 function lightenColor(hex, percent) {
     const { r, g, b } = hexToRgb(hex);
-    const amt = 255 * (percent / 100);
     return rgbToHex(r + (255 - r) * (percent / 100), g + (255 - g) * (percent / 100), b + (255 - b) * (percent / 100));
 }
 function darkenColor(hex, percent) {
@@ -435,7 +441,7 @@ function hexToRgba(hex, alpha) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// ---------- UTILITAIRES GÉNÉRAUX ----------
+// ---------- UTILITAIRES ----------
 function formatMoney(amount) {
     const num = Number(amount) || 0;
     return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
@@ -458,25 +464,20 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// ---------- LECTURE DE L'URL ----------
 function getClientIdFromURL() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
 }
 
-// ---------- AFFICHAGE ÉCRAN ----------
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 }
 
-// ============================================================
-// CHARGEMENT DU CLIENT DEPUIS FIRESTORE
-// ============================================================
+// ---------- CHARGEMENT DU CLIENT ----------
 async function loadClientFromFirestore() {
     const clientId = getClientIdFromURL();
 
-    // Pas d'ID → écran invalide
     if (!clientId) {
         console.warn('Aucun ID dans l\'URL');
         showScreen('invalid-screen');
@@ -503,10 +504,8 @@ async function loadClientFromFirestore() {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        // Appliquer la couleur dynamique
         applyClientColor(client.color);
 
-        // Préparer la page de connexion
         const badgeText = document.getElementById('badge-text');
         if (badgeText) {
             badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
@@ -514,9 +513,7 @@ async function loadClientFromFirestore() {
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = client.email;
 
-        // Afficher la page de connexion
         showScreen('login-screen');
-
         console.log('✅ Client chargé :', client.firstName, client.lastName);
         return client;
 
@@ -527,9 +524,7 @@ async function loadClientFromFirestore() {
     }
 }
 
-// ============================================================
-// CONNEXION DU CLIENT
-// ============================================================
+// ---------- CONNEXION ----------
 function handleLogin(event) {
     event.preventDefault();
     const email = document.getElementById('login-email').value.trim().toLowerCase();
@@ -552,27 +547,21 @@ function handleLogin(event) {
         return;
     }
 
-    // Connexion réussie
     errorEl.textContent = '';
     showScreen('app-screen');
 
-    // Appliquer l'avatar et les infos
     const initials = ((client.firstName || 'X')[0] + (client.lastName || 'X')[0]).toUpperCase();
     document.getElementById('header-avatar').textContent = initials;
 
-    // Appliquer la langue
     applyLanguage();
 
-    // Aller au dashboard
     setTimeout(() => {
         navigateTo('dashboard');
         showToast(t('login_success'), 'success');
     }, 200);
 }
 
-// ============================================================
-// DÉCONNEXION
-// ============================================================
+// ---------- DÉCONNEXION ----------
 function handleLogout() {
     if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
     showScreen('login-screen');
@@ -582,7 +571,6 @@ function handleLogout() {
         document.getElementById('login-email').value = appState.client.email;
     }
     appState.pendingTransfer = null;
-    // Revenir à la langue par défaut pour l'interface de connexion
     appState.lang = appState.client?.language || 'fr';
 }
 
@@ -612,7 +600,6 @@ function navigateTo(viewName, data = {}) {
         li.classList.toggle('active', li.dataset.view === viewName);
     });
 
-    // Réappliquer la langue après chaque navigation (car le DOM a changé)
     applyLanguage();
 
     if (viewName === 'dashboard') renderDashboard();
@@ -637,17 +624,41 @@ function renderDashboard() {
         welcomeName.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
     }
 
-    // Bouton Voir IBAN
+    // ✅ Remplir les 3 mini-cartes
+    const statBalance = document.getElementById('stat-balance');
+    const statTx = document.getElementById('stat-transactions');
+    const statCurr = document.getElementById('stat-currency');
+    if (statBalance) statBalance.textContent = formatMoney(appState.balance);
+    if (statTx) statTx.textContent = (appState.transactions || []).length;
+    if (statCurr) statCurr.textContent = appState.currency;
+
+    // ✅ Bouton "Voir mon IBAN"
     const btnIban = document.getElementById('btn-show-iban');
     if (btnIban) {
         btnIban.addEventListener('click', () => {
             const id = appState.client?.id || '--';
-            navigator.clipboard?.writeText(id).then(() => {
-                showToast('ID copié : ' + id, 'success');
-            }).catch(() => {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(() => {
+                    showToast('ID copié : ' + id, 'success');
+                }).catch(() => {
+                    showToast('ID : ' + id, 'info');
+                });
+            } else {
                 showToast('ID : ' + id, 'info');
-            });
+            }
         });
+    }
+
+    // ✅ Bouton "Effectuer un virement"
+    const btnGoTransfer = document.getElementById('btn-go-transfer');
+    if (btnGoTransfer) {
+        btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
+    }
+
+    // ✅ Bouton "Voir ma carte virtuelle"
+    const btnGoCard = document.getElementById('btn-go-card');
+    if (btnGoCard) {
+        btnGoCard.addEventListener('click', () => navigateTo('card'));
     }
 
     // Historique des transactions
@@ -708,7 +719,6 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // ✅ Vérification du POURCENTAGE défini par l'admin
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
     if (amount > maxAllowed) {
@@ -745,7 +755,6 @@ function handleVerifySubmit(event) {
         return showToast(t('err_client_not_found'), 'error');
     }
 
-    // ✅ Vérifier avec le code d'activation du client (Firestore)
     if (code !== appState.client.activationCode) {
         return showToast(t('err_activation'), 'error');
     }
@@ -796,15 +805,12 @@ async function finalizeTransfer() {
     const tr = appState.pendingTransfer;
     if (!tr || !appState.client) return;
 
-    // Déduire du solde
     appState.balance -= tr.amount;
 
-    // Date actuelle
     const now = new Date();
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-    // Ajouter la transaction en local
     appState.transactions.unshift({
         type: 'debit',
         title: 'Virement envoyé à ' + tr.beneficiary,
@@ -812,10 +818,8 @@ async function finalizeTransfer() {
         amount: -tr.amount
     });
 
-    // Référence unique
     const ref = 'AP' + Date.now().toString().slice(-8);
 
-    // ✅ Sauvegarder dans Firestore
     try {
         await authPromise;
         await updateDoc(doc(db, 'clients', appState.clientId), {
@@ -828,7 +832,6 @@ async function finalizeTransfer() {
         showToast('Erreur de synchronisation', 'error');
     }
 
-    // Aller à l'écran de succès
     navigateTo('success', {
         amount: tr.amount,
         beneficiary: tr.beneficiary,
@@ -849,7 +852,6 @@ function renderSuccessView(data) {
     document.getElementById('sf-date').textContent = data.date;
     document.getElementById('sf-ref').textContent = data.reference;
 
-    // ✅ Message personnalisé de l'admin
     const customMsg = appState.client?.messageAfterTransfer;
     const msgEl = document.getElementById('sf-custom-message');
     if (msgEl && customMsg) {
@@ -870,7 +872,6 @@ function renderCardView() {
         holder.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
     }
 
-    // Plafond mensuel : on utilise le pourcentage du solde (ex: 100% = tout le solde)
     const percentLimit = Number(appState.client.percentValue ?? 100);
     const limit = appState.balance * (percentLimit / 100);
     const limitEl = document.getElementById('card-limit');
@@ -912,7 +913,7 @@ function renderAccountView() {
 }
 
 // ============================================================
-// NOTIFICATIONS DROPDOWN
+// NOTIFICATIONS
 // ============================================================
 function toggleNotifications(event) {
     event.stopPropagation();
@@ -920,23 +921,28 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
+// ✅ EXPOSITION GLOBALE (nécessaire pour onclick dans le HTML)
+// ============================================================
+window.navigateTo = navigateTo;
+window.handleLogout = handleLogout;
+window.cancelTransfer = cancelTransfer;
+window.toggleCardNumber = toggleCardNumber;
+window.showToast = showToast;
+
+// ============================================================
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
-    // Déterminer si on a un lien valide AVANT tout
     const clientId = getClientIdFromURL();
 
     if (!clientId) {
-        // Aucun lien → écran invalide immédiatement
         showScreen('invalid-screen');
         return;
     }
 
-    // Brancher les événements de base
     document.getElementById('login-form').addEventListener('submit', handleLogin);
     document.getElementById('notif-btn').addEventListener('click', toggleNotifications);
 
-    // Fermer le dropdown notifications au clic extérieur
     document.addEventListener('click', (e) => {
         const dropdown = document.getElementById('notif-dropdown');
         const btn = document.getElementById('notif-btn');
@@ -945,12 +951,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Navigation latérale
     document.querySelectorAll('#nav-links li').forEach(li => {
         li.addEventListener('click', () => navigateTo(li.dataset.view));
     });
 
-    // Délégation d'événements pour les formulaires créés dynamiquement
     document.getElementById('views-container').addEventListener('submit', (e) => {
         if (e.target.id === 'transfer-form') {
             handleTransferSubmit(e);
@@ -959,6 +963,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Charger le client depuis Firestore
     await loadClientFromFirestore();
 });
