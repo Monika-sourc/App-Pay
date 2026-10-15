@@ -1,3 +1,7 @@
+/* ============================================================
+   APP PAY ADMIN - Styles
+   ============================================================ */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,12 +21,14 @@ body {
     margin: 0 auto;
 }
 
-/* En-tête */
+/* ============================================================
+   En-tête
+   ============================================================ */
 .admin-header {
     background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
     color: white;
     padding: 24px 30px;
-    border-radius: 6px;
+    border-radius: 10px;
     margin-bottom: 25px;
     box-shadow: 0 8px 24px rgba(255, 122, 0, 0.25);
 }
@@ -56,17 +62,19 @@ body {
     background: rgba(255, 255, 255, 0.25);
     font-size: 10px;
     padding: 3px 8px;
-    border-radius: 3px;
+    border-radius: 4px;
     font-weight: 600;
     letter-spacing: 1.5px;
 }
 
-/* Sections */
+/* ============================================================
+   Sections
+   ============================================================ */
 .form-section, .clients-section {
     background: white;
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     margin-bottom: 25px;
 }
 
@@ -90,7 +98,7 @@ body {
     background-color: #f1f2f5;
     color: #333;
     padding: 10px 16px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 25px;
@@ -107,13 +115,23 @@ body {
     color: #222;
     margin-bottom: 18px;
     margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .section-title:first-of-type {
     margin-top: 0;
 }
 
-/* Formulaire */
+.section-title i {
+    color: #ff7a00;
+    font-size: 15px;
+}
+
+/* ============================================================
+   Formulaire
+   ============================================================ */
 .form-group {
     margin-bottom: 20px;
 }
@@ -147,7 +165,7 @@ body {
 .form-group textarea {
     width: 100%;
     border: 1px solid #dcdfe6;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 12px 14px;
     font-size: 14px;
     color: #333;
@@ -185,13 +203,14 @@ body {
     line-height: 1.4;
 }
 
+/* Champ pourcentage */
 .percentage-row {
     display: flex;
     align-items: center;
     gap: 10px;
     background-color: #f8f9fa;
     border: 1px solid #dcdfe6;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 8px 14px;
 }
 
@@ -220,11 +239,12 @@ body {
     max-width: 80px;
 }
 
+/* Input avec addon (devise) */
 .input-with-addon {
     display: flex;
     align-items: center;
     border: 1px solid #dcdfe6;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: #fff;
     overflow: hidden;
     transition: border-color 0.2s;
@@ -263,7 +283,7 @@ body {
     padding: 12px;
     background-color: #f8f9fa;
     border: 1px solid #dcdfe6;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 .color-option {
@@ -300,14 +320,14 @@ body {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Boutons */
+/* Boutons créer / sauvegarder */
 .btn-create,
 .btn-save-changes {
     width: 100%;
     background-color: #ff7a00;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 16px;
     font-size: 15px;
     font-weight: 600;
@@ -347,6 +367,7 @@ body {
     cursor: not-allowed;
 }
 
+/* Boutons d'accès (bloquer/débloquer) */
 .access-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -355,7 +376,7 @@ body {
 
 .btn-access {
     padding: 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -402,12 +423,13 @@ body {
     background-color: #fff5eb;
 }
 
+/* Historique dans la section modifier */
 .m-tx-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
     background-color: #f8f9fa;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 12px;
     min-height: 60px;
 }
@@ -418,7 +440,7 @@ body {
     align-items: center;
     background-color: white;
     padding: 10px 14px;
-    border-radius: 4px;
+    border-radius: 6px;
     border-left: 3px solid #ff7a00;
     font-size: 13px;
     gap: 10px;
@@ -480,18 +502,47 @@ body {
     background-color: #fff5f5;
 }
 
+.m-tx-logo-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #e8eaee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.m-tx-logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.m-tx-logo-box.fallback {
+    background: #fff5eb;
+    color: #ff7a00;
+    font-size: 14px;
+    padding: 0;
+}
+
 .hidden {
     display: none !important;
 }
 
 /* ============================================================
-   Liste des clients
+   LISTE DES CLIENTS - NOUVEAU DESIGN
    ============================================================ */
 .section-header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .count-badge {
@@ -500,8 +551,11 @@ body {
     color: white;
     font-size: 12px;
     padding: 3px 10px;
-    border-radius: 4px;
+    border-radius: 10px;
     margin-left: 6px;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
 }
 
 .btn-clear {
@@ -509,7 +563,7 @@ body {
     border: 1px solid #f5c6cb;
     color: #e02424;
     padding: 8px 14px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
@@ -525,138 +579,426 @@ body {
 .clients-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .empty-state {
     text-align: center;
     color: #999;
     font-size: 13px;
-    padding: 30px 0;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #dcdfe6;
 }
 
-.client-card {
-    border: 1px solid #e4e6eb;
-    border-radius: 6px;
-    padding: 16px 18px;
+/* ✅ Carte client cliquable */
+.client-row {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
     gap: 15px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background-color: #fff;
+    padding: 16px 18px;
+    border: 1px solid #e8eaee;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.client-card:hover {
+.client-row:hover {
     border-color: #ff7a00;
-    box-shadow: 0 4px 12px rgba(255, 122, 0, 0.08);
+    box-shadow: 0 6px 18px rgba(255, 122, 0, 0.1);
+    transform: translateY(-1px);
 }
 
-.client-card.blocked {
+.client-row.blocked {
     border-left: 4px solid #e02424;
-    background-color: #fffafa;
 }
 
-.client-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.client-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #111;
-    margin-bottom: 4px;
+.client-row-left {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
 }
 
-.client-name .flag {
-    font-size: 16px;
-}
-
-.client-name .color-dot {
-    width: 12px;
-    height: 12px;
+.client-row-avatar {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    display: inline-block;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
-}
-
-.client-name .blocked-badge {
-    background-color: #fde8e8;
-    color: #e02424;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-}
-
-.client-email {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 4px;
-    word-break: break-all;
-}
-
-.client-meta {
-    font-size: 11px;
-    color: #999;
+    background: linear-gradient(135deg, #ff7a00 0%, #ffaa5c 100%);
+    color: white;
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
 }
 
-.client-meta span {
+.client-row-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.client-row-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-row-email {
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Badges Actif / Bloqué */
+.client-row-status {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-}
-
-.client-meta i {
-    color: #ff7a00;
-    font-size: 10px;
-}
-
-.client-actions {
-    display: flex;
-    gap: 8px;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
     flex-shrink: 0;
 }
 
-.btn-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 4px;
-    border: 1px solid #e4e6eb;
-    background: white;
-    color: #555;
+.client-row-status.active {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.client-row-status.blocked {
+    background-color: #fde8e8;
+    color: #e02424;
+}
+
+.client-row-status i {
+    font-size: 10px;
+}
+
+.client-row-arrow {
+    color: #c0c4cc;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.client-row:hover .client-row-arrow {
+    color: #ff7a00;
+    transform: translateX(3px);
+}
+
+/* ============================================================
+   MODAL DÉTAILS CLIENT
+   ============================================================ */
+.modal-client-card {
+    max-width: 600px;
+    padding: 0;
+    text-align: left;
+    position: relative;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    color: #666;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    transition: all 0.2s;
+    font-size: 14px;
+    z-index: 10;
+    transition: background 0.2s, color 0.2s;
 }
 
-.btn-icon:hover {
-    background-color: #f8f9fa;
-    border-color: #ff7a00;
-    color: #ff7a00;
-}
-
-.btn-icon.danger:hover {
-    border-color: #e02424;
+.modal-close-btn:hover {
+    background-color: #fff;
     color: #e02424;
-    background-color: #fff5f5;
+}
+
+/* En-tête coloré du modal */
+.client-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 25px 30px;
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
+    color: white;
+    position: relative;
+    flex-shrink: 0;
+    padding-right: 60px;
+}
+
+.client-detail-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.client-detail-header > div:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+}
+
+.client-detail-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-detail-meta {
+    font-size: 12px;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-detail-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.client-detail-status.active {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #03543f;
+}
+
+.client-detail-status.blocked {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #e02424;
+}
+
+/* Corps du modal */
+.client-detail-body {
+    padding: 25px 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.cd-section {
+    margin-bottom: 22px;
+}
+
+.cd-section:last-child {
+    margin-bottom: 0;
+}
+
+.cd-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ff7a00;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cd-section-title i {
+    font-size: 12px;
+}
+
+.cd-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 9px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.cd-row:last-child {
+    border-bottom: none;
+}
+
+.cd-label {
+    color: #888;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.cd-value {
+    color: #111;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.cd-value-copy {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #111;
+    font-weight: 600;
+    text-align: right;
+    min-width: 0;
+}
+
+.cd-value-copy span {
+    word-break: break-all;
+    text-align: right;
+}
+
+.cd-code {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    background-color: #f8f9fa;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #111;
+    font-weight: 700;
+}
+
+/* Bouton copier */
+.copy-btn {
+    background-color: #f0f2f5;
+    border: none;
+    color: #555;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    background-color: #ff7a00;
+    color: white;
+}
+
+.copy-btn.copied {
+    background-color: #00c853;
+    color: white;
+}
+
+.copy-btn-primary {
+    width: auto;
+    padding: 0 16px;
+    height: 38px;
+    gap: 6px;
+    background-color: #ff7a00;
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.copy-btn-primary:hover {
+    background-color: #e66d00;
+}
+
+/* Boîte du lien */
+.cd-link-box {
+    display: flex;
+    gap: 8px;
+    background-color: #f8f9fa;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #e8eaee;
+    align-items: center;
+}
+
+.cd-link-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    min-width: 0;
+}
+
+.cd-hint {
+    display: block;
+    font-size: 11px;
+    color: #909399;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* Pied du modal */
+.client-detail-footer {
+    display: flex;
+    gap: 10px;
+    padding: 18px 30px;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fafbfc;
+    flex-shrink: 0;
+}
+
+.client-detail-footer button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 /* ============================================================
-   Modal
+   MODAL GÉNÉRIQUE (Lien généré)
    ============================================================ */
 .modal-overlay {
     position: fixed;
@@ -676,12 +1018,13 @@ body {
 
 .modal-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 35px 30px;
     max-width: 520px;
     width: 100%;
     text-align: center;
     animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .modal-icon-success {
@@ -720,7 +1063,7 @@ body {
 .link-box input {
     flex: 1;
     border: 1px solid #dcdfe6;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 12px 14px;
     font-size: 12px;
     color: #333;
@@ -734,7 +1077,7 @@ body {
     background-color: #ff7a00;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 0 18px;
     font-size: 13px;
     font-weight: 600;
@@ -758,7 +1101,7 @@ body {
 .modal-actions button {
     flex: 1;
     padding: 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -794,7 +1137,7 @@ body {
     to { opacity: 1; }
 }
 @keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
+    from { transform: scale(0.85); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
 
@@ -804,13 +1147,6 @@ body {
 @media (max-width: 640px) {
     .form-row {
         grid-template-columns: 1fr;
-    }
-    .client-card {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .client-actions {
-        justify-content: flex-end;
     }
     .color-picker {
         grid-template-columns: repeat(5, 1fr);
@@ -823,5 +1159,37 @@ body {
     }
     .access-buttons {
         grid-template-columns: 1fr;
+    }
+    .client-detail-header {
+        padding: 20px;
+        padding-right: 55px;
+    }
+    .client-detail-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 17px;
+    }
+    .client-detail-name {
+        font-size: 16px;
+    }
+    .client-detail-body {
+        padding: 20px;
+    }
+    .client-detail-footer {
+        padding: 15px 20px;
+        flex-direction: column;
+    }
+    .cd-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .cd-value, .cd-value-copy {
+        text-align: left;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .cd-value-copy span {
+        text-align: left;
     }
 }
