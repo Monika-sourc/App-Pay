@@ -70,7 +70,7 @@ function populateBankSelect(clientCountry) {
     if (!select) return;
 
     // Vider sauf la première option
-    select.innerHTML = '<option value="">-- Aucune banque (pas de logo) --</option>';
+    select.innerHTML = '<option value="">-- Sélectionner une banque --</option>';
 
     // Banques du pays du client (en haut, direct)
     const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
@@ -90,7 +90,7 @@ function populateBankSelect(clientCountry) {
 
     // Toutes les autres banques groupées par pays
     Object.entries(BANKS_BY_COUNTRY).forEach(([country, banks]) => {
-        if (country === clientCountry) return; // déjà ajouté
+        if (country === clientCountry) return;
         const group = document.createElement('optgroup');
         group.label = country;
         banks.forEach(bank => {
@@ -375,7 +375,7 @@ function handleModifyClientChange() {
 
     document.getElementById('m-tx-currency-display').textContent = client.currency || 'zł';
 
-    // ✅ Charger les banques du pays du client
+    // Charger les banques du pays du client
     populateBankSelect(client.country);
 
     updateAccessStatus(client.blocked);
@@ -409,9 +409,14 @@ function renderModifyTransactions() {
         const item = document.createElement('div');
         item.className = 'm-tx-item ' + (isDebit ? 'debit' : 'credit');
 
-        // ✅ Logo de la banque si disponible
+        // Logo de la banque si disponible
         const logoHtml = tx.bankLogo
-            ? `<img src="${tx.bankLogo}" alt="${tx.bankName || ''}" class="m-tx-logo" onerror="this.style.display='none'">`
+            ? `<div class="m-tx-logo-box">
+                   <img src="${tx.bankLogo}"
+                        alt="${tx.bankName || ''}"
+                        class="m-tx-logo"
+                        onerror="this.parentNode.classList.add('fallback'); this.parentNode.innerHTML='<i class=\\'fa-solid fa-building-columns\\'></i>';">
+               </div>`
             : '';
 
         item.innerHTML = `
@@ -446,23 +451,26 @@ function renderModifyTransactions() {
 }
 
 // ============================================================
-// AJOUTER UN VIREMENT AU COMPTE CLIENT (avec banque + logo)
+// AJOUTER UN VIREMENT AU COMPTE CLIENT
+// ✅ Banque OBLIGATOIRE
+// ✅ Nom de la banque utilisé comme TITRE (pas de libellé)
 // ============================================================
 function handleAddTransaction() {
     if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
 
     const amount = parseFloat(document.getElementById('m-tx-amount').value);
     const type = document.getElementById('m-tx-type').value;
-    const label = document.getElementById('m-tx-label').value.trim();
     const dateInput = document.getElementById('m-tx-date').value.trim();
     const bankSelect = document.getElementById('m-tx-bank');
     const bankDomain = bankSelect.value;
     const selectedOption = bankSelect.options[bankSelect.selectedIndex];
     const bankName = selectedOption?.dataset.bankName || '';
-    const bankLogo = bankDomain ? getBankLogoUrl(bankDomain) : '';
 
+    // ✅ VALIDATIONS
     if (!amount || amount <= 0) return showToast('Montant invalide.', 'error');
-    if (!label) return showToast('Libellé obligatoire.', 'error');
+    if (!bankDomain || !bankName) {
+        return showToast('Veuillez sélectionner une banque (obligatoire).', 'error');
+    }
 
     const client = allClients.find(c => c.id === selectedClientId);
     if (!client) return;
@@ -470,14 +478,15 @@ function handleAddTransaction() {
     const finalAmount = type === 'credit' ? amount : -amount;
     const dateStr = dateInput || formatDate();
 
+    // ✅ Utiliser le NOM de la banque comme titre
     const tx = {
         type: type,
-        title: label,
+        title: bankName,                      // ← Nom de la banque
         date: dateStr,
         amount: finalAmount,
-        bankName: bankName || null,
-        bankDomain: bankDomain || null,
-        bankLogo: bankLogo || null
+        bankName: bankName,
+        bankDomain: bankDomain,
+        bankLogo: getBankLogoUrl(bankDomain)
     };
 
     pendingTransactions.unshift(tx);
@@ -490,7 +499,6 @@ function handleAddTransaction() {
 
     // Vider les champs
     document.getElementById('m-tx-amount').value = '';
-    document.getElementById('m-tx-label').value = '';
     document.getElementById('m-tx-date').value = '';
     document.getElementById('m-tx-type').value = 'credit';
     document.getElementById('m-tx-bank').value = '';
