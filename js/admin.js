@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY ADMIN - Gestion des clients (Firebase)
+// APP PAY ADMIN - Gestion des clients (Firebase + Banques)
 // ============================================================
 
 import {
@@ -16,6 +16,8 @@ import {
     where,
     serverTimestamp
 } from './firebase-config.js';
+
+import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 
 const COLLECTION_NAME = 'clients';
 let lastGeneratedLink = '';
@@ -58,6 +60,49 @@ function formatDate() {
     const now = new Date();
     return now.toLocaleDateString('fr-FR') + ' • ' +
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ============================================================
+// GESTION DES BANQUES DANS LE SÉLECTEUR
+// ============================================================
+function populateBankSelect(clientCountry) {
+    const select = document.getElementById('m-tx-bank');
+    if (!select) return;
+
+    // Vider sauf la première option
+    select.innerHTML = '<option value="">-- Aucune banque (pas de logo) --</option>';
+
+    // Banques du pays du client (en haut, direct)
+    const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
+    if (countryBanks.length > 0) {
+        const group = document.createElement('optgroup');
+        group.label = `⭐ Banques du pays du client (${clientCountry})`;
+        countryBanks.forEach(bank => {
+            const opt = document.createElement('option');
+            opt.value = bank.domain;
+            opt.dataset.bankName = bank.name;
+            opt.dataset.bankDomain = bank.domain;
+            opt.textContent = bank.name;
+            group.appendChild(opt);
+        });
+        select.appendChild(group);
+    }
+
+    // Toutes les autres banques groupées par pays
+    Object.entries(BANKS_BY_COUNTRY).forEach(([country, banks]) => {
+        if (country === clientCountry) return; // déjà ajouté
+        const group = document.createElement('optgroup');
+        group.label = country;
+        banks.forEach(bank => {
+            const opt = document.createElement('option');
+            opt.value = bank.domain;
+            opt.dataset.bankName = bank.name;
+            opt.dataset.bankDomain = bank.domain;
+            opt.textContent = bank.name;
+            group.appendChild(opt);
+        });
+        select.appendChild(group);
+    });
 }
 
 // ============================================================
@@ -330,6 +375,9 @@ function handleModifyClientChange() {
 
     document.getElementById('m-tx-currency-display').textContent = client.currency || 'zł';
 
+    // ✅ Charger les banques du pays du client
+    populateBankSelect(client.country);
+
     updateAccessStatus(client.blocked);
 
     pendingTransactions = (client.transactions || []).slice();
@@ -360,10 +408,17 @@ function renderModifyTransactions() {
         const isDebit = tx.amount < 0;
         const item = document.createElement('div');
         item.className = 'm-tx-item ' + (isDebit ? 'debit' : 'credit');
+
+        // ✅ Logo de la banque si disponible
+        const logoHtml = tx.bankLogo
+            ? `<img src="${tx.bankLogo}" alt="${tx.bankName || ''}" class="m-tx-logo" onerror="this.style.display='none'">`
+            : '';
+
         item.innerHTML = `
+            ${logoHtml}
             <div class="m-tx-item-info">
                 <div class="m-tx-item-title">${tx.title || 'Virement'}</div>
-                <div class="m-tx-item-date">${tx.date || ''}</div>
+                <div class="m-tx-item-date">${tx.date || ''}${tx.bankName ? ' • ' + tx.bankName : ''}</div>
             </div>
             <div class="m-tx-item-amount ${isDebit ? 'debit' : 'credit'}">
                 ${isDebit ? '' : '+'}${Number(tx.amount).toFixed(2)}
@@ -380,7 +435,6 @@ function renderModifyTransactions() {
             const idx = parseInt(btn.dataset.idx, 10);
             if (confirm('Supprimer ce virement ?')) {
                 const removed = pendingTransactions.splice(idx, 1)[0];
-                // ✅ Annuler l'effet du virement sur le solde
                 const balanceInput = document.getElementById('m-balance');
                 const currentBalance = parseFloat(balanceInput.value) || 0;
                 balanceInput.value = (currentBalance - removed.amount).toFixed(2);
@@ -392,8 +446,7 @@ function renderModifyTransactions() {
 }
 
 // ============================================================
-// AJOUTER UN VIREMENT AU COMPTE CLIENT
-// ✅ Le solde est automatiquement mis à jour
+// AJOUTER UN VIREMENT AU COMPTE CLIENT (avec banque + logo)
 // ============================================================
 function handleAddTransaction() {
     if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
@@ -402,6 +455,11 @@ function handleAddTransaction() {
     const type = document.getElementById('m-tx-type').value;
     const label = document.getElementById('m-tx-label').value.trim();
     const dateInput = document.getElementById('m-tx-date').value.trim();
+    const bankSelect = document.getElementById('m-tx-bank');
+    const bankDomain = bankSelect.value;
+    const selectedOption = bankSelect.options[bankSelect.selectedIndex];
+    const bankName = selectedOption?.dataset.bankName || '';
+    const bankLogo = bankDomain ? getBankLogoUrl(bankDomain) : '';
 
     if (!amount || amount <= 0) return showToast('Montant invalide.', 'error');
     if (!label) return showToast('Libellé obligatoire.', 'error');
@@ -416,13 +474,16 @@ function handleAddTransaction() {
         type: type,
         title: label,
         date: dateStr,
-        amount: finalAmount
+        amount: finalAmount,
+        bankName: bankName || null,
+        bankDomain: bankDomain || null,
+        bankLogo: bankLogo || null
     };
 
     pendingTransactions.unshift(tx);
     renderModifyTransactions();
 
-    // ✅ Mettre à jour AUTOMATIQUEMENT le solde affiché dans le champ
+    // Mettre à jour AUTOMATIQUEMENT le solde affiché
     const balanceInput = document.getElementById('m-balance');
     const currentBalance = parseFloat(balanceInput.value) || 0;
     balanceInput.value = (currentBalance + finalAmount).toFixed(2);
@@ -432,8 +493,9 @@ function handleAddTransaction() {
     document.getElementById('m-tx-label').value = '';
     document.getElementById('m-tx-date').value = '';
     document.getElementById('m-tx-type').value = 'credit';
+    document.getElementById('m-tx-bank').value = '';
 
-    showToast('Virement ajouté et solde mis à jour. Cliquez sur "Enregistrer" pour valider.', 'success');
+    showToast('Virement ajouté. Cliquez sur "Enregistrer" pour valider.', 'success');
 }
 
 // ============================================================
