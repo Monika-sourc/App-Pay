@@ -1,7 +1,5 @@
 // ============================================================
 // APP PAY - Liste des banques par pays (5 par pays)
-// Format : { name: "Nom de la banque", domain: "domaine.com" }
-// Le logo est récupéré automatiquement via logo.clearbit.com
 // ============================================================
 
 export const BANKS_BY_COUNTRY = {
@@ -311,13 +309,23 @@ export const BANKS_BY_COUNTRY = {
     ]
 };
 
-// ✅ Fonction utilitaire : récupérer l'URL du logo
+// ✅ Retourne l'URL PRINCIPALE du logo (Clearbit)
 export function getBankLogoUrl(domain) {
     if (!domain) return '';
     return `https://logo.clearbit.com/${domain}`;
 }
 
-// ✅ Fonction utilitaire : obtenir la liste complète des banques à plat
+// ✅ Retourne une LISTE d'URLs alternatives (essayées dans l'ordre)
+export function getBankLogoUrls(domain) {
+    if (!domain) return [];
+    return [
+        `https://logo.clearbit.com/${domain}`,
+        `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+        `https://icons.duckduckgo.com/ip3/${domain}.ico`
+    ];
+}
+
+// ✅ Obtenir la liste complète des banques à plat
 export function getAllBanks() {
     const all = [];
     Object.entries(BANKS_BY_COUNTRY).forEach(([country, banks]) => {
