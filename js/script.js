@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + persistance + logos banques)
+// APP PAY - Logique client (Firebase + i18n + persistance + logos)
 // ============================================================
 
 import {
@@ -10,6 +10,8 @@ import {
     getDocFromServer,
     updateDoc
 } from './firebase-config.js';
+
+import { getBankLogoUrls } from './banks.js';
 
 // ---------- ÉTAT GLOBAL ----------
 const appState = {
@@ -22,7 +24,7 @@ const appState = {
     lang: 'fr'
 };
 
-// Clé de stockage de session (localStorage = plus fiable)
+// Clé de stockage de session
 const SESSION_KEY = 'apppay_session_v2';
 
 // ============================================================
@@ -386,7 +388,7 @@ const TRANSLATIONS = {
     }
 };
 
-// ---------- FONCTION DE TRADUCTION ----------
+// ---------- FONCTIONS DE TRADUCTION ----------
 function t(key, vars = {}) {
     const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.fr;
     let text = dict[key] || TRANSLATIONS.fr[key] || key;
@@ -396,7 +398,6 @@ function t(key, vars = {}) {
     return text;
 }
 
-// ---------- APPLICATION DE LA LANGUE ----------
 function applyLanguage() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
@@ -404,7 +405,7 @@ function applyLanguage() {
     });
 }
 
-// ---------- APPLICATION DE LA COULEUR DYNAMIQUE ----------
+// ---------- COULEUR DYNAMIQUE ----------
 function applyClientColor(color) {
     if (!color) color = '#ff7a00';
     const light = lightenColor(color, 15);
@@ -478,7 +479,7 @@ function showScreen(screenId) {
 }
 
 // ============================================================
-// GESTION DE SESSION (localStorage)
+// SESSION (localStorage)
 // ============================================================
 function saveSession() {
     if (!appState.clientId) return;
@@ -489,9 +490,7 @@ function saveSession() {
             savedAt: Date.now()
         }));
         console.log('✅ Session sauvegardée');
-    } catch (e) {
-        console.warn('Impossible de sauvegarder la session', e);
-    }
+    } catch (e) {}
 }
 
 function getSession() {
@@ -516,7 +515,7 @@ function clearSession() {
     } catch {}
 }
 
-// ✅ Affiche l'écran de blocage
+// ✅ Écran de blocage
 function showBlockedScreen(client) {
     const card = document.querySelector('#invalid-screen .invalid-card');
     if (card) {
@@ -544,7 +543,7 @@ function showBlockedScreen(client) {
 }
 
 // ============================================================
-// CHARGEMENT DU CLIENT DEPUIS FIRESTORE (FORCÉ SERVEUR)
+// CHARGEMENT DU CLIENT DEPUIS FIRESTORE
 // ============================================================
 async function loadClientFromFirestore(options = {}) {
     const { autoLogin = false } = options;
@@ -567,13 +566,12 @@ async function loadClientFromFirestore(options = {}) {
             docSnap = await getDocFromServer(docRef);
             console.log('✅ Données lues depuis le SERVEUR');
         } catch (err) {
-            console.warn('⚠️ Lecture serveur échouée, fallback cache', err);
+            console.warn('⚠️ Fallback cache');
             const { getDoc } = await import('./firebase-config.js');
             docSnap = await getDoc(docRef);
         }
 
         if (!docSnap.exists()) {
-            console.warn('Client introuvable :', clientId);
             showScreen('invalid-screen');
             return null;
         }
@@ -585,9 +583,7 @@ async function loadClientFromFirestore(options = {}) {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        console.log(`📊 Client chargé : ${client.firstName} ${client.lastName}`);
-        console.log(`💰 Solde : ${appState.balance} ${appState.currency}`);
-        console.log(`📜 Transactions : ${appState.transactions.length}`);
+        console.log(`📊 ${client.firstName} ${client.lastName} | 💰 ${appState.balance} | 📜 ${appState.transactions.length}`);
 
         if (client.blocked === true) {
             clearSession();
@@ -598,9 +594,8 @@ async function loadClientFromFirestore(options = {}) {
         applyClientColor(client.color);
 
         const badgeText = document.getElementById('badge-text');
-        if (badgeText) {
-            badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
-        }
+        if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
+
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = client.email;
 
@@ -608,7 +603,7 @@ async function loadClientFromFirestore(options = {}) {
         const shouldAutoLogin = autoLogin || (session && session.loggedIn && session.clientId === clientId);
 
         if (shouldAutoLogin) {
-            console.log('✅ Session restaurée : connexion automatique');
+            console.log('✅ Session restaurée');
             loginSuccess();
             return client;
         }
@@ -657,7 +652,6 @@ function handleLogin(event) {
     loginSuccess();
 }
 
-// ✅ Fonction centrale
 function loginSuccess() {
     const client = appState.client;
     showScreen('app-screen');
@@ -726,19 +720,26 @@ function navigateTo(viewName, data = {}) {
 }
 
 // ============================================================
-// ✅ GÉNÉRATION DU LOGO DE LA BANQUE (ou icône de secours)
+// ✅ CONSTRUCTION DE L'ICÔNE TRANSACTION (logo ou fallback)
 // ============================================================
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
 
-    // Si le virement a un logo de banque → l'afficher
-    if (tx.bankLogo) {
+    // Si la transaction a une banque avec domaine → construire un <img> avec fallback multi-URL
+    if (tx.bankDomain) {
+        const urls = getBankLogoUrls(tx.bankDomain);
+        const urlsJson = JSON.stringify(urls).replace(/"/g, '&quot;');
+
+        // Icône générique en cas d'échec total
+        const fallbackIcon = isDebit ? 'fa-arrow-trend-up' : 'fa-arrow-right-arrow-left';
+        const fallbackRotate = isDebit ? 'transform: rotate(90deg);' : '';
+
         return `
-            <div class="tx-icon-bank">
-                <img src="${tx.bankLogo}"
+            <div class="tx-icon-bank" data-urls='${urlsJson}' data-idx="0">
+                <img src="${urls[0]}"
                      alt="${tx.bankName || 'Banque'}"
                      loading="lazy"
-                     onerror="this.parentNode.classList.add('fallback'); this.parentNode.innerHTML='<i class=\\'fa-solid fa-building-columns\\'></i>';">
+                     onerror="handleBankLogoError(this);">
             </div>
         `;
     }
@@ -751,6 +752,31 @@ function buildTransactionIcon(tx) {
         </div>
     `;
 }
+
+// ✅ Fonction globale appelée si le logo échoue → essaie l'URL suivante, puis fallback icône
+window.handleBankLogoError = function (img) {
+    const parent = img.parentNode;
+    if (!parent) return;
+
+    try {
+        const urls = JSON.parse(parent.dataset.urls || '[]');
+        let idx = parseInt(parent.dataset.idx || '0', 10);
+        idx++;
+
+        if (idx < urls.length) {
+            // Essayer l'URL suivante
+            parent.dataset.idx = idx;
+            img.src = urls[idx];
+            return;
+        }
+    } catch (e) {
+        console.warn('Erreur parsing URLs banque', e);
+    }
+
+    // Plus d'URLs → afficher l'icône fallback
+    parent.classList.add('fallback');
+    parent.innerHTML = '<i class="fa-solid fa-building-columns"></i>';
+};
 
 // ============================================================
 // VUE : DASHBOARD
@@ -819,8 +845,8 @@ function renderDashboard() {
             <div class="transaction-left">
                 ${buildTransactionIcon(tx)}
                 <div class="tx-details">
-                    <h4>${tx.title}</h4>
-                    <p>${tx.date}${tx.bankName ? ' • ' + tx.bankName : ''}</p>
+                    <h4>${tx.title || 'Virement'}</h4>
+                    <p>${tx.date || ''}${tx.bankName && tx.bankName !== tx.title ? ' • ' + tx.bankName : ''}</p>
                 </div>
             </div>
             <div class="tx-amount ${isDebit ? 'red' : 'green'}">
@@ -965,7 +991,7 @@ async function finalizeTransfer() {
             balance: appState.balance,
             transactions: appState.transactions
         });
-        console.log('✅ Virement sauvegardé dans Firestore');
+        console.log('✅ Virement sauvegardé');
     } catch (err) {
         console.error('Erreur sauvegarde virement :', err);
         showToast('Erreur de synchronisation', 'error');
