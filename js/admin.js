@@ -26,6 +26,7 @@ let selectedModifyColor = '#ff7a00';
 let allClients = [];
 let selectedClientId = null;
 let pendingTransactions = [];
+let currentDetailClient = null;
 
 // ---------- UTILITAIRES ----------
 function showToast(message, type = 'success') {
@@ -38,7 +39,7 @@ function showToast(message, type = 'success') {
     };
     toast.style.cssText = `
         position: fixed; top: 20px; right: 20px; background: #111; color: white;
-        padding: 14px 20px; border-radius: 6px; font-size: 13px; z-index: 99999;
+        padding: 14px 20px; border-radius: 8px; font-size: 13px; z-index: 99999;
         box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; align-items: center;
         gap: 10px; animation: fadeIn 0.3s ease; max-width: 380px;
     `;
@@ -62,17 +63,26 @@ function formatDate() {
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
 
+function getInitials(firstName, lastName) {
+    const f = (firstName || 'X')[0] || 'X';
+    const l = (lastName || 'X')[0] || 'X';
+    return (f + l).toUpperCase();
+}
+
+function getClientLink(clientId) {
+    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
+    return `${baseUrl}?id=${clientId}`;
+}
+
 // ============================================================
-// GESTION DES BANQUES DANS LE SÉLECTEUR
+// GESTION DES BANQUES
 // ============================================================
 function populateBankSelect(clientCountry) {
     const select = document.getElementById('m-tx-bank');
     if (!select) return;
 
-    // Vider sauf la première option
     select.innerHTML = '<option value="">-- Sélectionner une banque --</option>';
 
-    // Banques du pays du client (en haut, direct)
     const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
     if (countryBanks.length > 0) {
         const group = document.createElement('optgroup');
@@ -88,7 +98,6 @@ function populateBankSelect(clientCountry) {
         select.appendChild(group);
     }
 
-    // Toutes les autres banques groupées par pays
     Object.entries(BANKS_BY_COUNTRY).forEach(([country, banks]) => {
         if (country === clientCountry) return;
         const group = document.createElement('optgroup');
@@ -106,7 +115,7 @@ function populateBankSelect(clientCountry) {
 }
 
 // ============================================================
-// SÉLECTEUR DE COULEUR (création)
+// SÉLECTEURS DE COULEUR
 // ============================================================
 function initColorPicker() {
     const picker = document.getElementById('color-picker');
@@ -125,9 +134,6 @@ function initColorPicker() {
     if (defaultOption) defaultOption.classList.add('selected');
 }
 
-// ============================================================
-// SÉLECTEUR DE COULEUR (modification)
-// ============================================================
 function initModifyColorPicker() {
     const picker = document.getElementById('m-color-picker');
     const hiddenInput = document.getElementById('m-color');
@@ -207,9 +213,7 @@ async function handleCreateClient(event) {
 
         await setDoc(doc(db, COLLECTION_NAME, clientId), clientData);
 
-        const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
-        const link = `${baseUrl}?id=${clientId}`;
-
+        const link = getClientLink(clientId);
         lastGeneratedLink = link;
         document.getElementById('generated-link').value = link;
         document.getElementById('link-modal').classList.add('show');
@@ -238,7 +242,7 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// CHARGEMENT DES CLIENTS
+// CHARGEMENT DE LA LISTE CLIENTS
 // ============================================================
 async function loadClients() {
     const list = document.getElementById('clients-list');
@@ -261,47 +265,30 @@ async function loadClients() {
 
         list.innerHTML = '';
         allClients.forEach(client => {
-            const card = document.createElement('div');
-            card.className = 'client-card' + (client.blocked ? ' blocked' : '');
-            card.innerHTML = `
-                <div class="client-info">
-                    <div class="client-name">
-                        <span class="color-dot" style="background:${client.color || '#ff7a00'};"></span>
-                        <span class="flag">${client.countryFlag || '🌍'}</span>
-                        ${(client.lastName || '').toUpperCase()} ${client.firstName || ''}
-                        ${client.blocked ? '<span class="blocked-badge">BLOQUÉ</span>' : ''}
-                    </div>
-                    <div class="client-email">${client.email}</div>
-                    <div class="client-meta">
-                        <span><i class="fa-solid fa-coins"></i> ${Number(client.balance || 0).toFixed(2)} ${client.currency || 'zł'}</span>
-                        <span><i class="fa-solid fa-percent"></i> ${client.percentValue || 100}%</span>
-                        <span><i class="fa-solid fa-language"></i> ${client.language || 'fr'}</span>
-                        <span><i class="fa-regular fa-calendar"></i> ${new Date(client.createdAt).toLocaleDateString('fr-FR')}</span>
-                    </div>
-                </div>
-                <div class="client-actions">
-                    <button class="btn-icon" title="Copier le lien" data-action="copy" data-id="${client.id}">
-                        <i class="fa-regular fa-copy"></i>
-                    </button>
-                    <button class="btn-icon" title="Modifier" data-action="edit" data-id="${client.id}">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-                    <button class="btn-icon danger" title="Supprimer" data-action="delete" data-id="${client.id}">
-                        <i class="fa-regular fa-trash-can"></i>
-                    </button>
-                </div>
-            `;
-            list.appendChild(card);
-        });
+            const row = document.createElement('div');
+            row.className = 'client-row' + (client.blocked ? ' blocked' : '');
+            row.dataset.clientId = client.id;
 
-        list.querySelectorAll('[data-action]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const action = btn.dataset.action;
-                const id = btn.dataset.id;
-                if (action === 'copy') copyClientLink(id);
-                else if (action === 'edit') selectClientForModify(id);
-                else if (action === 'delete') deleteClient(id);
-            });
+            const initials = getInitials(client.firstName, client.lastName);
+            const fullName = `${(client.lastName || '').toUpperCase()} ${client.firstName || ''}`;
+
+            row.innerHTML = `
+                <div class="client-row-left">
+                    <div class="client-row-avatar">${initials}</div>
+                    <div class="client-row-info">
+                        <div class="client-row-name">${fullName}</div>
+                        <div class="client-row-email">${client.email || '--'}</div>
+                    </div>
+                </div>
+                <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
+                    <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
+                    ${client.blocked ? 'Bloqué' : 'Actif'}
+                </div>
+                <i class="fa-solid fa-chevron-right client-row-arrow"></i>
+            `;
+
+            row.addEventListener('click', () => openClientDetail(client.id));
+            list.appendChild(row);
         });
 
     } catch (err) {
@@ -309,6 +296,107 @@ async function loadClients() {
         list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement : ' + err.message + '</p>';
     }
 }
+
+// ============================================================
+// MODAL DÉTAILS CLIENT
+// ============================================================
+function openClientDetail(clientId) {
+    const client = allClients.find(c => c.id === clientId);
+    if (!client) return;
+
+    currentDetailClient = client;
+
+    // Avatar
+    const initials = getInitials(client.firstName, client.lastName);
+    document.getElementById('cd-avatar').textContent = initials;
+
+    // Nom complet
+    const fullName = `${client.lastName} ${client.firstName}`.toUpperCase();
+    document.getElementById('cd-name').textContent = fullName;
+
+    // Meta (email)
+    document.getElementById('cd-meta').textContent = client.email || '--';
+
+    // Statut
+    const statusEl = document.getElementById('cd-status');
+    if (client.blocked) {
+        statusEl.textContent = 'Bloqué';
+        statusEl.className = 'client-detail-status blocked';
+    } else {
+        statusEl.textContent = 'Actif';
+        statusEl.className = 'client-detail-status active';
+    }
+
+    // Identité
+    document.getElementById('cd-fullname').textContent = fullName;
+    document.getElementById('cd-country').textContent = (client.country || '--') + ' ' + (client.countryFlag || '');
+    document.getElementById('cd-address').textContent = client.address || '—';
+
+    // Contact
+    document.getElementById('cd-email').textContent = client.email || '--';
+    document.getElementById('cd-phone').textContent = client.phone || '—';
+
+    // Compte
+    document.getElementById('cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
+    document.getElementById('cd-currency').textContent = client.currency || 'zł';
+    document.getElementById('cd-language').textContent = client.language || 'fr';
+    document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
+
+    // Sécurité
+    document.getElementById('cd-pin').textContent = client.pin || '----';
+    document.getElementById('cd-activation').textContent = client.activationCode || '----';
+
+    // Lien
+    document.getElementById('cd-link').value = getClientLink(client.id);
+
+    // Ouvrir le modal
+    document.getElementById('client-detail-modal').classList.add('show');
+}
+
+function closeClientDetail() {
+    document.getElementById('client-detail-modal').classList.remove('show');
+    currentDetailClient = null;
+}
+
+function editClientFromDetail() {
+    if (!currentDetailClient) return;
+    const clientId = currentDetailClient.id;
+    closeClientDetail();
+    selectClientForModify(clientId);
+}
+
+// ============================================================
+// COPIER UN CHAMP
+// ============================================================
+window.copyField = function (elementId, isInput = false) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const value = isInput ? el.value : el.textContent;
+
+    const doCopy = () => {
+        // Feedback visuel sur le bouton
+        const btn = el.closest('.cd-value-copy, .cd-link-box')?.querySelector('.copy-btn');
+        if (btn) {
+            const original = btn.innerHTML;
+            btn.classList.add('copied');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = original;
+            }, 1500);
+        }
+        showToast('Copié dans le presse-papiers !', 'success');
+    };
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(value).then(doCopy).catch(() => {
+            prompt('Copiez manuellement :', value);
+        });
+    } else {
+        prompt('Copiez manuellement :', value);
+    }
+};
 
 // ============================================================
 // SÉLECTEUR DE MODIFICATION
@@ -326,9 +414,6 @@ function populateModifySelect() {
     if (current) select.value = current;
 }
 
-// ============================================================
-// SÉLECTIONNER UN CLIENT POUR MODIFICATION
-// ============================================================
 function selectClientForModify(clientId) {
     const select = document.getElementById('m-select-client');
     select.value = clientId;
@@ -375,9 +460,7 @@ function handleModifyClientChange() {
 
     document.getElementById('m-tx-currency-display').textContent = client.currency || 'zł';
 
-    // Charger les banques du pays du client
     populateBankSelect(client.country);
-
     updateAccessStatus(client.blocked);
 
     pendingTransactions = (client.transactions || []).slice();
@@ -394,7 +477,7 @@ function updateAccessStatus(blocked) {
 }
 
 // ============================================================
-// HISTORIQUE DES VIREMENTS DANS LA SECTION MODIFIER
+// HISTORIQUE DES VIREMENTS (section Modifier)
 // ============================================================
 function renderModifyTransactions() {
     const list = document.getElementById('m-tx-list');
@@ -409,12 +492,10 @@ function renderModifyTransactions() {
         const item = document.createElement('div');
         item.className = 'm-tx-item ' + (isDebit ? 'debit' : 'credit');
 
-        // Logo de la banque si disponible
         const logoHtml = tx.bankLogo
             ? `<div class="m-tx-logo-box">
                    <img src="${tx.bankLogo}"
                         alt="${tx.bankName || ''}"
-                        class="m-tx-logo"
                         onerror="this.parentNode.classList.add('fallback'); this.parentNode.innerHTML='<i class=\\'fa-solid fa-building-columns\\'></i>';">
                </div>`
             : '';
@@ -451,9 +532,7 @@ function renderModifyTransactions() {
 }
 
 // ============================================================
-// AJOUTER UN VIREMENT AU COMPTE CLIENT
-// ✅ Banque OBLIGATOIRE
-// ✅ Nom de la banque utilisé comme TITRE (pas de libellé)
+// AJOUTER UN VIREMENT (Banque obligatoire)
 // ============================================================
 function handleAddTransaction() {
     if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
@@ -466,7 +545,6 @@ function handleAddTransaction() {
     const selectedOption = bankSelect.options[bankSelect.selectedIndex];
     const bankName = selectedOption?.dataset.bankName || '';
 
-    // ✅ VALIDATIONS
     if (!amount || amount <= 0) return showToast('Montant invalide.', 'error');
     if (!bankDomain || !bankName) {
         return showToast('Veuillez sélectionner une banque (obligatoire).', 'error');
@@ -478,10 +556,9 @@ function handleAddTransaction() {
     const finalAmount = type === 'credit' ? amount : -amount;
     const dateStr = dateInput || formatDate();
 
-    // ✅ Utiliser le NOM de la banque comme titre
     const tx = {
         type: type,
-        title: bankName,                      // ← Nom de la banque
+        title: bankName,
         date: dateStr,
         amount: finalAmount,
         bankName: bankName,
@@ -492,12 +569,10 @@ function handleAddTransaction() {
     pendingTransactions.unshift(tx);
     renderModifyTransactions();
 
-    // Mettre à jour AUTOMATIQUEMENT le solde affiché
     const balanceInput = document.getElementById('m-balance');
     const currentBalance = parseFloat(balanceInput.value) || 0;
     balanceInput.value = (currentBalance + finalAmount).toFixed(2);
 
-    // Vider les champs
     document.getElementById('m-tx-amount').value = '';
     document.getElementById('m-tx-date').value = '';
     document.getElementById('m-tx-type').value = 'credit';
@@ -507,16 +582,14 @@ function handleAddTransaction() {
 }
 
 // ============================================================
-// BLOQUER / DÉBLOQUER L'ACCÈS CLIENT
+// BLOQUER / DÉBLOQUER
 // ============================================================
 async function handleBlockAccess() {
     if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
     const client = allClients.find(c => c.id === selectedClientId);
     if (!client) return;
 
-    if (client.blocked) {
-        return showToast('Ce client est déjà bloqué.', 'info');
-    }
+    if (client.blocked) return showToast('Ce client est déjà bloqué.', 'info');
 
     if (!confirm(`Bloquer l'accès de ${client.firstName} ${client.lastName} ?`)) return;
 
@@ -538,9 +611,7 @@ async function handleUnblockAccess() {
     const client = allClients.find(c => c.id === selectedClientId);
     if (!client) return;
 
-    if (!client.blocked) {
-        return showToast("Ce client n'est pas bloqué.", 'info');
-    }
+    if (!client.blocked) return showToast("Ce client n'est pas bloqué.", 'info');
 
     try {
         await authPromise;
@@ -632,26 +703,8 @@ async function handleSaveChanges() {
 }
 
 // ============================================================
-// ACTIONS SUR UN CLIENT (liste)
+// SUPPRIMER / TOUT EFFACER
 // ============================================================
-function getClientLink(clientId) {
-    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
-    return `${baseUrl}?id=${clientId}`;
-}
-
-function copyClientLink(id) {
-    const link = getClientLink(id);
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(link).then(() => {
-            showToast('Lien copié dans le presse-papiers !', 'success');
-        }).catch(() => {
-            prompt('Copiez ce lien manuellement :', link);
-        });
-    } else {
-        prompt('Copiez ce lien manuellement :', link);
-    }
-}
-
 async function deleteClient(id) {
     const client = allClients.find(c => c.id === id);
     if (!client) return;
@@ -691,7 +744,7 @@ async function clearAllClients() {
 }
 
 // ============================================================
-// MODAL
+// MODAL LIEN (après création)
 // ============================================================
 function closeModal() {
     document.getElementById('link-modal').classList.remove('show');
@@ -734,16 +787,28 @@ window.clearAllClients = clearAllClients;
 window.closeModal = closeModal;
 window.copyGeneratedLink = copyGeneratedLink;
 window.openGeneratedLink = openGeneratedLink;
+window.closeClientDetail = closeClientDetail;
+window.editClientFromDetail = editClientFromDetail;
+window.copyField = window.copyField;
 
 // ============================================================
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
+    // Création
     document.getElementById('create-client-form').addEventListener('submit', handleCreateClient);
+
+    // Modal lien
     document.getElementById('link-modal').addEventListener('click', (e) => {
         if (e.target.id === 'link-modal') closeModal();
     });
 
+    // Modal détails client — fermer en cliquant sur l'overlay
+    document.getElementById('client-detail-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'client-detail-modal') closeClientDetail();
+    });
+
+    // Modification
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
     document.getElementById('btn-block-access').addEventListener('click', handleBlockAccess);
     document.getElementById('btn-unblock-access').addEventListener('click', handleUnblockAccess);
@@ -753,4 +818,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     initColorPicker();
     initModifyColorPicker();
     await loadClients();
+});
+
+// ============================================================
+// FERMER LES MODALS AVEC LA TOUCHE ÉCHAP
+// ============================================================
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeClientDetail();
+    }
 });
