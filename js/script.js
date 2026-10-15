@@ -1,42 +1,444 @@
 // ============================================================
-// VANTEX - Application bancaire (script principal client)
+// APP PAY - Logique client (Firebase + i18n + couleur dynamique)
 // ============================================================
+
+import {
+    db,
+    authPromise,
+    collection,
+    doc,
+    getDoc,
+    updateDoc
+} from './firebase-config.js';
 
 // ---------- ÉTAT GLOBAL ----------
 const appState = {
-    user: {
-        name: 'KWIATKOWSKI PW',
-        initials: 'KP',
-        email: 'kwiatkowski@vantex.pl'
-    },
-    balance: 8000.00,
+    client: null,          // Client chargé depuis Firestore
+    clientId: null,        // ID du client (?id=...)
+    balance: 0,
     currency: 'zł',
-    transactions: [
-        { type: 'debit', title: 'Virement envoyé à Emmanu...', date: '23/09/2026 • 01:24', amount: -2000 },
-        { type: 'credit', title: 'Virement reçu de Mbank', date: '23/09/2026 • 01:21', amount: 10000 }
-    ],
+    transactions: [],
     pendingTransfer: null,
-    currentClient: null
+    lang: 'fr',
+    i18n: {}               // Traductions chargées
 };
 
-// ---------- LECTURE DU CLIENT DEPUIS L'URL ----------
-function getClientFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    const encoded = params.get('c');
-    if (!encoded) return null;
-    try {
-        const normalized = encoded.replace(/-/g, '+').replace(/_/g, '/');
-        const json = decodeURIComponent(escape(atob(normalized)));
-        return JSON.parse(json);
-    } catch (e) {
-        console.error('Erreur décodage client', e);
-        return null;
+// ============================================================
+// TRADUCTIONS (i18n)
+// ============================================================
+const TRANSLATIONS = {
+    fr: {
+        available_balance: "Solde disponible",
+        account_subtitle: "Compte pour tous vos besoins",
+        see_iban: "Voir mon IBAN",
+        make_transfer: "Effectuer un virement",
+        see_card: "Voir ma carte virtuelle",
+        transactions_history: "Historique des transactions",
+        amount: "Montant du virement",
+        beneficiary_name: "Nom du bénéficiaire",
+        iban: "IBAN / Numéro de Compte",
+        bic: "Code Banque (BIC / SWIFT)",
+        bank_name: "Nom de la Banque",
+        reason: "Raison du virement",
+        continue: "Continuer",
+        identity_verification: "Vérification d'identité",
+        pending_transfer_details: "Détails du virement en attente",
+        cancel_transfer: "Annuler le virement",
+        enter_activation_code: "Veuillez saisir le code d'activation du virement",
+        activation_code: "Code d'activation",
+        transfer_in_progress: "Votre ordre de virement en cours...",
+        identity_verified: "Vérification d'identité effectuée avec succès.",
+        progress_desc: "Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.",
+        transfer_success: "Virement effectué avec succès",
+        success_subtitle: "Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.",
+        amount_sent: "Montant envoyé",
+        beneficiary: "Bénéficiaire",
+        date: "Date",
+        reference: "Référence",
+        back_to_dashboard: "Retour au tableau de bord",
+        my_virtual_card: "Ma carte virtuelle",
+        holder: "Titulaire",
+        expires: "Expire",
+        show_details: "Afficher les détails",
+        hide_details: "Masquer les détails",
+        freeze_card: "Geler la carte",
+        settings: "Paramètres",
+        monthly_limit: "Plafond mensuel",
+        monthly_spent: "Dépenses du mois",
+        status: "Statut",
+        active: "Active",
+        type: "Type",
+        my_account: "Mon compte",
+        verified: "Vérifié",
+        account_holder_premium: "Titulaire du compte • Client Premium",
+        full_name: "Nom complet",
+        email_address: "Adresse e-mail",
+        phone_number: "Numéro de téléphone",
+        country: "Pays de résidence",
+        account_id: "Identifiant unique",
+        opening_date: "Date d'ouverture",
+        edit_profile: "Modifier le profil",
+        security: "Sécurité",
+        notifications: "Notifications",
+        no_transactions: "Aucune transaction pour le moment",
+        // Messages
+        err_email: "Adresse e-mail incorrecte.",
+        err_pin: "Code PIN incorrect.",
+        err_amount: "Montant invalide.",
+        err_balance: "Solde insuffisant.",
+        err_fields: "Veuillez remplir tous les champs.",
+        err_activation: "Code d'activation incorrect.",
+        err_percent: "Le montant dépasse la limite autorisée ({limit}).",
+        err_client_not_found: "Client introuvable. Lien invalide.",
+        err_no_link: "Aucun lien fourni. Accès refusé.",
+        welcome: "Bienvenue",
+        login_success: "Connexion réussie. Bienvenue !",
+        transfer_cancelled: "Virement annulé.",
+        transfer_finalized: "Virement finalisé avec succès !"
+    },
+    en: {
+        available_balance: "Available balance",
+        account_subtitle: "Account for all your needs",
+        see_iban: "See my IBAN",
+        make_transfer: "Make a transfer",
+        see_card: "See my virtual card",
+        transactions_history: "Transaction history",
+        amount: "Transfer amount",
+        beneficiary_name: "Beneficiary name",
+        iban: "IBAN / Account number",
+        bic: "Bank code (BIC / SWIFT)",
+        bank_name: "Bank name",
+        reason: "Transfer reason",
+        continue: "Continue",
+        identity_verification: "Identity verification",
+        pending_transfer_details: "Pending transfer details",
+        cancel_transfer: "Cancel transfer",
+        enter_activation_code: "Please enter the transfer activation code",
+        activation_code: "Activation code",
+        transfer_in_progress: "Your transfer is in progress...",
+        identity_verified: "Identity verification successful.",
+        progress_desc: "Please wait for the funds to reach your bank before refreshing this page.",
+        transfer_success: "Transfer completed successfully",
+        success_subtitle: "Your transfer has been processed and will be credited to the beneficiary within 24 to 48 hours.",
+        amount_sent: "Amount sent",
+        beneficiary: "Beneficiary",
+        date: "Date",
+        reference: "Reference",
+        back_to_dashboard: "Back to dashboard",
+        my_virtual_card: "My virtual card",
+        holder: "Holder",
+        expires: "Expires",
+        show_details: "Show details",
+        hide_details: "Hide details",
+        freeze_card: "Freeze card",
+        settings: "Settings",
+        monthly_limit: "Monthly limit",
+        monthly_spent: "Monthly spent",
+        status: "Status",
+        active: "Active",
+        type: "Type",
+        my_account: "My account",
+        verified: "Verified",
+        account_holder_premium: "Account holder • Premium Client",
+        full_name: "Full name",
+        email_address: "Email address",
+        phone_number: "Phone number",
+        country: "Country of residence",
+        account_id: "Unique ID",
+        opening_date: "Opening date",
+        edit_profile: "Edit profile",
+        security: "Security",
+        notifications: "Notifications",
+        no_transactions: "No transactions yet",
+        err_email: "Incorrect email address.",
+        err_pin: "Incorrect PIN code.",
+        err_amount: "Invalid amount.",
+        err_balance: "Insufficient balance.",
+        err_fields: "Please fill in all fields.",
+        err_activation: "Incorrect activation code.",
+        err_percent: "Amount exceeds allowed limit ({limit}).",
+        err_client_not_found: "Client not found. Invalid link.",
+        err_no_link: "No link provided. Access denied.",
+        welcome: "Welcome",
+        login_success: "Login successful. Welcome!",
+        transfer_cancelled: "Transfer cancelled.",
+        transfer_finalized: "Transfer completed successfully!"
+    },
+    es: {
+        available_balance: "Saldo disponible",
+        account_subtitle: "Cuenta para todas tus necesidades",
+        see_iban: "Ver mi IBAN",
+        make_transfer: "Hacer una transferencia",
+        see_card: "Ver mi tarjeta virtual",
+        transactions_history: "Historial de transacciones",
+        amount: "Importe de la transferencia",
+        beneficiary_name: "Nombre del beneficiario",
+        iban: "IBAN / Número de cuenta",
+        bic: "Código bancario (BIC / SWIFT)",
+        bank_name: "Nombre del banco",
+        reason: "Motivo de la transferencia",
+        continue: "Continuar",
+        identity_verification: "Verificación de identidad",
+        pending_transfer_details: "Detalles de la transferencia pendiente",
+        cancel_transfer: "Cancelar transferencia",
+        enter_activation_code: "Introduzca el código de activación",
+        activation_code: "Código de activación",
+        transfer_in_progress: "Su transferencia está en curso...",
+        identity_verified: "Verificación de identidad exitosa.",
+        progress_desc: "Espere a que los fondos lleguen a su banco antes de actualizar.",
+        transfer_success: "Transferencia completada con éxito",
+        success_subtitle: "Su transferencia ha sido procesada y se acreditará en 24 a 48 horas.",
+        amount_sent: "Importe enviado",
+        beneficiary: "Beneficiario",
+        date: "Fecha",
+        reference: "Referencia",
+        back_to_dashboard: "Volver al panel",
+        my_virtual_card: "Mi tarjeta virtual",
+        holder: "Titular",
+        expires: "Caduca",
+        show_details: "Mostrar detalles",
+        hide_details: "Ocultar detalles",
+        freeze_card: "Congelar tarjeta",
+        settings: "Ajustes",
+        monthly_limit: "Límite mensual",
+        monthly_spent: "Gastos del mes",
+        status: "Estado",
+        active: "Activa",
+        type: "Tipo",
+        my_account: "Mi cuenta",
+        verified: "Verificado",
+        account_holder_premium: "Titular • Cliente Premium",
+        full_name: "Nombre completo",
+        email_address: "Correo electrónico",
+        phone_number: "Número de teléfono",
+        country: "País de residencia",
+        account_id: "ID único",
+        opening_date: "Fecha de apertura",
+        edit_profile: "Editar perfil",
+        security: "Seguridad",
+        notifications: "Notificaciones",
+        no_transactions: "Sin transacciones por ahora",
+        err_email: "Correo electrónico incorrecto.",
+        err_pin: "PIN incorrecto.",
+        err_amount: "Importe inválido.",
+        err_balance: "Saldo insuficiente.",
+        err_fields: "Por favor, rellene todos los campos.",
+        err_activation: "Código de activación incorrecto.",
+        err_percent: "El importe supera el límite permitido ({limit}).",
+        err_client_not_found: "Cliente no encontrado. Enlace inválido.",
+        err_no_link: "Sin enlace. Acceso denegado.",
+        welcome: "Bienvenido",
+        login_success: "¡Inicio de sesión exitoso!",
+        transfer_cancelled: "Transferencia cancelada.",
+        transfer_finalized: "¡Transferencia completada!"
+    },
+    de: {
+        available_balance: "Verfügbares Guthaben",
+        account_subtitle: "Konto für alle Ihre Bedürfnisse",
+        see_iban: "IBAN anzeigen",
+        make_transfer: "Überweisung durchführen",
+        see_card: "Virtuelle Karte anzeigen",
+        transactions_history: "Transaktionsverlauf",
+        amount: "Überweisungsbetrag",
+        beneficiary_name: "Name des Begünstigten",
+        iban: "IBAN / Kontonummer",
+        bic: "Bankleitzahl (BIC / SWIFT)",
+        bank_name: "Bankname",
+        reason: "Überweisungsgrund",
+        continue: "Weiter",
+        identity_verification: "Identitätsüberprüfung",
+        pending_transfer_details: "Details der ausstehenden Überweisung",
+        cancel_transfer: "Überweisung abbrechen",
+        enter_activation_code: "Bitte geben Sie den Aktivierungscode ein",
+        activation_code: "Aktivierungscode",
+        transfer_in_progress: "Ihre Überweisung wird bearbeitet...",
+        identity_verified: "Identitätsprüfung erfolgreich.",
+        progress_desc: "Bitte warten Sie, bis das Geld bei Ihrer Bank eingegangen ist.",
+        transfer_success: "Überweisung erfolgreich abgeschlossen",
+        success_subtitle: "Ihre Überweisung wurde bearbeitet und wird innerhalb von 24 bis 48 Stunden gutgeschrieben.",
+        amount_sent: "Gesendeter Betrag",
+        beneficiary: "Begünstigter",
+        date: "Datum",
+        reference: "Referenz",
+        back_to_dashboard: "Zurück zum Dashboard",
+        my_virtual_card: "Meine virtuelle Karte",
+        holder: "Inhaber",
+        expires: "Gültig bis",
+        show_details: "Details anzeigen",
+        hide_details: "Details verbergen",
+        freeze_card: "Karte sperren",
+        settings: "Einstellungen",
+        monthly_limit: "Monatliches Limit",
+        monthly_spent: "Diesen Monat ausgegeben",
+        status: "Status",
+        active: "Aktiv",
+        type: "Typ",
+        my_account: "Mein Konto",
+        verified: "Verifiziert",
+        account_holder_premium: "Kontoinhaber • Premium-Kunde",
+        full_name: "Vollständiger Name",
+        email_address: "E-Mail-Adresse",
+        phone_number: "Telefonnummer",
+        country: "Wohnsitzland",
+        account_id: "Eindeutige ID",
+        opening_date: "Eröffnungsdatum",
+        edit_profile: "Profil bearbeiten",
+        security: "Sicherheit",
+        notifications: "Benachrichtigungen",
+        no_transactions: "Noch keine Transaktionen",
+        err_email: "Falsche E-Mail-Adresse.",
+        err_pin: "Falscher PIN-Code.",
+        err_amount: "Ungültiger Betrag.",
+        err_balance: "Unzureichendes Guthaben.",
+        err_fields: "Bitte alle Felder ausfüllen.",
+        err_activation: "Falscher Aktivierungscode.",
+        err_percent: "Betrag überschreitet das Limit ({limit}).",
+        err_client_not_found: "Kunde nicht gefunden. Ungültiger Link.",
+        err_no_link: "Kein Link. Zugriff verweigert.",
+        welcome: "Willkommen",
+        login_success: "Anmeldung erfolgreich. Willkommen!",
+        transfer_cancelled: "Überweisung abgebrochen.",
+        transfer_finalized: "Überweisung erfolgreich abgeschlossen!"
+    },
+    pl: {
+        available_balance: "Dostępne saldo",
+        account_subtitle: "Konto na wszystkie potrzeby",
+        see_iban: "Zobacz moje IBAN",
+        make_transfer: "Wykonaj przelew",
+        see_card: "Zobacz kartę wirtualną",
+        transactions_history: "Historia transakcji",
+        amount: "Kwota przelewu",
+        beneficiary_name: "Nazwa odbiorcy",
+        iban: "IBAN / Numer konta",
+        bic: "Kod banku (BIC / SWIFT)",
+        bank_name: "Nazwa banku",
+        reason: "Powód przelewu",
+        continue: "Kontynuuj",
+        identity_verification: "Weryfikacja tożsamości",
+        pending_transfer_details: "Szczegóły oczekującego przelewu",
+        cancel_transfer: "Anuluj przelew",
+        enter_activation_code: "Wprowadź kod aktywacyjny przelewu",
+        activation_code: "Kod aktywacyjny",
+        transfer_in_progress: "Twój przelew jest w trakcie realizacji...",
+        identity_verified: "Weryfikacja tożsamości zakończona pomyślnie.",
+        progress_desc: "Poczekaj na zaksięgowanie środków w banku.",
+        transfer_success: "Przelew zakończony pomyślnie",
+        success_subtitle: "Twój przelew został przetworzony i zostanie zaksięgowany w ciągu 24-48 godzin.",
+        amount_sent: "Wysłana kwota",
+        beneficiary: "Odbiorca",
+        date: "Data",
+        reference: "Referencja",
+        back_to_dashboard: "Powrót do pulpitu",
+        my_virtual_card: "Moja karta wirtualna",
+        holder: "Posiadacz",
+        expires: "Ważna do",
+        show_details: "Pokaż szczegóły",
+        hide_details: "Ukryj szczegóły",
+        freeze_card: "Zablokuj kartę",
+        settings: "Ustawienia",
+        monthly_limit: "Miesięczny limit",
+        monthly_spent: "Wydatki w tym miesiącu",
+        status: "Status",
+        active: "Aktywna",
+        type: "Typ",
+        my_account: "Moje konto",
+        verified: "Zweryfikowany",
+        account_holder_premium: "Posiadacz konta • Klient Premium",
+        full_name: "Pełne imię i nazwisko",
+        email_address: "Adres e-mail",
+        phone_number: "Numer telefonu",
+        country: "Kraj zamieszkania",
+        account_id: "Unikalny identyfikator",
+        opening_date: "Data otwarcia",
+        edit_profile: "Edytuj profil",
+        security: "Bezpieczeństwo",
+        notifications: "Powiadomienia",
+        no_transactions: "Brak transakcji",
+        err_email: "Nieprawidłowy adres e-mail.",
+        err_pin: "Nieprawidłowy kod PIN.",
+        err_amount: "Nieprawidłowa kwota.",
+        err_balance: "Niewystarczające saldo.",
+        err_fields: "Wypełnij wszystkie pola.",
+        err_activation: "Nieprawidłowy kod aktywacyjny.",
+        err_percent: "Kwota przekracza dozwolony limit ({limit}).",
+        err_client_not_found: "Nie znaleziono klienta. Nieprawidłowy link.",
+        err_no_link: "Brak linku. Odmowa dostępu.",
+        welcome: "Witaj",
+        login_success: "Zalogowano pomyślnie. Witaj!",
+        transfer_cancelled: "Przelew anulowany.",
+        transfer_finalized: "Przelew zakończony pomyślnie!"
     }
+};
+
+// ---------- FONCTION DE TRADUCTION ----------
+function t(key, vars = {}) {
+    const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.fr;
+    let text = dict[key] || TRANSLATIONS.fr[key] || key;
+    // Remplacer les variables {xxx}
+    Object.keys(vars).forEach(k => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
+    });
+    return text;
 }
 
-// ---------- UTILITAIRES ----------
+// ---------- APPLICATION DE LA LANGUE À L'INTERFACE ----------
+function applyLanguage() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        el.textContent = t(key);
+    });
+    // Titre de la page de connexion
+    const loginTitle = document.getElementById('login-title-text');
+    if (loginTitle) loginTitle.textContent = t('identity_verification').replace('Vérification', 'Connexion à votre compte');
+}
+
+// ---------- APPLICATION DE LA COULEUR DYNAMIQUE ----------
+function applyClientColor(color) {
+    if (!color) color = '#ff7a00';
+    // Générer la variante claire et sombre
+    const light = lightenColor(color, 15);
+    const dark = darkenColor(color, 15);
+    const soft = hexToRgba(color, 0.1);
+
+    document.documentElement.style.setProperty('--primary-color', color);
+    document.documentElement.style.setProperty('--primary-color-light', light);
+    document.documentElement.style.setProperty('--primary-color-dark', dark);
+    document.documentElement.style.setProperty('--primary-color-soft', soft);
+}
+
+// Utilitaires couleur
+function hexToRgb(hex) {
+    const h = hex.replace('#', '');
+    return {
+        r: parseInt(h.substring(0, 2), 16),
+        g: parseInt(h.substring(2, 4), 16),
+        b: parseInt(h.substring(4, 6), 16)
+    };
+}
+function rgbToHex(r, g, b) {
+    return '#' + [r, g, b].map(x => {
+        const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+}
+function lightenColor(hex, percent) {
+    const { r, g, b } = hexToRgb(hex);
+    const amt = 255 * (percent / 100);
+    return rgbToHex(r + (255 - r) * (percent / 100), g + (255 - g) * (percent / 100), b + (255 - b) * (percent / 100));
+}
+function darkenColor(hex, percent) {
+    const { r, g, b } = hexToRgb(hex);
+    return rgbToHex(r * (1 - percent / 100), g * (1 - percent / 100), b * (1 - percent / 100));
+}
+function hexToRgba(hex, alpha) {
+    const { r, g, b } = hexToRgb(hex);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+// ---------- UTILITAIRES GÉNÉRAUX ----------
 function formatMoney(amount) {
-    return amount.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
+    const num = Number(amount) || 0;
+    return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
 }
 
 function showToast(message, type = 'info') {
@@ -56,75 +458,137 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// ---------- CONNEXION ----------
+// ---------- LECTURE DE L'URL ----------
+function getClientIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
+
+// ---------- AFFICHAGE ÉCRAN ----------
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+}
+
+// ============================================================
+// CHARGEMENT DU CLIENT DEPUIS FIRESTORE
+// ============================================================
+async function loadClientFromFirestore() {
+    const clientId = getClientIdFromURL();
+
+    // Pas d'ID → écran invalide
+    if (!clientId) {
+        console.warn('Aucun ID dans l\'URL');
+        showScreen('invalid-screen');
+        return null;
+    }
+
+    appState.clientId = clientId;
+
+    try {
+        await authPromise;
+        const docRef = doc(db, 'clients', clientId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+            console.warn('Client introuvable :', clientId);
+            showScreen('invalid-screen');
+            return null;
+        }
+
+        const client = docSnap.data();
+        appState.client = client;
+        appState.balance = Number(client.balance) || 0;
+        appState.currency = client.currency || 'zł';
+        appState.transactions = client.transactions || [];
+        appState.lang = client.language || 'fr';
+
+        // Appliquer la couleur dynamique
+        applyClientColor(client.color);
+
+        // Préparer la page de connexion
+        const badgeText = document.getElementById('badge-text');
+        if (badgeText) {
+            badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
+        }
+        const emailInput = document.getElementById('login-email');
+        if (emailInput) emailInput.value = client.email;
+
+        // Afficher la page de connexion
+        showScreen('login-screen');
+
+        console.log('✅ Client chargé :', client.firstName, client.lastName);
+        return client;
+
+    } catch (err) {
+        console.error('Erreur chargement client :', err);
+        showScreen('invalid-screen');
+        return null;
+    }
+}
+
+// ============================================================
+// CONNEXION DU CLIENT
+// ============================================================
 function handleLogin(event) {
     event.preventDefault();
     const email = document.getElementById('login-email').value.trim().toLowerCase();
-    const password = document.getElementById('login-password').value.trim();
+    const pin = document.getElementById('login-password').value.trim();
     const errorEl = document.getElementById('login-error');
+    const client = appState.client;
 
-    const client = getClientFromURL();
-
-    // Mode lien unique (client créé via admin)
-    if (client) {
-        if (email !== (client.email || '').toLowerCase()) {
-            errorEl.textContent = 'Adresse e-mail incorrecte.';
-            return;
-        }
-        if (password !== client.pin) {
-            errorEl.textContent = 'Code PIN incorrect.';
-            return;
-        }
-
-        // Charger les données du client
-        appState.currentClient = client;
-        appState.balance = parseFloat(client.balance) || 0;
-        appState.currency = client.currency || 'zł';
-        appState.user.name = `${client.lastName} ${client.firstName}`;
-        appState.user.initials = ((client.firstName || 'X')[0] + (client.lastName || 'X')[0]).toUpperCase();
-
-        errorEl.textContent = '';
-        document.getElementById('login-screen').classList.remove('active');
-        setTimeout(() => {
-            document.getElementById('app-screen').classList.add('active');
-            document.getElementById('header-avatar').textContent = appState.user.initials;
-            navigateTo('dashboard');
-            showToast(`Bienvenue, ${client.firstName} !`, 'success');
-        }, 200);
+    if (!client) {
+        errorEl.textContent = t('err_client_not_found');
         return;
     }
 
-    // Mode démo (sans lien unique)
-    if (!email || !password) {
-        errorEl.textContent = 'Veuillez remplir tous les champs.';
-        return;
-    }
-    if (password.length < 4) {
-        errorEl.textContent = "Le code d'accès doit contenir au moins 4 caractères.";
+    if (email !== (client.email || '').toLowerCase()) {
+        errorEl.textContent = t('err_email');
         return;
     }
 
+    if (pin !== client.pin) {
+        errorEl.textContent = t('err_pin');
+        return;
+    }
+
+    // Connexion réussie
     errorEl.textContent = '';
-    document.getElementById('login-screen').classList.remove('active');
+    showScreen('app-screen');
+
+    // Appliquer l'avatar et les infos
+    const initials = ((client.firstName || 'X')[0] + (client.lastName || 'X')[0]).toUpperCase();
+    document.getElementById('header-avatar').textContent = initials;
+
+    // Appliquer la langue
+    applyLanguage();
+
+    // Aller au dashboard
     setTimeout(() => {
-        document.getElementById('app-screen').classList.add('active');
         navigateTo('dashboard');
-        showToast('Connexion réussie. Bienvenue !', 'success');
+        showToast(t('login_success'), 'success');
     }, 200);
 }
 
+// ============================================================
+// DÉCONNEXION
+// ============================================================
 function handleLogout() {
     if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
-    document.getElementById('app-screen').classList.remove('active');
-    setTimeout(() => {
-        document.getElementById('login-screen').classList.add('active');
-        document.getElementById('login-form').reset();
-        document.getElementById('login-error').textContent = '';
-        appState.pendingTransfer = null;
-    }, 200);
+    showScreen('login-screen');
+    document.getElementById('login-form').reset();
+    document.getElementById('login-error').textContent = '';
+    if (appState.client) {
+        document.getElementById('login-email').value = appState.client.email;
+    }
+    appState.pendingTransfer = null;
+    // Revenir à la langue par défaut pour l'interface de connexion
+    appState.lang = appState.client?.language || 'fr';
 }
 
-// ---------- NAVIGATION ----------
+// ============================================================
+// NAVIGATION ENTRE VUES
+// ============================================================
 const viewTemplates = {
     dashboard: 'tpl-dashboard',
     transfer: 'tpl-transfer',
@@ -148,30 +612,53 @@ function navigateTo(viewName, data = {}) {
         li.classList.toggle('active', li.dataset.view === viewName);
     });
 
+    // Réappliquer la langue après chaque navigation (car le DOM a changé)
+    applyLanguage();
+
     if (viewName === 'dashboard') renderDashboard();
     if (viewName === 'transfer') renderTransferView();
     if (viewName === 'verification') renderVerificationView(data);
     if (viewName === 'progress') renderProgressView(data);
     if (viewName === 'success') renderSuccessView(data);
+    if (viewName === 'card') renderCardView();
+    if (viewName === 'account') renderAccountView();
 
     container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ---------- VUE : DASHBOARD ----------
+// ============================================================
+// VUE : DASHBOARD
+// ============================================================
 function renderDashboard() {
     document.getElementById('balance-display').textContent = formatMoney(appState.balance);
 
-    // Nom de bienvenue
     const welcomeName = document.getElementById('welcome-name');
-    if (welcomeName) {
-        welcomeName.textContent = appState.currentClient
-            ? `${appState.currentClient.lastName} ${appState.currentClient.firstName}`.toUpperCase()
-            : 'KWIATKOWSKI PW';
+    if (welcomeName && appState.client) {
+        welcomeName.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
     }
 
-    // Historique transactions
+    // Bouton Voir IBAN
+    const btnIban = document.getElementById('btn-show-iban');
+    if (btnIban) {
+        btnIban.addEventListener('click', () => {
+            const id = appState.client?.id || '--';
+            navigator.clipboard?.writeText(id).then(() => {
+                showToast('ID copié : ' + id, 'success');
+            }).catch(() => {
+                showToast('ID : ' + id, 'info');
+            });
+        });
+    }
+
+    // Historique des transactions
     const txList = document.getElementById('tx-list');
     txList.innerHTML = '';
+
+    if (!appState.transactions || appState.transactions.length === 0) {
+        txList.innerHTML = `<p class="tx-empty">${t('no_transactions')}</p>`;
+        return;
+    }
+
     appState.transactions.forEach(tx => {
         const isDebit = tx.amount < 0;
         const item = document.createElement('div');
@@ -192,31 +679,11 @@ function renderDashboard() {
         `;
         txList.appendChild(item);
     });
-
-    // Remplir la page Mon Compte (même si pas encore affichée)
-    renderAccountView();
 }
 
-// ---------- VUE : MON COMPTE ----------
-function renderAccountView() {
-    const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-
-    if (appState.currentClient) {
-        const c = appState.currentClient;
-        const fullName = `${c.lastName} ${c.firstName}`.toUpperCase();
-        const initials = ((c.firstName || 'X')[0] + (c.lastName || 'X')[0]).toUpperCase();
-        setEl('account-initials', initials);
-        setEl('account-fullname', fullName);
-        setEl('account-name', fullName);
-        setEl('account-email', c.email);
-        setEl('account-phone', c.phone || '—');
-        setEl('account-iban', (c.id || '').toUpperCase());
-        setEl('account-created', new Date(c.createdAt).toLocaleDateString('fr-FR'));
-        setEl('vc-holder', fullName);
-    }
-}
-
-// ---------- VUE : VIREMENT ----------
+// ============================================================
+// VUE : VIREMENT
+// ============================================================
 function renderTransferView() {
     const balEl = document.getElementById('transfer-balance');
     if (balEl) balEl.textContent = formatMoney(appState.balance);
@@ -227,6 +694,7 @@ function renderTransferView() {
 
 function handleTransferSubmit(event) {
     event.preventDefault();
+
     const amount = parseFloat(document.getElementById('tf-amount').value);
     const beneficiary = document.getElementById('tf-beneficiary').value.trim();
     const iban = document.getElementById('tf-iban').value.trim();
@@ -234,62 +702,75 @@ function handleTransferSubmit(event) {
     const bank = document.getElementById('tf-bank').value.trim();
     const reason = document.getElementById('tf-reason').value.trim();
 
-    if (!amount || amount <= 0) return showToast('Montant invalide.', 'error');
-    if (amount > appState.balance) return showToast('Solde insuffisant.', 'error');
+    if (!amount || amount <= 0) return showToast(t('err_amount'), 'error');
+    if (amount > appState.balance) return showToast(t('err_balance'), 'error');
     if (!beneficiary || !iban || !bic || !bank || !reason) {
-        return showToast('Veuillez remplir tous les champs.', 'error');
+        return showToast(t('err_fields'), 'error');
+    }
+
+    // ✅ Vérification du POURCENTAGE défini par l'admin
+    const percentLimit = Number(appState.client?.percentValue ?? 100);
+    const maxAllowed = appState.balance * (percentLimit / 100);
+    if (amount > maxAllowed) {
+        return showToast(
+            t('err_percent', { limit: formatMoney(maxAllowed) }),
+            'error'
+        );
     }
 
     appState.pendingTransfer = { amount, beneficiary, iban, bic, bank, reason };
     navigateTo('verification', appState.pendingTransfer);
 }
 
-// ---------- VUE : VÉRIFICATION ----------
+// ============================================================
+// VUE : VÉRIFICATION
+// ============================================================
 function renderVerificationView(data) {
-    const t = appState.pendingTransfer || data;
-    if (!t) return navigateTo('dashboard');
+    const tr = appState.pendingTransfer || data;
+    if (!tr) return navigateTo('dashboard');
 
-    document.getElementById('vf-amount').textContent = formatMoney(t.amount);
-    document.getElementById('vf-beneficiary').textContent = t.beneficiary;
-    document.getElementById('vf-iban').textContent = t.iban;
-    document.getElementById('vf-bic').textContent = t.bic;
-    document.getElementById('vf-bank').textContent = t.bank;
-    document.getElementById('vf-reason').textContent = t.reason;
+    document.getElementById('vf-amount').textContent = formatMoney(tr.amount);
+    document.getElementById('vf-beneficiary').textContent = tr.beneficiary;
+    document.getElementById('vf-iban').textContent = tr.iban;
+    document.getElementById('vf-bic').textContent = tr.bic;
+    document.getElementById('vf-bank').textContent = tr.bank;
+    document.getElementById('vf-reason').textContent = tr.reason;
 }
 
 function handleVerifySubmit(event) {
     event.preventDefault();
     const code = document.getElementById('vf-code').value.trim();
 
-    // Si un client est connecté via un lien unique → vérifier son code d'activation
-    if (appState.currentClient) {
-        if (code !== appState.currentClient.activationCode) {
-            return showToast("Code d'activation incorrect.", 'error');
-        }
-    } else {
-        // Mode démo : au moins 4 caractères
-        if (code.length < 4) {
-            return showToast("Le code d'activation doit contenir au moins 4 caractères.", 'error');
-        }
+    if (!appState.client) {
+        return showToast(t('err_client_not_found'), 'error');
+    }
+
+    // ✅ Vérifier avec le code d'activation du client (Firestore)
+    if (code !== appState.client.activationCode) {
+        return showToast(t('err_activation'), 'error');
     }
 
     navigateTo('progress', appState.pendingTransfer);
 }
 
 function cancelTransfer() {
-    if (!confirm('Voulez-vous vraiment annuler ce virement ?')) return;
+    if (!confirm(t('cancel_transfer') + ' ?')) return;
     appState.pendingTransfer = null;
     navigateTo('dashboard');
-    showToast('Virement annulé.', 'info');
+    showToast(t('transfer_cancelled'), 'info');
 }
 
-// ---------- VUE : PROGRESSION ----------
+// ============================================================
+// VUE : PROGRESSION
+// ============================================================
 function renderProgressView(data) {
-    const t = appState.pendingTransfer || data;
-    document.getElementById('pf-amount').textContent = formatMoney(t.amount);
-    document.getElementById('pf-beneficiary').textContent = t.beneficiary;
-    document.getElementById('pf-iban').textContent = t.iban;
-    document.getElementById('pf-bank').textContent = t.bank;
+    const tr = appState.pendingTransfer || data;
+    if (!tr) return navigateTo('dashboard');
+
+    document.getElementById('pf-amount').textContent = formatMoney(tr.amount);
+    document.getElementById('pf-beneficiary').textContent = tr.beneficiary;
+    document.getElementById('pf-iban').textContent = tr.iban;
+    document.getElementById('pf-bank').textContent = tr.bank;
 
     let progress = 0;
     const fill = document.getElementById('progress-fill');
@@ -308,96 +789,151 @@ function renderProgressView(data) {
     }, 30);
 }
 
-function finalizeTransfer() {
-    const t = appState.pendingTransfer;
-    if (!t) return;
+// ============================================================
+// FINALISATION DU VIREMENT
+// ============================================================
+async function finalizeTransfer() {
+    const tr = appState.pendingTransfer;
+    if (!tr || !appState.client) return;
 
-    appState.balance -= t.amount;
+    // Déduire du solde
+    appState.balance -= tr.amount;
 
+    // Date actuelle
     const now = new Date();
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
+    // Ajouter la transaction en local
     appState.transactions.unshift({
         type: 'debit',
-        title: 'Virement envoyé à ' + t.beneficiary,
+        title: 'Virement envoyé à ' + tr.beneficiary,
         date: dateStr,
-        amount: -t.amount
+        amount: -tr.amount
     });
 
-    // Mettre à jour le localStorage si client connecté via lien unique
-    if (appState.currentClient) {
-        try {
-            const clients = JSON.parse(localStorage.getItem('vantex_clients') || '[]');
-            const idx = clients.findIndex(c => c.id === appState.currentClient.id);
-            if (idx !== -1) {
-                clients[idx].balance = appState.balance;
-                clients[idx].transactions = appState.transactions;
-                localStorage.setItem('vantex_clients', JSON.stringify(clients));
-            }
-        } catch (e) { console.warn('Sync localStorage impossible', e); }
+    // Référence unique
+    const ref = 'AP' + Date.now().toString().slice(-8);
+
+    // ✅ Sauvegarder dans Firestore
+    try {
+        await authPromise;
+        await updateDoc(doc(db, 'clients', appState.clientId), {
+            balance: appState.balance,
+            transactions: appState.transactions
+        });
+        console.log('✅ Virement sauvegardé dans Firestore');
+    } catch (err) {
+        console.error('Erreur sauvegarde virement :', err);
+        showToast('Erreur de synchronisation', 'error');
     }
 
-    const ref = 'VX' + Date.now().toString().slice(-8);
-
+    // Aller à l'écran de succès
     navigateTo('success', {
-        amount: t.amount,
-        beneficiary: t.beneficiary,
+        amount: tr.amount,
+        beneficiary: tr.beneficiary,
         date: dateStr,
         reference: ref
     });
 
-    showToast('Virement finalisé avec succès !', 'success');
+    showToast(t('transfer_finalized'), 'success');
     appState.pendingTransfer = null;
 }
 
-// ---------- VUE : SUCCÈS ----------
+// ============================================================
+// VUE : SUCCÈS
+// ============================================================
 function renderSuccessView(data) {
     document.getElementById('sf-amount').textContent = formatMoney(data.amount);
     document.getElementById('sf-beneficiary').textContent = data.beneficiary;
     document.getElementById('sf-date').textContent = data.date;
     document.getElementById('sf-ref').textContent = data.reference;
+
+    // ✅ Message personnalisé de l'admin
+    const customMsg = appState.client?.messageAfterTransfer;
+    const msgEl = document.getElementById('sf-custom-message');
+    if (msgEl && customMsg) {
+        msgEl.textContent = customMsg;
+    }
 }
 
-// ---------- CARTE VIRTUELLE ----------
+// ============================================================
+// VUE : CARTE VIRTUELLE
+// ============================================================
 let cardNumberVisible = false;
+
+function renderCardView() {
+    if (!appState.client) return;
+
+    const holder = document.getElementById('vc-holder');
+    if (holder) {
+        holder.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
+    }
+
+    // Plafond mensuel : on utilise le pourcentage du solde (ex: 100% = tout le solde)
+    const percentLimit = Number(appState.client.percentValue ?? 100);
+    const limit = appState.balance * (percentLimit / 100);
+    const limitEl = document.getElementById('card-limit');
+    if (limitEl) limitEl.textContent = formatMoney(limit);
+}
+
 function toggleCardNumber() {
     cardNumberVisible = !cardNumberVisible;
     const display = document.getElementById('vc-number-display');
     const label = document.getElementById('vc-toggle-label');
     if (cardNumberVisible) {
         display.textContent = '4021 5580 7412 4823';
-        label.textContent = 'Masquer les détails';
+        if (label) label.textContent = t('hide_details');
     } else {
         display.textContent = '•••• •••• •••• 4823';
-        label.textContent = 'Afficher les détails';
+        if (label) label.textContent = t('show_details');
     }
 }
 
-// ---------- NOTIFICATIONS ----------
+// ============================================================
+// VUE : MON COMPTE
+// ============================================================
+function renderAccountView() {
+    if (!appState.client) return;
+    const c = appState.client;
+    const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    const fullName = `${c.lastName} ${c.firstName}`.toUpperCase();
+    const initials = ((c.firstName || 'X')[0] + (c.lastName || 'X')[0]).toUpperCase();
+
+    setEl('account-initials', initials);
+    setEl('account-fullname', fullName);
+    setEl('account-name', fullName);
+    setEl('account-email', c.email || '--');
+    setEl('account-phone', c.phone || '—');
+    setEl('account-country', (c.country || '--') + ' ' + (c.countryFlag || ''));
+    setEl('account-id', c.id ? c.id.toUpperCase() : '--');
+    setEl('account-created', c.createdAt ? new Date(c.createdAt).toLocaleDateString('fr-FR') : '--');
+}
+
+// ============================================================
+// NOTIFICATIONS DROPDOWN
+// ============================================================
 function toggleNotifications(event) {
     event.stopPropagation();
     document.getElementById('notif-dropdown').classList.toggle('show');
 }
 
-// ---------- INITIALISATION ----------
-document.addEventListener('DOMContentLoaded', () => {
-    // Préremplir les infos du client depuis l'URL
-    const client = getClientFromURL();
-    if (client) {
-        const badgeText = document.getElementById('badge-text');
-        if (badgeText) {
-            badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
-        }
-        const emailInput = document.getElementById('login-email');
-        if (emailInput) emailInput.value = client.email;
-        appState.currentClient = client;
+// ============================================================
+// INITIALISATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+    // Déterminer si on a un lien valide AVANT tout
+    const clientId = getClientIdFromURL();
+
+    if (!clientId) {
+        // Aucun lien → écran invalide immédiatement
+        showScreen('invalid-screen');
+        return;
     }
 
-    // Formulaire de connexion
+    // Brancher les événements de base
     document.getElementById('login-form').addEventListener('submit', handleLogin);
-
-    // Bouton notifications
     document.getElementById('notif-btn').addEventListener('click', toggleNotifications);
 
     // Fermer le dropdown notifications au clic extérieur
@@ -422,4 +958,7 @@ document.addEventListener('DOMContentLoaded', () => {
             handleVerifySubmit(e);
         }
     });
+
+    // Charger le client depuis Firestore
+    await loadClientFromFirestore();
 });
