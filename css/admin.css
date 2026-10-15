@@ -130,7 +130,8 @@ body {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     width: 100%;
     border: 1px solid #dcdfe6;
     border-radius: 8px;
@@ -140,10 +141,18 @@ body {
     outline: none;
     background-color: #fff;
     transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.4;
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: #ff7a00;
     box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
 }
@@ -154,6 +163,87 @@ body {
     color: #909399;
     margin-top: 5px;
     line-height: 1.4;
+}
+
+/* Champ pourcentage */
+.percentage-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    padding: 8px 14px;
+}
+
+.percentage-row:focus-within {
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+.percentage-label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.percentage-row input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ff7a00;
+    background: transparent;
+    text-align: center;
+    max-width: 80px;
+}
+
+/* Sélecteur de couleurs */
+.color-picker {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dcdfe6;
+    border-radius: 10px;
+}
+
+.color-option {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+}
+
+.color-option:hover {
+    transform: scale(1.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.color-option.selected {
+    border-color: #111;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.color-option.selected::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Bouton créer */
@@ -264,6 +354,15 @@ body {
 
 .client-name .flag {
     font-size: 16px;
+}
+
+.client-name .color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
 
 .client-email {
@@ -474,5 +573,14 @@ body {
     }
     .client-actions {
         justify-content: flex-end;
+    }
+    .color-picker {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    .percentage-row {
+        flex-wrap: wrap;
+    }
+    .percentage-row input {
+        max-width: 100%;
     }
 }
