@@ -17,12 +17,14 @@ body {
     margin: 0 auto;
 }
 
-/* En-tête */
+/* ============================================================
+   En-tête
+   ============================================================ */
 .admin-header {
     background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
     color: white;
     padding: 24px 30px;
-    border-radius: 16px;
+    border-radius: 10px;
     margin-bottom: 25px;
     box-shadow: 0 8px 24px rgba(255, 122, 0, 0.25);
 }
@@ -56,18 +58,33 @@ body {
     background: rgba(255, 255, 255, 0.25);
     font-size: 10px;
     padding: 3px 8px;
-    border-radius: 6px;
+    border-radius: 4px;
     font-weight: 600;
     letter-spacing: 1.5px;
 }
 
-/* Sections */
+/* ============================================================
+   Sections
+   ============================================================ */
 .form-section, .clients-section {
     background: white;
-    border-radius: 16px;
+    border-radius: 10px;
     padding: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     margin-bottom: 25px;
+}
+
+.modify-section {
+    border-top: 3px solid #1a73e8;
+}
+
+.modify-section .section-badge {
+    background-color: #e8f0fe;
+    border-color: #c5d8f5;
+}
+
+.modify-section .section-badge i {
+    color: #1a73e8;
 }
 
 .section-badge {
@@ -77,7 +94,7 @@ body {
     background-color: #f1f2f5;
     color: #333;
     padding: 10px 16px;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 25px;
@@ -100,7 +117,9 @@ body {
     margin-top: 0;
 }
 
-/* Formulaire */
+/* ============================================================
+   Formulaire
+   ============================================================ */
 .form-group {
     margin-bottom: 20px;
 }
@@ -134,7 +153,7 @@ body {
 .form-group textarea {
     width: 100%;
     border: 1px solid #dcdfe6;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 12px 14px;
     font-size: 14px;
     color: #333;
@@ -157,6 +176,13 @@ body {
     box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
 }
 
+.modify-section .form-group input:focus,
+.modify-section .form-group select:focus,
+.modify-section .form-group textarea:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
 .form-group small {
     display: block;
     font-size: 11px;
@@ -172,7 +198,7 @@ body {
     gap: 10px;
     background-color: #f8f9fa;
     border: 1px solid #dcdfe6;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 8px 14px;
 }
 
@@ -201,6 +227,42 @@ body {
     max-width: 80px;
 }
 
+/* Input avec addon (devise) */
+.input-with-addon {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    background-color: #fff;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.input-with-addon:focus-within {
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+.input-with-addon input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #333;
+    background: transparent;
+    min-width: 0;
+}
+
+.input-addon {
+    padding: 0 15px;
+    font-weight: 600;
+    color: #444;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
 /* Sélecteur de couleurs */
 .color-picker {
     display: grid;
@@ -209,7 +271,7 @@ body {
     padding: 12px;
     background-color: #f8f9fa;
     border: 1px solid #dcdfe6;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .color-option {
@@ -246,13 +308,14 @@ body {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Bouton créer */
-.btn-create {
+/* Boutons créer / sauvegarder */
+.btn-create,
+.btn-save-changes {
     width: 100%;
     background-color: #ff7a00;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 16px;
     font-size: 15px;
     font-weight: 600;
@@ -271,8 +334,170 @@ body {
 .btn-create:active {
     transform: scale(0.99);
 }
+.btn-create:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
-/* Liste des clients */
+.btn-save-changes {
+    background-color: #1a73e8;
+    margin-top: 25px;
+}
+
+.btn-save-changes:hover {
+    background-color: #1557b0;
+}
+.btn-save-changes:active {
+    transform: scale(0.99);
+}
+.btn-save-changes:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Boutons d'accès (bloquer/débloquer) */
+.access-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.btn-access {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    background-color: #fff;
+}
+
+.btn-access i {
+    font-size: 13px;
+}
+
+.btn-block {
+    border-color: #f5c6cb;
+    color: #e02424;
+}
+
+.btn-block:hover {
+    background-color: #fff5f5;
+}
+
+.btn-unblock {
+    border-color: #c3e6cb;
+    color: #03543f;
+}
+
+.btn-unblock:hover {
+    background-color: #f0fdf4;
+}
+
+.btn-add-tx {
+    width: 100%;
+    border-color: #ff7a00;
+    color: #ff7a00;
+    padding: 13px;
+    margin-top: 5px;
+}
+
+.btn-add-tx:hover {
+    background-color: #fff5eb;
+}
+
+/* Historique des virements dans la section modifier */
+.m-tx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 60px;
+}
+
+.m-tx-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 3px solid #ff7a00;
+    font-size: 13px;
+    gap: 10px;
+}
+
+.m-tx-item.credit {
+    border-left-color: #00c853;
+}
+
+.m-tx-item.debit {
+    border-left-color: #e02424;
+}
+
+.m-tx-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.m-tx-item-title {
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.m-tx-item-date {
+    font-size: 11px;
+    color: #888;
+}
+
+.m-tx-item-amount {
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.m-tx-item-amount.credit {
+    color: #03543f;
+}
+
+.m-tx-item-amount.debit {
+    color: #e02424;
+}
+
+.m-tx-item-delete {
+    background: transparent;
+    border: none;
+    color: #e02424;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: background 0.15s;
+}
+
+.m-tx-item-delete:hover {
+    background-color: #fff5f5;
+}
+
+/* Hidden utilitaire */
+.hidden {
+    display: none !important;
+}
+
+/* ============================================================
+   Liste des clients
+   ============================================================ */
 .section-header-flex {
     display: flex;
     justify-content: space-between;
@@ -286,7 +511,7 @@ body {
     color: white;
     font-size: 12px;
     padding: 3px 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     margin-left: 6px;
 }
 
@@ -295,7 +520,7 @@ body {
     border: 1px solid #f5c6cb;
     color: #e02424;
     padding: 8px 14px;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
@@ -323,18 +548,24 @@ body {
 
 .client-card {
     border: 1px solid #e4e6eb;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 16px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #fff;
 }
 
 .client-card:hover {
     border-color: #ff7a00;
     box-shadow: 0 4px 12px rgba(255, 122, 0, 0.08);
+}
+
+.client-card.blocked {
+    border-left: 4px solid #e02424;
+    background-color: #fffafa;
 }
 
 .client-info {
@@ -350,6 +581,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .client-name .flag {
@@ -363,6 +595,16 @@ body {
     display: inline-block;
     border: 1px solid rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
+}
+
+.client-name .blocked-badge {
+    background-color: #fde8e8;
+    color: #e02424;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 .client-email {
@@ -400,7 +642,7 @@ body {
 .btn-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #e4e6eb;
     background: white;
     color: #555;
@@ -424,7 +666,9 @@ body {
     background-color: #fff5f5;
 }
 
-/* Modal */
+/* ============================================================
+   Modal
+   ============================================================ */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -443,7 +687,7 @@ body {
 
 .modal-card {
     background: white;
-    border-radius: 16px;
+    border-radius: 10px;
     padding: 35px 30px;
     max-width: 520px;
     width: 100%;
@@ -487,7 +731,7 @@ body {
 .link-box input {
     flex: 1;
     border: 1px solid #dcdfe6;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 12px 14px;
     font-size: 12px;
     color: #333;
@@ -501,7 +745,7 @@ body {
     background-color: #ff7a00;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 0 18px;
     font-size: 13px;
     font-weight: 600;
@@ -525,7 +769,7 @@ body {
 .modal-actions button {
     flex: 1;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -553,6 +797,9 @@ body {
     background-color: #e4e6eb;
 }
 
+/* ============================================================
+   Animations
+   ============================================================ */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -562,7 +809,9 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* Responsive */
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 640px) {
     .form-row {
         grid-template-columns: 1fr;
@@ -582,5 +831,8 @@ body {
     }
     .percentage-row input {
         max-width: 100%;
+    }
+    .access-buttons {
+        grid-template-columns: 1fr;
     }
 }
