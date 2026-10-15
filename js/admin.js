@@ -22,13 +22,134 @@ import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 const COLLECTION_NAME = 'clients';
 let lastGeneratedLink = '';
 let selectedColor = '#ff7a00';
-let selectedModifyColor = '#ff7a00';
 let allClients = [];
 let selectedClientId = null;
+let selectedOption = null;
 let pendingTransactions = [];
 let currentDetailClient = null;
 
-// ---------- UTILITAIRES ----------
+// ============================================================
+// DONNÉES PAYS (utilisés pour peupler les selects dynamiques)
+// ============================================================
+const COUNTRY_LIST = [
+    { name: "Afghanistan", flag: "🇦🇫" }, { name: "Afrique du Sud", flag: "🇿🇦" },
+    { name: "Albanie", flag: "🇦🇱" }, { name: "Algérie", flag: "🇩🇿" },
+    { name: "Allemagne", flag: "🇩🇪" }, { name: "Andorre", flag: "🇦🇩" },
+    { name: "Angola", flag: "🇦🇴" }, { name: "Arabie Saoudite", flag: "🇸🇦" },
+    { name: "Argentine", flag: "🇦🇷" }, { name: "Arménie", flag: "🇦🇲" },
+    { name: "Australie", flag: "🇦🇺" }, { name: "Autriche", flag: "🇦🇹" },
+    { name: "Azerbaïdjan", flag: "🇦🇿" }, { name: "Bahamas", flag: "🇧🇸" },
+    { name: "Bahreïn", flag: "🇧🇭" }, { name: "Bangladesh", flag: "🇧🇩" },
+    { name: "Barbade", flag: "🇧🇧" }, { name: "Belgique", flag: "🇧🇪" },
+    { name: "Belize", flag: "🇧🇿" }, { name: "Bénin", flag: "🇧🇯" },
+    { name: "Bhoutan", flag: "🇧🇹" }, { name: "Biélorussie", flag: "🇧🇾" },
+    { name: "Birmanie", flag: "🇲🇲" }, { name: "Bolivie", flag: "🇧🇴" },
+    { name: "Bosnie-Herzégovine", flag: "🇧🇦" }, { name: "Botswana", flag: "🇧🇼" },
+    { name: "Brésil", flag: "🇧🇷" }, { name: "Brunei", flag: "🇧🇳" },
+    { name: "Bulgarie", flag: "🇧🇬" }, { name: "Burkina Faso", flag: "🇧🇫" },
+    { name: "Burundi", flag: "🇧🇮" }, { name: "Cambodge", flag: "🇰🇭" },
+    { name: "Cameroun", flag: "🇨🇲" }, { name: "Canada", flag: "🇨🇦" },
+    { name: "Cap-Vert", flag: "🇨🇻" }, { name: "Chili", flag: "🇨🇱" },
+    { name: "Chine", flag: "🇨🇳" }, { name: "Chypre", flag: "🇨🇾" },
+    { name: "Colombie", flag: "🇨🇴" }, { name: "Comores", flag: "🇰🇲" },
+    { name: "Congo", flag: "🇨🇬" }, { name: "Corée du Sud", flag: "🇰🇷" },
+    { name: "Costa Rica", flag: "🇨🇷" }, { name: "Côte d'Ivoire", flag: "🇨🇮" },
+    { name: "Croatie", flag: "🇭🇷" }, { name: "Cuba", flag: "🇨🇺" },
+    { name: "Danemark", flag: "🇩🇰" }, { name: "Djibouti", flag: "🇩🇯" },
+    { name: "Égypte", flag: "🇪🇬" }, { name: "Émirats Arabes Unis", flag: "🇦🇪" },
+    { name: "Équateur", flag: "🇪🇨" }, { name: "Espagne", flag: "🇪🇸" },
+    { name: "Estonie", flag: "🇪🇪" }, { name: "États-Unis", flag: "🇺🇸" },
+    { name: "Éthiopie", flag: "🇪🇹" }, { name: "Finlande", flag: "🇫🇮" },
+    { name: "France", flag: "🇫🇷" }, { name: "Gabon", flag: "🇬🇦" },
+    { name: "Gambie", flag: "🇬🇲" }, { name: "Géorgie", flag: "🇬🇪" },
+    { name: "Ghana", flag: "🇬🇭" }, { name: "Grèce", flag: "🇬🇷" },
+    { name: "Guatemala", flag: "🇬🇹" }, { name: "Guinée", flag: "🇬🇳" },
+    { name: "Guinée-Bissau", flag: "🇬🇼" }, { name: "Haïti", flag: "🇭🇹" },
+    { name: "Honduras", flag: "🇭🇳" }, { name: "Hongrie", flag: "🇭🇺" },
+    { name: "Inde", flag: "🇮🇳" }, { name: "Indonésie", flag: "🇮🇩" },
+    { name: "Irak", flag: "🇮🇶" }, { name: "Iran", flag: "🇮🇷" },
+    { name: "Irlande", flag: "🇮🇪" }, { name: "Islande", flag: "🇮🇸" },
+    { name: "Israël", flag: "🇮🇱" }, { name: "Italie", flag: "🇮🇹" },
+    { name: "Jamaïque", flag: "🇯🇲" }, { name: "Japon", flag: "🇯🇵" },
+    { name: "Jordanie", flag: "🇯🇴" }, { name: "Kazakhstan", flag: "🇰🇿" },
+    { name: "Kenya", flag: "🇰🇪" }, { name: "Koweït", flag: "🇰🇼" },
+    { name: "Laos", flag: "🇱🇦" }, { name: "Lesotho", flag: "🇱🇸" },
+    { name: "Lettonie", flag: "🇱🇻" }, { name: "Liban", flag: "🇱🇧" },
+    { name: "Libéria", flag: "🇱🇷" }, { name: "Libye", flag: "🇱🇾" },
+    { name: "Liechtenstein", flag: "🇱🇮" }, { name: "Lituanie", flag: "🇱🇹" },
+    { name: "Luxembourg", flag: "🇱🇺" }, { name: "Madagascar", flag: "🇲🇬" },
+    { name: "Malaisie", flag: "🇲🇾" }, { name: "Malawi", flag: "🇲🇼" },
+    { name: "Mali", flag: "🇲🇱" }, { name: "Malte", flag: "🇲🇹" },
+    { name: "Maroc", flag: "🇲🇦" }, { name: "Maurice", flag: "🇲🇺" },
+    { name: "Mauritanie", flag: "🇲🇷" }, { name: "Mexique", flag: "🇲🇽" },
+    { name: "Moldavie", flag: "🇲🇩" }, { name: "Monaco", flag: "🇲🇨" },
+    { name: "Mongolie", flag: "🇲🇳" }, { name: "Monténégro", flag: "🇲🇪" },
+    { name: "Mozambique", flag: "🇲🇿" }, { name: "Namibie", flag: "🇳🇦" },
+    { name: "Népal", flag: "🇳🇵" }, { name: "Nicaragua", flag: "🇳🇮" },
+    { name: "Niger", flag: "🇳🇪" }, { name: "Nigéria", flag: "🇳🇬" },
+    { name: "Norvège", flag: "🇳🇴" }, { name: "Nouvelle-Zélande", flag: "🇳🇿" },
+    { name: "Oman", flag: "🇴🇲" }, { name: "Ouganda", flag: "🇺🇬" },
+    { name: "Ouzbékistan", flag: "🇺🇿" }, { name: "Pakistan", flag: "🇵🇰" },
+    { name: "Palestine", flag: "🇵🇸" }, { name: "Panama", flag: "🇵🇦" },
+    { name: "Paraguay", flag: "🇵🇾" }, { name: "Pays-Bas", flag: "🇳🇱" },
+    { name: "Pérou", flag: "🇵🇪" }, { name: "Philippines", flag: "🇵🇭" },
+    { name: "Pologne", flag: "🇵🇱" }, { name: "Portugal", flag: "🇵🇹" },
+    { name: "Qatar", flag: "🇶🇦" }, { name: "République Démocratique du Congo", flag: "🇨🇩" },
+    { name: "République Dominicaine", flag: "🇩🇴" }, { name: "République Tchèque", flag: "🇨🇿" },
+    { name: "Roumanie", flag: "🇷🇴" }, { name: "Royaume-Uni", flag: "🇬🇧" },
+    { name: "Russie", flag: "🇷🇺" }, { name: "Rwanda", flag: "🇷🇼" },
+    { name: "Sénégal", flag: "🇸🇳" }, { name: "Serbie", flag: "🇷🇸" },
+    { name: "Seychelles", flag: "🇸🇨" }, { name: "Sierra Leone", flag: "🇸🇱" },
+    { name: "Singapour", flag: "🇸🇬" }, { name: "Slovaquie", flag: "🇸🇰" },
+    { name: "Slovénie", flag: "🇸🇮" }, { name: "Somalie", flag: "🇸🇴" },
+    { name: "Soudan", flag: "🇸🇩" }, { name: "Sri Lanka", flag: "🇱🇰" },
+    { name: "Suède", flag: "🇸🇪" }, { name: "Suisse", flag: "🇨🇭" },
+    { name: "Suriname", flag: "🇸🇷" }, { name: "Syrie", flag: "🇸🇾" },
+    { name: "Tanzanie", flag: "🇹🇿" }, { name: "Tchad", flag: "🇹🇩" },
+    { name: "Thaïlande", flag: "🇹🇭" }, { name: "Togo", flag: "🇹🇬" },
+    { name: "Tunisie", flag: "🇹🇳" }, { name: "Turquie", flag: "🇹🇷" },
+    { name: "Ukraine", flag: "🇺🇦" }, { name: "Uruguay", flag: "🇺🇾" },
+    { name: "Venezuela", flag: "🇻🇪" }, { name: "Vietnam", flag: "🇻🇳" },
+    { name: "Yémen", flag: "🇾🇪" }, { name: "Zambie", flag: "🇿🇲" },
+    { name: "Zimbabwe", flag: "🇿🇼" }
+];
+
+const CURRENCY_LIST = [
+    { value: "zł", label: "zł - Zloty polonais" },
+    { value: "€", label: "€ - Euro" },
+    { value: "$", label: "$ - Dollar américain" },
+    { value: "£", label: "£ - Livre sterling" },
+    { value: "CHF", label: "CHF - Franc suisse" },
+    { value: "¥", label: "¥ - Yen japonais" },
+    { value: "FCFA", label: "FCFA - Franc CFA" },
+    { value: "NGN", label: "₦ - Naira nigérian" },
+    { value: "GHS", label: "₵ - Cedi ghanéen" },
+    { value: "KES", label: "KSh - Shilling kényan" },
+    { value: "ZAR", label: "R - Rand sud-africain" },
+    { value: "MAD", label: "MAD - Dirham marocain" },
+    { value: "CAD", label: "CAD - Dollar canadien" },
+    { value: "AUD", label: "AUD - Dollar australien" },
+    { value: "BTC", label: "₿ - Bitcoin" }
+];
+
+const LANGUAGE_LIST = [
+    { value: "fr", label: "🇫🇷 Français" },
+    { value: "en", label: "🇬🇧 English" },
+    { value: "es", label: "🇪🇸 Español" },
+    { value: "de", label: "🇩🇪 Deutsch" },
+    { value: "it", label: "🇮🇹 Italiano" },
+    { value: "pt", label: "🇵🇹 Português" },
+    { value: "pl", label: "🇵🇱 Polski" },
+    { value: "nl", label: "🇳🇱 Nederlands" },
+    { value: "ru", label: "🇷🇺 Русский" },
+    { value: "ar", label: "🇸🇦 العربية" },
+    { value: "zh", label: "🇨🇳 中文" },
+    { value: "ja", label: "🇯🇵 日本語" }
+];
+
+// ============================================================
+// UTILITAIRES
+// ============================================================
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
@@ -57,12 +178,6 @@ function generateId() {
     return 'ap' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
-function formatDate() {
-    const now = new Date();
-    return now.toLocaleDateString('fr-FR') + ' • ' +
-        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-}
-
 function getInitials(firstName, lastName) {
     const f = (firstName || 'X')[0] || 'X';
     const l = (lastName || 'X')[0] || 'X';
@@ -74,11 +189,36 @@ function getClientLink(clientId) {
     return `${baseUrl}?id=${clientId}`;
 }
 
+function buildCountryOptions(selectedCountry) {
+    return COUNTRY_LIST.map(c =>
+        `<option value="${c.name}" data-flag="${c.flag}" ${selectedCountry === c.name ? 'selected' : ''}>${c.flag} ${c.name}</option>`
+    ).join('');
+}
+
+function buildCurrencyOptions(selectedCurrency) {
+    return CURRENCY_LIST.map(c =>
+        `<option value="${c.value}" ${selectedCurrency === c.value ? 'selected' : ''}>${c.label}</option>`
+    ).join('');
+}
+
+function buildLanguageOptions(selectedLang) {
+    return LANGUAGE_LIST.map(l =>
+        `<option value="${l.value}" ${selectedLang === l.value ? 'selected' : ''}>${l.label}</option>`
+    ).join('');
+}
+
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str).replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+}
+
 // ============================================================
-// GESTION DES BANQUES
+// BANQUES
 // ============================================================
 function populateBankSelect(clientCountry) {
-    const select = document.getElementById('m-tx-bank');
+    const select = document.getElementById('opt-bank');
     if (!select) return;
 
     select.innerHTML = '<option value="">-- Sélectionner une banque --</option>';
@@ -111,40 +251,6 @@ function populateBankSelect(clientCountry) {
             group.appendChild(opt);
         });
         select.appendChild(group);
-    });
-}
-
-// ============================================================
-// SÉLECTEURS DE COULEUR
-// ============================================================
-function initColorPicker() {
-    const picker = document.getElementById('color-picker');
-    const hiddenInput = document.getElementById('c-color');
-
-    picker.querySelectorAll('.color-option').forEach(option => {
-        option.addEventListener('click', () => {
-            picker.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
-            option.classList.add('selected');
-            selectedColor = option.dataset.color;
-            hiddenInput.value = selectedColor;
-        });
-    });
-
-    const defaultOption = picker.querySelector('[data-color="#ff7a00"]');
-    if (defaultOption) defaultOption.classList.add('selected');
-}
-
-function initModifyColorPicker() {
-    const picker = document.getElementById('m-color-picker');
-    const hiddenInput = document.getElementById('m-color');
-
-    picker.querySelectorAll('.color-option').forEach(option => {
-        option.addEventListener('click', () => {
-            picker.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
-            option.classList.add('selected');
-            selectedModifyColor = option.dataset.color;
-            hiddenInput.value = selectedModifyColor;
-        });
     });
 }
 
@@ -224,11 +330,6 @@ async function handleCreateClient(event) {
         document.getElementById('c-country').value = 'France';
         document.getElementById('c-language').value = 'fr';
         document.getElementById('c-percent-value').value = '100';
-        selectedColor = '#ff7a00';
-        document.getElementById('c-color').value = '#ff7a00';
-        const picker = document.getElementById('color-picker');
-        picker.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
-        picker.querySelector('[data-color="#ff7a00"]').classList.add('selected');
 
         await loadClients();
         showToast('Client créé avec succès !', 'success');
@@ -306,18 +407,13 @@ function openClientDetail(clientId) {
 
     currentDetailClient = client;
 
-    // Avatar
     const initials = getInitials(client.firstName, client.lastName);
     document.getElementById('cd-avatar').textContent = initials;
 
-    // Nom complet
     const fullName = `${client.lastName} ${client.firstName}`.toUpperCase();
     document.getElementById('cd-name').textContent = fullName;
-
-    // Meta (email)
     document.getElementById('cd-meta').textContent = client.email || '--';
 
-    // Statut
     const statusEl = document.getElementById('cd-status');
     if (client.blocked) {
         statusEl.textContent = 'Bloqué';
@@ -327,29 +423,23 @@ function openClientDetail(clientId) {
         statusEl.className = 'client-detail-status active';
     }
 
-    // Identité
     document.getElementById('cd-fullname').textContent = fullName;
     document.getElementById('cd-country').textContent = (client.country || '--') + ' ' + (client.countryFlag || '');
     document.getElementById('cd-address').textContent = client.address || '—';
 
-    // Contact
     document.getElementById('cd-email').textContent = client.email || '--';
     document.getElementById('cd-phone').textContent = client.phone || '—';
 
-    // Compte
     document.getElementById('cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
     document.getElementById('cd-currency').textContent = client.currency || 'zł';
     document.getElementById('cd-language').textContent = client.language || 'fr';
     document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
 
-    // Sécurité
     document.getElementById('cd-pin').textContent = client.pin || '----';
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
 
-    // Lien
     document.getElementById('cd-link').value = getClientLink(client.id);
 
-    // Ouvrir le modal
     document.getElementById('client-detail-modal').classList.add('show');
 }
 
@@ -371,11 +461,9 @@ function editClientFromDetail() {
 window.copyField = function (elementId, isInput = false) {
     const el = document.getElementById(elementId);
     if (!el) return;
-
     const value = isInput ? el.value : el.textContent;
 
     const doCopy = () => {
-        // Feedback visuel sur le bouton
         const btn = el.closest('.cd-value-copy, .cd-link-box')?.querySelector('.copy-btn');
         if (btn) {
             const original = btn.innerHTML;
@@ -423,11 +511,17 @@ function selectClientForModify(clientId) {
 
 function handleModifyClientChange() {
     const clientId = document.getElementById('m-select-client').value;
-    const fields = document.getElementById('modify-fields');
+    const optionWrapper = document.getElementById('option-select-wrapper');
+    const optionContainer = document.getElementById('option-card-container');
+
+    // Réinitialiser la zone d'option
+    document.getElementById('m-select-option').value = '';
+    optionContainer.innerHTML = '';
 
     if (!clientId) {
-        fields.classList.add('hidden');
         selectedClientId = null;
+        selectedOption = null;
+        optionWrapper.style.display = 'none';
         return;
     }
 
@@ -435,257 +529,453 @@ function handleModifyClientChange() {
     if (!client) return;
 
     selectedClientId = clientId;
-    fields.classList.remove('hidden');
-
-    document.getElementById('m-lastname').value = client.lastName || '';
-    document.getElementById('m-firstname').value = client.firstName || '';
-    document.getElementById('m-country').value = client.country || '';
-    document.getElementById('m-address').value = client.address || '';
-    document.getElementById('m-email').value = client.email || '';
-    document.getElementById('m-phone').value = client.phone || '';
-    document.getElementById('m-language').value = client.language || 'fr';
-    document.getElementById('m-balance').value = client.balance || 0;
-    document.getElementById('m-currency').value = client.currency || 'zł';
-    document.getElementById('m-pin').value = client.pin || '';
-    document.getElementById('m-activation').value = client.activationCode || '';
-    document.getElementById('m-percent-value').value = client.percentValue || 100;
-    document.getElementById('m-message').value = client.messageAfterTransfer || '';
-
-    selectedModifyColor = client.color || '#ff7a00';
-    document.getElementById('m-color').value = selectedModifyColor;
-    const picker = document.getElementById('m-color-picker');
-    picker.querySelectorAll('.color-option').forEach(o => {
-        o.classList.toggle('selected', o.dataset.color === selectedModifyColor);
-    });
-
-    document.getElementById('m-tx-currency-display').textContent = client.currency || 'zł';
-
-    populateBankSelect(client.country);
-    updateAccessStatus(client.blocked);
-
-    pendingTransactions = (client.transactions || []).slice();
-    renderModifyTransactions();
+    optionWrapper.style.display = 'block';
 }
 
-function updateAccessStatus(blocked) {
-    const info = document.getElementById('access-status-info');
-    if (blocked) {
-        info.innerHTML = 'Statut actuel : <strong style="color:#e02424;">Bloqué</strong>';
+// ============================================================
+// GESTION DE L'OPTION SÉLECTIONNÉE
+// ============================================================
+function handleOptionChange() {
+    const optionValue = document.getElementById('m-select-option').value;
+    selectedOption = optionValue;
+
+    const container = document.getElementById('option-card-container');
+    container.innerHTML = '';
+
+    if (!optionValue || !selectedClientId) return;
+
+    const client = allClients.find(c => c.id === selectedClientId);
+    if (!client) return;
+
+    renderOptionCard(optionValue, client);
+}
+
+// ============================================================
+// GÉNÉRATION DES CARTES D'OPTIONS
+// ============================================================
+function renderOptionCard(option, client) {
+    const container = document.getElementById('option-card-container');
+
+    let headerIcon = '';
+    let headerTitle = '';
+    let headerSubtitle = '';
+    let bodyHtml = '';
+
+    switch (option) {
+
+        // ---------- 1. INFORMATIONS PERSONNELLES ----------
+        case 'info':
+            headerIcon = 'fa-user';
+            headerTitle = 'Informations personnelles';
+            headerSubtitle = 'Nom, prénom, pays et adresse du client';
+            bodyHtml = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="opt-lastname" value="${escapeHtml(client.lastName)}" placeholder="Nom de famille">
+                    </div>
+                    <div class="form-group">
+                        <label>Prénom(s)</label>
+                        <input type="text" id="opt-firstname" value="${escapeHtml(client.firstName)}" placeholder="Prénom(s)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Pays de résidence</label>
+                    <select id="opt-country">
+                        <option value="">-- Sélectionner un pays --</option>
+                        ${buildCountryOptions(client.country)}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Adresse de résidence</label>
+                    <input type="text" id="opt-address" value="${escapeHtml(client.address || '')}" placeholder="Adresse complète">
+                </div>
+            `;
+            break;
+
+        // ---------- 2. COORDONNÉES ----------
+        case 'contact':
+            headerIcon = 'fa-envelope';
+            headerTitle = 'Coordonnées';
+            headerSubtitle = 'Adresse e-mail et numéro de téléphone';
+            bodyHtml = `
+                <div class="form-group">
+                    <label>Adresse e-mail</label>
+                    <input type="email" id="opt-email" value="${escapeHtml(client.email || '')}" placeholder="client@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Numéro de téléphone</label>
+                    <input type="tel" id="opt-phone" value="${escapeHtml(client.phone || '')}" placeholder="+229 01 23 45 67 89">
+                </div>
+            `;
+            break;
+
+        // ---------- 3. COMPTE ----------
+        case 'account':
+            headerIcon = 'fa-wallet';
+            headerTitle = 'Compte bancaire';
+            headerSubtitle = 'Solde, devise et langue d\'affichage';
+            bodyHtml = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Solde actuel</label>
+                        <div class="input-with-addon">
+                            <input type="number" id="opt-balance" step="0.01" min="0" value="${Number(client.balance || 0).toFixed(2)}">
+                            <div class="input-addon" id="opt-balance-currency">${client.currency || 'zł'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Devise</label>
+                        <select id="opt-currency">
+                            ${buildCurrencyOptions(client.currency)}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Langue d'affichage</label>
+                    <select id="opt-language">
+                        ${buildLanguageOptions(client.language)}
+                    </select>
+                </div>
+            `;
+            break;
+
+        // ---------- 4. SÉCURITÉ ----------
+        case 'security':
+            headerIcon = 'fa-shield-halved';
+            headerTitle = 'Sécurité du compte';
+            headerSubtitle = 'Code PIN de connexion et code d\'activation';
+            bodyHtml = `
+                <div class="form-group">
+                    <label>Code PIN de connexion</label>
+                    <input type="text" id="opt-pin" minlength="4" maxlength="8" pattern="[0-9]+" value="${escapeHtml(client.pin || '')}" placeholder="4 à 8 chiffres">
+                    <small>Le client utilisera ce code pour se connecter avec son e-mail.</small>
+                </div>
+                <div class="form-group">
+                    <label>Code d'activation virement</label>
+                    <input type="text" id="opt-activation" minlength="4" maxlength="20" value="${escapeHtml(client.activationCode || '')}" placeholder="Ex: ACT-8899">
+                    <small>Le client utilisera ce code pour valider ses virements.</small>
+                </div>
+            `;
+            break;
+
+        // ---------- 5. PARAMÈTRES DE VIREMENT ----------
+        case 'transfer_params':
+            headerIcon = 'fa-gear';
+            headerTitle = 'Paramètres de virement';
+            headerSubtitle = 'Pourcentage limite et message après virement';
+            bodyHtml = `
+                <div class="form-group">
+                    <label>Pourcentage appliqué</label>
+                    <div class="percentage-row">
+                        <span class="percentage-label">Si inférieur ou égal à</span>
+                        <input type="number" id="opt-percent" min="0" max="100" value="${client.percentValue || 100}">
+                        <span class="percentage-label">%</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Message affiché après le virement</label>
+                    <textarea id="opt-message" rows="3" placeholder="Message personnalisé...">${escapeHtml(client.messageAfterTransfer || '')}</textarea>
+                </div>
+            `;
+            break;
+
+        // ---------- 6. COULEUR ----------
+        case 'color':
+            headerIcon = 'fa-palette';
+            headerTitle = 'Couleur du thème';
+            headerSubtitle = 'Couleur principale du compte client';
+            const currentColor = client.color || '#ff7a00';
+            bodyHtml = `
+                <div class="form-group">
+                    <label>Couleur principale</label>
+                    <div class="color-picker" id="opt-color-picker">
+                        ${['#ff7a00', '#1a73e8', '#00c853', '#e02424', '#8e24aa', '#00838f', '#f9a825', '#37474f', '#d81b60', '#43a047']
+                            .map(c => `<div class="color-option ${c === currentColor ? 'selected' : ''}" data-color="${c}" style="background-color:${c};"></div>`)
+                            .join('')}
+                    </div>
+                    <input type="hidden" id="opt-color" value="${currentColor}">
+                </div>
+            `;
+            break;
+
+        // ---------- 7. ACCÈS ----------
+        case 'access':
+            headerIcon = 'fa-ban';
+            headerTitle = 'Accès du client';
+            headerSubtitle = 'Bloquer ou débloquer le compte client';
+            const statusClass = client.blocked ? 'blocked' : 'active';
+            const statusText = client.blocked ? 'Bloqué' : 'Actif';
+            bodyHtml = `
+                <div class="option-info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Bloquez l'accès d'un client pour suspendre temporairement sa connexion. Il ne pourra plus se connecter à son compte tant qu'il n'est pas débloqué.</span>
+                </div>
+
+                <div class="option-status-box">
+                    <span class="option-status-box-label">Statut actuel :</span>
+                    <span class="option-status-box-value ${statusClass}">${statusText}</span>
+                </div>
+            `;
+            break;
+
+        // ---------- 8. AJOUTER UN VIREMENT ----------
+        case 'transaction':
+            headerIcon = 'fa-plus';
+            headerTitle = 'Ajouter un virement';
+            headerSubtitle = 'Ajouter un virement au compte client';
+            bodyHtml = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Montant du virement <span class="required">. requis</span></label>
+                        <div class="input-with-addon">
+                            <input type="number" id="opt-tx-amount" step="0.01" placeholder="0.00">
+                            <div class="input-addon">${client.currency || 'zł'}</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Type d'opération <span class="required">. requis</span></label>
+                        <select id="opt-tx-type">
+                            <option value="credit">Crédit (+) - Ajouter au solde</option>
+                            <option value="debit">Débit (-) - Retirer du solde</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🏦 Banque <span class="required">. requis</span></label>
+                    <select id="opt-bank">
+                        <option value="">-- Sélectionner une banque --</option>
+                    </select>
+                    <small>Le nom et le logo de la banque seront affichés dans l'historique du client.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Date et heure <span class="optional">. facultatif</span></label>
+                    <input type="text" id="opt-tx-date" placeholder="Ex: 23/09/2026 • 01:24">
+                </div>
+            `;
+            break;
+    }
+
+    // Bouton d'action personnalisé selon l'option
+    let actionButtons = '';
+    if (option === 'access') {
+        // Pour bloquer/débloquer : boutons directs
+        const blockBtn = client.blocked
+            ? `<button type="button" class="btn-unblock" id="opt-access-btn" style="padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:2px solid #c3e6cb;color:#03543f;background:#fff;display:inline-flex;align-items:center;gap:6px;">
+                   <i class="fa-solid fa-unlock"></i> Débloquer l'accès
+               </button>`
+            : `<button type="button" class="btn-block" id="opt-access-btn" style="padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:2px solid #f5c6cb;color:#e02424;background:#fff;display:inline-flex;align-items:center;gap:6px;">
+                   <i class="fa-solid fa-ban"></i> Bloquer l'accès
+               </button>`;
+
+        actionButtons = `
+            <button type="button" class="btn-option-cancel" onclick="cancelOptionCard()">
+                <i class="fa-solid fa-xmark"></i> Annuler
+            </button>
+            ${blockBtn}
+        `;
     } else {
-        info.innerHTML = 'Statut actuel : <strong style="color:#03543f;">Actif</strong>';
-    }
-}
-
-// ============================================================
-// HISTORIQUE DES VIREMENTS (section Modifier)
-// ============================================================
-function renderModifyTransactions() {
-    const list = document.getElementById('m-tx-list');
-    if (!pendingTransactions || pendingTransactions.length === 0) {
-        list.innerHTML = '<p class="empty-state">Aucun virement pour le moment.</p>';
-        return;
-    }
-
-    list.innerHTML = '';
-    pendingTransactions.forEach((tx, idx) => {
-        const isDebit = tx.amount < 0;
-        const item = document.createElement('div');
-        item.className = 'm-tx-item ' + (isDebit ? 'debit' : 'credit');
-
-        const logoHtml = tx.bankLogo
-            ? `<div class="m-tx-logo-box">
-                   <img src="${tx.bankLogo}"
-                        alt="${tx.bankName || ''}"
-                        onerror="this.parentNode.classList.add('fallback'); this.parentNode.innerHTML='<i class=\\'fa-solid fa-building-columns\\'></i>';">
-               </div>`
-            : '';
-
-        item.innerHTML = `
-            ${logoHtml}
-            <div class="m-tx-item-info">
-                <div class="m-tx-item-title">${tx.title || 'Virement'}</div>
-                <div class="m-tx-item-date">${tx.date || ''}${tx.bankName ? ' • ' + tx.bankName : ''}</div>
-            </div>
-            <div class="m-tx-item-amount ${isDebit ? 'debit' : 'credit'}">
-                ${isDebit ? '' : '+'}${Number(tx.amount).toFixed(2)}
-            </div>
-            <button class="m-tx-item-delete" title="Supprimer" data-idx="${idx}">
-                <i class="fa-regular fa-trash-can"></i>
+        actionButtons = `
+            <button type="button" class="btn-option-cancel" onclick="cancelOptionCard()">
+                <i class="fa-solid fa-xmark"></i> Annuler
+            </button>
+            <button type="button" class="btn-option-save" id="opt-save-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Enregistrer
             </button>
         `;
-        list.appendChild(item);
-    });
+    }
 
-    list.querySelectorAll('.m-tx-item-delete').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.idx, 10);
-            if (confirm('Supprimer ce virement ?')) {
-                const removed = pendingTransactions.splice(idx, 1)[0];
-                const balanceInput = document.getElementById('m-balance');
-                const currentBalance = parseFloat(balanceInput.value) || 0;
-                balanceInput.value = (currentBalance - removed.amount).toFixed(2);
-                renderModifyTransactions();
-                showToast('Virement retiré. N\'oubliez pas d\'enregistrer.', 'info');
-            }
+    // Construire la carte
+    container.innerHTML = `
+        <div class="option-card">
+            <div class="option-card-header">
+                <div class="option-card-header-icon">
+                    <i class="fa-solid ${headerIcon}"></i>
+                </div>
+                <div>
+                    <div class="option-card-header-title">${headerTitle}</div>
+                    <div class="option-card-header-subtitle">${headerSubtitle}</div>
+                </div>
+            </div>
+            <div class="option-card-body">
+                ${bodyHtml}
+            </div>
+            <div class="option-card-actions">
+                ${actionButtons}
+            </div>
+        </div>
+    `;
+
+    // Brancher les événements spécifiques
+    if (option === 'color') {
+        const picker = document.getElementById('opt-color-picker');
+        picker.querySelectorAll('.color-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                picker.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                document.getElementById('opt-color').value = opt.dataset.color;
+            });
         });
-    });
-}
-
-// ============================================================
-// AJOUTER UN VIREMENT (Banque obligatoire)
-// ============================================================
-function handleAddTransaction() {
-    if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
-
-    const amount = parseFloat(document.getElementById('m-tx-amount').value);
-    const type = document.getElementById('m-tx-type').value;
-    const dateInput = document.getElementById('m-tx-date').value.trim();
-    const bankSelect = document.getElementById('m-tx-bank');
-    const bankDomain = bankSelect.value;
-    const selectedOption = bankSelect.options[bankSelect.selectedIndex];
-    const bankName = selectedOption?.dataset.bankName || '';
-
-    if (!amount || amount <= 0) return showToast('Montant invalide.', 'error');
-    if (!bankDomain || !bankName) {
-        return showToast('Veuillez sélectionner une banque (obligatoire).', 'error');
     }
 
-    const client = allClients.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    const finalAmount = type === 'credit' ? amount : -amount;
-    const dateStr = dateInput || formatDate();
-
-    const tx = {
-        type: type,
-        title: bankName,
-        date: dateStr,
-        amount: finalAmount,
-        bankName: bankName,
-        bankDomain: bankDomain,
-        bankLogo: getBankLogoUrl(bankDomain)
-    };
-
-    pendingTransactions.unshift(tx);
-    renderModifyTransactions();
-
-    const balanceInput = document.getElementById('m-balance');
-    const currentBalance = parseFloat(balanceInput.value) || 0;
-    balanceInput.value = (currentBalance + finalAmount).toFixed(2);
-
-    document.getElementById('m-tx-amount').value = '';
-    document.getElementById('m-tx-date').value = '';
-    document.getElementById('m-tx-type').value = 'credit';
-    document.getElementById('m-tx-bank').value = '';
-
-    showToast('Virement ajouté. Cliquez sur "Enregistrer" pour valider.', 'success');
-}
-
-// ============================================================
-// BLOQUER / DÉBLOQUER
-// ============================================================
-async function handleBlockAccess() {
-    if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
-    const client = allClients.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    if (client.blocked) return showToast('Ce client est déjà bloqué.', 'info');
-
-    if (!confirm(`Bloquer l'accès de ${client.firstName} ${client.lastName} ?`)) return;
-
-    try {
-        await authPromise;
-        await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), { blocked: true });
-        client.blocked = true;
-        updateAccessStatus(true);
-        await loadClients();
-        showToast('Accès bloqué avec succès.', 'success');
-    } catch (err) {
-        console.error(err);
-        showToast('Erreur lors du blocage.', 'error');
+    if (option === 'transaction') {
+        populateBankSelect(client.country);
     }
-}
 
-async function handleUnblockAccess() {
-    if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
-    const client = allClients.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    if (!client.blocked) return showToast("Ce client n'est pas bloqué.", 'info');
-
-    try {
-        await authPromise;
-        await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), { blocked: false });
-        client.blocked = false;
-        updateAccessStatus(false);
-        await loadClients();
-        showToast('Accès débloqué avec succès.', 'success');
-    } catch (err) {
-        console.error(err);
-        showToast('Erreur lors du déblocage.', 'error');
+    if (option === 'access') {
+        const btn = document.getElementById('opt-access-btn');
+        if (btn) btn.addEventListener('click', handleToggleAccess);
+    } else {
+        const saveBtn = document.getElementById('opt-save-btn');
+        if (saveBtn) saveBtn.addEventListener('click', () => saveOption(option, client));
     }
 }
 
 // ============================================================
-// SAUVEGARDER LES MODIFICATIONS
+// ANNULER LA CARTE D'OPTION
 // ============================================================
-async function handleSaveChanges() {
-    if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
+function cancelOptionCard() {
+    document.getElementById('m-select-option').value = '';
+    document.getElementById('option-card-container').innerHTML = '';
+    selectedOption = null;
+}
 
-    const client = allClients.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    const lastName = document.getElementById('m-lastname').value.trim();
-    const firstName = document.getElementById('m-firstname').value.trim();
-    const country = document.getElementById('m-country').value;
-    const countryFlag = document.querySelector('#m-country option:checked')?.dataset.flag || client.countryFlag || '';
-    const address = document.getElementById('m-address').value.trim();
-    const email = document.getElementById('m-email').value.trim().toLowerCase();
-    const phone = document.getElementById('m-phone').value.trim();
-    const language = document.getElementById('m-language').value;
-    const balance = parseFloat(document.getElementById('m-balance').value) || 0;
-    const currency = document.getElementById('m-currency').value;
-    const pin = document.getElementById('m-pin').value.trim();
-    const activationCode = document.getElementById('m-activation').value.trim();
-    const percentValue = parseInt(document.getElementById('m-percent-value').value, 10);
-    const messageAfterTransfer = document.getElementById('m-message').value.trim();
-    const color = document.getElementById('m-color').value;
-
-    if (!lastName || !firstName) return showToast('Nom et prénom obligatoires.', 'error');
-    if (!country) return showToast('Pays obligatoire.', 'error');
-    if (!email.includes('@') || !email.includes('.')) return showToast('Adresse e-mail invalide.', 'error');
-    if (!/^\d{4,8}$/.test(pin)) return showToast('Le code PIN doit contenir 4 à 8 chiffres.', 'error');
-    if (activationCode.length < 4) return showToast("Le code d'activation doit contenir au moins 4 caractères.", 'error');
-    if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
-        return showToast('Le pourcentage doit être entre 0 et 100.', 'error');
-    }
-    if (!messageAfterTransfer) return showToast('Le message après virement est obligatoire.', 'error');
-    if (!color) return showToast('Veuillez choisir une couleur.', 'error');
-
-    const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
-    const existing = await getDocs(emailCheck);
-    const emailTaken = existing.docs.some(d => d.id !== selectedClientId);
-    if (emailTaken) return showToast('Cet e-mail est utilisé par un autre client.', 'error');
-
-    const btn = document.getElementById('btn-save-changes');
+// ============================================================
+// SAUVEGARDE CIBLÉE PAR OPTION
+// ============================================================
+async function saveOption(option, client) {
+    const btn = document.getElementById('opt-save-btn');
     const originalHTML = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
 
     try {
         await authPromise;
+        let updatedData = { updatedAt: new Date().toISOString() };
 
-        const updatedData = {
-            lastName, firstName, country, countryFlag,
-            address, email, phone, language,
-            balance, currency, pin, activationCode,
-            percentValue, messageAfterTransfer, color,
-            transactions: pendingTransactions,
-            updatedAt: new Date().toISOString()
-        };
+        switch (option) {
+            case 'info': {
+                const lastName = document.getElementById('opt-lastname').value.trim();
+                const firstName = document.getElementById('opt-firstname').value.trim();
+                const country = document.getElementById('opt-country').value;
+                const countryFlag = document.querySelector('#opt-country option:checked')?.dataset.flag || '';
+                const address = document.getElementById('opt-address').value.trim();
 
+                if (!lastName || !firstName) throw new Error('Nom et prénom obligatoires.');
+                if (!country) throw new Error('Pays obligatoire.');
+
+                updatedData = { ...updatedData, lastName, firstName, country, countryFlag, address };
+                break;
+            }
+
+            case 'contact': {
+                const email = document.getElementById('opt-email').value.trim().toLowerCase();
+                const phone = document.getElementById('opt-phone').value.trim();
+
+                if (!email.includes('@') || !email.includes('.')) throw new Error('Adresse e-mail invalide.');
+
+                // Vérifier unicité email
+                const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
+                const existing = await getDocs(emailCheck);
+                const taken = existing.docs.some(d => d.id !== selectedClientId);
+                if (taken) throw new Error('Cet e-mail est utilisé par un autre client.');
+
+                updatedData = { ...updatedData, email, phone };
+                break;
+            }
+
+            case 'account': {
+                const balance = parseFloat(document.getElementById('opt-balance').value) || 0;
+                const currency = document.getElementById('opt-currency').value;
+                const language = document.getElementById('opt-language').value;
+
+                updatedData = { ...updatedData, balance, currency, language };
+                break;
+            }
+
+            case 'security': {
+                const pin = document.getElementById('opt-pin').value.trim();
+                const activationCode = document.getElementById('opt-activation').value.trim();
+
+                if (!/^\d{4,8}$/.test(pin)) throw new Error('Le code PIN doit contenir 4 à 8 chiffres.');
+                if (activationCode.length < 4) throw new Error("Le code d'activation doit contenir au moins 4 caractères.");
+
+                updatedData = { ...updatedData, pin, activationCode };
+                break;
+            }
+
+            case 'transfer_params': {
+                const percentValue = parseInt(document.getElementById('opt-percent').value, 10);
+                const messageAfterTransfer = document.getElementById('opt-message').value.trim();
+
+                if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
+                    throw new Error('Le pourcentage doit être entre 0 et 100.');
+                }
+                if (!messageAfterTransfer) throw new Error('Le message est obligatoire.');
+
+                updatedData = { ...updatedData, percentValue, messageAfterTransfer };
+                break;
+            }
+
+            case 'color': {
+                const color = document.getElementById('opt-color').value;
+                if (!color) throw new Error('Veuillez choisir une couleur.');
+
+                updatedData = { ...updatedData, color };
+                break;
+            }
+
+            case 'transaction': {
+                const amount = parseFloat(document.getElementById('opt-tx-amount').value);
+                const type = document.getElementById('opt-tx-type').value;
+                const dateInput = document.getElementById('opt-tx-date').value.trim();
+                const bankSelect = document.getElementById('opt-bank');
+                const bankDomain = bankSelect.value;
+                const selectedBankOpt = bankSelect.options[bankSelect.selectedIndex];
+                const bankName = selectedBankOpt?.dataset.bankName || '';
+
+                if (!amount || amount <= 0) throw new Error('Montant invalide.');
+                if (!bankDomain || !bankName) throw new Error('Veuillez sélectionner une banque.');
+
+                const finalAmount = type === 'credit' ? amount : -amount;
+                const now = new Date();
+                const dateStr = dateInput || (now.toLocaleDateString('fr-FR') + ' • ' +
+                    now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
+
+                const newTx = {
+                    type: type,
+                    title: bankName,
+                    date: dateStr,
+                    amount: finalAmount,
+                    bankName: bankName,
+                    bankDomain: bankDomain,
+                    bankLogo: getBankLogoUrl(bankDomain)
+                };
+
+                const transactions = (client.transactions || []).slice();
+                transactions.unshift(newTx);
+
+                // Mettre à jour le solde
+                const newBalance = (Number(client.balance) || 0) + finalAmount;
+
+                updatedData = { ...updatedData, balance: newBalance, transactions };
+                break;
+            }
+
+            default:
+                throw new Error('Option non reconnue.');
+        }
+
+        // Sauvegarder dans Firestore
         await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), updatedData);
 
+        // Mettre à jour localement
         const idx = allClients.findIndex(c => c.id === selectedClientId);
         if (idx !== -1) {
             allClients[idx] = { ...allClients[idx], ...updatedData };
@@ -693,10 +983,53 @@ async function handleSaveChanges() {
 
         await loadClients();
         showToast('Modifications enregistrées avec succès !', 'success');
+
+        // Fermer la carte d'option
+        cancelOptionCard();
+
     } catch (err) {
-        console.error('Erreur sauvegarde :', err);
-        showToast('Erreur lors de l\'enregistrement.', 'error');
+        console.error('Erreur sauvegarde option :', err);
+        showToast(err.message || 'Erreur lors de l\'enregistrement.', 'error');
     } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+    }
+}
+
+// ============================================================
+// BLOQUER / DÉBLOQUER (option 'access')
+// ============================================================
+async function handleToggleAccess() {
+    if (!selectedClientId) return;
+    const client = allClients.find(c => c.id === selectedClientId);
+    if (!client) return;
+
+    const willBlock = !client.blocked;
+    const confirmMsg = willBlock
+        ? `Bloquer l'accès de ${client.firstName} ${client.lastName} ?`
+        : `Débloquer l'accès de ${client.firstName} ${client.lastName} ?`;
+
+    if (!confirm(confirmMsg)) return;
+
+    const btn = document.getElementById('opt-access-btn');
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Traitement...';
+
+    try {
+        await authPromise;
+        await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), { blocked: willBlock });
+
+        const idx = allClients.findIndex(c => c.id === selectedClientId);
+        if (idx !== -1) allClients[idx].blocked = willBlock;
+
+        await loadClients();
+        showToast(willBlock ? 'Accès bloqué avec succès.' : 'Accès débloqué avec succès.', 'success');
+        cancelOptionCard();
+
+    } catch (err) {
+        console.error(err);
+        showToast('Erreur lors du traitement.', 'error');
         btn.disabled = false;
         btn.innerHTML = originalHTML;
     }
@@ -715,8 +1048,9 @@ async function deleteClient(id) {
         await deleteDoc(doc(db, COLLECTION_NAME, id));
         if (selectedClientId === id) {
             selectedClientId = null;
-            document.getElementById('modify-fields').classList.add('hidden');
             document.getElementById('m-select-client').value = '';
+            document.getElementById('option-select-wrapper').style.display = 'none';
+            document.getElementById('option-card-container').innerHTML = '';
         }
         await loadClients();
         showToast('Client supprimé.', 'info');
@@ -790,6 +1124,7 @@ window.openGeneratedLink = openGeneratedLink;
 window.closeClientDetail = closeClientDetail;
 window.editClientFromDetail = editClientFromDetail;
 window.copyField = window.copyField;
+window.cancelOptionCard = cancelOptionCard;
 
 // ============================================================
 // INITIALISATION
@@ -803,25 +1138,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target.id === 'link-modal') closeModal();
     });
 
-    // Modal détails client — fermer en cliquant sur l'overlay
+    // Modal détails client
     document.getElementById('client-detail-modal').addEventListener('click', (e) => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
 
-    // Modification
+    // Sélection du client
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
-    document.getElementById('btn-block-access').addEventListener('click', handleBlockAccess);
-    document.getElementById('btn-unblock-access').addEventListener('click', handleUnblockAccess);
-    document.getElementById('btn-add-transaction').addEventListener('click', handleAddTransaction);
-    document.getElementById('btn-save-changes').addEventListener('click', handleSaveChanges);
 
-    initColorPicker();
-    initModifyColorPicker();
+    // Sélection de l'option
+    document.getElementById('m-select-option').addEventListener('change', handleOptionChange);
+
+    // Modal lien généré
+    document.getElementById('copy-btn').addEventListener('click', copyGeneratedLink);
+
     await loadClients();
 });
 
 // ============================================================
-// FERMER LES MODALS AVEC LA TOUCHE ÉCHAP
+// TOUCHE ÉCHAP : fermer les modals
 // ============================================================
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
