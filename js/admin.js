@@ -207,7 +207,6 @@ async function loadClients() {
 
         countBadge.textContent = allClients.length;
 
-        // Remplir le sélecteur de modification
         populateModifySelect();
 
         if (allClients.length === 0) {
@@ -289,7 +288,6 @@ function selectClientForModify(clientId) {
     const select = document.getElementById('m-select-client');
     select.value = clientId;
     handleModifyClientChange();
-    // Scroll vers la section de modification
     document.querySelector('.modify-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -309,7 +307,6 @@ function handleModifyClientChange() {
     selectedClientId = clientId;
     fields.classList.remove('hidden');
 
-    // Remplir les champs
     document.getElementById('m-lastname').value = client.lastName || '';
     document.getElementById('m-firstname').value = client.firstName || '';
     document.getElementById('m-country').value = client.country || '';
@@ -324,7 +321,6 @@ function handleModifyClientChange() {
     document.getElementById('m-percent-value').value = client.percentValue || 100;
     document.getElementById('m-message').value = client.messageAfterTransfer || '';
 
-    // Couleur
     selectedModifyColor = client.color || '#ff7a00';
     document.getElementById('m-color').value = selectedModifyColor;
     const picker = document.getElementById('m-color-picker');
@@ -332,13 +328,10 @@ function handleModifyClientChange() {
         o.classList.toggle('selected', o.dataset.color === selectedModifyColor);
     });
 
-    // Devise affichée dans le champ montant
     document.getElementById('m-tx-currency-display').textContent = client.currency || 'zł';
 
-    // Statut d'accès
     updateAccessStatus(client.blocked);
 
-    // Historique des virements
     pendingTransactions = (client.transactions || []).slice();
     renderModifyTransactions();
 }
@@ -386,8 +379,13 @@ function renderModifyTransactions() {
         btn.addEventListener('click', () => {
             const idx = parseInt(btn.dataset.idx, 10);
             if (confirm('Supprimer ce virement ?')) {
-                pendingTransactions.splice(idx, 1);
+                const removed = pendingTransactions.splice(idx, 1)[0];
+                // ✅ Annuler l'effet du virement sur le solde
+                const balanceInput = document.getElementById('m-balance');
+                const currentBalance = parseFloat(balanceInput.value) || 0;
+                balanceInput.value = (currentBalance - removed.amount).toFixed(2);
                 renderModifyTransactions();
+                showToast('Virement retiré. N\'oubliez pas d\'enregistrer.', 'info');
             }
         });
     });
@@ -395,6 +393,7 @@ function renderModifyTransactions() {
 
 // ============================================================
 // AJOUTER UN VIREMENT AU COMPTE CLIENT
+// ✅ Le solde est automatiquement mis à jour
 // ============================================================
 function handleAddTransaction() {
     if (!selectedClientId) return showToast('Aucun client sélectionné.', 'error');
@@ -423,13 +422,18 @@ function handleAddTransaction() {
     pendingTransactions.unshift(tx);
     renderModifyTransactions();
 
+    // ✅ Mettre à jour AUTOMATIQUEMENT le solde affiché dans le champ
+    const balanceInput = document.getElementById('m-balance');
+    const currentBalance = parseFloat(balanceInput.value) || 0;
+    balanceInput.value = (currentBalance + finalAmount).toFixed(2);
+
     // Vider les champs
     document.getElementById('m-tx-amount').value = '';
     document.getElementById('m-tx-label').value = '';
     document.getElementById('m-tx-date').value = '';
     document.getElementById('m-tx-type').value = 'credit';
 
-    showToast('Virement ajouté (en attente d\'enregistrement).', 'success');
+    showToast('Virement ajouté et solde mis à jour. Cliquez sur "Enregistrer" pour valider.', 'success');
 }
 
 // ============================================================
@@ -490,7 +494,6 @@ async function handleSaveChanges() {
     const client = allClients.find(c => c.id === selectedClientId);
     if (!client) return;
 
-    // Récupération
     const lastName = document.getElementById('m-lastname').value.trim();
     const firstName = document.getElementById('m-firstname').value.trim();
     const country = document.getElementById('m-country').value;
@@ -507,7 +510,6 @@ async function handleSaveChanges() {
     const messageAfterTransfer = document.getElementById('m-message').value.trim();
     const color = document.getElementById('m-color').value;
 
-    // Validations
     if (!lastName || !firstName) return showToast('Nom et prénom obligatoires.', 'error');
     if (!country) return showToast('Pays obligatoire.', 'error');
     if (!email.includes('@') || !email.includes('.')) return showToast('Adresse e-mail invalide.', 'error');
@@ -519,7 +521,6 @@ async function handleSaveChanges() {
     if (!messageAfterTransfer) return showToast('Le message après virement est obligatoire.', 'error');
     if (!color) return showToast('Veuillez choisir une couleur.', 'error');
 
-    // Vérifier email unique (sauf pour ce client)
     const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
     const existing = await getDocs(emailCheck);
     const emailTaken = existing.docs.some(d => d.id !== selectedClientId);
@@ -544,7 +545,6 @@ async function handleSaveChanges() {
 
         await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), updatedData);
 
-        // Mettre à jour la liste locale
         const idx = allClients.findIndex(c => c.id === selectedClientId);
         if (idx !== -1) {
             allClients[idx] = { ...allClients[idx], ...updatedData };
@@ -674,7 +674,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target.id === 'link-modal') closeModal();
     });
 
-    // Section modification
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
     document.getElementById('btn-block-access').addEventListener('click', handleBlockAccess);
     document.getElementById('btn-unblock-access').addEventListener('click', handleUnblockAccess);
