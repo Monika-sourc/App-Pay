@@ -9,9 +9,7 @@
 </head>
 <body>
 
-<!-- ============================================================
-     ÉCRAN 1 : CONNEXION ADMIN
-     ============================================================ -->
+<!-- ÉCRAN 1 : CONNEXION ADMIN -->
 <div class="auth-screen active" id="admin-login-screen">
     <div class="auth-card">
         <div class="auth-logo">
@@ -35,14 +33,14 @@
                 <div class="auth-input-icon">
                     <i class="fa-solid fa-envelope"></i>
                 </div>
-                <input type="email" id="login-admin-email" placeholder="Votre adresse e-mail" required autocomplete="email">
+                <input type="email" id="login-admin-email" placeholder="Votre adresse e-mail" required autocomplete="off">
             </div>
 
             <div class="auth-input-group">
                 <div class="auth-input-icon">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <input type="password" id="login-admin-password" placeholder="Votre mot de passe" required autocomplete="current-password">
+                <input type="password" id="login-admin-password" placeholder="Votre mot de passe" required autocomplete="off">
             </div>
 
             <div class="auth-error" id="login-admin-error"></div>
@@ -62,9 +60,7 @@
     </div>
 </div>
 
-<!-- ============================================================
-     ÉCRAN 2 : INSCRIPTION ADMIN
-     ============================================================ -->
+<!-- ÉCRAN 2 : INSCRIPTION ADMIN -->
 <div class="auth-screen" id="admin-register-screen">
     <div class="auth-card">
         <div class="auth-logo">
@@ -88,28 +84,28 @@
                 <div class="auth-input-icon">
                     <i class="fa-solid fa-user"></i>
                 </div>
-                <input type="text" id="register-admin-name" placeholder="Votre nom complet" required autocomplete="name">
+                <input type="text" id="register-admin-name" placeholder="Votre nom complet" required autocomplete="off">
             </div>
 
             <div class="auth-input-group">
                 <div class="auth-input-icon">
                     <i class="fa-solid fa-envelope"></i>
                 </div>
-                <input type="email" id="register-admin-email" placeholder="Votre adresse e-mail" required autocomplete="email">
+                <input type="email" id="register-admin-email" placeholder="Votre adresse e-mail" required autocomplete="off">
             </div>
 
             <div class="auth-input-group">
                 <div class="auth-input-icon">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <input type="password" id="register-admin-password" placeholder="Mot de passe (min. 6 caractères)" minlength="6" required autocomplete="new-password">
+                <input type="password" id="register-admin-password" placeholder="Mot de passe (min. 6 caractères)" minlength="6" required autocomplete="off">
             </div>
 
             <div class="auth-input-group">
                 <div class="auth-input-icon">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <input type="password" id="register-admin-confirm" placeholder="Confirmez le mot de passe" minlength="6" required autocomplete="new-password">
+                <input type="password" id="register-admin-confirm" placeholder="Confirmez le mot de passe" minlength="6" required autocomplete="off">
             </div>
 
             <div class="auth-error" id="register-admin-error"></div>
@@ -129,9 +125,7 @@
     </div>
 </div>
 
-<!-- ============================================================
-     ÉCRAN 3 : PANNEAU ADMIN
-     ============================================================ -->
+<!-- ÉCRAN 3 : PANNEAU ADMIN -->
 <div class="auth-screen" id="admin-panel-screen">
     <div class="admin-container">
 
@@ -480,9 +474,7 @@
     </form>
 </section>
 
-<!-- ============================================= -->
-<!-- SECTION : MODIFIER UN CLIENT EXISTANT         -->
-<!-- ============================================= -->
+<!-- SECTION : MODIFIER UN CLIENT EXISTANT -->
 <section class="form-section modify-section">
     <div class="section-badge">
         <i class="fa-solid fa-pen-to-square"></i>
@@ -504,7 +496,7 @@
         <div class="custom-select" id="custom-option-select">
             <button type="button" class="custom-select-trigger" id="custom-option-trigger">
                 <span class="custom-select-icon"><i class="fa-solid fa-list"></i></span>
-                <span class="custom-select-text" id="custom-option-text">-- Choisir une option --</span>
+                <span class="custom-select-text placeholder" id="custom-option-text">-- Choisir une option --</span>
                 <span class="custom-select-arrow"><i class="fa-solid fa-chevron-down"></i></span>
             </button>
             <div class="custom-select-dropdown" id="custom-option-dropdown">
@@ -554,9 +546,7 @@
     <div id="option-card-container"></div>
 </section>
 
-        <!-- ============================================= -->
-        <!-- LISTE DES CLIENTS                             -->
-        <!-- ============================================= -->
+        <!-- LISTE DES CLIENTS -->
         <section class="clients-section">
             <div class="section-header-flex">
                 <h3 class="section-title">
@@ -576,9 +566,7 @@
     </div>
 </div>
 
-<!-- ============================================= -->
-<!-- MODAL : DÉTAILS DU CLIENT                      -->
-<!-- ============================================= -->
+<!-- MODAL : DÉTAILS DU CLIENT -->
 <div class="modal-overlay" id="client-detail-modal">
     <div class="modal-card modal-client-card">
         <button class="modal-close-btn" onclick="closeClientDetail()">
@@ -709,9 +697,7 @@
     </div>
 </div>
 
-<!-- ============================================= -->
-<!-- MODAL : LIEN GÉNÉRÉ                            -->
-<!-- ============================================= -->
+<!-- MODAL : LIEN GÉNÉRÉ -->
 <div class="modal-overlay" id="link-modal">
     <div class="modal-card">
         <div class="modal-icon-success">
