@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test App Pay</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f0f2f5; }
+        h1 { color: #ff7a00; }
+        .log { background: white; padding: 15px; border-radius: 8px; margin-top: 10px; font-size: 13px; line-height: 1.6; word-break: break-word; }
+        .ok { color: #00a04a; font-weight: bold; }
+        .err { color: #e02424; font-weight: bold; }
+        .info { color: #1a73e8; }
+    </style>
+</head>
+<body>
+    <h1>Diagnostic App Pay</h1>
+    <div class="log" id="log">Démarrage du test...</div>
+
+    <script type="module">
+        const logEl = document.getElementById('log');
+        const log = (msg, cls = '') => {
+            logEl.innerHTML += '<div class="' + cls + '">' + msg + '</div>';
+        };
+
+        (async () => {
+            try {
+                log('🔍 Test 1 : Import firebase-config.js...', 'info');
+                const config = await import('./js/firebase-config.js');
+                log('✅ firebase-config.js chargé avec succès', 'ok');
+
+                log('🔍 Test 2 : Import banks.js...', 'info');
+                const banks = await import('./js/banks.js');
+                log('✅ banks.js chargé avec succès', 'ok');
+
+                log('🔍 Test 3 : Import admin.js...', 'info');
+                const admin = await import('./js/admin.js');
+                log('✅ admin.js chargé avec succès', 'ok');
+
+                log('🎉 TOUS LES FICHIERS SONT OK', 'ok');
+                log('Si vous voyez ce message, le problème vient d\'une ERREUR dans admin.js', 'info');
+
+            } catch (err) {
+                log('❌ ERREUR DÉTECTÉE :', 'err');
+                log('Message : ' + err.message, 'err');
+                log('Type : ' + err.name, 'err');
+                if (err.stack) {
+                    log('Détails : ' + err.stack.split('\n').slice(0, 5).join(' | '), 'err');
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
