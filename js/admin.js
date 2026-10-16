@@ -187,9 +187,9 @@ function getInitials(firstName, lastName) {
     return (f + l).toUpperCase();
 }
 
+// ✅ MODIFIÉ : plus de "index.html" dans les liens clients
 function getClientLink(clientId) {
-    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
-    return `${baseUrl}?id=${clientId}`;
+    return `${window.location.origin}/?id=${clientId}`;
 }
 
 function buildCountryOptions(selectedCountry) {
@@ -377,34 +377,27 @@ async function loadAdminProfile(user) {
 }
 
 // ============================================================
-// ✅ ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
-// AFFICHE IMMÉDIATEMENT la bonne page (synchrone) puis écoute les changements
+// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
 // ============================================================
 function initAuthListener() {
-    // 1️⃣ VÉRIFICATION SYNCHRONE (instantanée) — évite le "flash"
     const cachedUser = auth.currentUser;
 
     if (cachedUser && !cachedUser.isAnonymous) {
-        // ✅ Session en cache → afficher directement le panneau admin
         console.log('⚡ Session en cache détectée :', cachedUser.email);
         loadAdminProfile(cachedUser).then(() => {
             showAdminPanel();
             loadClients();
         });
     } else {
-        // ⚠️ Pas de session → afficher IMMÉDIATEMENT la page de connexion
         console.log('🔒 Aucune session en cache → page de connexion');
         showLoginScreen();
     }
 
-    // 2️⃣ ÉCOUTE des changements (login / logout) sans bloquer l'affichage
     let isFirstCall = true;
     onAuthStateChanged(auth, async (user) => {
-        // Ignorer le premier callback (déjà traité en synchrone ci-dessus)
         if (isFirstCall) {
             isFirstCall = false;
 
-            // Cas particulier : session restaurée mais pas présente au 1er load
             if (user && !user.isAnonymous && !cachedUser) {
                 console.log('👤 Session restaurée (async) :', user.email);
                 await loadAdminProfile(user);
@@ -414,7 +407,6 @@ function initAuthListener() {
             return;
         }
 
-        // Callbacks suivants (login / logout en direct)
         if (user && !user.isAnonymous) {
             const panelActive = document.getElementById('admin-panel-screen').classList.contains('active');
             if (panelActive) return;
@@ -1479,7 +1471,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initCustomSelect();
 
-    // Vider les champs de connexion
     const loginEmail = document.getElementById('login-admin-email');
     const loginPassword = document.getElementById('login-admin-password');
     if (loginEmail) loginEmail.value = '';
@@ -1488,7 +1479,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('admin-register-form');
     if (registerForm) registerForm.reset();
 
-    // Démarrer l'écoute de l'authentification
     initAuthListener();
 });
 
