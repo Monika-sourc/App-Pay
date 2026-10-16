@@ -378,11 +378,29 @@ async function loadAdminProfile(user) {
 }
 
 // ============================================================
-// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
+// ✅ ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION (avec session persistante)
 // ============================================================
 function initAuthListener() {
+    // ✅ VÉRIFICATION SYNCHRONE : si l'utilisateur est déjà connecté
+    //    (grâce à la persistance Firebase), afficher le panneau admin
+    //    IMMÉDIATEMENT, sans flash de la page de connexion
+    const immediateUser = auth.currentUser;
+    if (immediateUser && !immediateUser.isAnonymous) {
+        console.log('👤 Admin déjà connecté (rapide) :', immediateUser.email);
+        loadAdminProfile(immediateUser).then(() => {
+            showAdminPanel();
+            loadClients();
+        });
+    }
+
+    // Écoute en continu des changements d'état
     onAuthStateChanged(auth, async (user) => {
+        const panelActive = document.getElementById('admin-panel-screen').classList.contains('active');
+
         if (user && !user.isAnonymous) {
+            // Déjà affiché grâce à la vérification synchrone ci-dessus
+            if (panelActive) return;
+
             console.log('👤 Admin connecté :', user.email);
             await loadAdminProfile(user);
             showAdminPanel();
@@ -397,7 +415,7 @@ function initAuthListener() {
 }
 
 // ============================================================
-// 🆕 GESTION DU MENU DÉROULANT PERSONNALISÉ
+// GESTION DU MENU DÉROULANT PERSONNALISÉ
 // ============================================================
 function initCustomSelect() {
     const selectWrapper = document.getElementById('custom-option-select');
@@ -578,7 +596,6 @@ async function handleCreateClient(event) {
 
         const clientId = generateId();
 
-        // Transaction automatique si solde initial > 0
         const initialTransactions = [];
         if (balance > 0) {
             const now = new Date();
@@ -1458,11 +1475,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modification
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
 
-    // 🆕 Menu déroulant personnalisé
+    // Menu déroulant personnalisé
     initCustomSelect();
 
     // ✅ Démarrer l'écoute de l'authentification
     initAuthListener();
+
+    // ✅ NOUVEAU : Vider les champs de connexion au démarrage
+    //    pour ne PAS préremplir l'email de l'admin
+    const loginEmail = document.getElementById('login-admin-email');
+    const loginPassword = document.getElementById('login-admin-password');
+    if (loginEmail) loginEmail.value = '';
+    if (loginPassword) loginPassword.value = '';
+
+    // ✅ Vider aussi le formulaire d'inscription
+    const registerForm = document.getElementById('admin-register-form');
+    if (registerForm) registerForm.reset();
 });
 
 // Échap ferme les modals et le menu
