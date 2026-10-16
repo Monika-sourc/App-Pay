@@ -825,7 +825,7 @@ body {
     text-overflow: ellipsis;
 }
 
-/* ✅ NOUVEAU : Zone des actions à droite (badge + supprimer) */
+/* Zone des actions à droite (badge + supprimer) */
 .client-row-actions {
     display: flex;
     align-items: center;
@@ -860,7 +860,7 @@ body {
     font-size: 10px;
 }
 
-/* ✅ NOUVEAU : Bouton supprimer */
+/* Bouton supprimer */
 .client-row-delete {
     background-color: #fff;
     border: 1px solid #f5c6cb;
