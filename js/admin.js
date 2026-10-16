@@ -28,10 +28,10 @@ const COLLECTION_NAME = 'clients';
 const ADMINS_COLLECTION = 'admins';
 
 // ---------- ÉTAT GLOBAL ----------
-let currentAdmin = null;        // Admin actuellement connecté
+let currentAdmin = null;
 let lastGeneratedLink = '';
 let selectedColor = '#ff7a00';
-let allClients = [];            // Clients de l'admin connecté uniquement
+let allClients = [];
 let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
@@ -130,29 +130,28 @@ const CURRENCY_LIST = [
     { value: "CHF", label: "CHF - Franc suisse" },
     { value: "¥", label: "¥ - Yen japonais" },
     { value: "FCFA", label: "FCFA - Franc CFA" },
-    { value: "NGN", label: "₦ - Naira nigérian" },
-    { value: "GHS", label: "₵ - Cedi ghanéen" },
-    { value: "KES", label: "KSh - Shilling kényan" },
-    { value: "ZAR", label: "R - Rand sud-africain" },
+    { value: "NGN", label: "NGN - Naira nigérian" },
+    { value: "GHS", label: "GHS - Cedi ghanéen" },
+    { value: "KES", label: "KES - Shilling kényan" },
+    { value: "ZAR", label: "ZAR - Rand sud-africain" },
     { value: "MAD", label: "MAD - Dirham marocain" },
     { value: "CAD", label: "CAD - Dollar canadien" },
-    { value: "AUD", label: "AUD - Dollar australien" },
-    { value: "BTC", label: "₿ - Bitcoin" }
+    { value: "AUD", label: "AUD - Dollar australien" }
 ];
 
 const LANGUAGE_LIST = [
-    { value: "fr", label: "🇫🇷 Français" },
-    { value: "en", label: "🇬🇧 English" },
-    { value: "es", label: "🇪🇸 Español" },
-    { value: "de", label: "🇩🇪 Deutsch" },
-    { value: "it", label: "🇮🇹 Italiano" },
-    { value: "pt", label: "🇵🇹 Português" },
-    { value: "pl", label: "🇵🇱 Polski" },
-    { value: "nl", label: "🇳🇱 Nederlands" },
-    { value: "ru", label: "🇷🇺 Русский" },
-    { value: "ar", label: "🇸🇦 العربية" },
-    { value: "zh", label: "🇨🇳 中文" },
-    { value: "ja", label: "🇯🇵 日本語" }
+    { value: "fr", label: "Français" },
+    { value: "en", label: "English" },
+    { value: "es", label: "Español" },
+    { value: "de", label: "Deutsch" },
+    { value: "it", label: "Italiano" },
+    { value: "pt", label: "Português" },
+    { value: "pl", label: "Polski" },
+    { value: "nl", label: "Nederlands" },
+    { value: "ru", label: "Русский" },
+    { value: "ar", label: "العربية" },
+    { value: "zh", label: "中文" },
+    { value: "ja", label: "日本語" }
 ];
 
 // ============================================================
@@ -266,14 +265,11 @@ async function handleAdminRegister(event) {
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
 
     try {
-        // Créer le compte dans Firebase Auth
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Mettre à jour le profil (nom)
         await updateProfile(user, { displayName: name });
 
-        // Enregistrer le profil admin dans Firestore
         await setDoc(doc(db, ADMINS_COLLECTION, user.uid), {
             uid: user.uid,
             name: name,
@@ -283,11 +279,7 @@ async function handleAdminRegister(event) {
         });
 
         showToast('Compte créé avec succès ! Bienvenue ' + name, 'success');
-
-        // Réinitialiser le formulaire
         document.getElementById('admin-register-form').reset();
-
-        // La redirection vers le panneau se fait via onAuthStateChanged
 
     } catch (err) {
         console.error('Erreur inscription :', err);
@@ -325,7 +317,6 @@ async function handleAdminLogin(event) {
     try {
         await signInWithEmailAndPassword(auth, email, password);
         // La redirection se fait via onAuthStateChanged
-
     } catch (err) {
         console.error('Erreur connexion :', err);
         let msg = 'Erreur de connexion.';
@@ -351,7 +342,6 @@ async function handleAdminLogout() {
     try {
         await signOut(auth);
         showToast('Déconnexion réussie.', 'info');
-        // La redirection vers l'écran de connexion se fait via onAuthStateChanged
     } catch (err) {
         console.error('Erreur déconnexion :', err);
         showToast('Erreur lors de la déconnexion.', 'error');
@@ -367,7 +357,6 @@ async function loadAdminProfile(user) {
         if (adminDoc.exists()) {
             currentAdmin = adminDoc.data();
         } else {
-            // Fallback si le profil n'existe pas
             currentAdmin = {
                 uid: user.uid,
                 name: user.displayName || 'Admin',
@@ -375,7 +364,6 @@ async function loadAdminProfile(user) {
             };
         }
 
-        // Mettre à jour l'UI de l'en-tête
         const initials = (currentAdmin.name || 'A').split(' ')
             .map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'A';
         document.getElementById('admin-avatar').textContent = initials;
@@ -395,19 +383,96 @@ async function loadAdminProfile(user) {
 function initAuthListener() {
     onAuthStateChanged(auth, async (user) => {
         if (user && !user.isAnonymous) {
-            // Admin connecté
             console.log('👤 Admin connecté :', user.email);
             await loadAdminProfile(user);
             showAdminPanel();
             await loadClients();
         } else {
-            // Aucun admin connecté (anonyme ou déconnecté)
             console.log('🔒 Aucun admin connecté');
             currentAdmin = null;
             allClients = [];
             showLoginScreen();
         }
     });
+}
+
+// ============================================================
+// 🆕 GESTION DU MENU DÉROULANT PERSONNALISÉ
+// ============================================================
+function initCustomSelect() {
+    const selectWrapper = document.getElementById('custom-option-select');
+    const trigger = document.getElementById('custom-option-trigger');
+    const dropdown = document.getElementById('custom-option-dropdown');
+    const hiddenInput = document.getElementById('m-select-option');
+    const triggerText = document.getElementById('custom-option-text');
+    const triggerIcon = document.querySelector('.custom-select-icon i');
+
+    if (!selectWrapper || !trigger || !dropdown) return;
+
+    // Ouvrir / fermer le menu
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectWrapper.classList.toggle('open');
+    });
+
+    // Sélectionner une option
+    dropdown.querySelectorAll('.custom-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const value = option.dataset.value;
+            const label = option.querySelector('span').textContent.trim();
+            const iconClass = option.querySelector('i').className;
+
+            // Mettre à jour le trigger
+            triggerText.textContent = label;
+            triggerText.classList.remove('placeholder');
+            if (triggerIcon) {
+                triggerIcon.className = iconClass;
+            }
+
+            // Mettre à jour la valeur cachée
+            hiddenInput.value = value;
+
+            // Marquer l'option comme sélectionnée
+            dropdown.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+
+            // Fermer le menu
+            selectWrapper.classList.remove('open');
+
+            // Déclencher le changement d'option
+            handleOptionChange();
+        });
+    });
+
+    // Fermer en cliquant ailleurs
+    document.addEventListener('click', (e) => {
+        if (!selectWrapper.contains(e.target)) {
+            selectWrapper.classList.remove('open');
+        }
+    });
+}
+
+// Réinitialiser le menu déroulant
+function resetCustomSelect() {
+    const selectWrapper = document.getElementById('custom-option-select');
+    const triggerText = document.getElementById('custom-option-text');
+    const triggerIcon = document.querySelector('.custom-select-icon i');
+    const hiddenInput = document.getElementById('m-select-option');
+
+    if (triggerText) {
+        triggerText.textContent = '-- Choisir une option --';
+        triggerText.classList.add('placeholder');
+    }
+    if (triggerIcon) {
+        triggerIcon.className = 'fa-solid fa-list';
+    }
+    if (hiddenInput) hiddenInput.value = '';
+    if (selectWrapper) {
+        selectWrapper.classList.remove('open');
+        selectWrapper.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+    }
 }
 
 // ============================================================
@@ -422,7 +487,7 @@ function populateBankSelect(selectId, clientCountry, selectedDomain) {
     const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
     if (countryBanks.length > 0) {
         const group = document.createElement('optgroup');
-        group.label = `⭐ Banques du pays (${clientCountry})`;
+        group.label = `Banques du pays (${clientCountry})`;
         countryBanks.forEach(bank => {
             const opt = document.createElement('option');
             opt.value = bank.domain;
@@ -503,7 +568,6 @@ async function handleCreateClient(event) {
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
 
     try {
-        // Vérifier unicité email
         const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
         const existing = await getDocs(emailCheck);
         if (!existing.empty) {
@@ -540,7 +604,6 @@ async function handleCreateClient(event) {
             bankName, bankDomain, bankLogo,
             transactions: initialTransactions,
             blocked: false,
-            // ✅ Lier au créateur admin
             createdBy: currentAdmin.uid,
             createdByName: currentAdmin.name,
             createdByEmail: currentAdmin.email,
@@ -587,7 +650,6 @@ async function loadClients() {
     }
 
     try {
-        // ✅ Filtrer uniquement les clients créés par cet admin
         const q = query(
             collection(db, COLLECTION_NAME),
             where('createdBy', '==', currentAdmin.uid)
@@ -759,7 +821,7 @@ function handleModifyClientChange() {
     const optionWrapper = document.getElementById('option-select-wrapper');
     const optionContainer = document.getElementById('option-card-container');
 
-    document.getElementById('m-select-option').value = '';
+    resetCustomSelect();
     optionContainer.innerHTML = '';
 
     if (!clientId) {
@@ -884,7 +946,7 @@ function renderOptionCard(option, client) {
                     <span>Le logo et le nom de cette banque seront utilisés pour les nouveaux virements.</span>
                 </div>
                 <div class="form-group">
-                    <label>🏦 Banque actuelle</label>
+                    <label>Banque actuelle</label>
                     <select id="opt-bank">
                         <option value="">-- Sélectionner une banque --</option>
                     </select>
@@ -911,7 +973,7 @@ function renderOptionCard(option, client) {
             break;
 
         case 'transfer_params':
-            headerIcon = 'fa-gear';
+            headerIcon = 'fa-percent';
             headerTitle = 'Paramètres de virement';
             headerSubtitle = 'Pourcentage limite et message après virement';
             bodyHtml = `
@@ -989,7 +1051,7 @@ function renderOptionCard(option, client) {
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>🏦 Banque <span class="required">. requis</span></label>
+                    <label>Banque <span class="required">. requis</span></label>
                     <select id="opt-tx-bank">
                         <option value="">-- Sélectionner une banque --</option>
                     </select>
@@ -1083,7 +1145,7 @@ function renderOptionCard(option, client) {
 // ANNULER LA CARTE D'OPTION
 // ============================================================
 function cancelOptionCard() {
-    document.getElementById('m-select-option').value = '';
+    resetCustomSelect();
     document.getElementById('option-card-container').innerHTML = '';
     selectedOption = null;
 }
@@ -1292,6 +1354,7 @@ async function deleteClient(id) {
             document.getElementById('m-select-client').value = '';
             document.getElementById('option-select-wrapper').style.display = 'none';
             document.getElementById('option-card-container').innerHTML = '';
+            resetCustomSelect();
         }
         await loadClients();
         showToast('Client supprimé.', 'info');
@@ -1394,16 +1457,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Modification
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
-    document.getElementById('m-select-option').addEventListener('change', handleOptionChange);
+
+    // 🆕 Menu déroulant personnalisé
+    initCustomSelect();
 
     // ✅ Démarrer l'écoute de l'authentification
     initAuthListener();
 });
 
-// Échap ferme les modals
+// Échap ferme les modals et le menu
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
         closeClientDetail();
+        const selectWrapper = document.getElementById('custom-option-select');
+        if (selectWrapper) selectWrapper.classList.remove('open');
     }
 });
