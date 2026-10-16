@@ -13,8 +13,265 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    padding: 20px;
     zoom: 0.6;
+}
+
+/* ============================================================
+   ÉCRANS D'AUTHENTIFICATION
+   ============================================================ */
+.auth-screen {
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.auth-screen.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 460px;
+    padding: 40px 35px;
+    animation: authFadeInUp 0.4s ease;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.auth-logo i {
+    font-size: 38px;
+    color: #ff7a00;
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.auth-logo h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: 1px;
+}
+
+.auth-logo p {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.auth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fff5eb;
+    color: #ff7a00;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin: 0 auto 25px auto;
+    border: 1px solid #ffe4cc;
+    width: fit-content;
+    display: flex;
+}
+
+.auth-badge.register {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    border-color: #c5d8f5;
+}
+
+.auth-badge i {
+    font-size: 12px;
+}
+
+.auth-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.auth-input-group {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 2px solid #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.auth-input-group:focus-within {
+    background-color: #ffffff;
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+}
+
+.auth-input-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 15px;
+    flex-shrink: 0;
+    border-right: 1px solid #f0f0f0;
+    transition: color 0.2s;
+}
+
+.auth-input-group:focus-within .auth-input-icon {
+    color: #ff7a00;
+}
+
+.auth-input-group input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 15px 18px;
+    font-size: 14px;
+    color: #111;
+    background: transparent;
+    min-width: 0;
+    font-weight: 500;
+}
+
+.auth-input-group input::placeholder {
+    color: #aaa;
+    font-weight: 400;
+}
+
+.auth-error {
+    color: #e02424;
+    font-size: 12px;
+    text-align: center;
+    min-height: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 10px;
+}
+
+.auth-btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
+    letter-spacing: 0.3px;
+}
+
+.auth-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(255, 122, 0, 0.35);
+}
+
+.auth-btn-primary:active {
+    transform: translateY(0);
+}
+
+.auth-btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.auth-btn-secondary {
+    width: 100%;
+    background-color: #ffffff;
+    color: #333;
+    border: 2px solid #e8eaee;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.auth-btn-secondary:hover {
+    border-color: #ff7a00;
+    color: #ff7a00;
+    background-color: #fff8f2;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e8eaee;
+}
+
+.auth-divider span {
+    position: relative;
+    background-color: white;
+    padding: 0 15px;
+    color: #999;
+    font-size: 12px;
+}
+
+@keyframes authFadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   PANNEAU ADMIN - Container
+   ============================================================ */
+#admin-panel-screen {
+    padding: 20px;
 }
 
 .admin-container {
@@ -23,15 +280,20 @@ body {
 }
 
 /* ============================================================
-   En-tête
+   En-tête admin
    ============================================================ */
 .admin-header {
     background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
     color: white;
-    padding: 24px 30px;
-    border-radius: 10px;
+    padding: 20px 25px;
+    border-radius: 12px;
     margin-bottom: 25px;
     box-shadow: 0 8px 24px rgba(255, 122, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .admin-logo {
@@ -45,7 +307,7 @@ body {
 }
 
 .admin-logo h1 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     letter-spacing: 1px;
     display: flex;
@@ -54,7 +316,7 @@ body {
 }
 
 .admin-logo p {
-    font-size: 13px;
+    font-size: 12px;
     opacity: 0.9;
     margin-top: 2px;
 }
@@ -66,6 +328,77 @@ body {
     border-radius: 4px;
     font-weight: 600;
     letter-spacing: 1.5px;
+}
+
+.admin-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 14px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.admin-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.admin-user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.admin-user-email {
+    font-size: 10px;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.admin-logout-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.admin-logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
 }
 
 /* ============================================================
@@ -360,15 +693,8 @@ body {
 .btn-save-changes:hover {
     background-color: #1557b0;
 }
-.btn-save-changes:active {
-    transform: scale(0.99);
-}
-.btn-save-changes:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
 
-/* Boutons d'accès (bloquer/débloquer) */
+/* Boutons d'accès */
 .access-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -390,10 +716,6 @@ body {
     background-color: #fff;
 }
 
-.btn-access i {
-    font-size: 13px;
-}
-
 .btn-block {
     border-color: #f5c6cb;
     color: #e02424;
@@ -410,18 +732,6 @@ body {
 
 .btn-unblock:hover {
     background-color: #f0fdf4;
-}
-
-.btn-add-tx {
-    width: 100%;
-    border-color: #ff7a00;
-    color: #ff7a00;
-    padding: 13px;
-    margin-top: 5px;
-}
-
-.btn-add-tx:hover {
-    background-color: #fff5eb;
 }
 
 /* Historique dans la section modifier */
@@ -534,9 +844,7 @@ body {
     display: none !important;
 }
 
-/* ============================================================
-   CARTE D'OPTION DYNAMIQUE
-   ============================================================ */
+/* Carte d'option dynamique */
 #option-card-container {
     margin-top: 25px;
 }
@@ -625,11 +933,6 @@ body {
     background-color: #1557b0;
 }
 
-.option-card-actions .btn-option-save:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
 .option-card-actions .btn-option-cancel {
     background-color: #f0f2f5;
     color: #333;
@@ -650,12 +953,6 @@ body {
     align-items: flex-start;
     gap: 8px;
     line-height: 1.5;
-}
-
-.option-info-box i {
-    font-size: 14px;
-    flex-shrink: 0;
-    margin-top: 1px;
 }
 
 .option-status-box {
@@ -755,7 +1052,6 @@ body {
     border: 1px dashed #dcdfe6;
 }
 
-/* Carte client cliquable */
 .client-row {
     display: flex;
     align-items: center;
@@ -825,7 +1121,6 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Zone des actions à droite (badge + supprimer) */
 .client-row-actions {
     display: flex;
     align-items: center;
@@ -833,7 +1128,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Badges Actif / Bloqué */
 .client-row-status {
     display: inline-flex;
     align-items: center;
@@ -860,7 +1154,6 @@ body {
     font-size: 10px;
 }
 
-/* Bouton supprimer */
 .client-row-delete {
     background-color: #fff;
     border: 1px solid #f5c6cb;
@@ -1395,5 +1688,16 @@ body {
     .option-card-actions button {
         width: 100%;
         justify-content: center;
+    }
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .admin-header-right {
+        justify-content: space-between;
+    }
+    .admin-user-name,
+    .admin-user-email {
+        max-width: 100px;
     }
 }
