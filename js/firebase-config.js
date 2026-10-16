@@ -21,7 +21,12 @@ import {
 import {
     getAuth,
     signInAnonymously,
-    onAuthStateChanged
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    updateProfile,
+    sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // Configuration Firebase du projet App Pay
@@ -39,22 +44,30 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Connexion anonyme automatique (nécessaire pour Firestore)
+// ============================================================
+// CONNEXION ANONYME AUTOMATIQUE (pour la page client)
+// ============================================================
 const authPromise = new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log("✅ Firebase : utilisateur connecté (anonyme)");
+            console.log("✅ Firebase : utilisateur connecté");
             resolve(user);
         } else {
-            signInAnonymously(auth)
-                .then((cred) => {
-                    console.log("✅ Firebase : nouvelle connexion anonyme créée");
-                    resolve(cred.user);
-                })
-                .catch((err) => {
-                    console.error("❌ Firebase Auth erreur :", err);
-                    resolve(null);
-                });
+            // Ne pas se connecter anonymement si on est sur admin.html
+            const isAdminPage = window.location.pathname.includes('admin');
+            if (isAdminPage) {
+                resolve(null);
+            } else {
+                signInAnonymously(auth)
+                    .then((cred) => {
+                        console.log("✅ Firebase : nouvelle connexion anonyme créée");
+                        resolve(cred.user);
+                    })
+                    .catch((err) => {
+                        console.error("❌ Firebase Auth erreur :", err);
+                        resolve(null);
+                    });
+            }
         }
     });
 });
@@ -76,5 +89,12 @@ export {
     query,
     where,
     serverTimestamp,
-    onSnapshot
+    onSnapshot,
+    // Auth functions
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    updateProfile,
+    sendPasswordResetEmail,
+    onAuthStateChanged
 };
