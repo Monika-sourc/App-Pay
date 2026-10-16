@@ -5,6 +5,7 @@
 import {
     db,
     auth,
+    persistenceReady,
     collection,
     doc,
     setDoc,
@@ -228,12 +229,14 @@ function showScreen(screenId) {
 
 function showLoginScreen() {
     showScreen('admin-login-screen');
-    document.getElementById('login-admin-error').textContent = '';
+    const err = document.getElementById('login-admin-error');
+    if (err) err.textContent = '';
 }
 
 function showRegisterScreen() {
     showScreen('admin-register-screen');
-    document.getElementById('register-admin-error').textContent = '';
+    const err = document.getElementById('register-admin-error');
+    if (err) err.textContent = '';
 }
 
 function showAdminPanel() {
@@ -316,7 +319,6 @@ async function handleAdminLogin(event) {
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        // La redirection se fait via onAuthStateChanged
     } catch (err) {
         console.error('Erreur connexion :', err);
         let msg = 'Erreur de connexion.';
@@ -378,27 +380,32 @@ async function loadAdminProfile(user) {
 }
 
 // ============================================================
-// ✅ ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION (avec session persistante)
+// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
 // ============================================================
 function initAuthListener() {
-    // ✅ VÉRIFICATION SYNCHRONE : si l'utilisateur est déjà connecté
-    //    (grâce à la persistance Firebase), afficher le panneau admin
-    //    IMMÉDIATEMENT, sans flash de la page de connexion
-    const immediateUser = auth.currentUser;
-    if (immediateUser && !immediateUser.isAnonymous) {
-        console.log('👤 Admin déjà connecté (rapide) :', immediateUser.email);
-        loadAdminProfile(immediateUser).then(() => {
-            showAdminPanel();
-            loadClients();
-        });
-    }
+    let isFirstCall = true;
 
-    // Écoute en continu des changements d'état
     onAuthStateChanged(auth, async (user) => {
-        const panelActive = document.getElementById('admin-panel-screen').classList.contains('active');
+        // ✅ Premier callback (déterminant)
+        if (isFirstCall) {
+            isFirstCall = false;
 
+            if (user && !user.isAnonymous) {
+                console.log('👤 Session restaurée :', user.email);
+                await loadAdminProfile(user);
+                showAdminPanel();
+                await loadClients();
+                return;
+            } else {
+                console.log('🔒 Aucune session → page de connexion');
+                showLoginScreen();
+                return;
+            }
+        }
+
+        // Callbacks suivants
         if (user && !user.isAnonymous) {
-            // Déjà affiché grâce à la vérification synchrone ci-dessus
+            const panelActive = document.getElementById('admin-panel-screen').classList.contains('active');
             if (panelActive) return;
 
             console.log('👤 Admin connecté :', user.email);
@@ -406,7 +413,8 @@ function initAuthListener() {
             showAdminPanel();
             await loadClients();
         } else {
-            console.log('🔒 Aucun admin connecté');
+            if (!currentAdmin) return;
+            console.log('🔒 Déconnexion détectée');
             currentAdmin = null;
             allClients = [];
             showLoginScreen();
@@ -427,13 +435,11 @@ function initCustomSelect() {
 
     if (!selectWrapper || !trigger || !dropdown) return;
 
-    // Ouvrir / fermer le menu
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         selectWrapper.classList.toggle('open');
     });
 
-    // Sélectionner une option
     dropdown.querySelectorAll('.custom-option').forEach(option => {
         option.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -442,29 +448,23 @@ function initCustomSelect() {
             const label = option.querySelector('span').textContent.trim();
             const iconClass = option.querySelector('i').className;
 
-            // Mettre à jour le trigger
             triggerText.textContent = label;
             triggerText.classList.remove('placeholder');
             if (triggerIcon) {
                 triggerIcon.className = iconClass;
             }
 
-            // Mettre à jour la valeur cachée
             hiddenInput.value = value;
 
-            // Marquer l'option comme sélectionnée
             dropdown.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
             option.classList.add('selected');
 
-            // Fermer le menu
             selectWrapper.classList.remove('open');
 
-            // Déclencher le changement d'option
             handleOptionChange();
         });
     });
 
-    // Fermer en cliquant ailleurs
     document.addEventListener('click', (e) => {
         if (!selectWrapper.contains(e.target)) {
             selectWrapper.classList.remove('open');
@@ -472,7 +472,6 @@ function initCustomSelect() {
     });
 }
 
-// Réinitialiser le menu déroulant
 function resetCustomSelect() {
     const selectWrapper = document.getElementById('custom-option-select');
     const triggerText = document.getElementById('custom-option-text');
@@ -655,7 +654,7 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// CHARGEMENT DES CLIENTS (FILTRÉS PAR ADMIN)
+// CHARGEMENT DES CLIENTS
 // ============================================================
 async function loadClients() {
     const list = document.getElementById('clients-list');
@@ -1081,7 +1080,6 @@ function renderOptionCard(option, client) {
             break;
     }
 
-    // Actions
     let actionButtons = '';
     if (option === 'access') {
         const blockBtn = client.blocked
@@ -1129,7 +1127,6 @@ function renderOptionCard(option, client) {
         </div>
     `;
 
-    // Brancher événements spécifiques
     if (option === 'color') {
         const picker = document.getElementById('opt-color-picker');
         picker.querySelectorAll('.color-option').forEach(opt => {
@@ -1398,7 +1395,7 @@ async function clearAllClients() {
 }
 
 // ============================================================
-// MODAL LIEN (après création)
+// MODAL LIEN
 // ============================================================
 function closeModal() {
     document.getElementById('link-modal').classList.remove('show');
@@ -1451,20 +1448,15 @@ window.handleAdminLogout = handleAdminLogout;
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Formulaires d'auth
     document.getElementById('admin-login-form').addEventListener('submit', handleAdminLogin);
     document.getElementById('admin-register-form').addEventListener('submit', handleAdminRegister);
-
-    // Formulaire de création
     document.getElementById('create-client-form').addEventListener('submit', handleCreateClient);
 
-    // Populate bank France par défaut
     populateBankSelect('c-bank', 'France', '');
     document.getElementById('c-country').addEventListener('change', (e) => {
         populateBankSelect('c-bank', e.target.value, '');
     });
 
-    // Modals
     document.getElementById('link-modal').addEventListener('click', (e) => {
         if (e.target.id === 'link-modal') closeModal();
     });
@@ -1472,28 +1464,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
 
-    // Modification
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
 
-    // Menu déroulant personnalisé
     initCustomSelect();
 
-    // ✅ Démarrer l'écoute de l'authentification
-    initAuthListener();
-
-    // ✅ NOUVEAU : Vider les champs de connexion au démarrage
-    //    pour ne PAS préremplir l'email de l'admin
+    // Vider les champs de connexion au démarrage
     const loginEmail = document.getElementById('login-admin-email');
     const loginPassword = document.getElementById('login-admin-password');
     if (loginEmail) loginEmail.value = '';
     if (loginPassword) loginPassword.value = '';
 
-    // ✅ Vider aussi le formulaire d'inscription
     const registerForm = document.getElementById('admin-register-form');
     if (registerForm) registerForm.reset();
+
+    // Démarrer l'écoute de l'authentification
+    initAuthListener();
 });
 
-// Échap ferme les modals et le menu
+// Échap ferme les modals
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
