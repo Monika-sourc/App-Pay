@@ -263,15 +263,22 @@ body {
 }
 
 /* ============================================================
-   PANNEAU ADMIN
+   PANNEAU ADMIN - PLEIN ÉCRAN
    ============================================================ */
 #admin-panel-screen {
-    padding: 20px;
+    padding: 0;
+    align-items: flex-start;
+}
+
+#admin-panel-screen.active {
+    align-items: flex-start;
 }
 
 .admin-container {
-    max-width: 720px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
+    padding: 15px;
 }
 
 /* En-tête admin */
@@ -825,7 +832,7 @@ body {
 }
 
 /* ============================================================
-   🆕 MENU DÉROULANT PERSONNALISÉ (custom-select)
+   MENU DÉROULANT PERSONNALISÉ (custom-select)
    ============================================================ */
 .custom-select {
     position: relative;
