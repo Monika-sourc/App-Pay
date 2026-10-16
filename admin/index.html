@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Pay Admin - Panneau d'administration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
 
-<!-- ÉCRAN 0 : CHARGEMENT (affiché au démarrage) -->
+<!-- ÉCRAN 0 : CHARGEMENT -->
 <div class="auth-screen active" id="admin-loading-screen">
     <div class="auth-loading">
         <div class="auth-loading-logo">
@@ -143,7 +143,6 @@
 <div class="auth-screen" id="admin-panel-screen">
     <div class="admin-container">
 
-        <!-- EN-TÊTE -->
         <header class="admin-header">
             <div class="admin-logo">
                 <i class="fa-solid fa-landmark"></i>
@@ -167,7 +166,6 @@
             </div>
         </header>
 
-        <!-- FORMULAIRE DE CRÉATION -->
         <section class="form-section">
             <div class="section-badge">
                 <i class="fa-solid fa-user-plus"></i>
@@ -503,7 +501,6 @@
         <small>Sélectionnez d'abord le client dont vous souhaitez modifier les informations.</small>
     </div>
 
-    <!-- MENU DÉROULANT PERSONNALISÉ (avec vraies icônes FontAwesome) -->
     <div class="form-group" id="option-select-wrapper" style="display:none;">
         <label>2. Sélectionner une option <span class="required">. requis</span></label>
 
@@ -736,6 +733,6 @@
     </div>
 </div>
 
-<script type="module" src="js/admin.js"></script>
+<script type="module" src="../js/admin.js"></script>
 </body>
 </html>
