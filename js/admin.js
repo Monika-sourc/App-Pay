@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY ADMIN - Gestion des clients (Firebase + Auth + Banques)
+// APP PAY ADMIN - Gestion des clients (Firebase + Auth + Banques + Emails)
 // ============================================================
 
 import {
@@ -24,6 +24,11 @@ import {
 } from './firebase-config.js';
 
 import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
+
+import {
+    sendLoginCredentials,
+    sendActivationCode
+} from './emails.js';
 
 const COLLECTION_NAME = 'clients';
 const ADMINS_COLLECTION = 'admins';
@@ -187,7 +192,6 @@ function getInitials(firstName, lastName) {
     return (f + l).toUpperCase();
 }
 
-// ✅ MODIFIÉ : plus de "index.html" dans les liens clients
 function getClientLink(clientId) {
     return `${window.location.origin}/?id=${clientId}`;
 }
@@ -781,6 +785,84 @@ function editClientFromDetail() {
     const clientId = currentDetailClient.id;
     closeClientDetail();
     selectClientForModify(clientId);
+}
+
+// ============================================================
+// 📧 NOUVEAU : ENVOYER LES IDENTIFIANTS PAR EMAIL
+// ============================================================
+async function handleSendLoginCredentials() {
+    if (!currentDetailClient) return;
+
+    const client = currentDetailClient;
+
+    if (!client.email) {
+        return showToast('Ce client n\'a pas d\'adresse e-mail.', 'error');
+    }
+
+    const btn = document.getElementById('btn-send-credentials');
+    const originalHTML = btn ? btn.innerHTML : '';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+    }
+
+    try {
+        const result = await sendLoginCredentials(client);
+
+        if (result.success) {
+            showToast('Identifiants envoyés à ' + client.email, 'success');
+        } else {
+            showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
+        }
+    } catch (err) {
+        console.error('Erreur envoi identifiants :', err);
+        showToast('Erreur d\'envoi. Réessayez.', 'error');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+        }
+    }
+}
+
+// ============================================================
+// 📧 NOUVEAU : ENVOYER LE CODE D'ACTIVATION PAR EMAIL
+// ============================================================
+async function handleSendActivationCode() {
+    if (!currentDetailClient) return;
+
+    const client = currentDetailClient;
+
+    if (!client.email) {
+        return showToast('Ce client n\'a pas d\'adresse e-mail.', 'error');
+    }
+
+    const btn = document.getElementById('btn-send-activation');
+    const originalHTML = btn ? btn.innerHTML : '';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+    }
+
+    try {
+        const result = await sendActivationCode(client);
+
+        if (result.success) {
+            showToast('Code d\'activation envoyé à ' + client.email, 'success');
+        } else {
+            showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
+        }
+    } catch (err) {
+        console.error('Erreur envoi code d\'activation :', err);
+        showToast('Erreur d\'envoi. Réessayez.', 'error');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+        }
+    }
 }
 
 // ============================================================
@@ -1446,6 +1528,8 @@ window.cancelOptionCard = cancelOptionCard;
 window.showLoginScreen = showLoginScreen;
 window.showRegisterScreen = showRegisterScreen;
 window.handleAdminLogout = handleAdminLogout;
+window.handleSendLoginCredentials = handleSendLoginCredentials;
+window.handleSendActivationCode = handleSendActivationCode;
 
 // ============================================================
 // INITIALISATION
