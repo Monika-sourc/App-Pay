@@ -2,7 +2,7 @@
 // APP PAY - Configuration Firebase
 // ============================================================
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import {
     getFirestore,
     collection,
@@ -17,7 +17,7 @@ import {
     where,
     serverTimestamp,
     onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import {
     getAuth,
     signInAnonymously,
@@ -27,7 +27,7 @@ import {
     signOut,
     updateProfile,
     sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 // Configuration Firebase
 const firebaseConfig = {
@@ -44,7 +44,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// ✅ Persistance : valeur immédiate (Firebase gère automatiquement)
 const persistenceReady = Promise.resolve(true);
 
 // ============================================================
