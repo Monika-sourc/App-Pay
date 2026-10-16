@@ -695,6 +695,37 @@
                 <small class="cd-hint">Ce lien est unique et personnel. Transmettez-le au client.</small>
             </div>
 
+            <!-- ✅ NOUVELLE SECTION : Envoi par email -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-paper-plane"></i> Envoyer par email
+                </div>
+
+                <div class="email-actions-grid">
+                    <button type="button" class="email-action-btn email-action-blue" id="btn-send-credentials" onclick="handleSendLoginCredentials()">
+                        <span class="email-action-icon">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <span class="email-action-text">
+                            <strong>Envoyer les identifiants</strong>
+                            <small>Email + code PIN</small>
+                        </span>
+                    </button>
+
+                    <button type="button" class="email-action-btn email-action-green" id="btn-send-activation" onclick="handleSendActivationCode()">
+                        <span class="email-action-icon">
+                            <i class="fa-solid fa-unlock-keyhole"></i>
+                        </span>
+                        <span class="email-action-text">
+                            <strong>Envoyer le code d'activation</strong>
+                            <small>Code de validation</small>
+                        </span>
+                    </button>
+                </div>
+
+                <small class="cd-hint">Les emails seront envoyés dans la langue du client.</small>
+            </div>
+
         </div>
 
         <div class="client-detail-footer">
