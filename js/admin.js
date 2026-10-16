@@ -1,10 +1,10 @@
 // ============================================================
-// APP PAY ADMIN - Gestion des clients (Firebase + Banques)
+// APP PAY ADMIN - Gestion des clients (Firebase + Auth + Banques)
 // ============================================================
 
 import {
     db,
-    authPromise,
+    auth,
     collection,
     doc,
     setDoc,
@@ -14,15 +14,24 @@ import {
     deleteDoc,
     query,
     where,
-    serverTimestamp
+    serverTimestamp,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    updateProfile,
+    onAuthStateChanged
 } from './firebase-config.js';
 
 import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 
 const COLLECTION_NAME = 'clients';
+const ADMINS_COLLECTION = 'admins';
+
+// ---------- ÉTAT GLOBAL ----------
+let currentAdmin = null;        // Admin actuellement connecté
 let lastGeneratedLink = '';
 let selectedColor = '#ff7a00';
-let allClients = [];
+let allClients = [];            // Clients de l'admin connecté uniquement
 let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
@@ -210,7 +219,199 @@ function escapeHtml(str) {
 }
 
 // ============================================================
-// PEUPLEMENT DES BANQUES
+// GESTION DES ÉCRANS
+// ============================================================
+function showScreen(screenId) {
+    document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById(screenId);
+    if (screen) screen.classList.add('active');
+}
+
+function showLoginScreen() {
+    showScreen('admin-login-screen');
+    document.getElementById('login-admin-error').textContent = '';
+}
+
+function showRegisterScreen() {
+    showScreen('admin-register-screen');
+    document.getElementById('register-admin-error').textContent = '';
+}
+
+function showAdminPanel() {
+    showScreen('admin-panel-screen');
+}
+
+// ============================================================
+// AUTHENTIFICATION - INSCRIPTION
+// ============================================================
+async function handleAdminRegister(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('register-admin-name').value.trim();
+    const email = document.getElementById('register-admin-email').value.trim().toLowerCase();
+    const password = document.getElementById('register-admin-password').value;
+    const confirm = document.getElementById('register-admin-confirm').value;
+    const errorEl = document.getElementById('register-admin-error');
+
+    if (!name) return errorEl.textContent = 'Veuillez saisir votre nom complet.';
+    if (!email.includes('@') || !email.includes('.')) return errorEl.textContent = 'Adresse e-mail invalide.';
+    if (password.length < 6) return errorEl.textContent = 'Le mot de passe doit contenir au moins 6 caractères.';
+    if (password !== confirm) return errorEl.textContent = 'Les mots de passe ne correspondent pas.';
+
+    errorEl.textContent = '';
+
+    const submitBtn = document.querySelector('#admin-register-form .auth-btn-primary');
+    const originalHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
+
+    try {
+        // Créer le compte dans Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Mettre à jour le profil (nom)
+        await updateProfile(user, { displayName: name });
+
+        // Enregistrer le profil admin dans Firestore
+        await setDoc(doc(db, ADMINS_COLLECTION, user.uid), {
+            uid: user.uid,
+            name: name,
+            email: email,
+            createdAt: new Date().toISOString(),
+            createdAtServer: serverTimestamp()
+        });
+
+        showToast('Compte créé avec succès ! Bienvenue ' + name, 'success');
+
+        // Réinitialiser le formulaire
+        document.getElementById('admin-register-form').reset();
+
+        // La redirection vers le panneau se fait via onAuthStateChanged
+
+    } catch (err) {
+        console.error('Erreur inscription :', err);
+        let msg = 'Erreur lors de la création du compte.';
+        if (err.code === 'auth/email-already-in-use') msg = 'Cet email est déjà utilisé.';
+        else if (err.code === 'auth/invalid-email') msg = 'Adresse e-mail invalide.';
+        else if (err.code === 'auth/weak-password') msg = 'Mot de passe trop faible.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau, vérifiez votre connexion.';
+        errorEl.textContent = msg;
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
+    }
+}
+
+// ============================================================
+// AUTHENTIFICATION - CONNEXION
+// ============================================================
+async function handleAdminLogin(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('login-admin-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-admin-password').value;
+    const errorEl = document.getElementById('login-admin-error');
+
+    if (!email || !password) return errorEl.textContent = 'Veuillez remplir tous les champs.';
+
+    errorEl.textContent = '';
+
+    const submitBtn = document.querySelector('#admin-login-form .auth-btn-primary');
+    const originalHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // La redirection se fait via onAuthStateChanged
+
+    } catch (err) {
+        console.error('Erreur connexion :', err);
+        let msg = 'Erreur de connexion.';
+        if (err.code === 'auth/user-not-found') msg = 'Aucun compte trouvé avec cet email.';
+        else if (err.code === 'auth/wrong-password') msg = 'Mot de passe incorrect.';
+        else if (err.code === 'auth/invalid-credential') msg = 'Email ou mot de passe incorrect.';
+        else if (err.code === 'auth/invalid-email') msg = 'Adresse e-mail invalide.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau, vérifiez votre connexion.';
+        else if (err.code === 'auth/too-many-requests') msg = 'Trop de tentatives. Veuillez réessayer plus tard.';
+        errorEl.textContent = msg;
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
+    }
+}
+
+// ============================================================
+// DÉCONNEXION
+// ============================================================
+async function handleAdminLogout() {
+    if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+
+    try {
+        await signOut(auth);
+        showToast('Déconnexion réussie.', 'info');
+        // La redirection vers l'écran de connexion se fait via onAuthStateChanged
+    } catch (err) {
+        console.error('Erreur déconnexion :', err);
+        showToast('Erreur lors de la déconnexion.', 'error');
+    }
+}
+
+// ============================================================
+// CHARGEMENT DU PROFIL ADMIN
+// ============================================================
+async function loadAdminProfile(user) {
+    try {
+        const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
+        if (adminDoc.exists()) {
+            currentAdmin = adminDoc.data();
+        } else {
+            // Fallback si le profil n'existe pas
+            currentAdmin = {
+                uid: user.uid,
+                name: user.displayName || 'Admin',
+                email: user.email
+            };
+        }
+
+        // Mettre à jour l'UI de l'en-tête
+        const initials = (currentAdmin.name || 'A').split(' ')
+            .map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'A';
+        document.getElementById('admin-avatar').textContent = initials;
+        document.getElementById('admin-user-name').textContent = currentAdmin.name || 'Admin';
+        document.getElementById('admin-user-email').textContent = currentAdmin.email || '';
+        document.getElementById('admin-header-subtitle').textContent = `Bienvenue, ${currentAdmin.name}`;
+
+        console.log('✅ Admin chargé :', currentAdmin);
+    } catch (err) {
+        console.error('Erreur chargement profil admin :', err);
+    }
+}
+
+// ============================================================
+// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
+// ============================================================
+function initAuthListener() {
+    onAuthStateChanged(auth, async (user) => {
+        if (user && !user.isAnonymous) {
+            // Admin connecté
+            console.log('👤 Admin connecté :', user.email);
+            await loadAdminProfile(user);
+            showAdminPanel();
+            await loadClients();
+        } else {
+            // Aucun admin connecté (anonyme ou déconnecté)
+            console.log('🔒 Aucun admin connecté');
+            currentAdmin = null;
+            allClients = [];
+            showLoginScreen();
+        }
+    });
+}
+
+// ============================================================
+// BANQUES
 // ============================================================
 function populateBankSelect(selectId, clientCountry, selectedDomain) {
     const select = document.getElementById(selectId);
@@ -257,6 +458,11 @@ function populateBankSelect(selectId, clientCountry, selectedDomain) {
 async function handleCreateClient(event) {
     event.preventDefault();
 
+    if (!currentAdmin) {
+        showToast('Vous devez être connecté pour créer un client.', 'error');
+        return;
+    }
+
     const lastName = document.getElementById('c-lastname').value.trim();
     const firstName = document.getElementById('c-firstname').value.trim();
     const country = document.getElementById('c-country').value;
@@ -282,7 +488,7 @@ async function handleCreateClient(event) {
     if (!country) return showToast('Pays obligatoire.', 'error');
     if (!email.includes('@') || !email.includes('.')) return showToast('Adresse e-mail invalide.', 'error');
     if (!language) return showToast('Langue obligatoire.', 'error');
-    if (!bankDomain || !bankName) return showToast('Veuillez sélectionner une banque (obligatoire).', 'error');
+    if (!bankDomain || !bankName) return showToast('Veuillez sélectionner une banque.', 'error');
     if (!/^\d{4,8}$/.test(pin)) return showToast('Le code PIN doit contenir 4 à 8 chiffres.', 'error');
     if (activationCode.length < 4) return showToast("Le code d'activation doit contenir au moins 4 caractères.", 'error');
     if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
@@ -294,11 +500,10 @@ async function handleCreateClient(event) {
     const submitBtn = document.querySelector('.btn-create');
     const originalHTML = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création en cours...';
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
 
     try {
-        await authPromise;
-
+        // Vérifier unicité email
         const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
         const existing = await getDocs(emailCheck);
         if (!existing.empty) {
@@ -335,6 +540,10 @@ async function handleCreateClient(event) {
             bankName, bankDomain, bankLogo,
             transactions: initialTransactions,
             blocked: false,
+            // ✅ Lier au créateur admin
+            createdBy: currentAdmin.uid,
+            createdByName: currentAdmin.name,
+            createdByEmail: currentAdmin.email,
             createdAt: new Date().toISOString(),
             createdAtServer: serverTimestamp()
         };
@@ -352,13 +561,13 @@ async function handleCreateClient(event) {
         document.getElementById('c-country').value = 'France';
         document.getElementById('c-language').value = 'fr';
         document.getElementById('c-percent-value').value = '100';
-        document.getElementById('c-bank').value = '';
+        populateBankSelect('c-bank', 'France', '');
 
         await loadClients();
         showToast('Client créé avec succès !', 'success');
     } catch (err) {
         console.error('Erreur création client :', err);
-        showToast('Erreur lors de la création : ' + (err.message || 'inconnue'), 'error');
+        showToast('Erreur : ' + (err.message || 'inconnue'), 'error');
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalHTML;
@@ -366,24 +575,32 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// CHARGEMENT DE LA LISTE CLIENTS
+// CHARGEMENT DES CLIENTS (FILTRÉS PAR ADMIN)
 // ============================================================
 async function loadClients() {
     const list = document.getElementById('clients-list');
     const countBadge = document.getElementById('client-count');
 
+    if (!currentAdmin) {
+        list.innerHTML = '<p class="empty-state">Veuillez vous connecter.</p>';
+        return;
+    }
+
     try {
-        await authPromise;
-        const snapshot = await getDocs(collection(db, COLLECTION_NAME));
+        // ✅ Filtrer uniquement les clients créés par cet admin
+        const q = query(
+            collection(db, COLLECTION_NAME),
+            where('createdBy', '==', currentAdmin.uid)
+        );
+        const snapshot = await getDocs(q);
         allClients = snapshot.docs.map(d => d.data());
         allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         countBadge.textContent = allClients.length;
-
         populateModifySelect();
 
         if (allClients.length === 0) {
-            list.innerHTML = '<p class="empty-state">Aucun client créé pour le moment.</p>';
+            list.innerHTML = '<p class="empty-state">Vous n\'avez créé aucun client pour le moment.</p>';
             return;
         }
 
@@ -427,7 +644,7 @@ async function loadClients() {
 
     } catch (err) {
         console.error('Erreur chargement clients :', err);
-        list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement : ' + err.message + '</p>';
+        list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement.</p>';
     }
 }
 
@@ -459,19 +676,15 @@ function openClientDetail(clientId) {
     document.getElementById('cd-fullname').textContent = fullName;
     document.getElementById('cd-country').textContent = (client.country || '--') + ' ' + (client.countryFlag || '');
     document.getElementById('cd-address').textContent = client.address || '—';
-
     document.getElementById('cd-email').textContent = client.email || '--';
     document.getElementById('cd-phone').textContent = client.phone || '—';
-
     document.getElementById('cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
     document.getElementById('cd-currency').textContent = client.currency || 'zł';
     document.getElementById('cd-language').textContent = client.language || 'fr';
     document.getElementById('cd-bank').textContent = client.bankName || '—';
     document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
-
     document.getElementById('cd-pin').textContent = client.pin || '----';
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
-
     document.getElementById('cd-link').value = getClientLink(client.id);
 
     document.getElementById('client-detail-modal').classList.add('show');
@@ -508,15 +721,13 @@ window.copyField = function (elementId, isInput = false) {
                 btn.innerHTML = original;
             }, 1500);
         }
-        showToast('Copié dans le presse-papiers !', 'success');
+        showToast('Copié !', 'success');
     };
 
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(value).then(doCopy).catch(() => {
-            prompt('Copiez manuellement :', value);
-        });
+        navigator.clipboard.writeText(value).then(doCopy).catch(() => prompt('Copiez :', value));
     } else {
-        prompt('Copiez manuellement :', value);
+        prompt('Copiez :', value);
     }
 };
 
@@ -557,9 +768,6 @@ function handleModifyClientChange() {
         optionWrapper.style.display = 'none';
         return;
     }
-
-    const client = allClients.find(c => c.id === clientId);
-    if (!client) return;
 
     selectedClientId = clientId;
     optionWrapper.style.display = 'block';
@@ -611,7 +819,6 @@ function renderOptionCard(option, client) {
                         <input type="text" id="opt-firstname" value="${escapeHtml(client.firstName)}" placeholder="Prénom(s)">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Pays de résidence</label>
                     <select id="opt-country">
@@ -619,7 +826,6 @@ function renderOptionCard(option, client) {
                         ${buildCountryOptions(client.country)}
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>Adresse de résidence</label>
                     <input type="text" id="opt-address" value="${escapeHtml(client.address || '')}" placeholder="Adresse complète">
@@ -653,22 +859,17 @@ function renderOptionCard(option, client) {
                         <label>Solde actuel</label>
                         <div class="input-with-addon">
                             <input type="number" id="opt-balance" step="0.01" min="0" value="${Number(client.balance || 0).toFixed(2)}">
-                            <div class="input-addon" id="opt-balance-currency">${client.currency || 'zł'}</div>
+                            <div class="input-addon">${client.currency || 'zł'}</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Devise</label>
-                        <select id="opt-currency">
-                            ${buildCurrencyOptions(client.currency)}
-                        </select>
+                        <select id="opt-currency">${buildCurrencyOptions(client.currency)}</select>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Langue d'affichage</label>
-                    <select id="opt-language">
-                        ${buildLanguageOptions(client.language)}
-                    </select>
+                    <select id="opt-language">${buildLanguageOptions(client.language)}</select>
                 </div>
             `;
             break;
@@ -680,9 +881,8 @@ function renderOptionCard(option, client) {
             bodyHtml = `
                 <div class="option-info-box">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>Le logo et le nom de cette banque seront utilisés pour les nouveaux virements affichés dans l'historique du client.</span>
+                    <span>Le logo et le nom de cette banque seront utilisés pour les nouveaux virements.</span>
                 </div>
-
                 <div class="form-group">
                     <label>🏦 Banque actuelle</label>
                     <select id="opt-bank">
@@ -700,7 +900,7 @@ function renderOptionCard(option, client) {
                 <div class="form-group">
                     <label>Code PIN de connexion</label>
                     <input type="text" id="opt-pin" minlength="4" maxlength="8" pattern="[0-9]+" value="${escapeHtml(client.pin || '')}" placeholder="4 à 8 chiffres">
-                    <small>Le client utilisera ce code pour se connecter avec son e-mail.</small>
+                    <small>Le client utilisera ce code pour se connecter.</small>
                 </div>
                 <div class="form-group">
                     <label>Code d'activation virement</label>
@@ -722,12 +922,11 @@ function renderOptionCard(option, client) {
                         <input type="number" id="opt-percent" min="0" max="100" value="${client.percentValue || 100}">
                         <span class="percentage-label">%</span>
                     </div>
-                    <small>Le virement sera accepté uniquement si le montant représente au maximum ce % du solde.</small>
+                    <small>Le virement sera refusé si le montant dépasse ce pourcentage du solde.</small>
                 </div>
-
                 <div class="form-group">
                     <label>Message affiché après le virement</label>
-                    <textarea id="opt-message" rows="3" placeholder="Message personnalisé...">${escapeHtml(client.messageAfterTransfer || '')}</textarea>
+                    <textarea id="opt-message" rows="3">${escapeHtml(client.messageAfterTransfer || '')}</textarea>
                 </div>
             `;
             break;
@@ -759,9 +958,8 @@ function renderOptionCard(option, client) {
             bodyHtml = `
                 <div class="option-info-box">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>Bloquez l'accès d'un client pour suspendre temporairement sa connexion. Il ne pourra plus se connecter à son compte tant qu'il n'est pas débloqué.</span>
+                    <span>Bloquez l'accès d'un client pour suspendre temporairement sa connexion.</span>
                 </div>
-
                 <div class="option-status-box">
                     <span class="option-status-box-label">Statut actuel :</span>
                     <span class="option-status-box-value ${statusClass}">${statusText}</span>
@@ -790,15 +988,12 @@ function renderOptionCard(option, client) {
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>🏦 Banque <span class="required">. requis</span></label>
                     <select id="opt-tx-bank">
                         <option value="">-- Sélectionner une banque --</option>
                     </select>
-                    <small>Le nom et le logo de la banque seront affichés dans l'historique du client.</small>
                 </div>
-
                 <div class="form-group">
                     <label>Date et heure <span class="optional">. facultatif</span></label>
                     <input type="text" id="opt-tx-date" placeholder="Ex: 23/09/2026 • 01:24">
@@ -903,7 +1098,6 @@ async function saveOption(option, client) {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
 
     try {
-        await authPromise;
         let updatedData = { updatedAt: new Date().toISOString() };
 
         switch (option) {
@@ -940,7 +1134,6 @@ async function saveOption(option, client) {
                 const balance = parseFloat(document.getElementById('opt-balance').value) || 0;
                 const currency = document.getElementById('opt-currency').value;
                 const language = document.getElementById('opt-language').value;
-
                 updatedData = { ...updatedData, balance, currency, language };
                 break;
             }
@@ -954,7 +1147,6 @@ async function saveOption(option, client) {
                 if (!bankDomain || !bankName) throw new Error('Veuillez sélectionner une banque.');
 
                 const bankLogo = getBankLogoUrl(bankDomain);
-
                 updatedData = { ...updatedData, bankName, bankDomain, bankLogo };
                 break;
             }
@@ -986,7 +1178,6 @@ async function saveOption(option, client) {
             case 'color': {
                 const color = document.getElementById('opt-color').value;
                 if (!color) throw new Error('Veuillez choisir une couleur.');
-
                 updatedData = { ...updatedData, color };
                 break;
             }
@@ -1020,7 +1211,6 @@ async function saveOption(option, client) {
 
                 const transactions = (client.transactions || []).slice();
                 transactions.unshift(newTx);
-
                 const newBalance = (Number(client.balance) || 0) + finalAmount;
 
                 updatedData = { ...updatedData, balance: newBalance, transactions };
@@ -1034,16 +1224,14 @@ async function saveOption(option, client) {
         await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), updatedData);
 
         const idx = allClients.findIndex(c => c.id === selectedClientId);
-        if (idx !== -1) {
-            allClients[idx] = { ...allClients[idx], ...updatedData };
-        }
+        if (idx !== -1) allClients[idx] = { ...allClients[idx], ...updatedData };
 
         await loadClients();
-        showToast('Modifications enregistrées avec succès !', 'success');
+        showToast('Modifications enregistrées !', 'success');
         cancelOptionCard();
 
     } catch (err) {
-        console.error('Erreur sauvegarde option :', err);
+        console.error('Erreur sauvegarde :', err);
         showToast(err.message || 'Erreur lors de l\'enregistrement.', 'error');
     } finally {
         btn.disabled = false;
@@ -1072,14 +1260,13 @@ async function handleToggleAccess() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Traitement...';
 
     try {
-        await authPromise;
         await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), { blocked: willBlock });
 
         const idx = allClients.findIndex(c => c.id === selectedClientId);
         if (idx !== -1) allClients[idx].blocked = willBlock;
 
         await loadClients();
-        showToast(willBlock ? 'Accès bloqué avec succès.' : 'Accès débloqué avec succès.', 'success');
+        showToast(willBlock ? 'Accès bloqué.' : 'Accès débloqué.', 'success');
         cancelOptionCard();
 
     } catch (err) {
@@ -1099,7 +1286,6 @@ async function deleteClient(id) {
     if (!confirm(`Supprimer définitivement ${client.firstName} ${client.lastName} ?`)) return;
 
     try {
-        await authPromise;
         await deleteDoc(doc(db, COLLECTION_NAME, id));
         if (selectedClientId === id) {
             selectedClientId = null;
@@ -1117,18 +1303,17 @@ async function deleteClient(id) {
 
 async function clearAllClients() {
     if (allClients.length === 0) return;
-    if (!confirm('Supprimer TOUS les clients ? Cette action est irréversible.')) return;
+    if (!confirm(`Supprimer TOUS vos ${allClients.length} clients ? Cette action est irréversible.`)) return;
 
     try {
-        await authPromise;
         for (const client of allClients) {
             await deleteDoc(doc(db, COLLECTION_NAME, client.id));
         }
         await loadClients();
-        showToast('Tous les clients ont été supprimés.', 'info');
+        showToast('Tous vos clients ont été supprimés.', 'info');
     } catch (err) {
         console.error('Erreur suppression totale :', err);
-        showToast('Erreur lors de la suppression totale.', 'error');
+        showToast('Erreur lors de la suppression.', 'error');
     }
 }
 
@@ -1157,11 +1342,9 @@ function copyGeneratedLink() {
     };
 
     if (navigator.clipboard) {
-        navigator.clipboard.writeText(value).then(doCopy).catch(() => {
-            prompt('Copiez ce lien :', value);
-        });
+        navigator.clipboard.writeText(value).then(doCopy).catch(() => prompt('Copiez :', value));
     } else {
-        prompt('Copiez ce lien :', value);
+        prompt('Copiez :', value);
     }
 }
 
@@ -1180,35 +1363,44 @@ window.closeClientDetail = closeClientDetail;
 window.editClientFromDetail = editClientFromDetail;
 window.copyField = window.copyField;
 window.cancelOptionCard = cancelOptionCard;
+window.showLoginScreen = showLoginScreen;
+window.showRegisterScreen = showRegisterScreen;
+window.handleAdminLogout = handleAdminLogout;
 
 // ============================================================
 // INITIALISATION
 // ============================================================
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Formulaires d'auth
+    document.getElementById('admin-login-form').addEventListener('submit', handleAdminLogin);
+    document.getElementById('admin-register-form').addEventListener('submit', handleAdminRegister);
+
+    // Formulaire de création
     document.getElementById('create-client-form').addEventListener('submit', handleCreateClient);
 
-    // Charger les banques de France par défaut dans le formulaire de création
+    // Populate bank France par défaut
     populateBankSelect('c-bank', 'France', '');
-
-    // Recharger les banques quand le pays change
     document.getElementById('c-country').addEventListener('change', (e) => {
         populateBankSelect('c-bank', e.target.value, '');
     });
 
+    // Modals
     document.getElementById('link-modal').addEventListener('click', (e) => {
         if (e.target.id === 'link-modal') closeModal();
     });
-
     document.getElementById('client-detail-modal').addEventListener('click', (e) => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
 
+    // Modification
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
     document.getElementById('m-select-option').addEventListener('change', handleOptionChange);
 
-    await loadClients();
+    // ✅ Démarrer l'écoute de l'authentification
+    initAuthListener();
 });
 
+// Échap ferme les modals
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
