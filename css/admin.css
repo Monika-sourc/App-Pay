@@ -535,7 +535,7 @@ body {
 }
 
 /* ============================================================
-   🆕 CARTE D'OPTION DYNAMIQUE
+   CARTE D'OPTION DYNAMIQUE
    ============================================================ */
 #option-card-container {
     margin-top: 25px;
@@ -594,7 +594,6 @@ body {
     margin-bottom: 0;
 }
 
-/* Actions de la carte (bouton enregistrer) */
 .option-card-actions {
     display: flex;
     justify-content: flex-end;
@@ -640,7 +639,6 @@ body {
     background-color: #e4e6eb;
 }
 
-/* Info box dans les cartes */
 .option-info-box {
     background-color: #f0f7ff;
     border: 1px solid #c5d8f5;
@@ -757,6 +755,7 @@ body {
     border: 1px dashed #dcdfe6;
 }
 
+/* Carte client cliquable */
 .client-row {
     display: flex;
     align-items: center;
@@ -826,6 +825,15 @@ body {
     text-overflow: ellipsis;
 }
 
+/* ✅ NOUVEAU : Zone des actions à droite (badge + supprimer) */
+.client-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Badges Actif / Bloqué */
 .client-row-status {
     display: inline-flex;
     align-items: center;
@@ -850,6 +858,34 @@ body {
 
 .client-row-status i {
     font-size: 10px;
+}
+
+/* ✅ NOUVEAU : Bouton supprimer */
+.client-row-delete {
+    background-color: #fff;
+    border: 1px solid #f5c6cb;
+    color: #e02424;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.client-row-delete:hover {
+    background-color: #e02424;
+    color: white;
+    border-color: #e02424;
+    transform: scale(1.05);
+}
+
+.client-row-delete:active {
+    transform: scale(0.95);
 }
 
 .client-row-arrow {
