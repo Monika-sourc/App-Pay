@@ -378,22 +378,21 @@ async function loadAdminProfile(user) {
 
 // ============================================================
 // ✅ ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
-// Cette version AFFICHE IMMÉDIATEMENT la bonne page sans attendre Firebase.
+// AFFICHE IMMÉDIATEMENT la bonne page (synchrone) puis écoute les changements
 // ============================================================
 function initAuthListener() {
-    // 1️⃣ VÉRIFICATION SYNCHRONE (instantanée)
-    // Si un utilisateur est en cache local, on l'utilise tout de suite
+    // 1️⃣ VÉRIFICATION SYNCHRONE (instantanée) — évite le "flash"
     const cachedUser = auth.currentUser;
 
     if (cachedUser && !cachedUser.isAnonymous) {
-        // ✅ Session en cache → afficher directement le panneau
-        console.log('⚡ Session en cache détectée');
+        // ✅ Session en cache → afficher directement le panneau admin
+        console.log('⚡ Session en cache détectée :', cachedUser.email);
         loadAdminProfile(cachedUser).then(() => {
             showAdminPanel();
             loadClients();
         });
     } else {
-        // ⚠️ Pas de session en cache → afficher la page de connexion IMMÉDIATEMENT
+        // ⚠️ Pas de session → afficher IMMÉDIATEMENT la page de connexion
         console.log('🔒 Aucune session en cache → page de connexion');
         showLoginScreen();
     }
@@ -405,7 +404,7 @@ function initAuthListener() {
         if (isFirstCall) {
             isFirstCall = false;
 
-            // Cas particulier : session restaurée mais pas dans le cache initial
+            // Cas particulier : session restaurée mais pas présente au 1er load
             if (user && !user.isAnonymous && !cachedUser) {
                 console.log('👤 Session restaurée (async) :', user.email);
                 await loadAdminProfile(user);
@@ -1489,7 +1488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('admin-register-form');
     if (registerForm) registerForm.reset();
 
-    // ✅ Démarrer l'écoute de l'authentification IMMÉDIATEMENT
+    // Démarrer l'écoute de l'authentification
     initAuthListener();
 });
 
