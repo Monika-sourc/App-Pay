@@ -26,7 +26,9 @@ import {
     signInWithEmailAndPassword,
     signOut,
     updateProfile,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    setPersistence,
+    browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // Configuration Firebase du projet App Pay
@@ -45,22 +47,35 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // ============================================================
+// ✅ PERSISTANCE LOCALE EXPLICITE
+// La session admin survit à la fermeture du navigateur
+// ============================================================
+const persistenceReady = setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+        console.log("✅ Firebase : persistance locale activée");
+        return true;
+    })
+    .catch((err) => {
+        console.error("❌ Erreur persistance :", err);
+        return false;
+    });
+
+// ============================================================
 // CONNEXION ANONYME AUTOMATIQUE (pour la page client)
 // ============================================================
 const authPromise = new Promise((resolve) => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("✅ Firebase : utilisateur connecté");
             resolve(user);
         } else {
-            // Ne pas se connecter anonymement si on est sur admin.html
             const isAdminPage = window.location.pathname.includes('admin');
             if (isAdminPage) {
                 resolve(null);
             } else {
                 signInAnonymously(auth)
                     .then((cred) => {
-                        console.log("✅ Firebase : nouvelle connexion anonyme créée");
+                        console.log("✅ Firebase : connexion anonyme créée");
                         resolve(cred.user);
                     })
                     .catch((err) => {
@@ -78,6 +93,7 @@ export {
     db,
     auth,
     authPromise,
+    persistenceReady,
     collection,
     doc,
     setDoc,
@@ -90,11 +106,12 @@ export {
     where,
     serverTimestamp,
     onSnapshot,
-    // Auth functions
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
     updateProfile,
     sendPasswordResetEmail,
-    onAuthStateChanged
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence
 };
