@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + persistance + logos)
+// APP PAY - Logique client (Firebase + i18n + temps réel)
 // ============================================================
 
 import {
@@ -8,7 +8,9 @@ import {
     collection,
     doc,
     getDocFromServer,
-    updateDoc
+    getDoc,
+    updateDoc,
+    onSnapshot
 } from './firebase-config.js';
 
 import { getBankLogoUrls } from './banks.js';
@@ -21,14 +23,15 @@ const appState = {
     currency: 'zł',
     transactions: [],
     pendingTransfer: null,
-    lang: 'fr'
+    lang: 'fr',
+    unsubSnapshot: null
 };
 
 // Clé de stockage de session
 const SESSION_KEY = 'apppay_session_v2';
 
 // ============================================================
-// TRADUCTIONS (i18n) - AVEC NOUVELLES CLÉS POUR L'HISTORIQUE
+// TRADUCTIONS (i18n)
 // ============================================================
 const TRANSLATIONS = {
     fr: {
@@ -64,6 +67,8 @@ const TRANSLATIONS = {
         progress_desc: "Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.",
         transfer_success: "Virement effectué avec succès",
         success_subtitle: "Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.",
+        transfer_failed: "Virement échoué",
+        transfer_failed_subtitle: "Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.",
         amount_sent: "Montant envoyé",
         beneficiary: "Bénéficiaire",
         date: "Date",
@@ -141,6 +146,8 @@ const TRANSLATIONS = {
         progress_desc: "Please wait for the funds to reach your bank before refreshing this page.",
         transfer_success: "Transfer completed successfully",
         success_subtitle: "Your transfer has been processed and will be credited to the beneficiary within 24 to 48 hours.",
+        transfer_failed: "Transfer failed",
+        transfer_failed_subtitle: "The entered amount exceeds the limit allowed by your account. Please contact your advisor.",
         amount_sent: "Amount sent",
         beneficiary: "Beneficiary",
         date: "Date",
@@ -218,6 +225,8 @@ const TRANSLATIONS = {
         progress_desc: "Espere a que los fondos lleguen a su banco antes de actualizar.",
         transfer_success: "Transferencia completada con éxito",
         success_subtitle: "Su transferencia ha sido procesada y se acreditará en 24 a 48 horas.",
+        transfer_failed: "Transferencia fallida",
+        transfer_failed_subtitle: "El importe introducido supera el límite permitido por su cuenta.",
         amount_sent: "Importe enviado",
         beneficiary: "Beneficiario",
         date: "Fecha",
@@ -295,6 +304,8 @@ const TRANSLATIONS = {
         progress_desc: "Bitte warten Sie, bis das Geld bei Ihrer Bank eingegangen ist.",
         transfer_success: "Überweisung erfolgreich abgeschlossen",
         success_subtitle: "Ihre Überweisung wurde bearbeitet und wird innerhalb von 24 bis 48 Stunden gutgeschrieben.",
+        transfer_failed: "Überweisung fehlgeschlagen",
+        transfer_failed_subtitle: "Der eingegebene Betrag überschreitet das von Ihrem Konto zugelassene Limit.",
         amount_sent: "Gesendeter Betrag",
         beneficiary: "Begünstigter",
         date: "Datum",
@@ -372,6 +383,8 @@ const TRANSLATIONS = {
         progress_desc: "Poczekaj na zaksięgowanie środków w banku.",
         transfer_success: "Przelew zakończony pomyślnie",
         success_subtitle: "Twój przelew został przetworzony i zostanie zaksięgowany w ciągu 24-48 godzin.",
+        transfer_failed: "Przelew nieudany",
+        transfer_failed_subtitle: "Wprowadzona kwota przekracza limit dozwolony dla Twojego konta.",
         amount_sent: "Wysłana kwota",
         beneficiary: "Odbiorca",
         date: "Data",
@@ -418,7 +431,7 @@ const TRANSLATIONS = {
     }
 };
 
-// ---------- FONCTIONS DE TRADUCTION ----------
+// ---------- TRADUCTION ----------
 function t(key, vars = {}) {
     const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.fr;
     let text = dict[key] || TRANSLATIONS.fr[key] || key;
@@ -433,23 +446,16 @@ function applyLanguage() {
         const key = el.dataset.i18n;
         el.textContent = t(key);
     });
-
-    // ✅ Traduire aussi "Voir tout" et autres textes non marqués data-i18n
-    const viewAllEl = document.getElementById('history-view-all');
-    if (viewAllEl) viewAllEl.textContent = t('view_all');
 }
 
 // ---------- COULEUR DYNAMIQUE ----------
 function applyClientColor(color) {
     if (!color) color = '#ff7a00';
-    const light = lightenColor(color, 15);
-    const dark = darkenColor(color, 15);
-    const soft = hexToRgba(color, 0.1);
-
+    document.getElementById('app-screen')?.style.setProperty('--primary-color', color);
     document.documentElement.style.setProperty('--primary-color', color);
-    document.documentElement.style.setProperty('--primary-color-light', light);
-    document.documentElement.style.setProperty('--primary-color-dark', dark);
-    document.documentElement.style.setProperty('--primary-color-soft', soft);
+    document.documentElement.style.setProperty('--primary-color-light', lightenColor(color, 15));
+    document.documentElement.style.setProperty('--primary-color-dark', darkenColor(color, 15));
+    document.documentElement.style.setProperty('--primary-color-soft', hexToRgba(color, 0.1));
 }
 
 function hexToRgb(hex) {
@@ -488,11 +494,7 @@ function formatMoney(amount) {
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
-    const icons = {
-        success: 'fa-circle-check',
-        error: 'fa-circle-xmark',
-        info: 'fa-circle-info'
-    };
+    const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
     toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i> <span>${message}</span>`;
     document.body.appendChild(toast);
     setTimeout(() => {
@@ -513,15 +515,11 @@ function showScreen(screenId) {
 }
 
 // ============================================================
-// ✅ GROUPEMENT DES TRANSACTIONS PAR DATE
+// GROUPEMENT PAR DATE
 // ============================================================
 function getDateGroupLabel(dateStr, lang) {
     if (!dateStr) return '';
-
-    // Format de date attendu : "15/10/2026 • 15:46" ou "15/10/2026"
     const datePart = dateStr.split(' • ')[0].trim();
-
-    // Extraire jour/mois/année
     const parts = datePart.split('/');
     if (parts.length !== 3) return datePart;
 
@@ -542,7 +540,7 @@ function getDateGroupLabel(dateStr, lang) {
 }
 
 // ============================================================
-// SESSION (localStorage)
+// SESSION
 // ============================================================
 function saveSession() {
     if (!appState.clientId) return;
@@ -576,7 +574,9 @@ function clearSession() {
     } catch {}
 }
 
-// ✅ Écran de blocage
+// ============================================================
+// ÉCRAN DE BLOCAGE
+// ============================================================
 function showBlockedScreen(client) {
     const card = document.querySelector('#invalid-screen .invalid-card');
     if (card) {
@@ -604,10 +604,90 @@ function showBlockedScreen(client) {
 }
 
 // ============================================================
-// CHARGEMENT DU CLIENT DEPUIS FIRESTORE
+// ✅ TEMPS RÉEL : ÉCOUTE DES CHANGEMENTS FIRESTORE
 // ============================================================
-async function loadClientFromFirestore(options = {}) {
-    const { autoLogin = false } = options;
+function startRealtimeListener() {
+    if (!appState.clientId) return;
+
+    // Se désabonner de l'ancien listener
+    if (appState.unsubSnapshot) {
+        appState.unsubSnapshot();
+        appState.unsubSnapshot = null;
+    }
+
+    try {
+        const docRef = doc(db, 'clients', appState.clientId);
+
+        appState.unsubSnapshot = onSnapshot(docRef, (docSnap) => {
+            if (!docSnap.exists()) {
+                console.warn('⚠️ Client supprimé par l\'admin');
+                clearSession();
+                showScreen('invalid-screen');
+                return;
+            }
+
+            const newData = docSnap.data();
+
+            // ✅ Vérifier le blocage en temps réel
+            if (newData.blocked === true) {
+                console.log('🚫 Client bloqué par l\'admin');
+                clearSession();
+                showBlockedScreen(newData);
+                return;
+            }
+
+            const oldTxCount = (appState.transactions || []).length;
+            const oldColor = appState.client?.color;
+            const oldLang = appState.lang;
+            const oldBalance = appState.balance;
+
+            // Mettre à jour l'état
+            appState.client = newData;
+            appState.balance = Number(newData.balance) || 0;
+            appState.currency = newData.currency || 'zł';
+            appState.transactions = newData.transactions || [];
+            appState.lang = newData.language || 'fr';
+
+            console.log('🔄 Données mises à jour en temps réel');
+            console.log(`💰 Solde : ${oldBalance} → ${appState.balance}`);
+            console.log(`📜 Transactions : ${oldTxCount} → ${appState.transactions.length}`);
+
+            // Appliquer la nouvelle couleur si elle a changé
+            if (oldColor !== newData.color) {
+                applyClientColor(newData.color);
+                console.log('🎨 Couleur mise à jour :', newData.color);
+            }
+
+            // Réappliquer la langue si changée
+            if (oldLang !== appState.lang) {
+                applyLanguage();
+            }
+
+            // Rafraîchir l'écran actuellement actif
+            const appScreen = document.getElementById('app-screen');
+            if (appScreen && appScreen.classList.contains('active')) {
+                const activeView = document.querySelector('#nav-links li.active');
+                const viewName = activeView ? activeView.dataset.view : 'dashboard';
+                navigateTo(viewName);
+
+                // Notifier si nouvelles transactions
+                if (appState.transactions.length > oldTxCount) {
+                    showToast('Nouvelle transaction reçue !', 'success');
+                }
+            }
+        }, (err) => {
+            console.error('Erreur listener Firestore :', err);
+        });
+
+    } catch (err) {
+        console.error('Erreur démarrage temps réel :', err);
+    }
+}
+
+// ============================================================
+// CHARGEMENT INITIAL DU CLIENT
+// ============================================================
+async function loadClientFromFirestore() {
     const clientId = getClientIdFromURL();
 
     if (!clientId) {
@@ -624,10 +704,7 @@ async function loadClientFromFirestore(options = {}) {
         let docSnap;
         try {
             docSnap = await getDocFromServer(docRef);
-            console.log('✅ Données lues depuis le SERVEUR');
         } catch (err) {
-            console.warn('⚠️ Fallback cache');
-            const { getDoc } = await import('./firebase-config.js');
             docSnap = await getDoc(docRef);
         }
 
@@ -643,7 +720,7 @@ async function loadClientFromFirestore(options = {}) {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        console.log(`📊 ${client.firstName} ${client.lastName} | 💰 ${appState.balance} | 📜 ${appState.transactions.length}`);
+        console.log(`📊 ${client.firstName} ${client.lastName} | 💰 ${appState.balance}`);
 
         if (client.blocked === true) {
             clearSession();
@@ -660,15 +737,15 @@ async function loadClientFromFirestore(options = {}) {
         if (emailInput) emailInput.value = client.email;
 
         const session = getSession();
-        const shouldAutoLogin = autoLogin || (session && session.loggedIn && session.clientId === clientId);
+        const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
 
         if (shouldAutoLogin) {
             console.log('✅ Session restaurée');
             loginSuccess();
-            return client;
+        } else {
+            showScreen('login-screen');
         }
 
-        showScreen('login-screen');
         return client;
 
     } catch (err) {
@@ -721,6 +798,9 @@ function loginSuccess() {
 
     applyLanguage();
 
+    // ✅ Démarrer l'écoute temps réel
+    startRealtimeListener();
+
     setTimeout(() => {
         navigateTo('dashboard');
     }, 200);
@@ -729,6 +809,13 @@ function loginSuccess() {
 // ---------- DÉCONNEXION ----------
 function handleLogout() {
     if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+
+    // Arrêter le listener temps réel
+    if (appState.unsubSnapshot) {
+        appState.unsubSnapshot();
+        appState.unsubSnapshot = null;
+    }
+
     clearSession();
     showScreen('login-screen');
     document.getElementById('login-form').reset();
@@ -741,7 +828,7 @@ function handleLogout() {
 }
 
 // ============================================================
-// NAVIGATION ENTRE VUES
+// NAVIGATION
 // ============================================================
 const viewTemplates = {
     dashboard: 'tpl-dashboard',
@@ -749,6 +836,7 @@ const viewTemplates = {
     verification: 'tpl-verification',
     progress: 'tpl-progress',
     success: 'tpl-success',
+    failed: 'tpl-failed',
     card: 'tpl-card',
     account: 'tpl-account'
 };
@@ -759,6 +847,8 @@ function navigateTo(viewName, data = {}) {
     if (!templateId) return;
 
     const template = document.getElementById(templateId);
+    if (!template) return;
+
     container.innerHTML = '';
     container.appendChild(template.content.cloneNode(true));
 
@@ -773,6 +863,7 @@ function navigateTo(viewName, data = {}) {
     if (viewName === 'verification') renderVerificationView(data);
     if (viewName === 'progress') renderProgressView(data);
     if (viewName === 'success') renderSuccessView(data);
+    if (viewName === 'failed') renderFailedView(data);
     if (viewName === 'card') renderCardView();
     if (viewName === 'account') renderAccountView();
 
@@ -780,12 +871,11 @@ function navigateTo(viewName, data = {}) {
 }
 
 // ============================================================
-// ✅ CONSTRUCTION DE L'ICÔNE TRANSACTION (logo ou fallback)
+// ICÔNE DE TRANSACTION (logo banque ou icône générique)
 // ============================================================
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
 
-    // Si la transaction a une banque avec domaine → construire un <img> avec fallback multi-URL
     if (tx.bankDomain) {
         const urls = getBankLogoUrls(tx.bankDomain);
         const urlsJson = JSON.stringify(urls).replace(/"/g, '&quot;');
@@ -800,7 +890,6 @@ function buildTransactionIcon(tx) {
         `;
     }
 
-    // Sinon → icône générique
     return `
         <div class="tx-icon ${isDebit ? 'red' : 'green'}">
             <i class="fa-solid ${isDebit ? 'fa-arrow-trend-up' : 'fa-arrow-right-arrow-left'}"
@@ -809,32 +898,25 @@ function buildTransactionIcon(tx) {
     `;
 }
 
-// ✅ Fonction globale appelée si le logo échoue
 window.handleBankLogoError = function (img) {
     const parent = img.parentNode;
     if (!parent) return;
-
     try {
         const urls = JSON.parse(parent.dataset.urls || '[]');
         let idx = parseInt(parent.dataset.idx || '0', 10);
         idx++;
-
         if (idx < urls.length) {
             parent.dataset.idx = idx;
             img.src = urls[idx];
             return;
         }
-    } catch (e) {
-        console.warn('Erreur parsing URLs banque', e);
-    }
-
-    // Plus d'URLs → fallback icône
+    } catch (e) {}
     parent.classList.add('fallback');
     parent.innerHTML = '<i class="fa-solid fa-building-columns"></i>';
 };
 
 // ============================================================
-// VUE : DASHBOARD (avec groupement par date)
+// VUE : DASHBOARD
 // ============================================================
 function renderDashboard() {
     document.getElementById('balance-display').textContent = formatMoney(appState.balance);
@@ -844,7 +926,6 @@ function renderDashboard() {
         welcomeName.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
     }
 
-    // Remplir les 3 mini-cartes
     const statBalance = document.getElementById('stat-balance');
     const statTx = document.getElementById('stat-transactions');
     const statCurr = document.getElementById('stat-currency');
@@ -852,11 +933,9 @@ function renderDashboard() {
     if (statTx) statTx.textContent = (appState.transactions || []).length;
     if (statCurr) statCurr.textContent = appState.currency;
 
-    // Badge compteur dans l'en-tête de l'historique
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
 
-    // Bouton "Voir mon IBAN"
     const btnIban = document.getElementById('btn-show-iban');
     if (btnIban) {
         btnIban.addEventListener('click', () => {
@@ -864,28 +943,19 @@ function renderDashboard() {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(id).then(() => {
                     showToast('ID: ' + id, 'success');
-                }).catch(() => {
-                    showToast('ID: ' + id, 'info');
-                });
+                }).catch(() => showToast('ID: ' + id, 'info'));
             } else {
                 showToast('ID: ' + id, 'info');
             }
         });
     }
 
-    // Bouton "Effectuer un virement"
     const btnGoTransfer = document.getElementById('btn-go-transfer');
-    if (btnGoTransfer) {
-        btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
-    }
+    if (btnGoTransfer) btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
 
-    // Bouton "Voir ma carte virtuelle"
     const btnGoCard = document.getElementById('btn-go-card');
-    if (btnGoCard) {
-        btnGoCard.addEventListener('click', () => navigateTo('card'));
-    }
+    if (btnGoCard) btnGoCard.addEventListener('click', () => navigateTo('card'));
 
-    // Historique des transactions
     const txList = document.getElementById('tx-list');
     if (!txList) return;
 
@@ -896,7 +966,6 @@ function renderDashboard() {
         return;
     }
 
-    // ✅ Grouper les transactions par date
     const grouped = {};
     appState.transactions.forEach(tx => {
         const datePart = (tx.date || '').split(' • ')[0].trim() || '—';
@@ -904,26 +973,16 @@ function renderDashboard() {
         grouped[datePart].push(tx);
     });
 
-    // Rendre chaque groupe
     Object.entries(grouped).forEach(([datePart, txs]) => {
-        // Séparateur de date
         const separator = document.createElement('div');
         separator.className = 'history-date-separator';
         separator.textContent = getDateGroupLabel(datePart + ' • 00:00', appState.lang);
         txList.appendChild(separator);
 
-        // Transactions du groupe
         txs.forEach(tx => {
             const isDebit = tx.amount < 0;
-
-            // Extraire l'heure (format "15/10/2026 • 15:46")
             const timePart = (tx.date || '').split(' • ')[1] || '';
-
-            // Déterminer si c'est un virement reçu ou envoyé
             const txLabel = isDebit ? t('transfer_sent') : t('transfer_received');
-
-            // Le titre affiché = libellé (Virement reçu/envoyé) puis bénéficiaire ou banque
-            const displayTitle = txLabel;
             const displaySubtitle = tx.bankName || tx.title || '';
 
             const item = document.createElement('div');
@@ -932,7 +991,7 @@ function renderDashboard() {
                 <div class="transaction-left">
                     ${buildTransactionIcon(tx)}
                     <div class="tx-details">
-                        <h4>${displayTitle}</h4>
+                        <h4>${txLabel}</h4>
                         <p>${displaySubtitle}</p>
                         <span class="tx-time">${timePart}</span>
                     </div>
@@ -976,13 +1035,19 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
+    // ✅ Vérifier le pourcentage (bloque le virement si dépassé)
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
+
     if (amount > maxAllowed) {
-        return showToast(
-            t('err_percent', { limit: formatMoney(maxAllowed) }),
-            'error'
-        );
+        // → Aller à l'écran d'échec
+        navigateTo('failed', {
+            amount,
+            limit: maxAllowed,
+            percent: percentLimit,
+            beneficiary
+        });
+        return;
     }
 
     appState.pendingTransfer = { amount, beneficiary, iban, bic, bank, reason };
@@ -1115,6 +1180,22 @@ function renderSuccessView(data) {
 }
 
 // ============================================================
+// ✅ VUE : VIREMENT ÉCHOUÉ
+// ============================================================
+function renderFailedView(data) {
+    const d = data || {};
+    const amountEl = document.getElementById('ff-amount');
+    const limitEl = document.getElementById('ff-limit');
+    const percentEl = document.getElementById('ff-percent');
+    const balanceEl = document.getElementById('ff-balance');
+
+    if (amountEl) amountEl.textContent = formatMoney(d.amount || 0);
+    if (limitEl) limitEl.textContent = formatMoney(d.limit || 0);
+    if (percentEl) percentEl.textContent = (d.percent || 0) + '%';
+    if (balanceEl) balanceEl.textContent = formatMoney(appState.balance);
+}
+
+// ============================================================
 // VUE : CARTE VIRTUELLE
 // ============================================================
 let cardNumberVisible = false;
@@ -1178,72 +1259,6 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
-// ✅ RAFRAÎCHISSEMENT AUTO QUAND ON REVIENT SUR L'ONGLET
-// ============================================================
-let isAppReady = false;
-
-async function refreshClientData() {
-    if (!isAppReady || !appState.clientId) return;
-
-    const appScreen = document.getElementById('app-screen');
-    if (!appScreen || !appScreen.classList.contains('active')) return;
-
-    try {
-        console.log('🔄 Rafraîchissement des données...');
-        const docRef = doc(db, 'clients', appState.clientId);
-        let docSnap;
-        try {
-            docSnap = await getDocFromServer(docRef);
-        } catch {
-            return;
-        }
-
-        if (!docSnap.exists()) return;
-
-        const client = docSnap.data();
-
-        if (client.blocked === true) {
-            clearSession();
-            showBlockedScreen(client);
-            return;
-        }
-
-        const oldTxCount = appState.transactions.length;
-
-        appState.client = client;
-        appState.balance = Number(client.balance) || 0;
-        appState.currency = client.currency || 'zł';
-        appState.transactions = client.transactions || [];
-        appState.lang = client.language || 'fr';
-
-        applyClientColor(client.color);
-
-        const activeView = document.querySelector('#nav-links li.active');
-        const viewName = activeView ? activeView.dataset.view : 'dashboard';
-
-        // Réappliquer la langue avant de redessiner
-        applyLanguage();
-        navigateTo(viewName);
-
-        if (appState.transactions.length > oldTxCount) {
-            showToast('Nouvelle transaction reçue !', 'success');
-        }
-    } catch (err) {
-        console.warn('Erreur rafraîchissement :', err);
-    }
-}
-
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        refreshClientData();
-    }
-});
-
-window.addEventListener('focus', () => {
-    refreshClientData();
-});
-
-// ============================================================
 // EXPOSITION GLOBALE
 // ============================================================
 window.navigateTo = navigateTo;
@@ -1287,5 +1302,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     await loadClientFromFirestore();
-    isAppReady = true;
+});
+
+// Nettoyer le listener au déchargement
+window.addEventListener('beforeunload', () => {
+    if (appState.unsubSnapshot) {
+        appState.unsubSnapshot();
+    }
 });
