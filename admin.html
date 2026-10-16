@@ -407,6 +407,17 @@
             </div>
         </div>
 
+        <!-- ✅ NOUVEAU : Banque de résidence (pour le logo dans l'historique) -->
+        <h3 class="section-title">Banque de résidence du client :</h3>
+
+        <div class="form-group">
+            <label>🏦 Banque <span class="required">. requis</span></label>
+            <select id="c-bank" required>
+                <option value="">-- Sélectionner une banque --</option>
+            </select>
+            <small>Le nom et le logo de cette banque s'afficheront dans l'historique des transactions du client.</small>
+        </div>
+
         <h3 class="section-title">Sécurité du compte :</h3>
 
         <div class="form-row">
@@ -431,7 +442,7 @@
                 <input type="number" id="c-percent-value" min="0" max="100" value="100" required>
                 <span class="percentage-label">%</span>
             </div>
-            <small>Le pourcentage appliqué lors du virement. Valeur entre 0 et 100.</small>
+            <small>Le pourcentage appliqué lors du virement (0 à 100). Si le montant dépasse cette limite, le virement est refusé.</small>
         </div>
 
         <div class="form-group">
@@ -468,7 +479,6 @@
 
 <!-- ============================================= -->
 <!-- SECTION : MODIFIER UN CLIENT EXISTANT         -->
-<!-- NOUVELLE INTERFACE : 2 sélecteurs + carte    -->
 <!-- ============================================= -->
 <section class="form-section modify-section">
     <div class="section-badge">
@@ -476,7 +486,6 @@
         Modifier un client existant
     </div>
 
-    <!-- 1er champ : Sélectionner le client -->
     <div class="form-group">
         <label>1. Sélectionner un client <span class="required">. requis</span></label>
         <select id="m-select-client">
@@ -485,7 +494,6 @@
         <small>Sélectionnez d'abord le client dont vous souhaitez modifier les informations.</small>
     </div>
 
-    <!-- 2ème champ : Sélectionner une option (désactivé tant qu'aucun client choisi) -->
     <div class="form-group" id="option-select-wrapper" style="display:none;">
         <label>2. Sélectionner une option <span class="required">. requis</span></label>
         <select id="m-select-option">
@@ -493,6 +501,7 @@
             <option value="info">👤 Modifier les informations personnelles</option>
             <option value="contact">📧 Modifier les coordonnées</option>
             <option value="account">💼 Modifier le compte (solde, devise, langue)</option>
+            <option value="bank">🏦 Modifier la banque du client</option>
             <option value="security">🔒 Modifier la sécurité (PIN, code d'activation)</option>
             <option value="transfer_params">⚙️ Modifier les paramètres de virement</option>
             <option value="color">🎨 Modifier la couleur du thème</option>
@@ -502,12 +511,11 @@
         <small>Choisissez la catégorie que vous souhaitez modifier.</small>
     </div>
 
-    <!-- Zone des cartes d'options -->
     <div id="option-card-container"></div>
 </section>
 
     <!-- ============================================= -->
-    <!-- LISTE DES CLIENTS CRÉÉS                       -->
+    <!-- LISTE DES CLIENTS                             -->
     <!-- ============================================= -->
     <section class="clients-section">
         <div class="section-header-flex">
@@ -607,6 +615,11 @@
                 <div class="cd-row">
                     <div class="cd-label">Langue</div>
                     <div class="cd-value" id="cd-language">--</div>
+                </div>
+
+                <div class="cd-row">
+                    <div class="cd-label">Banque</div>
+                    <div class="cd-value" id="cd-bank">--</div>
                 </div>
 
                 <div class="cd-row">
