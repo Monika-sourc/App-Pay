@@ -28,7 +28,6 @@ import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 const COLLECTION_NAME = 'clients';
 const ADMINS_COLLECTION = 'admins';
 
-// ---------- ÉTAT GLOBAL ----------
 let currentAdmin = null;
 let lastGeneratedLink = '';
 let selectedColor = '#ff7a00';
@@ -372,38 +371,51 @@ async function loadAdminProfile(user) {
         document.getElementById('admin-user-name').textContent = currentAdmin.name || 'Admin';
         document.getElementById('admin-user-email').textContent = currentAdmin.email || '';
         document.getElementById('admin-header-subtitle').textContent = `Bienvenue, ${currentAdmin.name}`;
-
-        console.log('✅ Admin chargé :', currentAdmin);
     } catch (err) {
         console.error('Erreur chargement profil admin :', err);
     }
 }
 
 // ============================================================
-// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
+// ✅ ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
+// Cette version AFFICHE IMMÉDIATEMENT la bonne page sans attendre Firebase.
 // ============================================================
 function initAuthListener() {
-    let isFirstCall = true;
+    // 1️⃣ VÉRIFICATION SYNCHRONE (instantanée)
+    // Si un utilisateur est en cache local, on l'utilise tout de suite
+    const cachedUser = auth.currentUser;
 
+    if (cachedUser && !cachedUser.isAnonymous) {
+        // ✅ Session en cache → afficher directement le panneau
+        console.log('⚡ Session en cache détectée');
+        loadAdminProfile(cachedUser).then(() => {
+            showAdminPanel();
+            loadClients();
+        });
+    } else {
+        // ⚠️ Pas de session en cache → afficher la page de connexion IMMÉDIATEMENT
+        console.log('🔒 Aucune session en cache → page de connexion');
+        showLoginScreen();
+    }
+
+    // 2️⃣ ÉCOUTE des changements (login / logout) sans bloquer l'affichage
+    let isFirstCall = true;
     onAuthStateChanged(auth, async (user) => {
-        // ✅ Premier callback (déterminant)
+        // Ignorer le premier callback (déjà traité en synchrone ci-dessus)
         if (isFirstCall) {
             isFirstCall = false;
 
-            if (user && !user.isAnonymous) {
-                console.log('👤 Session restaurée :', user.email);
+            // Cas particulier : session restaurée mais pas dans le cache initial
+            if (user && !user.isAnonymous && !cachedUser) {
+                console.log('👤 Session restaurée (async) :', user.email);
                 await loadAdminProfile(user);
                 showAdminPanel();
                 await loadClients();
-                return;
-            } else {
-                console.log('🔒 Aucune session → page de connexion');
-                showLoginScreen();
-                return;
             }
+            return;
         }
 
-        // Callbacks suivants
+        // Callbacks suivants (login / logout en direct)
         if (user && !user.isAnonymous) {
             const panelActive = document.getElementById('admin-panel-screen').classList.contains('active');
             if (panelActive) return;
@@ -1468,7 +1480,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initCustomSelect();
 
-    // Vider les champs de connexion au démarrage
+    // Vider les champs de connexion
     const loginEmail = document.getElementById('login-admin-email');
     const loginPassword = document.getElementById('login-admin-password');
     if (loginEmail) loginEmail.value = '';
@@ -1477,11 +1489,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('admin-register-form');
     if (registerForm) registerForm.reset();
 
-    // Démarrer l'écoute de l'authentification
+    // ✅ Démarrer l'écoute de l'authentification IMMÉDIATEMENT
     initAuthListener();
 });
 
-// Échap ferme les modals
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
