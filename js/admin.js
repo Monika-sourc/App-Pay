@@ -25,11 +25,10 @@ let selectedColor = '#ff7a00';
 let allClients = [];
 let selectedClientId = null;
 let selectedOption = null;
-let pendingTransactions = [];
 let currentDetailClient = null;
 
 // ============================================================
-// DONNÉES PAYS (utilisés pour peupler les selects dynamiques)
+// DONNÉES PAYS
 // ============================================================
 const COUNTRY_LIST = [
     { name: "Afghanistan", flag: "🇦🇫" }, { name: "Afrique du Sud", flag: "🇿🇦" },
@@ -153,11 +152,7 @@ const LANGUAGE_LIST = [
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
-    const icons = {
-        success: 'fa-circle-check',
-        error: 'fa-circle-xmark',
-        info: 'fa-circle-info'
-    };
+    const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
     toast.style.cssText = `
         position: fixed; top: 20px; right: 20px; background: #111; color: white;
         padding: 14px 20px; border-radius: 8px; font-size: 13px; z-index: 99999;
@@ -215,10 +210,10 @@ function escapeHtml(str) {
 }
 
 // ============================================================
-// BANQUES
+// PEUPLEMENT DES BANQUES
 // ============================================================
-function populateBankSelect(clientCountry) {
-    const select = document.getElementById('opt-bank');
+function populateBankSelect(selectId, clientCountry, selectedDomain) {
+    const select = document.getElementById(selectId);
     if (!select) return;
 
     select.innerHTML = '<option value="">-- Sélectionner une banque --</option>';
@@ -226,13 +221,14 @@ function populateBankSelect(clientCountry) {
     const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
     if (countryBanks.length > 0) {
         const group = document.createElement('optgroup');
-        group.label = `⭐ Banques du pays du client (${clientCountry})`;
+        group.label = `⭐ Banques du pays (${clientCountry})`;
         countryBanks.forEach(bank => {
             const opt = document.createElement('option');
             opt.value = bank.domain;
             opt.dataset.bankName = bank.name;
             opt.dataset.bankDomain = bank.domain;
             opt.textContent = bank.name;
+            if (selectedDomain === bank.domain) opt.selected = true;
             group.appendChild(opt);
         });
         select.appendChild(group);
@@ -248,6 +244,7 @@ function populateBankSelect(clientCountry) {
             opt.dataset.bankName = bank.name;
             opt.dataset.bankDomain = bank.domain;
             opt.textContent = bank.name;
+            if (selectedDomain === bank.domain) opt.selected = true;
             group.appendChild(opt);
         });
         select.appendChild(group);
@@ -255,7 +252,7 @@ function populateBankSelect(clientCountry) {
 }
 
 // ============================================================
-// ✅ CRÉATION D'UN CLIENT (avec transaction automatique)
+// CRÉATION D'UN CLIENT
 // ============================================================
 async function handleCreateClient(event) {
     event.preventDefault();
@@ -270,6 +267,11 @@ async function handleCreateClient(event) {
     const language = document.getElementById('c-language').value;
     const balance = parseFloat(document.getElementById('c-balance').value) || 0;
     const currency = document.getElementById('c-currency').value;
+    const bankSelect = document.getElementById('c-bank');
+    const bankDomain = bankSelect.value;
+    const bankOption = bankSelect.options[bankSelect.selectedIndex];
+    const bankName = bankOption?.dataset.bankName || '';
+    const bankLogo = bankDomain ? getBankLogoUrl(bankDomain) : '';
     const pin = document.getElementById('c-pin').value.trim();
     const activationCode = document.getElementById('c-activation').value.trim();
     const percentValue = parseInt(document.getElementById('c-percent-value').value, 10);
@@ -280,6 +282,7 @@ async function handleCreateClient(event) {
     if (!country) return showToast('Pays obligatoire.', 'error');
     if (!email.includes('@') || !email.includes('.')) return showToast('Adresse e-mail invalide.', 'error');
     if (!language) return showToast('Langue obligatoire.', 'error');
+    if (!bankDomain || !bankName) return showToast('Veuillez sélectionner une banque (obligatoire).', 'error');
     if (!/^\d{4,8}$/.test(pin)) return showToast('Le code PIN doit contenir 4 à 8 chiffres.', 'error');
     if (activationCode.length < 4) return showToast("Le code d'activation doit contenir au moins 4 caractères.", 'error');
     if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
@@ -306,7 +309,7 @@ async function handleCreateClient(event) {
 
         const clientId = generateId();
 
-        // ✅ Créer une transaction automatique si le solde initial > 0
+        // Transaction automatique si solde initial > 0
         const initialTransactions = [];
         if (balance > 0) {
             const now = new Date();
@@ -317,9 +320,9 @@ async function handleCreateClient(event) {
                 title: 'Solde initial',
                 date: dateStr,
                 amount: balance,
-                bankName: 'Solde initial',
-                bankDomain: null,
-                bankLogo: null
+                bankName: bankName,
+                bankDomain: bankDomain,
+                bankLogo: bankLogo
             });
         }
 
@@ -329,6 +332,7 @@ async function handleCreateClient(event) {
             address, email, phone, language,
             balance, currency, pin, activationCode,
             percentValue, messageAfterTransfer, color,
+            bankName, bankDomain, bankLogo,
             transactions: initialTransactions,
             blocked: false,
             createdAt: new Date().toISOString(),
@@ -348,6 +352,7 @@ async function handleCreateClient(event) {
         document.getElementById('c-country').value = 'France';
         document.getElementById('c-language').value = 'fr';
         document.getElementById('c-percent-value').value = '100';
+        document.getElementById('c-bank').value = '';
 
         await loadClients();
         showToast('Client créé avec succès !', 'success');
@@ -361,7 +366,7 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// ✅ CHARGEMENT DE LA LISTE CLIENTS (avec bouton supprimer)
+// CHARGEMENT DE LA LISTE CLIENTS
 // ============================================================
 async function loadClients() {
     const list = document.getElementById('clients-list');
@@ -411,10 +416,7 @@ async function loadClients() {
                 <i class="fa-solid fa-chevron-right client-row-arrow"></i>
             `;
 
-            // Clic sur la carte → ouvrir les détails
             row.addEventListener('click', () => openClientDetail(client.id));
-
-            // Clic sur le bouton supprimer → ne pas ouvrir les détails
             row.querySelector('.client-row-delete').addEventListener('click', (e) => {
                 e.stopPropagation();
                 deleteClient(client.id);
@@ -464,6 +466,7 @@ function openClientDetail(clientId) {
     document.getElementById('cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
     document.getElementById('cd-currency').textContent = client.currency || 'zł';
     document.getElementById('cd-language').textContent = client.language || 'fr';
+    document.getElementById('cd-bank').textContent = client.bankName || '—';
     document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
 
     document.getElementById('cd-pin').textContent = client.pin || '----';
@@ -545,7 +548,6 @@ function handleModifyClientChange() {
     const optionWrapper = document.getElementById('option-select-wrapper');
     const optionContainer = document.getElementById('option-card-container');
 
-    // Réinitialiser la zone d'option
     document.getElementById('m-select-option').value = '';
     optionContainer.innerHTML = '';
 
@@ -594,7 +596,6 @@ function renderOptionCard(option, client) {
 
     switch (option) {
 
-        // ---------- 1. INFORMATIONS PERSONNELLES ----------
         case 'info':
             headerIcon = 'fa-user';
             headerTitle = 'Informations personnelles';
@@ -626,7 +627,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 2. COORDONNÉES ----------
         case 'contact':
             headerIcon = 'fa-envelope';
             headerTitle = 'Coordonnées';
@@ -643,7 +643,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 3. COMPTE ----------
         case 'account':
             headerIcon = 'fa-wallet';
             headerTitle = 'Compte bancaire';
@@ -674,7 +673,25 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 4. SÉCURITÉ ----------
+        case 'bank':
+            headerIcon = 'fa-building-columns';
+            headerTitle = 'Banque du client';
+            headerSubtitle = 'Modifier la banque affichée dans l\'historique';
+            bodyHtml = `
+                <div class="option-info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Le logo et le nom de cette banque seront utilisés pour les nouveaux virements affichés dans l'historique du client.</span>
+                </div>
+
+                <div class="form-group">
+                    <label>🏦 Banque actuelle</label>
+                    <select id="opt-bank">
+                        <option value="">-- Sélectionner une banque --</option>
+                    </select>
+                </div>
+            `;
+            break;
+
         case 'security':
             headerIcon = 'fa-shield-halved';
             headerTitle = 'Sécurité du compte';
@@ -693,7 +710,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 5. PARAMÈTRES DE VIREMENT ----------
         case 'transfer_params':
             headerIcon = 'fa-gear';
             headerTitle = 'Paramètres de virement';
@@ -706,6 +722,7 @@ function renderOptionCard(option, client) {
                         <input type="number" id="opt-percent" min="0" max="100" value="${client.percentValue || 100}">
                         <span class="percentage-label">%</span>
                     </div>
+                    <small>Le virement sera accepté uniquement si le montant représente au maximum ce % du solde.</small>
                 </div>
 
                 <div class="form-group">
@@ -715,7 +732,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 6. COULEUR ----------
         case 'color':
             headerIcon = 'fa-palette';
             headerTitle = 'Couleur du thème';
@@ -734,7 +750,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 7. ACCÈS ----------
         case 'access':
             headerIcon = 'fa-ban';
             headerTitle = 'Accès du client';
@@ -754,7 +769,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // ---------- 8. AJOUTER UN VIREMENT ----------
         case 'transaction':
             headerIcon = 'fa-plus';
             headerTitle = 'Ajouter un virement';
@@ -779,7 +793,7 @@ function renderOptionCard(option, client) {
 
                 <div class="form-group">
                     <label>🏦 Banque <span class="required">. requis</span></label>
-                    <select id="opt-bank">
+                    <select id="opt-tx-bank">
                         <option value="">-- Sélectionner une banque --</option>
                     </select>
                     <small>Le nom et le logo de la banque seront affichés dans l'historique du client.</small>
@@ -793,7 +807,7 @@ function renderOptionCard(option, client) {
             break;
     }
 
-    // Bouton d'action personnalisé selon l'option
+    // Actions
     let actionButtons = '';
     if (option === 'access') {
         const blockBtn = client.blocked
@@ -841,7 +855,7 @@ function renderOptionCard(option, client) {
         </div>
     `;
 
-    // Brancher les événements spécifiques
+    // Brancher événements spécifiques
     if (option === 'color') {
         const picker = document.getElementById('opt-color-picker');
         picker.querySelectorAll('.color-option').forEach(opt => {
@@ -853,8 +867,12 @@ function renderOptionCard(option, client) {
         });
     }
 
+    if (option === 'bank') {
+        populateBankSelect('opt-bank', client.country, client.bankDomain);
+    }
+
     if (option === 'transaction') {
-        populateBankSelect(client.country);
+        populateBankSelect('opt-tx-bank', client.country);
     }
 
     if (option === 'access') {
@@ -927,6 +945,20 @@ async function saveOption(option, client) {
                 break;
             }
 
+            case 'bank': {
+                const bankSelect = document.getElementById('opt-bank');
+                const bankDomain = bankSelect.value;
+                const bankOpt = bankSelect.options[bankSelect.selectedIndex];
+                const bankName = bankOpt?.dataset.bankName || '';
+
+                if (!bankDomain || !bankName) throw new Error('Veuillez sélectionner une banque.');
+
+                const bankLogo = getBankLogoUrl(bankDomain);
+
+                updatedData = { ...updatedData, bankName, bankDomain, bankLogo };
+                break;
+            }
+
             case 'security': {
                 const pin = document.getElementById('opt-pin').value.trim();
                 const activationCode = document.getElementById('opt-activation').value.trim();
@@ -963,7 +995,7 @@ async function saveOption(option, client) {
                 const amount = parseFloat(document.getElementById('opt-tx-amount').value);
                 const type = document.getElementById('opt-tx-type').value;
                 const dateInput = document.getElementById('opt-tx-date').value.trim();
-                const bankSelect = document.getElementById('opt-bank');
+                const bankSelect = document.getElementById('opt-tx-bank');
                 const bankDomain = bankSelect.value;
                 const selectedBankOpt = bankSelect.options[bankSelect.selectedIndex];
                 const bankName = selectedBankOpt?.dataset.bankName || '';
@@ -1008,7 +1040,6 @@ async function saveOption(option, client) {
 
         await loadClients();
         showToast('Modifications enregistrées avec succès !', 'success');
-
         cancelOptionCard();
 
     } catch (err) {
@@ -1021,7 +1052,7 @@ async function saveOption(option, client) {
 }
 
 // ============================================================
-// BLOQUER / DÉBLOQUER (option 'access')
+// BLOQUER / DÉBLOQUER
 // ============================================================
 async function handleToggleAccess() {
     if (!selectedClientId) return;
@@ -1156,6 +1187,14 @@ window.cancelOptionCard = cancelOptionCard;
 document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('create-client-form').addEventListener('submit', handleCreateClient);
 
+    // Charger les banques de France par défaut dans le formulaire de création
+    populateBankSelect('c-bank', 'France', '');
+
+    // Recharger les banques quand le pays change
+    document.getElementById('c-country').addEventListener('change', (e) => {
+        populateBankSelect('c-bank', e.target.value, '');
+    });
+
     document.getElementById('link-modal').addEventListener('click', (e) => {
         if (e.target.id === 'link-modal') closeModal();
     });
@@ -1170,9 +1209,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadClients();
 });
 
-// ============================================================
-// TOUCHE ÉCHAP : fermer les modals
-// ============================================================
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
