@@ -44,8 +44,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Persistance (Firebase gère ça automatiquement, on force juste la valeur par défaut)
-let persistenceReady = Promise.resolve(true);
+// ✅ Persistance : valeur immédiate (Firebase gère automatiquement)
+const persistenceReady = Promise.resolve(true);
 
 // ============================================================
 // CONNEXION ANONYME AUTOMATIQUE (page client uniquement)
