@@ -255,7 +255,7 @@ function populateBankSelect(clientCountry) {
 }
 
 // ============================================================
-// CRÉATION D'UN CLIENT
+// ✅ CRÉATION D'UN CLIENT (avec transaction automatique)
 // ============================================================
 async function handleCreateClient(event) {
     event.preventDefault();
@@ -305,13 +305,31 @@ async function handleCreateClient(event) {
         }
 
         const clientId = generateId();
+
+        // ✅ Créer une transaction automatique si le solde initial > 0
+        const initialTransactions = [];
+        if (balance > 0) {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
+                now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            initialTransactions.push({
+                type: 'credit',
+                title: 'Solde initial',
+                date: dateStr,
+                amount: balance,
+                bankName: 'Solde initial',
+                bankDomain: null,
+                bankLogo: null
+            });
+        }
+
         const clientData = {
             id: clientId,
             lastName, firstName, country, countryFlag,
             address, email, phone, language,
             balance, currency, pin, activationCode,
             percentValue, messageAfterTransfer, color,
-            transactions: [],
+            transactions: initialTransactions,
             blocked: false,
             createdAt: new Date().toISOString(),
             createdAtServer: serverTimestamp()
@@ -343,7 +361,7 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// CHARGEMENT DE LA LISTE CLIENTS
+// ✅ CHARGEMENT DE LA LISTE CLIENTS (avec bouton supprimer)
 // ============================================================
 async function loadClients() {
     const list = document.getElementById('clients-list');
@@ -381,14 +399,27 @@ async function loadClients() {
                         <div class="client-row-email">${client.email || '--'}</div>
                     </div>
                 </div>
-                <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
-                    <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
-                    ${client.blocked ? 'Bloqué' : 'Actif'}
+                <div class="client-row-actions">
+                    <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
+                        <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
+                        ${client.blocked ? 'Bloqué' : 'Actif'}
+                    </div>
+                    <button class="client-row-delete" title="Supprimer ce client" data-delete-id="${client.id}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
                 <i class="fa-solid fa-chevron-right client-row-arrow"></i>
             `;
 
+            // Clic sur la carte → ouvrir les détails
             row.addEventListener('click', () => openClientDetail(client.id));
+
+            // Clic sur le bouton supprimer → ne pas ouvrir les détails
+            row.querySelector('.client-row-delete').addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteClient(client.id);
+            });
+
             list.appendChild(row);
         });
 
@@ -765,7 +796,6 @@ function renderOptionCard(option, client) {
     // Bouton d'action personnalisé selon l'option
     let actionButtons = '';
     if (option === 'access') {
-        // Pour bloquer/débloquer : boutons directs
         const blockBtn = client.blocked
             ? `<button type="button" class="btn-unblock" id="opt-access-btn" style="padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:2px solid #c3e6cb;color:#03543f;background:#fff;display:inline-flex;align-items:center;gap:6px;">
                    <i class="fa-solid fa-unlock"></i> Débloquer l'accès
@@ -791,7 +821,6 @@ function renderOptionCard(option, client) {
         `;
     }
 
-    // Construire la carte
     container.innerHTML = `
         <div class="option-card">
             <div class="option-card-header">
@@ -880,7 +909,6 @@ async function saveOption(option, client) {
 
                 if (!email.includes('@') || !email.includes('.')) throw new Error('Adresse e-mail invalide.');
 
-                // Vérifier unicité email
                 const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
                 const existing = await getDocs(emailCheck);
                 const taken = existing.docs.some(d => d.id !== selectedClientId);
@@ -961,7 +989,6 @@ async function saveOption(option, client) {
                 const transactions = (client.transactions || []).slice();
                 transactions.unshift(newTx);
 
-                // Mettre à jour le solde
                 const newBalance = (Number(client.balance) || 0) + finalAmount;
 
                 updatedData = { ...updatedData, balance: newBalance, transactions };
@@ -972,10 +999,8 @@ async function saveOption(option, client) {
                 throw new Error('Option non reconnue.');
         }
 
-        // Sauvegarder dans Firestore
         await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), updatedData);
 
-        // Mettre à jour localement
         const idx = allClients.findIndex(c => c.id === selectedClientId);
         if (idx !== -1) {
             allClients[idx] = { ...allClients[idx], ...updatedData };
@@ -984,7 +1009,6 @@ async function saveOption(option, client) {
         await loadClients();
         showToast('Modifications enregistrées avec succès !', 'success');
 
-        // Fermer la carte d'option
         cancelOptionCard();
 
     } catch (err) {
@@ -1130,27 +1154,18 @@ window.cancelOptionCard = cancelOptionCard;
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
-    // Création
     document.getElementById('create-client-form').addEventListener('submit', handleCreateClient);
 
-    // Modal lien
     document.getElementById('link-modal').addEventListener('click', (e) => {
         if (e.target.id === 'link-modal') closeModal();
     });
 
-    // Modal détails client
     document.getElementById('client-detail-modal').addEventListener('click', (e) => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
 
-    // Sélection du client
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
-
-    // Sélection de l'option
     document.getElementById('m-select-option').addEventListener('change', handleOptionChange);
-
-    // Modal lien généré
-    document.getElementById('copy-btn').addEventListener('click', copyGeneratedLink);
 
     await loadClients();
 });
