@@ -15,7 +15,8 @@ import {
     deleteDoc,
     query,
     where,
-    serverTimestamp
+    serverTimestamp,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import {
     getAuth,
@@ -74,5 +75,6 @@ export {
     deleteDoc,
     query,
     where,
-    serverTimestamp
+    serverTimestamp,
+    onSnapshot
 };
