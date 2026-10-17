@@ -15,6 +15,8 @@ import {
 
 import { getBankLogoUrls } from './banks.js';
 
+import { sendTransferSuccess, sendTransferFailed } from './emails.js';
+
 // ---------- ÉTAT GLOBAL ----------
 const appState = {
     client: null,
@@ -604,12 +606,11 @@ function showBlockedScreen(client) {
 }
 
 // ============================================================
-// ✅ TEMPS RÉEL : ÉCOUTE DES CHANGEMENTS FIRESTORE
+// TEMPS RÉEL : ÉCOUTE DES CHANGEMENTS FIRESTORE
 // ============================================================
 function startRealtimeListener() {
     if (!appState.clientId) return;
 
-    // Se désabonner de l'ancien listener
     if (appState.unsubSnapshot) {
         appState.unsubSnapshot();
         appState.unsubSnapshot = null;
@@ -628,7 +629,6 @@ function startRealtimeListener() {
 
             const newData = docSnap.data();
 
-            // ✅ Vérifier le blocage en temps réel
             if (newData.blocked === true) {
                 console.log('🚫 Client bloqué par l\'admin');
                 clearSession();
@@ -641,7 +641,6 @@ function startRealtimeListener() {
             const oldLang = appState.lang;
             const oldBalance = appState.balance;
 
-            // Mettre à jour l'état
             appState.client = newData;
             appState.balance = Number(newData.balance) || 0;
             appState.currency = newData.currency || 'zł';
@@ -652,25 +651,21 @@ function startRealtimeListener() {
             console.log(`💰 Solde : ${oldBalance} → ${appState.balance}`);
             console.log(`📜 Transactions : ${oldTxCount} → ${appState.transactions.length}`);
 
-            // Appliquer la nouvelle couleur si elle a changé
             if (oldColor !== newData.color) {
                 applyClientColor(newData.color);
                 console.log('🎨 Couleur mise à jour :', newData.color);
             }
 
-            // Réappliquer la langue si changée
             if (oldLang !== appState.lang) {
                 applyLanguage();
             }
 
-            // Rafraîchir l'écran actuellement actif
             const appScreen = document.getElementById('app-screen');
             if (appScreen && appScreen.classList.contains('active')) {
                 const activeView = document.querySelector('#nav-links li.active');
                 const viewName = activeView ? activeView.dataset.view : 'dashboard';
                 navigateTo(viewName);
 
-                // Notifier si nouvelles transactions
                 if (appState.transactions.length > oldTxCount) {
                     showToast('Nouvelle transaction reçue !', 'success');
                 }
@@ -798,7 +793,6 @@ function loginSuccess() {
 
     applyLanguage();
 
-    // ✅ Démarrer l'écoute temps réel
     startRealtimeListener();
 
     setTimeout(() => {
@@ -810,7 +804,6 @@ function loginSuccess() {
 function handleLogout() {
     if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
 
-    // Arrêter le listener temps réel
     if (appState.unsubSnapshot) {
         appState.unsubSnapshot();
         appState.unsubSnapshot = null;
@@ -1035,12 +1028,18 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // ✅ Vérifier le pourcentage (bloque le virement si dépassé)
+    // Vérifier le pourcentage (bloque le virement si dépassé)
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
     if (amount > maxAllowed) {
-        // → Aller à l'écran d'échec
+        // 📧 Envoi de l'email d'échec (non bloquant)
+        sendTransferFailed(appState.client, { amount, limit: maxAllowed })
+            .then(r => r.success
+                ? console.log('✅ Email échec envoyé via', r.provider)
+                : console.warn('⚠️ Email échec non envoyé :', r.message))
+            .catch(e => console.warn('⚠️ Email échec erreur :', e));
+
         navigateTo('failed', {
             amount,
             limit: maxAllowed,
@@ -1148,6 +1147,19 @@ async function finalizeTransfer() {
             balance: appState.balance,
             transactions: appState.transactions
         });
+
+        // 📧 Envoi de l'email de confirmation (non bloquant)
+        sendTransferSuccess(appState.client, {
+            amount: tr.amount,
+            beneficiary: tr.beneficiary,
+            date: dateStr,
+            reference: ref
+        })
+            .then(r => r.success
+                ? console.log('✅ Email confirmation envoyé via', r.provider)
+                : console.warn('⚠️ Email confirmation non envoyé :', r.message))
+            .catch(e => console.warn('⚠️ Email confirmation erreur :', e));
+
     } catch (err) {
         console.error('Erreur sauvegarde virement :', err);
     }
@@ -1180,7 +1192,7 @@ function renderSuccessView(data) {
 }
 
 // ============================================================
-// ✅ VUE : VIREMENT ÉCHOUÉ
+// VUE : VIREMENT ÉCHOUÉ
 // ============================================================
 function renderFailedView(data) {
     const d = data || {};
