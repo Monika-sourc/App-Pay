@@ -788,11 +788,10 @@ function editClientFromDetail() {
 }
 
 // ============================================================
-// 📧 NOUVEAU : ENVOYER LES IDENTIFIANTS PAR EMAIL
+// 📧 ENVOI DES EMAILS (ADMIN)
 // ============================================================
 async function handleSendLoginCredentials() {
     if (!currentDetailClient) return;
-
     const client = currentDetailClient;
 
     if (!client.email) {
@@ -809,7 +808,6 @@ async function handleSendLoginCredentials() {
 
     try {
         const result = await sendLoginCredentials(client);
-
         if (result.success) {
             showToast('Identifiants envoyés à ' + client.email, 'success');
         } else {
@@ -826,12 +824,8 @@ async function handleSendLoginCredentials() {
     }
 }
 
-// ============================================================
-// 📧 NOUVEAU : ENVOYER LE CODE D'ACTIVATION PAR EMAIL
-// ============================================================
 async function handleSendActivationCode() {
     if (!currentDetailClient) return;
-
     const client = currentDetailClient;
 
     if (!client.email) {
@@ -848,7 +842,6 @@ async function handleSendActivationCode() {
 
     try {
         const result = await sendActivationCode(client);
-
         if (result.success) {
             showToast('Code d\'activation envoyé à ' + client.email, 'success');
         } else {
@@ -1112,6 +1105,27 @@ function renderOptionCard(option, client) {
             `;
             break;
 
+        // 🆕 NOUVELLE OPTION : RÉINITIALISER LE COMPTE
+        case 'reset':
+            headerIcon = 'fa-eraser';
+            headerTitle = 'Réinitialiser le compte';
+            headerSubtitle = 'Mettre le solde à zéro et vider l\'historique';
+            bodyHtml = `
+                <div class="option-info-box" style="background:#fef2f2; border-color:#fecaca; color:#e02424;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span><strong>Attention :</strong> Cette action est irréversible. Elle remettra le solde de ce client à 0 et supprimera définitivement toutes ses transactions.</span>
+                </div>
+                <div class="option-status-box">
+                    <span class="option-status-box-label">Solde actuel :</span>
+                    <span class="option-status-box-value">${Number(client.balance || 0).toFixed(2)} ${client.currency || 'zł'}</span>
+                </div>
+                <div class="option-status-box">
+                    <span class="option-status-box-label">Nombre de transactions :</span>
+                    <span class="option-status-box-value">${(client.transactions || []).length}</span>
+                </div>
+            `;
+            break;
+
         case 'access':
             headerIcon = 'fa-ban';
             headerTitle = 'Accès du client';
@@ -1180,6 +1194,16 @@ function renderOptionCard(option, client) {
                 <i class="fa-solid fa-xmark"></i> Annuler
             </button>
             ${blockBtn}
+        `;
+    } else if (option === 'reset') {
+        // 🆕 BOUTON SPÉCIFIQUE POUR LA RÉINITIALISATION
+        actionButtons = `
+            <button type="button" class="btn-option-cancel" onclick="cancelOptionCard()">
+                <i class="fa-solid fa-xmark"></i> Annuler
+            </button>
+            <button type="button" class="btn-option-save" id="opt-save-btn" style="background-color: #e02424;">
+                <i class="fa-solid fa-eraser"></i> Réinitialiser
+            </button>
         `;
     } else {
         actionButtons = `
@@ -1340,6 +1364,17 @@ async function saveOption(option, client) {
                 const color = document.getElementById('opt-color').value;
                 if (!color) throw new Error('Veuillez choisir une couleur.');
                 updatedData = { ...updatedData, color };
+                break;
+            }
+
+            // 🆕 LOGIQUE DE RÉINITIALISATION DU COMPTE
+            case 'reset': {
+                const confirmReset = confirm(`Êtes-vous sûr de vouloir réinitialiser le compte de ${client.firstName} ${client.lastName} ?\n\nLe solde sera mis à 0 et l'historique des transactions sera définitivement supprimé.`);
+                if (!confirmReset) {
+                    throw new Error('Réinitialisation annulée.');
+                }
+
+                updatedData = { ...updatedData, balance: 0, transactions: [] };
                 break;
             }
 
