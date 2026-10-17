@@ -14,8 +14,6 @@ import {
 } from './firebase-config.js';
 
 import { getBankLogoUrls } from './banks.js';
-
-// 🆕 IMPORT DES FONCTIONS D'EMAIL
 import { sendTransferSuccess, sendTransferFailed } from './emails.js';
 
 // ---------- ÉTAT GLOBAL ----------
@@ -38,6 +36,9 @@ const SESSION_KEY = 'apppay_session_v2';
 // ============================================================
 const TRANSLATIONS = {
     fr: {
+        dashboard: "Portefeuille",
+        personal_iban: "IBAN Personnel",
+        logout: "Déconnexion",
         available_balance: "Solde disponible",
         account_subtitle: "Compte pour tous vos besoins",
         see_iban: "Voir mon IBAN",
@@ -117,6 +118,9 @@ const TRANSLATIONS = {
         transfer_finalized: "Virement finalisé avec succès !"
     },
     en: {
+        dashboard: "Wallet",
+        personal_iban: "Personal IBAN",
+        logout: "Logout",
         available_balance: "Available balance",
         account_subtitle: "Account for all your needs",
         see_iban: "See my IBAN",
@@ -196,6 +200,9 @@ const TRANSLATIONS = {
         transfer_finalized: "Transfer completed successfully!"
     },
     es: {
+        dashboard: "Cartera",
+        personal_iban: "IBAN Personal",
+        logout: "Cerrar sesión",
         available_balance: "Saldo disponible",
         account_subtitle: "Cuenta para todas tus necesidades",
         see_iban: "Ver mi IBAN",
@@ -275,6 +282,9 @@ const TRANSLATIONS = {
         transfer_finalized: "¡Transferencia completada!"
     },
     de: {
+        dashboard: "Portemonnaie",
+        personal_iban: "Persönliche IBAN",
+        logout: "Abmelden",
         available_balance: "Verfügbares Guthaben",
         account_subtitle: "Konto für alle Ihre Bedürfnisse",
         see_iban: "IBAN anzeigen",
@@ -354,6 +364,9 @@ const TRANSLATIONS = {
         transfer_finalized: "Überweisung erfolgreich abgeschlossen!"
     },
     pl: {
+        dashboard: "Portfel",
+        personal_iban: "Osobisty IBAN",
+        logout: "Wyloguj",
         available_balance: "Dostępne saldo",
         account_subtitle: "Konto na wszystkie potrzeby",
         see_iban: "Zobacz moje IBAN",
@@ -463,11 +476,7 @@ function applyClientColor(color) {
 
 function hexToRgb(hex) {
     const h = hex.replace('#', '');
-    return {
-        r: parseInt(h.substring(0, 2), 16),
-        g: parseInt(h.substring(2, 4), 16),
-        b: parseInt(h.substring(4, 6), 16)
-    };
+    return { r: parseInt(h.substring(0, 2), 16), g: parseInt(h.substring(2, 4), 16), b: parseInt(h.substring(4, 6), 16) };
 }
 function rgbToHex(r, g, b) {
     return '#' + [r, g, b].map(x => {
@@ -548,11 +557,7 @@ function getDateGroupLabel(dateStr, lang) {
 function saveSession() {
     if (!appState.clientId) return;
     try {
-        localStorage.setItem(SESSION_KEY, JSON.stringify({
-            clientId: appState.clientId,
-            loggedIn: true,
-            savedAt: Date.now()
-        }));
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ clientId: appState.clientId, loggedIn: true, savedAt: Date.now() }));
     } catch (e) {}
 }
 
@@ -566,15 +571,11 @@ function getSession() {
             return null;
         }
         return data;
-    } catch {
-        return null;
-    }
+    } catch { return null; }
 }
 
 function clearSession() {
-    try {
-        localStorage.removeItem(SESSION_KEY);
-    } catch {}
+    try { localStorage.removeItem(SESSION_KEY); } catch {}
 }
 
 // ============================================================
@@ -587,21 +588,13 @@ function showBlockedScreen(client) {
         iconBox.innerHTML = '<i class="fa-solid fa-lock"></i>';
         iconBox.style.backgroundColor = '#fef3c7';
         iconBox.style.color = '#d97706';
-
         card.querySelector('.invalid-title').textContent = 'Compte temporairement bloqué';
-
-        const name = client
-            ? `${client.firstName || ''} ${client.lastName || ''}`.trim()
-            : '';
-
+        const name = client ? `${client.firstName || ''} ${client.lastName || ''}`.trim() : '';
         card.querySelector('.invalid-message').textContent = name
             ? `Bonjour ${name}, votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`
             : `Votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`;
-
         const infoSpan = card.querySelector('.invalid-info span');
-        if (infoSpan) {
-            infoSpan.textContent = 'Veuillez contacter l\'administrateur pour rétablir votre accès.';
-        }
+        if (infoSpan) infoSpan.textContent = 'Veuillez contacter l\'administrateur pour rétablir votre accès.';
     }
     showScreen('invalid-screen');
 }
@@ -619,19 +612,15 @@ function startRealtimeListener() {
 
     try {
         const docRef = doc(db, 'clients', appState.clientId);
-
         appState.unsubSnapshot = onSnapshot(docRef, (docSnap) => {
             if (!docSnap.exists()) {
-                console.warn('⚠️ Client supprimé par l\'admin');
                 clearSession();
                 showScreen('invalid-screen');
                 return;
             }
 
             const newData = docSnap.data();
-
             if (newData.blocked === true) {
-                console.log('🚫 Client bloqué par l\'admin');
                 clearSession();
                 showBlockedScreen(newData);
                 return;
@@ -640,7 +629,6 @@ function startRealtimeListener() {
             const oldTxCount = (appState.transactions || []).length;
             const oldColor = appState.client?.color;
             const oldLang = appState.lang;
-            const oldBalance = appState.balance;
 
             appState.client = newData;
             appState.balance = Number(newData.balance) || 0;
@@ -648,18 +636,8 @@ function startRealtimeListener() {
             appState.transactions = newData.transactions || [];
             appState.lang = newData.language || 'fr';
 
-            console.log('🔄 Données mises à jour en temps réel');
-            console.log(`💰 Solde : ${oldBalance} → ${appState.balance}`);
-            console.log(`📜 Transactions : ${oldTxCount} → ${appState.transactions.length}`);
-
-            if (oldColor !== newData.color) {
-                applyClientColor(newData.color);
-                console.log('🎨 Couleur mise à jour :', newData.color);
-            }
-
-            if (oldLang !== appState.lang) {
-                applyLanguage();
-            }
+            if (oldColor !== newData.color) applyClientColor(newData.color);
+            if (oldLang !== appState.lang) applyLanguage();
 
             const appScreen = document.getElementById('app-screen');
             if (appScreen && appScreen.classList.contains('active')) {
@@ -674,7 +652,6 @@ function startRealtimeListener() {
         }, (err) => {
             console.error('Erreur listener Firestore :', err);
         });
-
     } catch (err) {
         console.error('Erreur démarrage temps réel :', err);
     }
@@ -695,7 +672,6 @@ async function loadClientFromFirestore() {
 
     try {
         await authPromise;
-
         const docRef = doc(db, 'clients', clientId);
         let docSnap;
         try {
@@ -716,8 +692,6 @@ async function loadClientFromFirestore() {
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
 
-        console.log(`📊 ${client.firstName} ${client.lastName} | 💰 ${appState.balance}`);
-
         if (client.blocked === true) {
             clearSession();
             showBlockedScreen(client);
@@ -736,7 +710,6 @@ async function loadClientFromFirestore() {
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
 
         if (shouldAutoLogin) {
-            console.log('✅ Session restaurée');
             loginSuccess();
         } else {
             showScreen('login-screen');
@@ -803,7 +776,7 @@ function loginSuccess() {
 
 // ---------- DÉCONNEXION ----------
 function handleLogout() {
-    if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+    if (!confirm(t('logout') + ' ?')) return;
 
     if (appState.unsubSnapshot) {
         appState.unsubSnapshot();
@@ -930,20 +903,7 @@ function renderDashboard() {
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
 
-    const btnIban = document.getElementById('btn-show-iban');
-    if (btnIban) {
-        btnIban.addEventListener('click', () => {
-            const id = appState.client?.id || '--';
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(id).then(() => {
-                    showToast('ID: ' + id, 'success');
-                }).catch(() => showToast('ID: ' + id, 'info'));
-            } else {
-                showToast('ID: ' + id, 'info');
-            }
-        });
-    }
-
+    // ✅ NOUVEAUX BOUTONS RONDS DANS LA GRANDE CARTE
     const btnGoTransfer = document.getElementById('btn-go-transfer');
     if (btnGoTransfer) btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
 
@@ -1029,17 +989,13 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // ✅ Vérifier le pourcentage (bloque le virement si dépassé)
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
     if (amount > maxAllowed) {
-        // 📧 Envoi de l'email d'échec (non bloquant)
         sendTransferFailed(appState.client, { amount, limit: maxAllowed })
-            .then(r => r.success
-                ? console.log('✅ Email échec envoyé via', r.provider)
-                : console.warn('⚠️ Email échec non envoyé :', r.message))
-            .catch(e => console.warn('⚠️ Email échec erreur :', e));
+            .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
+            .catch(e => console.warn('⚠️ Email échec erreur'));
 
         navigateTo('failed', {
             amount,
@@ -1149,19 +1105,16 @@ async function finalizeTransfer() {
             transactions: appState.transactions
         });
 
-        // 📧 Envoi de l'email de confirmation (non bloquant)
-        // ✅ AJOUT DE L'IBAN ICI POUR L'EMAIL
+        // 📧 Envoi de l'email de confirmation avec l'IBAN
         sendTransferSuccess(appState.client, {
             amount: tr.amount,
             beneficiary: tr.beneficiary,
             date: dateStr,
             reference: ref,
-            iban: tr.iban 
+            iban: tr.iban
         })
-            .then(r => r.success
-                ? console.log('✅ Email confirmation envoyé via', r.provider)
-                : console.warn('⚠️ Email confirmation non envoyé :', r.message))
-            .catch(e => console.warn('⚠️ Email confirmation erreur :', e));
+            .then(r => r.success ? console.log('✅ Email confirmation envoyé') : console.warn('⚠️ Email confirmation non envoyé'))
+            .catch(e => console.warn('⚠️ Email confirmation erreur'));
 
     } catch (err) {
         console.error('Erreur sauvegarde virement :', err);
@@ -1305,8 +1258,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.querySelectorAll('#nav-links li').forEach(li => {
+        if (li.id === 'menu-show-iban') return; // Ignorer le bouton IBAN (géré séparément)
         li.addEventListener('click', () => navigateTo(li.dataset.view));
     });
+
+    // 🆕 ÉCOUTEUR POUR LE BOUTON IBAN DANS LE MENU DE GAUCHE
+    const menuIbanBtn = document.getElementById('menu-show-iban');
+    if (menuIbanBtn) {
+        menuIbanBtn.addEventListener('click', () => {
+            const id = appState.client?.id || '--';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(id).then(() => {
+                    showToast('IBAN copié : ' + id, 'success');
+                }).catch(() => showToast('Votre IBAN : ' + id, 'info'));
+            } else {
+                showToast('Votre IBAN : ' + id, 'info');
+            }
+        });
+    }
 
     document.getElementById('views-container').addEventListener('submit', (e) => {
         if (e.target.id === 'transfer-form') {
