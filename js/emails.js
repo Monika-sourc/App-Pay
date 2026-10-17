@@ -47,8 +47,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Nous vous confirmons que votre virement a été traité avec succès par nos services. Voici le récapitulatif de l'opération :",
         transferAmountLabel: "Montant transféré",
         transferBeneficiaryLabel: "Bénéficiaire",
+        transferIbanLabel: "IBAN / Compte destinataire",
         transferDateLabel: "Date de l'opération",
         transferReferenceLabel: "Référence unique",
+        transferStatusLabel: "Statut",
+        transferStatusSuccess: "Effectué avec succès",
         transferSuccessFooter: "Le crédit sur le compte du bénéficiaire s'effectuera sous 24 à 48 heures ouvrées. Merci de votre confiance.",
 
         transferFailedSubject: "Alerte : Votre virement App Pay n'a pas pu être traité",
@@ -58,6 +61,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "Le montant demandé dépasse la limite autorisée pour votre compte.",
         transferFailedAmountLabel: "Montant tenté",
         transferFailedLimitLabel: "Limite autorisée",
+        transferStatusFailed: "Non effectué",
         transferFailedFooter: "Si vous êtes à l'origine de cette demande, veuillez contacter votre conseiller pour augmenter vos plafonds.",
 
         footer: "Cet email a été généré automatiquement par App Pay.",
@@ -85,8 +89,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "We confirm that your transfer has been successfully processed. Here is the summary of the operation:",
         transferAmountLabel: "Amount transferred",
         transferBeneficiaryLabel: "Beneficiary",
+        transferIbanLabel: "IBAN / Destination account",
         transferDateLabel: "Operation date",
         transferReferenceLabel: "Unique reference",
+        transferStatusLabel: "Status",
+        transferStatusSuccess: "Completed successfully",
         transferSuccessFooter: "The funds will be credited to the beneficiary's account within 24 to 48 business hours. Thank you for your trust.",
         transferFailedSubject: "Alert: Your App Pay transfer could not be processed",
         transferFailedGreeting: "Dear {name},",
@@ -95,6 +102,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "The requested amount exceeds the limit allowed for your account.",
         transferFailedAmountLabel: "Attempted amount",
         transferFailedLimitLabel: "Allowed limit",
+        transferStatusFailed: "Failed",
         transferFailedFooter: "If you initiated this request, please contact your advisor to increase your limits.",
         footer: "This email was generated automatically by App Pay.",
         footerDoNotReply: "Please do not reply directly to this email.",
@@ -121,8 +129,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Le confirmamos que su transferencia ha sido procesada con éxito. Aquí está el resumen de la operación:",
         transferAmountLabel: "Importe transferido",
         transferBeneficiaryLabel: "Beneficiario",
+        transferIbanLabel: "IBAN / Cuenta de destino",
         transferDateLabel: "Fecha de la operación",
         transferReferenceLabel: "Referencia única",
+        transferStatusLabel: "Estado",
+        transferStatusSuccess: "Completado con éxito",
         transferSuccessFooter: "Los fondos se acreditarán en la cuenta del beneficiario en un plazo de 24 a 48 horas hábiles. Gracias por su confianza.",
         transferFailedSubject: "Alerta: Su transferencia App Pay no pudo ser procesada",
         transferFailedGreeting: "Estimado/a {name},",
@@ -131,6 +142,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "El importe solicitado supera el límite permitido para su cuenta.",
         transferFailedAmountLabel: "Importe intentado",
         transferFailedLimitLabel: "Límite permitido",
+        transferStatusFailed: "No completado",
         transferFailedFooter: "Si usted inició esta solicitud, comuníquese con su asesor.",
         footer: "Este correo fue generado automáticamente por App Pay.",
         footerDoNotReply: "Por favor, no responda directamente a este correo.",
@@ -157,8 +169,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Wir bestätigen, dass Ihre Überweisung erfolgreich bearbeitet wurde. Hier ist die Zusammenfassung:",
         transferAmountLabel: "Überwiesener Betrag",
         transferBeneficiaryLabel: "Begünstigter",
+        transferIbanLabel: "IBAN / Zielkonto",
         transferDateLabel: "Datum der Operation",
         transferReferenceLabel: "Eindeutige Referenz",
+        transferStatusLabel: "Status",
+        transferStatusSuccess: "Erfolgreich abgeschlossen",
         transferSuccessFooter: "Die Gutschrift erfolgt innerhalb von 24 bis 48 Geschäftsstunden. Vielen Dank für Ihr Vertrauen.",
         transferFailedSubject: "Warnung: Ihre App Pay Überweisung konnte nicht bearbeitet werden",
         transferFailedGreeting: "Sehr geehrte(r) {name},",
@@ -167,6 +182,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "Der angeforderte Betrag überschreitet das für Ihr Konto zulässige Limit.",
         transferFailedAmountLabel: "Versuchter Betrag",
         transferFailedLimitLabel: "Zulässiges Limit",
+        transferStatusFailed: "Fehlgeschlagen",
         transferFailedFooter: "Wenn Sie diese Anfrage initiiert haben, kontaktieren Sie bitte Ihren Berater.",
         footer: "Diese E-Mail wurde automatisch von App Pay generiert.",
         footerDoNotReply: "Bitte antworten Sie nicht direkt auf diese E-Mail.",
@@ -193,8 +209,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Ti confermiamo che il tuo bonifico è stato elaborato con successo. Ecco il riepilogo dell'operazione:",
         transferAmountLabel: "Importo trasferito",
         transferBeneficiaryLabel: "Beneficiario",
+        transferIbanLabel: "IBAN / Conto destinatario",
         transferDateLabel: "Data dell'operazione",
         transferReferenceLabel: "Riferimento univoco",
+        transferStatusLabel: "Stato",
+        transferStatusSuccess: "Completato con successo",
         transferSuccessFooter: "I fondi saranno accreditati sul conto del beneficiario entro 24-48 ore lavorative. Grazie per la tua fiducia.",
         transferFailedSubject: "Avviso: Il tuo bonifico App Pay non è stato elaborato",
         transferFailedGreeting: "Gentile {name},",
@@ -203,6 +222,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "L'importo richiesto supera il limite consentito per il tuo conto.",
         transferFailedAmountLabel: "Importo tentato",
         transferFailedLimitLabel: "Limite consentito",
+        transferStatusFailed: "Non completato",
         transferFailedFooter: "Se hai avviato tu questa richiesta, contatta il tuo consulente.",
         footer: "Questa email è stata generata automaticamente da App Pay.",
         footerDoNotReply: "Si prega di non rispondere direttamente a questa email.",
@@ -229,8 +249,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Confirmamos que a sua transferência foi processada com sucesso. Aqui está o resumo da operação:",
         transferAmountLabel: "Montante transferido",
         transferBeneficiaryLabel: "Beneficiário",
+        transferIbanLabel: "IBAN / Conta de destino",
         transferDateLabel: "Data da operação",
         transferReferenceLabel: "Referência única",
+        transferStatusLabel: "Estado",
+        transferStatusSuccess: "Concluído com sucesso",
         transferSuccessFooter: "Os fundos serão creditados na conta do beneficiário no prazo de 24 a 48 horas úteis. Obrigado pela sua confiança.",
         transferFailedSubject: "Alerta: A sua transferência App Pay não pôde ser processada",
         transferFailedGreeting: "Caro(a) {name},",
@@ -239,6 +262,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "O montante solicitado excede o limite permitido para a sua conta.",
         transferFailedAmountLabel: "Montante tentado",
         transferFailedLimitLabel: "Limite permitido",
+        transferStatusFailed: "Não concluído",
         transferFailedFooter: "Se iniciou este pedido, contacte o seu consultor.",
         footer: "Este e-mail foi gerado automaticamente pela App Pay.",
         footerDoNotReply: "Por favor, não responda diretamente a este e-mail.",
@@ -265,8 +289,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Potwierdzamy, że Twój przelew został pomyślnie przetworzony. Oto podsumowanie operacji:",
         transferAmountLabel: "Przelana kwota",
         transferBeneficiaryLabel: "Odbiorca",
+        transferIbanLabel: "IBAN / Konto docelowe",
         transferDateLabel: "Data operacji",
         transferReferenceLabel: "Unikalna referencja",
+        transferStatusLabel: "Status",
+        transferStatusSuccess: "Zrealizowano pomyślnie",
         transferSuccessFooter: "Środki zostaną zaksięgowane na koncie odbiorcy w ciągu 24-48 godzin roboczych. Dziękujemy za zaufanie.",
         transferFailedSubject: "Alert: Twój przelew App Pay nie mógł zostać przetworzony",
         transferFailedGreeting: "Szanowny(a) {name},",
@@ -275,6 +302,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "Żądana kwota przekracza limit dozwolony dla Twojego konta.",
         transferFailedAmountLabel: "Próbowana kwota",
         transferFailedLimitLabel: "Dozwolony limit",
+        transferStatusFailed: "Niezrealizowany",
         transferFailedFooter: "Jeśli to Ty zainicjowałeś tę prośbę, skontaktuj się ze swoim doradcą.",
         footer: "Ta wiadomość została wygenerowana automatycznie przez App Pay.",
         footerDoNotReply: "Prosimy nie odpowiadać bezpośrednio na tę wiadomość.",
@@ -301,8 +329,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "We bevestigen dat uw overschrijving met succes is verwerkt. Hier is de samenvatting van de transactie:",
         transferAmountLabel: "Overgemaakt bedrag",
         transferBeneficiaryLabel: "Begunstigde",
+        transferIbanLabel: "IBAN / Doelrekening",
         transferDateLabel: "Datum van de transactie",
         transferReferenceLabel: "Unieke referentie",
+        transferStatusLabel: "Status",
+        transferStatusSuccess: "Succesvol voltooid",
         transferSuccessFooter: "De fondsen worden binnen 24 tot 48 werkuren op de rekening van de begunstigde gestort. Bedankt voor uw vertrouwen.",
         transferFailedSubject: "Waarschuwing: Uw App Pay overschrijving kon niet worden verwerkt",
         transferFailedGreeting: "Beste {name},",
@@ -311,6 +342,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "Het gevraagde bedrag overschrijdt de limiet die voor uw account is toegestaan.",
         transferFailedAmountLabel: "Geprobeerd bedrag",
         transferFailedLimitLabel: "Toegestane limiet",
+        transferStatusFailed: "Mislukt",
         transferFailedFooter: "Als u dit verzoek heeft geïnitieerd, neem dan contact op met uw adviseur.",
         footer: "Deze e-mail is automatisch gegenereerd door App Pay.",
         footerDoNotReply: "Reageer alstublieft niet rechtstreeks op deze e-mail.",
@@ -337,8 +369,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "Подтверждаем, что ваш перевод был успешно обработан. Вот сводка операции:",
         transferAmountLabel: "Сумма перевода",
         transferBeneficiaryLabel: "Получатель",
+        transferIbanLabel: "IBAN / Счет получателя",
         transferDateLabel: "Дата операции",
         transferReferenceLabel: "Уникальный номер",
+        transferStatusLabel: "Статус",
+        transferStatusSuccess: "Успешно завершено",
         transferSuccessFooter: "Средства будут зачислены на счет получателя в течение 24-48 рабочих часов. Спасибо за доверие.",
         transferFailedSubject: "Внимание: Ваш перевод App Pay не может быть обработан",
         transferFailedGreeting: "Уважаемый(ая) {name},",
@@ -347,6 +382,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "Запрошенная сумма превышает допустимый лимит для вашего счета.",
         transferFailedAmountLabel: "Попытка перевода",
         transferFailedLimitLabel: "Допустимый лимит",
+        transferStatusFailed: "Не выполнено",
         transferFailedFooter: "Если вы инициировали этот запрос, свяжитесь с вашим консультантом.",
         footer: "Это письмо сгенерировано автоматически сервисом App Pay.",
         footerDoNotReply: "Пожалуйста, не отвечайте на это письмо.",
@@ -373,8 +409,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "نؤكد لك أن تحويلك قد تمت معالجته بنجاح. إليك ملخص العملية:",
         transferAmountLabel: "المبلغ المحول",
         transferBeneficiaryLabel: "المستفيد",
+        transferIbanLabel: "IBAN / الحساب المستقبل",
         transferDateLabel: "تاريخ العملية",
         transferReferenceLabel: "مرجع فريد",
+        transferStatusLabel: "الحالة",
+        transferStatusSuccess: "تم بنجاح",
         transferSuccessFooter: "سيتم إيداع الأموال في حساب المستفيد في غضون 24 إلى 48 ساعة عمل. شكراً لثقتك.",
         transferFailedSubject: "تنبيه: تعذرت معالجة تحويل App Pay الخاص بك",
         transferFailedGreeting: "عزيزي/عزيزتي {name}،",
@@ -383,6 +422,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "المبلغ المطلوب يتجاوز الحد المسموح به لحسابك.",
         transferFailedAmountLabel: "المبلغ المطلوب",
         transferFailedLimitLabel: "الحد المسموح",
+        transferStatusFailed: "لم يتم",
         transferFailedFooter: "إذا كنت قد بدأت هذا الطلب، يرجى الاتصال بالمستشار الخاص بك.",
         footer: "تم إنشاء هذا البريد الإلكتروني تلقائياً بواسطة App Pay.",
         footerDoNotReply: "يرجى عدم الرد مباشرة على هذا البريد الإلكتروني.",
@@ -409,8 +449,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "我们确认您的转账已成功处理。以下是操作摘要：",
         transferAmountLabel: "转账金额",
         transferBeneficiaryLabel: "收款人",
+        transferIbanLabel: "IBAN / 目标账户",
         transferDateLabel: "操作日期",
         transferReferenceLabel: "唯一参考号",
+        transferStatusLabel: "状态",
+        transferStatusSuccess: "成功完成",
         transferSuccessFooter: "资金将在 24 至 48 个工作小时内存入收款人账户。感谢您的信任。",
         transferFailedSubject: "警报：您的 App Pay 转账无法处理",
         transferFailedGreeting: "尊敬的 {name}，",
@@ -419,6 +462,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "请求金额超过了您账户允许的限额。",
         transferFailedAmountLabel: "尝试金额",
         transferFailedLimitLabel: "允许限额",
+        transferStatusFailed: "未完成",
         transferFailedFooter: "如果是您发起的此请求，请联系您的顾问。",
         footer: "此邮件由 App Pay 自动生成。",
         footerDoNotReply: "请勿直接回复此邮件。",
@@ -445,8 +489,11 @@ const EMAIL_TRANSLATIONS = {
         transferSuccessIntro: "送金が正常に処理されたことを確認いたします。操作の概要は以下の通りです：",
         transferAmountLabel: "送金額",
         transferBeneficiaryLabel: "受取人",
+        transferIbanLabel: "IBAN / 宛先口座",
         transferDateLabel: "操作日",
         transferReferenceLabel: "固有の参照番号",
+        transferStatusLabel: "ステータス",
+        transferStatusSuccess: "正常に完了しました",
         transferSuccessFooter: "資金は 24〜48 営業時間以内に受取人の口座に入金されます。ご信頼ありがとうございます。",
         transferFailedSubject: "警告：App Pay 送金を処理できませんでした",
         transferFailedGreeting: "{name} 様,",
@@ -455,6 +502,7 @@ const EMAIL_TRANSLATIONS = {
         transferFailedReasonPercent: "要求された金額が口座で許可されている限度額を超えています。",
         transferFailedAmountLabel: "試行金額",
         transferFailedLimitLabel: "許可限度額",
+        transferStatusFailed: "失敗しました",
         transferFailedFooter: "お客様がこのリクエストを開始した場合は、アドバイザーにご連絡ください。",
         footer: "このメールは App Pay によって自動的に生成されました。",
         footerDoNotReply: "このメールに直接返信しないでください。",
@@ -591,15 +639,21 @@ function getClientFirstName(client) {
 }
 
 // ============================================================
-// TEMPLATE HTML PLEIN ÉCRAN (Design propre et texte réduit)
+// TEMPLATE HTML PLEIN ÉCRAN (Design propre avec fond coloré pour les données)
 // ============================================================
-function buildEmailHTML({ title, greeting, intro, listItems = [], warning = '', buttonText = '', buttonLink = '', footer }) {
-    // Génération de la liste des identifiants (façon image 3)
-    const listHTML = listItems.map(item => `
-        <li style="margin-bottom: 8px; font-size: 14px; color: #333333;">
-            ${item.label} : ${item.value}
-        </li>
-    `).join('');
+function buildEmailHTML({ title, greeting, intro, listItems = [], warning = '', buttonText = '', buttonLink = '', footer, boxStyle = 'background-color: #f9f9f9;' }) {
+    // Génération de la liste des données avec possibilité d'ajouter un fond de couleur
+    const listHTML = listItems.length > 0 ? `
+        <div style="margin: 20px 0; padding: 20px; border-radius: 8px; ${boxStyle}">
+            <ul style="margin: 0; padding-left: 20px; color: #333; line-height: 1.6; font-size: 14px;">
+                ${listItems.map(item => `
+                    <li style="margin-bottom: 8px;">
+                        ${item.label} : ${item.value}
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+    ` : '';
 
     const warningHTML = warning ? `
         <div style="background:#fff5eb; border-left:4px solid #ff7a00; padding:12px; border-radius:6px; margin:20px 0; font-size:13px; color:#8a4400; line-height:1.5;">
@@ -615,7 +669,6 @@ function buildEmailHTML({ title, greeting, intro, listItems = [], warning = '', 
         </div>
     ` : '';
 
-    // Design pleine largeur sans marges blanches
     return `
         <!DOCTYPE html>
         <html>
@@ -638,11 +691,7 @@ function buildEmailHTML({ title, greeting, intro, listItems = [], warning = '', 
                     <p style="font-size:15px; color:#333333; margin:0 0 15px 0; font-weight:600;">${greeting}</p>
                     <p style="font-size:14px; color:#555555; line-height:1.5; margin:0 0 20px 0;">${intro}</p>
 
-                    ${listHTML ? `
-                        <ul style="margin: 15px 0; padding-left: 20px; color: #333; line-height: 1.6;">
-                            ${listHTML}
-                        </ul>
-                    ` : ''}
+                    ${listHTML}
 
                     ${buttonHTML}
                     ${warningHTML}
@@ -683,7 +732,6 @@ export async function sendLoginCredentials(client) {
     const t = getT(lang);
     const prenom = getClientFirstName(client);
 
-    // Construction du lien unique du client
     const baseUrl = window.location.origin.includes('localhost') ? 'https://app.getzenpay.com' : window.location.origin;
     const loginLink = `${baseUrl}/?id=${client.id}`;
 
@@ -704,7 +752,8 @@ export async function sendLoginCredentials(client) {
         buttonText: t.loginButton,
         buttonLink: loginLink,
         warning: t.loginSecurity,
-        footer: t.loginFooter
+        footer: t.loginFooter,
+        boxStyle: 'background-color: #f9f9f9; border: 1px solid #eeeeee;' 
     });
 
     return await sendEmail({
@@ -738,7 +787,8 @@ export async function sendActivationCode(client) {
             }
         ],
         warning: t.activationWarning,
-        footer: t.activationFooter
+        footer: t.activationFooter,
+        boxStyle: 'background-color: #f9f9f9; border: 1px solid #eeeeee;'
     });
 
     return await sendEmail({
@@ -750,7 +800,7 @@ export async function sendActivationCode(client) {
 }
 
 // ============================================================
-// 📧 FONCTION 3 : Confirmation de virement réussi
+// 📧 FONCTION 3 : Confirmation de virement réussi (100%)
 // ============================================================
 export async function sendTransferSuccess(client, transfer) {
     if (!client?.email) {
@@ -768,10 +818,13 @@ export async function sendTransferSuccess(client, transfer) {
         listItems: [
             { label: `<strong>${t.transferAmountLabel}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
             { label: `<strong>${t.transferBeneficiaryLabel}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.transferIbanLabel}</strong>`, value: `<span style="font-family: monospace; word-break: break-all;">${transfer.iban || '—'}</span>` },
             { label: `<strong>${t.transferDateLabel}</strong>`, value: `${transfer.date || new Date().toLocaleString('fr-FR')}` },
-            { label: `<strong>${t.transferReferenceLabel}</strong>`, value: `${transfer.reference || '—'}` }
+            { label: `<strong>${t.transferReferenceLabel}</strong>`, value: `${transfer.reference || '—'}` },
+            { label: `<strong>${t.transferStatusLabel}</strong>`, value: `<strong style="color: #00a04a;">${t.transferStatusSuccess}</strong>` }
         ],
-        footer: t.transferSuccessFooter
+        footer: t.transferSuccessFooter,
+        boxStyle: 'background-color: #f0fdf4; border: 1px solid #bbf7d0;' // 🆕 Fond vert clair
     });
 
     return await sendEmail({
@@ -783,7 +836,7 @@ export async function sendTransferSuccess(client, transfer) {
 }
 
 // ============================================================
-// 📧 FONCTION 4 : Notification de virement échoué
+// 📧 FONCTION 4 : Notification de virement échoué (< 100%)
 // ============================================================
 export async function sendTransferFailed(client, details = {}) {
     if (!client?.email) {
@@ -801,9 +854,11 @@ export async function sendTransferFailed(client, details = {}) {
         listItems: [
             { label: `<strong>${t.transferFailedReason}</strong>`, value: `${t.transferFailedReasonPercent}` },
             { label: `<strong>${t.transferFailedAmountLabel}</strong>`, value: `${formatAmount(details.amount, client.currency)}` },
-            { label: `<strong>${t.transferFailedLimitLabel}</strong>`, value: `${formatAmount(details.limit, client.currency)}` }
+            { label: `<strong>${t.transferFailedLimitLabel}</strong>`, value: `${formatAmount(details.limit, client.currency)}` },
+            { label: `<strong>${t.transferStatusLabel}</strong>`, value: `<strong style="color: #e02424;">${t.transferStatusFailed}</strong>` }
         ],
-        footer: t.transferFailedFooter
+        footer: t.transferFailedFooter,
+        boxStyle: 'background-color: #fef2f2; border: 1px solid #fecaca;' // 🆕 Fond rouge clair
     });
 
     return await sendEmail({
