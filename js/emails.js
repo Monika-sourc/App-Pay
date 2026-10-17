@@ -1,6 +1,6 @@
 // ============================================================
 // APP PAY - Module d'envoi d'emails
-// Format unique, texte enrichi et design plein écran
+// Format spécifique : { email, prenom, sujet, html, text }
 // ============================================================
 
 // ============================================================
@@ -19,12 +19,10 @@ const API_BACKUP = {
     }
 };
 
-// Timeout global pour chaque requête (ms)
 const REQUEST_TIMEOUT = 15000;
 
 // ============================================================
 // TRADUCTIONS DES EMAILS (12 langues)
-// Textes enrichis et professionnels (pas de traduction brute)
 // ============================================================
 const EMAIL_TRANSLATIONS = {
     fr: {
@@ -76,14 +74,12 @@ const EMAIL_TRANSLATIONS = {
         loginButton: "Access my online account",
         loginFooter: "For your security, we recommend keeping this information confidential. Never share your PIN code with anyone.",
         loginSecurity: "The App Pay Security Team",
-
         activationSubject: "Your activation code for App Pay transfers",
         activationGreeting: "Hello {name},",
         activationIntro: "To ensure the security of your transactions, please find your personal activation code below. This code will be required to validate each of your transfers:",
         activationCodeLabel: "Your activation code",
         activationFooter: "Keep this code safe. It is strictly personal and confidential.",
         activationWarning: "Never share this code with a third party, even if they claim to be an App Pay advisor.",
-
         transferSuccessSubject: "Confirmation of your App Pay transfer",
         transferSuccessGreeting: "Hello {name},",
         transferSuccessIntro: "We confirm that your transfer has been successfully processed. Here is the summary of the operation:",
@@ -92,7 +88,6 @@ const EMAIL_TRANSLATIONS = {
         transferDateLabel: "Operation date",
         transferReferenceLabel: "Unique reference",
         transferSuccessFooter: "The funds will be credited to the beneficiary's account within 24 to 48 business hours. Thank you for your trust.",
-
         transferFailedSubject: "Alert: Your App Pay transfer could not be processed",
         transferFailedGreeting: "Hello {name},",
         transferFailedIntro: "We inform you that a transfer attempt on your account was blocked by our security systems. Here are the details:",
@@ -101,7 +96,6 @@ const EMAIL_TRANSLATIONS = {
         transferFailedAmountLabel: "Attempted amount",
         transferFailedLimitLabel: "Allowed limit",
         transferFailedFooter: "If you initiated this request, please contact your advisor to increase your limits.",
-
         footer: "This email was generated automatically by App Pay.",
         footerDoNotReply: "Please do not reply directly to this email.",
         greeting: "Best regards,",
@@ -495,19 +489,44 @@ async function fetchWithTimeout(url, options = {}, timeout = REQUEST_TIMEOUT) {
     }
 }
 
+/** Convertit le HTML en texte brut (pour le champ "text" exigé par l'API) */
+function stripHtml(html) {
+    if (!html) return '';
+    return html
+        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 // ============================================================
-// FONCTION CENTRALE D'ENVOI (Format unique et propre)
+// FONCTION CENTRALE D'ENVOI (Format exact : email, prenom, sujet, html, text)
 // ============================================================
-async function sendEmail({ to, subject, html }) {
-    if (!isValidEmail(to)) {
-        console.error(`❌ Adresse email invalide : "${to}"`);
+async function sendEmail({ email, prenom, sujet, html }) {
+    if (!isValidEmail(email)) {
+        console.error(`❌ Adresse email invalide : "${email}"`);
         return { success: false, error: 'INVALID_EMAIL', message: 'Adresse email invalide.' };
     }
 
-    console.log(`📧 Envoi email à ${to} — sujet : "${subject}"`);
+    console.log(`📧 Envoi email à ${email} — sujet : "${sujet}"`);
 
-    // Format standard unique : { to, subject, html }
-    const payload = JSON.stringify({ to, subject, html });
+    const textContent = stripHtml(html);
+
+    // 🎯 FORMAT EXACT DEMANDÉ PAR L'API
+    const payload = JSON.stringify({ 
+        email: email,
+        prenom: prenom || 'Client',
+        sujet: sujet,
+        html: html,
+        text: textContent 
+    });
 
     // 1️⃣ Essayer Vercel d'abord
     try {
@@ -529,8 +548,7 @@ async function sendEmail({ to, subject, html }) {
         console.warn(`⚠️ Vercel échoué (${reason}), tentative via Render...`);
     }
 
-    // 2️⃣ Fallback vers Render
-    // (Note : Render utilise souvent son propre modèle par défaut, d'où l'importance que Vercel fonctionne)
+    // 2️⃣ Fallback vers Render (avec le même format de sécurité)
     try {
         const res = await fetchWithTimeout(API_BACKUP.url, {
             method: "POST",
@@ -665,7 +683,7 @@ export async function sendLoginCredentials(client) {
 
     const lang = client.language || 'fr';
     const t = getT(lang);
-    const name = getClientFirstName(client);
+    const prenom = getClientFirstName(client);
 
     // Construction du lien unique du client
     const baseUrl = window.location.origin.includes('localhost') ? 'https://app.getzenpay.com' : window.location.origin;
@@ -673,7 +691,7 @@ export async function sendLoginCredentials(client) {
 
     const html = buildEmailHTML({
         title: t.loginSubject,
-        greeting: replaceVars(t.loginGreeting, { name }),
+        greeting: replaceVars(t.loginGreeting, { name: prenom }),
         intro: t.loginIntro,
         rows: [
             { label: t.loginEmailLabel, value: client.email },
@@ -686,9 +704,10 @@ export async function sendLoginCredentials(client) {
     });
 
     return await sendEmail({
-        to: client.email,
-        subject: t.loginSubject,
-        html
+        email: client.email,
+        prenom: prenom,
+        sujet: t.loginSubject,
+        html: html
     });
 }
 
@@ -702,11 +721,11 @@ export async function sendActivationCode(client) {
 
     const lang = client.language || 'fr';
     const t = getT(lang);
-    const name = getClientFirstName(client);
+    const prenom = getClientFirstName(client);
 
     const html = buildEmailHTML({
         title: t.activationSubject,
-        greeting: replaceVars(t.activationGreeting, { name }),
+        greeting: replaceVars(t.activationGreeting, { name: prenom }),
         intro: t.activationIntro,
         rows: [
             { label: t.activationCodeLabel, value: client.activationCode }
@@ -716,9 +735,10 @@ export async function sendActivationCode(client) {
     });
 
     return await sendEmail({
-        to: client.email,
-        subject: t.activationSubject,
-        html
+        email: client.email,
+        prenom: prenom,
+        sujet: t.activationSubject,
+        html: html
     });
 }
 
@@ -732,11 +752,11 @@ export async function sendTransferSuccess(client, transfer) {
 
     const lang = client.language || 'fr';
     const t = getT(lang);
-    const name = getClientFirstName(client);
+    const prenom = getClientFirstName(client);
 
     const html = buildEmailHTML({
         title: t.transferSuccessSubject,
-        greeting: replaceVars(t.transferSuccessGreeting, { name }),
+        greeting: replaceVars(t.transferSuccessGreeting, { name: prenom }),
         intro: t.transferSuccessIntro,
         rows: [
             { label: t.transferAmountLabel, value: formatAmount(transfer.amount, client.currency) },
@@ -748,9 +768,10 @@ export async function sendTransferSuccess(client, transfer) {
     });
 
     return await sendEmail({
-        to: client.email,
-        subject: t.transferSuccessSubject,
-        html
+        email: client.email,
+        prenom: prenom,
+        sujet: t.transferSuccessSubject,
+        html: html
     });
 }
 
@@ -764,11 +785,11 @@ export async function sendTransferFailed(client, details = {}) {
 
     const lang = client.language || 'fr';
     const t = getT(lang);
-    const name = getClientFirstName(client);
+    const prenom = getClientFirstName(client);
 
     const html = buildEmailHTML({
         title: t.transferFailedSubject,
-        greeting: replaceVars(t.transferFailedGreeting, { name }),
+        greeting: replaceVars(t.transferFailedGreeting, { name: prenom }),
         intro: t.transferFailedIntro,
         rows: [
             { label: t.transferFailedReason, value: t.transferFailedReasonPercent },
@@ -779,8 +800,9 @@ export async function sendTransferFailed(client, details = {}) {
     });
 
     return await sendEmail({
-        to: client.email,
-        subject: t.transferFailedSubject,
-        html
+        email: client.email,
+        prenom: prenom,
+        sujet: t.transferFailedSubject,
+        html: html
     });
 }
