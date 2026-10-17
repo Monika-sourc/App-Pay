@@ -32,7 +32,7 @@ body {
 }
 
 /* ============================================================
-   🆕 ÉCRAN DE CHARGEMENT
+   ÉCRAN DE CHARGEMENT
    ============================================================ */
 #admin-loading-screen {
     background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
@@ -1710,6 +1710,103 @@ body {
 }
 
 /* ============================================================
+   BOUTONS D'ENVOI D'EMAIL (🆕 ajoutés)
+   ============================================================ */
+.email-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.email-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.email-action-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.email-action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.email-action-blue {
+    border-color: #c5d8f5;
+    color: #1a73e8;
+}
+
+.email-action-blue:hover:not(:disabled) {
+    background-color: #e8f0fe;
+}
+
+.email-action-green {
+    border-color: #c3e6cb;
+    color: #03543f;
+}
+
+.email-action-green:hover:not(:disabled) {
+    background-color: #def7ec;
+}
+
+.email-action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.email-action-blue .email-action-icon {
+    background-color: #e8f0fe;
+}
+
+.email-action-green .email-action-icon {
+    background-color: #def7ec;
+}
+
+.email-action-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.email-action-text strong {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.email-action-text small {
+    font-size: 11px;
+    opacity: 0.75;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================================
    MODAL GÉNÉRIQUE
    ============================================================ */
 .modal-overlay {
@@ -1924,5 +2021,8 @@ body {
     .admin-user-name,
     .admin-user-email {
         max-width: 100px;
+    }
+    .email-actions-grid {
+        grid-template-columns: 1fr;
     }
 }
