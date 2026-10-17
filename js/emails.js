@@ -19,6 +19,9 @@ const API_BACKUP = {
     }
 };
 
+// Timeout global pour chaque requête (ms)
+const REQUEST_TIMEOUT = 15000;
+
 // ============================================================
 // TRADUCTIONS DES EMAILS (12 langues)
 // ============================================================
@@ -510,14 +513,50 @@ const EMAIL_TRANSLATIONS = {
 };
 
 // ============================================================
+// UTILITAIRES
+// ============================================================
+
+/** Valide une adresse email */
+function isValidEmail(email) {
+    return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+/** Formate un montant avec devise */
+function formatAmount(amount, currency = 'zł') {
+    const num = Number(amount) || 0;
+    return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + currency;
+}
+
+/** Fetch avec timeout (AbortController) */
+async function fetchWithTimeout(url, options = {}, timeout = REQUEST_TIMEOUT) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+    try {
+        return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+// ============================================================
 // FONCTION CENTRALE D'ENVOI (avec fallback)
 // ============================================================
 async function sendEmail({ to, subject, html }) {
+    if (!isValidEmail(to)) {
+        console.error(`❌ Adresse email invalide : "${to}"`);
+        return { success: false, error: 'INVALID_EMAIL', message: 'Adresse email invalide.' };
+    }
+
+    if (!subject || !html) {
+        console.error('❌ Sujet ou contenu HTML manquant.');
+        return { success: false, error: 'MISSING_FIELDS', message: 'Sujet ou contenu manquant.' };
+    }
+
     console.log(`📧 Envoi email à ${to} — sujet : "${subject}"`);
 
     // 1️⃣ Essayer Vercel d'abord
     try {
-        const res = await fetch(API_PRIMARY.url, {
+        const res = await fetchWithTimeout(API_PRIMARY.url, {
             method: "POST",
             headers: API_PRIMARY.headers,
             body: JSON.stringify({ to, subject, html })
@@ -530,12 +569,13 @@ async function sendEmail({ to, subject, html }) {
 
         console.warn(`⚠️ Vercel a répondu ${res.status}, tentative via Render...`);
     } catch (err) {
-        console.warn("⚠️ Vercel échoué, tentative via Render...", err.message);
+        const reason = err.name === 'AbortError' ? 'Timeout' : err.message;
+        console.warn(`⚠️ Vercel échoué (${reason}), tentative via Render...`);
     }
 
     // 2️⃣ Fallback vers Render
     try {
-        const res = await fetch(API_BACKUP.url, {
+        const res = await fetchWithTimeout(API_BACKUP.url, {
             method: "POST",
             headers: API_BACKUP.headers,
             body: JSON.stringify({ to, subject, html })
@@ -547,15 +587,16 @@ async function sendEmail({ to, subject, html }) {
         }
 
         console.error(`❌ Render a répondu ${res.status}`);
-        return { success: false, error: `HTTP ${res.status}` };
+        return { success: false, error: `HTTP ${res.status}`, message: `Render HTTP ${res.status}` };
     } catch (err) {
-        console.error("❌ Render échoué aussi :", err.message);
-        return { success: false, error: err.message };
+        const reason = err.name === 'AbortError' ? 'Timeout' : err.message;
+        console.error(`❌ Render échoué aussi : ${reason}`);
+        return { success: false, error: reason, message: reason };
     }
 }
 
 // ============================================================
-// UTILITAIRES
+// TRADUCTION & HELPERS
 // ============================================================
 function getT(lang) {
     return EMAIL_TRANSLATIONS[lang] || EMAIL_TRANSLATIONS.fr;
@@ -574,7 +615,9 @@ function getClientFirstName(client) {
     return client?.firstName || client?.lastName || 'Client';
 }
 
-// Template HTML réutilisable (joli design)
+// ============================================================
+// TEMPLATE HTML
+// ============================================================
 function buildEmailHTML({ title, greeting, intro, rows = [], warning = '', footer }) {
     const rowsHTML = rows.map(r => `
         <tr>
@@ -646,6 +689,10 @@ function buildEmailHTML({ title, greeting, intro, rows = [], warning = '', foote
 // 📧 FONCTION 1 : Envoyer les identifiants de connexion
 // ============================================================
 export async function sendLoginCredentials(client) {
+    if (!client?.email) {
+        return { success: false, error: 'MISSING_EMAIL', message: 'Client sans adresse email.' };
+    }
+
     const lang = client.language || 'fr';
     const t = getT(lang);
     const name = getClientFirstName(client);
@@ -673,6 +720,10 @@ export async function sendLoginCredentials(client) {
 // 📧 FONCTION 2 : Envoyer le code d'activation
 // ============================================================
 export async function sendActivationCode(client) {
+    if (!client?.email) {
+        return { success: false, error: 'MISSING_EMAIL', message: 'Client sans adresse email.' };
+    }
+
     const lang = client.language || 'fr';
     const t = getT(lang);
     const name = getClientFirstName(client);
@@ -699,18 +750,20 @@ export async function sendActivationCode(client) {
 // 📧 FONCTION 3 : Confirmation de virement réussi
 // ============================================================
 export async function sendTransferSuccess(client, transfer) {
+    if (!client?.email) {
+        return { success: false, error: 'MISSING_EMAIL', message: 'Client sans adresse email.' };
+    }
+
     const lang = client.language || 'fr';
     const t = getT(lang);
     const name = getClientFirstName(client);
-
-    const amountFormatted = Number(transfer.amount).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + (client.currency || 'zł');
 
     const html = buildEmailHTML({
         title: t.transferSuccessSubject,
         greeting: replaceVars(t.transferSuccessGreeting, { name }),
         intro: t.transferSuccessIntro,
         rows: [
-            { label: t.transferAmountLabel, value: amountFormatted },
+            { label: t.transferAmountLabel, value: formatAmount(transfer.amount, client.currency) },
             { label: t.transferBeneficiaryLabel, value: transfer.beneficiary || '—' },
             { label: t.transferDateLabel, value: transfer.date || new Date().toLocaleString('fr-FR') },
             { label: t.transferReferenceLabel, value: transfer.reference || '—' }
@@ -729,12 +782,13 @@ export async function sendTransferSuccess(client, transfer) {
 // 📧 FONCTION 4 : Notification de virement échoué
 // ============================================================
 export async function sendTransferFailed(client, details = {}) {
+    if (!client?.email) {
+        return { success: false, error: 'MISSING_EMAIL', message: 'Client sans adresse email.' };
+    }
+
     const lang = client.language || 'fr';
     const t = getT(lang);
     const name = getClientFirstName(client);
-
-    const attemptedAmount = Number(details.amount || 0).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + (client.currency || 'zł');
-    const limitAmount = Number(details.limit || 0).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + (client.currency || 'zł');
 
     const html = buildEmailHTML({
         title: t.transferFailedSubject,
@@ -742,8 +796,8 @@ export async function sendTransferFailed(client, details = {}) {
         intro: t.transferFailedIntro,
         rows: [
             { label: t.transferFailedReason, value: t.transferFailedReasonPercent },
-            { label: t.transferFailedAmountLabel, value: attemptedAmount },
-            { label: t.transferFailedLimitLabel, value: limitAmount }
+            { label: t.transferFailedAmountLabel, value: formatAmount(details.amount, client.currency) },
+            { label: t.transferFailedLimitLabel, value: formatAmount(details.limit, client.currency) }
         ],
         footer: t.transferFailedFooter
     });
