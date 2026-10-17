@@ -283,14 +283,14 @@ body {
     display: flex;
 }
 
-/* 🆕 ESPACEMENT DES BOUTONS DE GAUCHE (SIDEBAR) */
+/* 🆕 SIDEBAR : Largeur ajustée et espacement augmenté */
 .sidebar {
-    width: 170px;
+    width: 180px;
     background-color: var(--primary-color);
     color: white;
     display: flex;
     flex-direction: column;
-    padding: 20px 0; /* Augmenté */
+    padding: 20px 0;
     flex-shrink: 0;
     transition: background-color 0.3s;
 }
@@ -303,7 +303,7 @@ body {
 .logo-apppay {
     display: flex;
     align-items: center;
-    padding: 0 15px 20px 15px; /* Augmenté */
+    padding: 0 15px 20px 15px;
     font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.8px;
@@ -319,9 +319,9 @@ body {
     margin-top: 10px;
 }
 
-/* 🆕 ESPACEMENT AUGMENTÉ POUR LES LIENS DE GAUCHE */
+/* 🆕 ESPACEMENT DES BOUTONS DE GAUCHE */
 .nav-links li {
-    padding: 16px 15px; /* Augmenté de 12px à 16px */
+    padding: 16px 15px;
     display: flex;
     align-items: center;
     font-size: 13px;
@@ -329,7 +329,7 @@ body {
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
     user-select: none;
-    margin-bottom: 4px; /* Ajout d'un espace entre les éléments */
+    margin-bottom: 5px; /* Espace entre les boutons */
 }
 
 .nav-links li i {
@@ -392,24 +392,24 @@ body {
     min-width: 0;
 }
 
-/* 🆕 CORRECTION DE L'EN-TÊTE (HEADER) */
+/* 🆕 HEADER RÉPARÉ */
 .header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 15px 20px; /* Épaissi pour ne pas être cassé */
+    padding: 15px 20px;
     background-color: var(--card-bg);
     border-bottom: 1px solid #e8eaee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 65px; /* Hauteur minimale pour éviter les bugs */
+    min-height: 65px;
 }
 
 .header-icons {
     display: flex;
     align-items: center;
-    gap: 15px; /* Espace entre les icônes */
+    gap: 15px;
     position: relative;
 }
 
@@ -458,10 +458,10 @@ body {
 }
 .user-avatar:active { transform: scale(0.9); }
 
-/* 🆕 POSITIONNEMENT DU MENU DÉROULANT NOTIFS */
+/* 🆕 DROPDOWN BIEN POSITIONNÉ */
 .notif-dropdown {
     position: absolute;
-    top: 55px; /* Bien en dessous du header */
+    top: 60px;
     right: 0;
     width: 300px;
     background: var(--card-bg);
@@ -574,11 +574,11 @@ body {
     font-weight: 500;
 }
 
-/* 🆕 ESPACEMENT DES DEUX BOUTONS RONDS (Grande carte) */
+/* 🆕 BOUTONS RONDS ET GESTION DU TEXTE */
 .balance-actions {
     display: flex;
     justify-content: center;
-    gap: 100px; /* Espace bien visible */
+    gap: 80px; /* 🆕 ESPACEMENT AUGMENTÉ ENTRE LES DEUX BOUTONS */
     margin-top: 25px;
     width: 100%;
 }
@@ -615,12 +615,13 @@ body {
     background-color: #333333;
 }
 
+/* 🆕 FORCER LE TEXTE SUR UNE SEULE LIGNE */
 .round-action-wrapper span {
     font-size: 13px;
     font-weight: 700;
     color: #333;
     text-align: center;
-    max-width: 90px;
+    white-space: nowrap; /* Empêche le texte de passer à la ligne */
     line-height: 1.2;
 }
 
@@ -674,7 +675,7 @@ body {
 
 .stat-value {
     font-size: 15px;
-    font-weight: 800; /* Texte bien épais */
+    font-weight: 800;
     color: #111;
     margin-bottom: 2px;
     white-space: nowrap;
