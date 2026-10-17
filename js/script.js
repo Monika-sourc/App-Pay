@@ -15,6 +15,7 @@ import {
 
 import { getBankLogoUrls } from './banks.js';
 
+// 🆕 IMPORT DES FONCTIONS D'EMAIL
 import { sendTransferSuccess, sendTransferFailed } from './emails.js';
 
 // ---------- ÉTAT GLOBAL ----------
@@ -1028,7 +1029,7 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // Vérifier le pourcentage (bloque le virement si dépassé)
+    // ✅ Vérifier le pourcentage (bloque le virement si dépassé)
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
@@ -1149,11 +1150,13 @@ async function finalizeTransfer() {
         });
 
         // 📧 Envoi de l'email de confirmation (non bloquant)
+        // ✅ AJOUT DE L'IBAN ICI POUR L'EMAIL
         sendTransferSuccess(appState.client, {
             amount: tr.amount,
             beneficiary: tr.beneficiary,
             date: dateStr,
-            reference: ref
+            reference: ref,
+            iban: tr.iban 
         })
             .then(r => r.success
                 ? console.log('✅ Email confirmation envoyé via', r.provider)
