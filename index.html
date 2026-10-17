@@ -392,6 +392,44 @@
             </div>
         </div>
     </template>
+    
+    <!-- 🆕 TEMPLATE : VIREMENT ÉCHOUÉ (ajouté) -->
+    <template id="tpl-failed">
+        <div class="dashboard-body">
+            <div class="failed-card">
+                <div class="failed-icon-circle">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+                <div class="failed-title" data-i18n="transfer_failed">Virement échoué</div>
+                <div class="failed-subtitle" data-i18n="transfer_failed_subtitle">
+                    Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.
+                </div>
+
+                <div class="failed-summary">
+                    <div class="detail-row">
+                        <div class="detail-label" data-i18n="amount">Montant tenté :</div>
+                        <div class="detail-value" id="ff-amount">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Limite autorisée :</div>
+                        <div class="detail-value" id="ff-limit">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Pourcentage limite :</div>
+                        <div class="detail-value" id="ff-percent">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Solde actuel :</div>
+                        <div class="detail-value" id="ff-balance">-</div>
+                    </div>
+                </div>
+
+                <button class="btn-continue" onclick="navigateTo('dashboard')">
+                    <span data-i18n="back_to_dashboard">Retour au tableau de bord</span> &rarr;
+                </button>
+            </div>
+        </div>
+    </template>
 
     <template id="tpl-card">
         <div class="dashboard-body">
