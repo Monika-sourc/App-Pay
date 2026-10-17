@@ -283,7 +283,6 @@ body {
     display: flex;
 }
 
-/* 🆕 SIDEBAR : Largeur ajustée et espacement augmenté */
 .sidebar {
     width: 180px;
     background-color: var(--primary-color);
@@ -319,7 +318,7 @@ body {
     margin-top: 10px;
 }
 
-/* 🆕 ESPACEMENT DES BOUTONS DE GAUCHE */
+/* 🆕 EFFET DE GONFLEMENT SUR LE MENU DE GAUCHE */
 .nav-links li {
     padding: 16px 15px;
     display: flex;
@@ -327,9 +326,12 @@ body {
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animation fluide */
     user-select: none;
-    margin-bottom: 5px; /* Espace entre les boutons */
+    margin-bottom: 5px;
+    transform: scale(1); /* Taille normale */
+    transform-origin: left center; /* Gonfle vers la droite */
+    border-radius: 0 8px 8px 0; /* Arrondi à droite */
 }
 
 .nav-links li i {
@@ -339,11 +341,16 @@ body {
     text-align: center;
 }
 
+/* 🆕 QUAND LE BOUTON EST ACTIF (GONFLÉ) */
 .nav-links li.active {
-    background-color: rgba(255, 255, 255, 0.15);
-    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0.2); /* Fond plus visible */
+    font-weight: 800;
     border-left: 4px solid white;
     padding-left: 11px;
+    transform: scale(1.05); /* Effet de gonflement */
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15); /* Ombre pour le relief */
+    z-index: 2;
+    position: relative;
 }
 
 .nav-links li:hover:not(.active) {
@@ -392,7 +399,6 @@ body {
     min-width: 0;
 }
 
-/* 🆕 HEADER RÉPARÉ */
 .header {
     display: flex;
     justify-content: flex-end;
@@ -458,7 +464,6 @@ body {
 }
 .user-avatar:active { transform: scale(0.9); }
 
-/* 🆕 DROPDOWN BIEN POSITIONNÉ */
 .notif-dropdown {
     position: absolute;
     top: 60px;
@@ -574,11 +579,11 @@ body {
     font-weight: 500;
 }
 
-/* 🆕 BOUTONS RONDS ET GESTION DU TEXTE */
+/* 🆕 BOUTONS RONDS : ESPACÉS VERS LA GAUCHE ET LA DROITE */
 .balance-actions {
     display: flex;
-    justify-content: center;
-    gap: 80px; /* 🆕 ESPACEMENT AUGMENTÉ ENTRE LES DEUX BOUTONS */
+    justify-content: space-between; /* Pousse les boutons aux extrémités */
+    padding: 0 30px; /* Marge intérieure pour ne pas coller aux bords */
     margin-top: 25px;
     width: 100%;
 }
@@ -615,14 +620,15 @@ body {
     background-color: #333333;
 }
 
-/* 🆕 FORCER LE TEXTE SUR UNE SEULE LIGNE */
+/* 🆕 TEXTE CENTRÉ SOUS L'ICÔNE */
 .round-action-wrapper span {
     font-size: 13px;
     font-weight: 700;
     color: #333;
-    text-align: center;
-    white-space: nowrap; /* Empêche le texte de passer à la ligne */
+    text-align: center; /* Centre le texte */
+    white-space: nowrap; /* Empêche le retour à la ligne */
     line-height: 1.2;
+    width: 100%;
 }
 
 .wallet-bg-icon {
@@ -1564,7 +1570,7 @@ body {
     .tx-amount { font-size: 13px; }
     
     /* Ajustement des boutons ronds sur mobile */
-    .balance-actions { gap: 40px; }
+    .balance-actions { padding: 0 15px; }
     .round-action-btn { width: 55px; height: 55px; font-size: 20px; }
-    .round-action-wrapper span { font-size: 11px; max-width: 80px; }
+    .round-action-wrapper span { font-size: 11px; }
 }
