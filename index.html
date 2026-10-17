@@ -91,7 +91,8 @@
                 <ul class="nav-links" id="nav-links">
                     <li data-view="dashboard" class="active"><i class="fa-solid fa-wallet"></i> <span data-i18n="dashboard">Portefeuille</span></li>
                     <li data-view="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> <span data-i18n="transfer_menu">Virement</span></li>
-                    <li data-view="card"><i class="fa-regular fa-credit-card"></i> <span data-i18n="my_virtual_card">Carte Virtuelle</span></li>
+                    <!-- 🆕 CORRIGÉ ICI : le texte est "Carte virtuelle" -->
+                    <li data-view="card"><i class="fa-regular fa-credit-card"></i> <span data-i18n="my_virtual_card">Carte virtuelle</span></li>
                     <li data-view="account"><i class="fa-regular fa-user"></i> <span data-i18n="profile">Profil</span></li>
                     
                     <li id="menu-show-iban"><i class="fa-solid fa-barcode"></i> <span data-i18n="personal_iban">IBAN Personnel</span></li>
@@ -149,10 +150,12 @@
             <div class="balance-subtitle" data-i18n="account_subtitle">Compte pour tous vos besoins</div>
 
             <div class="balance-actions">
+                <!-- 🆕 CORRIGÉ ICI : "Effectuer un virement" sur une seule ligne -->
                 <div class="round-action-wrapper" id="btn-go-transfer">
                     <div class="round-action-btn"><i class="fa-solid fa-paper-plane"></i></div>
-                    <span data-i18n="transfer_btn">Virement</span>
+                    <span data-i18n="transfer_btn">Effectuer un virement</span>
                 </div>
+                <!-- 🆕 CORRIGÉ ICI : "Carte virtuelle" -->
                 <div class="round-action-wrapper" id="btn-go-card">
                     <div class="round-action-btn"><i class="fa-regular fa-credit-card"></i></div>
                     <span data-i18n="virtual_card_btn">Carte virtuelle</span>
@@ -434,7 +437,7 @@
 
 <template id="tpl-card">
     <div class="dashboard-body">
-        <h1 class="welcome-title" data-i18n="my_virtual_card">Ma carte virtuelle</h1>
+        <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
 
         <div class="virtual-card-wrapper">
             <div class="virtual-card" id="virtual-card">
@@ -496,7 +499,6 @@
 
 <template id="tpl-account">
     <div class="dashboard-body">
-        <!-- 🆕 CHANGÉ ICI : data-i18n="profile" et texte "Profil" -->
         <h1 class="welcome-title" data-i18n="profile">Profil</h1>
 
         <div class="account-header">
