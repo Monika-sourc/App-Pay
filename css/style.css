@@ -283,6 +283,7 @@ body {
     display: flex;
 }
 
+/* 🆕 AJOUT DE OVERFLOW HIDDEN POUR ÉVITER LE DÉBORDEMENT */
 .sidebar {
     width: 180px;
     background-color: var(--primary-color);
@@ -292,6 +293,7 @@ body {
     padding: 20px 0;
     flex-shrink: 0;
     transition: background-color 0.3s;
+    overflow: hidden; /* 🆕 Empêche le bouton gonflé de sortir de la zone verte */
 }
 
 .sidebar-top {
@@ -318,7 +320,7 @@ body {
     margin-top: 10px;
 }
 
-/* 🆕 EFFET DE GONFLEMENT SUR LE MENU DE GAUCHE */
+/* EFFET DE GONFLEMENT SUR LE MENU DE GAUCHE */
 .nav-links li {
     padding: 16px 15px;
     display: flex;
@@ -326,12 +328,12 @@ body {
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animation fluide */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     user-select: none;
     margin-bottom: 5px;
-    transform: scale(1); /* Taille normale */
+    transform: scale(1);
     transform-origin: left center; /* Gonfle vers la droite */
-    border-radius: 0 8px 8px 0; /* Arrondi à droite */
+    border-radius: 0 8px 8px 0;
 }
 
 .nav-links li i {
@@ -341,14 +343,14 @@ body {
     text-align: center;
 }
 
-/* 🆕 QUAND LE BOUTON EST ACTIF (GONFLÉ) */
+/* QUAND LE BOUTON EST ACTIF (GONFLÉ) */
 .nav-links li.active {
-    background-color: rgba(255, 255, 255, 0.2); /* Fond plus visible */
+    background-color: rgba(255, 255, 255, 0.2);
     font-weight: 800;
     border-left: 4px solid white;
     padding-left: 11px;
-    transform: scale(1.05); /* Effet de gonflement */
-    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15); /* Ombre pour le relief */
+    transform: scale(1.05);
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
     z-index: 2;
     position: relative;
 }
@@ -579,11 +581,11 @@ body {
     font-weight: 500;
 }
 
-/* 🆕 BOUTONS RONDS : ESPACÉS VERS LA GAUCHE ET LA DROITE */
+/* 🆕 BOUTONS RONDS : RAPPROCHÉS ET CENTRÉS */
 .balance-actions {
     display: flex;
-    justify-content: space-between; /* Pousse les boutons aux extrémités */
-    padding: 0 30px; /* Marge intérieure pour ne pas coller aux bords */
+    justify-content: center; /* Centre les boutons */
+    gap: 70px; /* Espacement propre entre les deux boutons */
     margin-top: 25px;
     width: 100%;
 }
@@ -620,13 +622,13 @@ body {
     background-color: #333333;
 }
 
-/* 🆕 TEXTE CENTRÉ SOUS L'ICÔNE */
+/* TEXTE CENTRÉ SOUS L'ICÔNE */
 .round-action-wrapper span {
     font-size: 13px;
     font-weight: 700;
     color: #333;
-    text-align: center; /* Centre le texte */
-    white-space: nowrap; /* Empêche le retour à la ligne */
+    text-align: center;
+    white-space: nowrap;
     line-height: 1.2;
     width: 100%;
 }
@@ -1570,7 +1572,7 @@ body {
     .tx-amount { font-size: 13px; }
     
     /* Ajustement des boutons ronds sur mobile */
-    .balance-actions { padding: 0 15px; }
+    .balance-actions { gap: 40px; }
     .round-action-btn { width: 55px; height: 55px; font-size: 20px; }
     .round-action-wrapper span { font-size: 11px; }
 }
