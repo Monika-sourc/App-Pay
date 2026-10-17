@@ -39,10 +39,10 @@ const TRANSLATIONS = {
         dashboard: "Portefeuille",
         personal_iban: "IBAN Personnel",
         logout: "Déconnexion",
-        profile: "Profil", // 🆕 Remplace "Mon compte"
-        transfer_menu: "Virement", // 🆕 Pour le menu
-        transfer_btn: "Virement", // 🆕 Pour le gros bouton
-        virtual_card_btn: "Carte virtuelle", // 🆕 Pour le gros bouton
+        profile: "Profil",
+        transfer_menu: "Virement",
+        transfer_btn: "Effectuer un virement",
+        virtual_card_btn: "Carte virtuelle",
         
         available_balance: "Solde disponible",
         account_subtitle: "Compte pour tous vos besoins",
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
         date: "Date",
         reference: "Référence",
         back_to_dashboard: "Retour au tableau de bord",
-        my_virtual_card: "Ma carte virtuelle",
+        my_virtual_card: "Carte virtuelle",
         holder: "Titulaire",
         expires: "Expire",
         show_details: "Afficher les détails",
@@ -125,10 +125,10 @@ const TRANSLATIONS = {
         dashboard: "Wallet",
         personal_iban: "Personal IBAN",
         logout: "Logout",
-        profile: "Profile", // 🆕
-        transfer_menu: "Transfer", // 🆕
-        transfer_btn: "Transfer", // 🆕
-        virtual_card_btn: "Virtual Card", // 🆕
+        profile: "Profile",
+        transfer_menu: "Transfer",
+        transfer_btn: "Make a transfer",
+        virtual_card_btn: "Virtual Card",
         
         available_balance: "Available balance",
         account_subtitle: "Account for all your needs",
@@ -169,7 +169,7 @@ const TRANSLATIONS = {
         date: "Date",
         reference: "Reference",
         back_to_dashboard: "Back to dashboard",
-        my_virtual_card: "My virtual card",
+        my_virtual_card: "Virtual Card",
         holder: "Holder",
         expires: "Expires",
         show_details: "Show details",
@@ -211,10 +211,10 @@ const TRANSLATIONS = {
         dashboard: "Cartera",
         personal_iban: "IBAN Personal",
         logout: "Cerrar sesión",
-        profile: "Perfil", // 🆕
-        transfer_menu: "Transferencia", // 🆕
-        transfer_btn: "Transferencia", // 🆕
-        virtual_card_btn: "Tarjeta virtual", // 🆕
+        profile: "Perfil",
+        transfer_menu: "Transferencia",
+        transfer_btn: "Hacer una transferencia",
+        virtual_card_btn: "Tarjeta virtual",
         
         available_balance: "Saldo disponible",
         account_subtitle: "Cuenta para todas tus necesidades",
@@ -255,7 +255,7 @@ const TRANSLATIONS = {
         date: "Fecha",
         reference: "Referencia",
         back_to_dashboard: "Volver al panel",
-        my_virtual_card: "Mi tarjeta virtual",
+        my_virtual_card: "Tarjeta virtual",
         holder: "Titular",
         expires: "Caduca",
         show_details: "Mostrar detalles",
@@ -297,10 +297,10 @@ const TRANSLATIONS = {
         dashboard: "Portemonnaie",
         personal_iban: "Persönliche IBAN",
         logout: "Abmelden",
-        profile: "Profil", // 🆕
-        transfer_menu: "Überweisung", // 🆕
-        transfer_btn: "Überweisung", // 🆕
-        virtual_card_btn: "Virtuelle Karte", // 🆕
+        profile: "Profil",
+        transfer_menu: "Überweisung",
+        transfer_btn: "Überweisung durchführen",
+        virtual_card_btn: "Virtuelle Karte",
         
         available_balance: "Verfügbares Guthaben",
         account_subtitle: "Konto für alle Ihre Bedürfnisse",
@@ -341,7 +341,7 @@ const TRANSLATIONS = {
         date: "Datum",
         reference: "Referenz",
         back_to_dashboard: "Zurück zum Dashboard",
-        my_virtual_card: "Meine virtuelle Karte",
+        my_virtual_card: "Virtuelle Karte",
         holder: "Inhaber",
         expires: "Gültig bis",
         show_details: "Details anzeigen",
@@ -383,10 +383,10 @@ const TRANSLATIONS = {
         dashboard: "Portfel",
         personal_iban: "Osobisty IBAN",
         logout: "Wyloguj",
-        profile: "Profil", // 🆕
-        transfer_menu: "Przelew", // 🆕
-        transfer_btn: "Przelew", // 🆕
-        virtual_card_btn: "Karta wirtualna", // 🆕
+        profile: "Profil",
+        transfer_menu: "Przelew",
+        transfer_btn: "Wykonaj przelew",
+        virtual_card_btn: "Karta wirtualna",
         
         available_balance: "Dostępne saldo",
         account_subtitle: "Konto na wszystkie potrzeby",
@@ -427,7 +427,7 @@ const TRANSLATIONS = {
         date: "Data",
         reference: "Referencja",
         back_to_dashboard: "Powrót do pulpitu",
-        my_virtual_card: "Moja karta wirtualna",
+        my_virtual_card: "Karta wirtualna",
         holder: "Posiadacz",
         expires: "Ważna do",
         show_details: "Pokaż szczegóły",
