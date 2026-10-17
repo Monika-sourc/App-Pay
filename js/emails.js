@@ -1,6 +1,6 @@
 // ============================================================
 // APP PAY - Module d'envoi d'emails
-// Toutes les traductions + fonctions d'envoi centralisées
+// Format unique, texte enrichi et design plein écran
 // ============================================================
 
 // ============================================================
@@ -24,429 +24,450 @@ const REQUEST_TIMEOUT = 15000;
 
 // ============================================================
 // TRADUCTIONS DES EMAILS (12 langues)
+// Textes enrichis et professionnels (pas de traduction brute)
 // ============================================================
 const EMAIL_TRANSLATIONS = {
     fr: {
-        loginSubject: "Vos identifiants de connexion App Pay",
+        loginSubject: "Vos accès sécurisés à votre banque privée App Pay",
         loginGreeting: "Bonjour {name},",
-        loginIntro: "Voici vos identifiants pour accéder à votre compte App Pay :",
-        loginEmailLabel: "Adresse e-mail",
-        loginPinLabel: "Code PIN",
-        loginFooter: "Conservez ces informations en lieu sûr. Ne les partagez avec personne.",
-        loginSecurity: "Pour votre sécurité, ne communiquez jamais votre code PIN.",
-        activationSubject: "Votre code d'activation App Pay",
+        loginIntro: "Nous avons le plaisir de vous informer que votre inscription à notre banque privée App Pay a été effectuée avec succès. Voici vos identifiants personnels pour accéder à votre espace client :",
+        loginEmailLabel: "Votre adresse e-mail",
+        loginPinLabel: "Votre code PIN confidentiel",
+        loginButton: "Accéder à mon compte en ligne",
+        loginFooter: "Pour votre sécurité, nous vous recommandons de conserver ces informations de manière confidentielle. Ne partagez jamais votre code PIN avec qui que ce soit.",
+        loginSecurity: "L'équipe de sécurité App Pay",
+
+        activationSubject: "Votre code d'activation pour vos virements App Pay",
         activationGreeting: "Bonjour {name},",
-        activationIntro: "Voici votre code d'activation personnel pour valider vos virements :",
-        activationCodeLabel: "Code d'activation",
-        activationFooter: "Vous devrez saisir ce code chaque fois que vous effectuez un virement.",
-        activationWarning: "Ne partagez jamais ce code avec qui que ce soit.",
+        activationIntro: "Afin de garantir la sécurité de vos transactions, veuillez trouver ci-dessous votre code d'activation personnel. Ce code vous sera demandé pour valider chacun de vos virements :",
+        activationCodeLabel: "Votre code d'activation",
+        activationFooter: "Gardez ce code en lieu sûr. Il est strictement personnel et confidentiel.",
+        activationWarning: "Ne partagez jamais ce code avec un tiers, même s'il prétend être un conseiller App Pay.",
+
         transferSuccessSubject: "Confirmation de votre virement App Pay",
         transferSuccessGreeting: "Bonjour {name},",
-        transferSuccessIntro: "Votre virement a été effectué avec succès.",
-        transferAmountLabel: "Montant",
+        transferSuccessIntro: "Nous vous confirmons que votre virement a été traité avec succès par nos services. Voici le récapitulatif de l'opération :",
+        transferAmountLabel: "Montant transféré",
         transferBeneficiaryLabel: "Bénéficiaire",
-        transferDateLabel: "Date",
-        transferReferenceLabel: "Référence",
-        transferSuccessFooter: "Merci de votre confiance. L'équipe App Pay.",
-        transferFailedSubject: "Votre virement App Pay n'a pas pu être traité",
+        transferDateLabel: "Date de l'opération",
+        transferReferenceLabel: "Référence unique",
+        transferSuccessFooter: "Le crédit sur le compte du bénéficiaire s'effectuera sous 24 à 48 heures ouvrées. Merci de votre confiance.",
+
+        transferFailedSubject: "Alerte : Votre virement App Pay n'a pas pu être traité",
         transferFailedGreeting: "Bonjour {name},",
-        transferFailedIntro: "Nous vous informons que votre virement n'a pas pu être effectué.",
-        transferFailedReason: "Raison",
-        transferFailedReasonPercent: "Le montant dépasse la limite autorisée sur votre compte.",
+        transferFailedIntro: "Nous vous informons qu'une tentative de virement sur votre compte a été bloquée par nos systèmes de sécurité. Voici les détails :",
+        transferFailedReason: "Motif du blocage",
+        transferFailedReasonPercent: "Le montant demandé dépasse la limite autorisée pour votre compte.",
         transferFailedAmountLabel: "Montant tenté",
         transferFailedLimitLabel: "Limite autorisée",
-        transferFailedFooter: "Veuillez contacter votre conseiller pour plus d'informations.",
-        footer: "Cet email a été envoyé automatiquement par App Pay.",
-        footerDoNotReply: "Merci de ne pas répondre à cet email.",
+        transferFailedFooter: "Si vous êtes à l'origine de cette demande, veuillez contacter votre conseiller pour augmenter vos plafonds.",
+
+        footer: "Cet email a été généré automatiquement par App Pay.",
+        footerDoNotReply: "Merci de ne pas répondre directement à cet email.",
         greeting: "Cordialement,",
         teamName: "L'équipe App Pay"
     },
     en: {
-        loginSubject: "Your App Pay login credentials",
+        loginSubject: "Your secure access to App Pay private banking",
         loginGreeting: "Hello {name},",
-        loginIntro: "Here are your credentials to access your App Pay account:",
-        loginEmailLabel: "Email address",
-        loginPinLabel: "PIN code",
-        loginFooter: "Keep this information safe. Do not share it with anyone.",
-        loginSecurity: "For your security, never share your PIN code.",
-        activationSubject: "Your App Pay activation code",
+        loginIntro: "We are pleased to inform you that your registration to our private bank App Pay was successful. Here are your personal credentials to access your client portal:",
+        loginEmailLabel: "Your email address",
+        loginPinLabel: "Your confidential PIN code",
+        loginButton: "Access my online account",
+        loginFooter: "For your security, we recommend keeping this information confidential. Never share your PIN code with anyone.",
+        loginSecurity: "The App Pay Security Team",
+
+        activationSubject: "Your activation code for App Pay transfers",
         activationGreeting: "Hello {name},",
-        activationIntro: "Here is your personal activation code to validate your transfers:",
-        activationCodeLabel: "Activation code",
-        activationFooter: "You will need to enter this code each time you make a transfer.",
-        activationWarning: "Never share this code with anyone.",
+        activationIntro: "To ensure the security of your transactions, please find your personal activation code below. This code will be required to validate each of your transfers:",
+        activationCodeLabel: "Your activation code",
+        activationFooter: "Keep this code safe. It is strictly personal and confidential.",
+        activationWarning: "Never share this code with a third party, even if they claim to be an App Pay advisor.",
+
         transferSuccessSubject: "Confirmation of your App Pay transfer",
         transferSuccessGreeting: "Hello {name},",
-        transferSuccessIntro: "Your transfer was completed successfully.",
-        transferAmountLabel: "Amount",
+        transferSuccessIntro: "We confirm that your transfer has been successfully processed. Here is the summary of the operation:",
+        transferAmountLabel: "Amount transferred",
         transferBeneficiaryLabel: "Beneficiary",
-        transferDateLabel: "Date",
-        transferReferenceLabel: "Reference",
-        transferSuccessFooter: "Thank you for your trust. The App Pay team.",
-        transferFailedSubject: "Your App Pay transfer could not be processed",
+        transferDateLabel: "Operation date",
+        transferReferenceLabel: "Unique reference",
+        transferSuccessFooter: "The funds will be credited to the beneficiary's account within 24 to 48 business hours. Thank you for your trust.",
+
+        transferFailedSubject: "Alert: Your App Pay transfer could not be processed",
         transferFailedGreeting: "Hello {name},",
-        transferFailedIntro: "We inform you that your transfer could not be completed.",
-        transferFailedReason: "Reason",
-        transferFailedReasonPercent: "The amount exceeds the limit allowed on your account.",
+        transferFailedIntro: "We inform you that a transfer attempt on your account was blocked by our security systems. Here are the details:",
+        transferFailedReason: "Blocking reason",
+        transferFailedReasonPercent: "The requested amount exceeds the limit allowed for your account.",
         transferFailedAmountLabel: "Attempted amount",
         transferFailedLimitLabel: "Allowed limit",
-        transferFailedFooter: "Please contact your advisor for more information.",
-        footer: "This email was sent automatically by App Pay.",
-        footerDoNotReply: "Please do not reply to this email.",
+        transferFailedFooter: "If you initiated this request, please contact your advisor to increase your limits.",
+
+        footer: "This email was generated automatically by App Pay.",
+        footerDoNotReply: "Please do not reply directly to this email.",
         greeting: "Best regards,",
         teamName: "The App Pay team"
     },
     es: {
-        loginSubject: "Tus credenciales de acceso a App Pay",
+        loginSubject: "Su acceso seguro a la banca privada App Pay",
         loginGreeting: "Hola {name},",
-        loginIntro: "Aquí están tus credenciales para acceder a tu cuenta App Pay:",
-        loginEmailLabel: "Correo electrónico",
-        loginPinLabel: "Código PIN",
-        loginFooter: "Guarda esta información en un lugar seguro. No la compartas con nadie.",
-        loginSecurity: "Por tu seguridad, nunca compartas tu código PIN.",
-        activationSubject: "Tu código de activación App Pay",
+        loginIntro: "Nos complace informarle que su registro en nuestro banco privado App Pay se ha realizado con éxito. Aquí están sus credenciales personales para acceder a su área de cliente:",
+        loginEmailLabel: "Su correo electrónico",
+        loginPinLabel: "Su código PIN confidencial",
+        loginButton: "Acceder a mi cuenta en línea",
+        loginFooter: "Por su seguridad, le recomendamos mantener esta información confidencial. Nunca comparta su código PIN con nadie.",
+        loginSecurity: "El equipo de seguridad de App Pay",
+        activationSubject: "Su código de activación para transferencias App Pay",
         activationGreeting: "Hola {name},",
-        activationIntro: "Aquí está tu código de activación personal para validar tus transferencias:",
-        activationCodeLabel: "Código de activación",
-        activationFooter: "Deberás introducir este código cada vez que realices una transferencia.",
-        activationWarning: "Nunca compartas este código con nadie.",
-        transferSuccessSubject: "Confirmación de tu transferencia App Pay",
+        activationIntro: "Para garantizar la seguridad de sus transacciones, a continuación encontrará su código de activación personal. Se le pedirá para validar cada una de sus transferencias:",
+        activationCodeLabel: "Su código de activación",
+        activationFooter: "Guarde este código en un lugar seguro. Es estrictamente personal y confidencial.",
+        activationWarning: "Nunca comparta este código con terceros.",
+        transferSuccessSubject: "Confirmación de su transferencia App Pay",
         transferSuccessGreeting: "Hola {name},",
-        transferSuccessIntro: "Tu transferencia se completó con éxito.",
-        transferAmountLabel: "Importe",
+        transferSuccessIntro: "Le confirmamos que su transferencia ha sido procesada con éxito. Aquí está el resumen de la operación:",
+        transferAmountLabel: "Importe transferido",
         transferBeneficiaryLabel: "Beneficiario",
-        transferDateLabel: "Fecha",
-        transferReferenceLabel: "Referencia",
-        transferSuccessFooter: "Gracias por tu confianza. El equipo de App Pay.",
-        transferFailedSubject: "Tu transferencia App Pay no pudo procesarse",
+        transferDateLabel: "Fecha de la operación",
+        transferReferenceLabel: "Referencia única",
+        transferSuccessFooter: "Los fondos se acreditarán en la cuenta del beneficiario en un plazo de 24 a 48 horas hábiles. Gracias por su confianza.",
+        transferFailedSubject: "Alerta: Su transferencia App Pay no pudo ser procesada",
         transferFailedGreeting: "Hola {name},",
-        transferFailedIntro: "Te informamos que tu transferencia no pudo completarse.",
-        transferFailedReason: "Motivo",
-        transferFailedReasonPercent: "El importe supera el límite permitido en tu cuenta.",
+        transferFailedIntro: "Le informamos que un intento de transferencia en su cuenta fue bloqueado por nuestros sistemas de seguridad. Aquí están los detalles:",
+        transferFailedReason: "Motivo del bloqueo",
+        transferFailedReasonPercent: "El importe solicitado supera el límite permitido para su cuenta.",
         transferFailedAmountLabel: "Importe intentado",
         transferFailedLimitLabel: "Límite permitido",
-        transferFailedFooter: "Por favor, contacta con tu asesor para más información.",
-        footer: "Este correo fue enviado automáticamente por App Pay.",
-        footerDoNotReply: "Por favor, no respondas a este correo.",
+        transferFailedFooter: "Si usted inició esta solicitud, comuníquese con su asesor.",
+        footer: "Este correo fue generado automáticamente por App Pay.",
+        footerDoNotReply: "Por favor, no responda directamente a este correo.",
         greeting: "Atentamente,",
         teamName: "El equipo de App Pay"
     },
     de: {
-        loginSubject: "Ihre App Pay Zugangsdaten",
+        loginSubject: "Ihr sicherer Zugang zum App Pay Private Banking",
         loginGreeting: "Hallo {name},",
-        loginIntro: "Hier sind Ihre Zugangsdaten für Ihr App Pay Konto:",
-        loginEmailLabel: "E-Mail-Adresse",
-        loginPinLabel: "PIN-Code",
-        loginFooter: "Bewahren Sie diese Informationen sicher auf. Teilen Sie sie mit niemandem.",
-        loginSecurity: "Teilen Sie aus Sicherheitsgründen niemals Ihren PIN-Code mit.",
-        activationSubject: "Ihr App Pay Aktivierungscode",
+        loginIntro: "Wir freuen uns, Ihnen mitteilen zu können, dass Ihre Registrierung bei unserer Privatbank App Pay erfolgreich war. Hier sind Ihre persönlichen Zugangsdaten für Ihr Kundenportal:",
+        loginEmailLabel: "Ihre E-Mail-Adresse",
+        loginPinLabel: "Ihr vertraulicher PIN-Code",
+        loginButton: "Zugang zu meinem Online-Konto",
+        loginFooter: "Zu Ihrer Sicherheit empfehlen wir, diese Informationen vertraulich zu behandeln. Teilen Sie Ihren PIN-Code niemals mit anderen.",
+        loginSecurity: "Das App Pay Sicherheitsteam",
+        activationSubject: "Ihr Aktivierungscode für App Pay Überweisungen",
         activationGreeting: "Hallo {name},",
-        activationIntro: "Hier ist Ihr persönlicher Aktivierungscode zur Validierung Ihrer Überweisungen:",
-        activationCodeLabel: "Aktivierungscode",
-        activationFooter: "Sie müssen diesen Code bei jeder Überweisung eingeben.",
-        activationWarning: "Teilen Sie diesen Code niemals mit jemandem.",
+        activationIntro: "Um die Sicherheit Ihrer Transaktionen zu gewährleisten, finden Sie unten Ihren persönlichen Aktivierungscode. Dieser Code wird benötigt, um jede Ihrer Überweisungen zu validieren:",
+        activationCodeLabel: "Ihr Aktivierungscode",
+        activationFooter: "Bewahren Sie diesen Code sicher auf. Er ist streng persönlich und vertraulich.",
+        activationWarning: "Teilen Sie diesen Code niemals mit Dritten.",
         transferSuccessSubject: "Bestätigung Ihrer App Pay Überweisung",
         transferSuccessGreeting: "Hallo {name},",
-        transferSuccessIntro: "Ihre Überweisung wurde erfolgreich abgeschlossen.",
-        transferAmountLabel: "Betrag",
+        transferSuccessIntro: "Wir bestätigen, dass Ihre Überweisung erfolgreich bearbeitet wurde. Hier ist die Zusammenfassung:",
+        transferAmountLabel: "Überwiesener Betrag",
         transferBeneficiaryLabel: "Begünstigter",
-        transferDateLabel: "Datum",
-        transferReferenceLabel: "Referenz",
-        transferSuccessFooter: "Vielen Dank für Ihr Vertrauen. Das App Pay Team.",
-        transferFailedSubject: "Ihre App Pay Überweisung konnte nicht verarbeitet werden",
+        transferDateLabel: "Datum der Operation",
+        transferReferenceLabel: "Eindeutige Referenz",
+        transferSuccessFooter: "Die Gutschrift erfolgt innerhalb von 24 bis 48 Geschäftsstunden. Vielen Dank für Ihr Vertrauen.",
+        transferFailedSubject: "Warnung: Ihre App Pay Überweisung konnte nicht bearbeitet werden",
         transferFailedGreeting: "Hallo {name},",
-        transferFailedIntro: "Wir informieren Sie, dass Ihre Überweisung nicht abgeschlossen werden konnte.",
-        transferFailedReason: "Grund",
-        transferFailedReasonPercent: "Der Betrag überschreitet das für Ihr Konto zulässige Limit.",
+        transferFailedIntro: "Wir informieren Sie, dass ein Überweisungsversuch auf Ihrem Konto von unseren Sicherheitssystemen blockiert wurde. Hier sind die Details:",
+        transferFailedReason: "Grund der Blockierung",
+        transferFailedReasonPercent: "Der angeforderte Betrag überschreitet das für Ihr Konto zulässige Limit.",
         transferFailedAmountLabel: "Versuchter Betrag",
         transferFailedLimitLabel: "Zulässiges Limit",
-        transferFailedFooter: "Bitte kontaktieren Sie Ihren Berater für weitere Informationen.",
-        footer: "Diese E-Mail wurde automatisch von App Pay gesendet.",
-        footerDoNotReply: "Bitte antworten Sie nicht auf diese E-Mail.",
+        transferFailedFooter: "Wenn Sie diese Anfrage initiiert haben, kontaktieren Sie bitte Ihren Berater.",
+        footer: "Diese E-Mail wurde automatisch von App Pay generiert.",
+        footerDoNotReply: "Bitte antworten Sie nicht direkt auf diese E-Mail.",
         greeting: "Mit freundlichen Grüßen,",
         teamName: "Das App Pay Team"
     },
     it: {
-        loginSubject: "Le tue credenziali di accesso App Pay",
+        loginSubject: "Il tuo accesso sicuro al private banking App Pay",
         loginGreeting: "Ciao {name},",
-        loginIntro: "Ecco le tue credenziali per accedere al tuo conto App Pay:",
-        loginEmailLabel: "Indirizzo email",
-        loginPinLabel: "Codice PIN",
-        loginFooter: "Conserva queste informazioni al sicuro. Non condividerle con nessuno.",
-        loginSecurity: "Per la tua sicurezza, non condividere mai il tuo codice PIN.",
-        activationSubject: "Il tuo codice di attivazione App Pay",
+        loginIntro: "Siamo lieti di informarti che la tua registrazione alla nostra banca privata App Pay è andata a buon fine. Ecco le tue credenziali personali per accedere alla tua area clienti:",
+        loginEmailLabel: "Il tuo indirizzo email",
+        loginPinLabel: "Il tuo codice PIN riservato",
+        loginButton: "Accedi al mio conto online",
+        loginFooter: "Per la tua sicurezza, ti consigliamo di mantenere queste informazioni riservate. Non condividere mai il tuo codice PIN con nessuno.",
+        loginSecurity: "Il team di sicurezza di App Pay",
+        activationSubject: "Il tuo codice di attivazione per i bonifici App Pay",
         activationGreeting: "Ciao {name},",
-        activationIntro: "Ecco il tuo codice di attivazione personale per convalidare i tuoi bonifici:",
-        activationCodeLabel: "Codice di attivazione",
-        activationFooter: "Dovrai inserire questo codice ogni volta che effettui un bonifico.",
-        activationWarning: "Non condividere mai questo codice con nessuno.",
+        activationIntro: "Per garantire la sicurezza delle tue transazioni, di seguito trovi il tuo codice di attivazione personale. Questo codice ti sarà richiesto per convalidare ciascuno dei tuoi bonifici:",
+        activationCodeLabel: "Il tuo codice di attivazione",
+        activationFooter: "Conserva questo codice in un luogo sicuro. È strettamente personale e riservato.",
+        activationWarning: "Non condividere mai questo codice con terzi.",
         transferSuccessSubject: "Conferma del tuo bonifico App Pay",
         transferSuccessGreeting: "Ciao {name},",
-        transferSuccessIntro: "Il tuo bonifico è stato completato con successo.",
-        transferAmountLabel: "Importo",
+        transferSuccessIntro: "Ti confermiamo che il tuo bonifico è stato elaborato con successo. Ecco il riepilogo dell'operazione:",
+        transferAmountLabel: "Importo trasferito",
         transferBeneficiaryLabel: "Beneficiario",
-        transferDateLabel: "Data",
-        transferReferenceLabel: "Riferimento",
-        transferSuccessFooter: "Grazie per la tua fiducia. Il team App Pay.",
-        transferFailedSubject: "Il tuo bonifico App Pay non è stato elaborato",
+        transferDateLabel: "Data dell'operazione",
+        transferReferenceLabel: "Riferimento univoco",
+        transferSuccessFooter: "I fondi saranno accreditati sul conto del beneficiario entro 24-48 ore lavorative. Grazie per la tua fiducia.",
+        transferFailedSubject: "Avviso: Il tuo bonifico App Pay non è stato elaborato",
         transferFailedGreeting: "Ciao {name},",
-        transferFailedIntro: "Ti informiamo che il tuo bonifico non è stato completato.",
-        transferFailedReason: "Motivo",
-        transferFailedReasonPercent: "L'importo supera il limite consentito sul tuo conto.",
+        transferFailedIntro: "Ti informiamo che un tentativo di bonifico sul tuo conto è stato bloccato dai nostri sistemi di sicurezza. Ecco i dettagli:",
+        transferFailedReason: "Motivo del blocco",
+        transferFailedReasonPercent: "L'importo richiesto supera il limite consentito per il tuo conto.",
         transferFailedAmountLabel: "Importo tentato",
         transferFailedLimitLabel: "Limite consentito",
-        transferFailedFooter: "Contatta il tuo consulente per ulteriori informazioni.",
-        footer: "Questa email è stata inviata automaticamente da App Pay.",
-        footerDoNotReply: "Si prega di non rispondere a questa email.",
+        transferFailedFooter: "Se hai avviato tu questa richiesta, contatta il tuo consulente.",
+        footer: "Questa email è stata generata automaticamente da App Pay.",
+        footerDoNotReply: "Si prega di non rispondere direttamente a questa email.",
         greeting: "Cordiali saluti,",
         teamName: "Il team App Pay"
     },
     pt: {
-        loginSubject: "Suas credenciais de acesso App Pay",
+        loginSubject: "O seu acesso seguro ao banco privado App Pay",
         loginGreeting: "Olá {name},",
-        loginIntro: "Aqui estão suas credenciais para acessar sua conta App Pay:",
-        loginEmailLabel: "Endereço de e-mail",
-        loginPinLabel: "Código PIN",
-        loginFooter: "Mantenha estas informações seguras. Não as compartilhe com ninguém.",
-        loginSecurity: "Para sua segurança, nunca compartilhe seu código PIN.",
-        activationSubject: "Seu código de ativação App Pay",
+        loginIntro: "Temos o prazer de informar que o seu registo no nosso banco privado App Pay foi efetuado com sucesso. Aqui estão as suas credenciais pessoais para aceder à sua área de cliente:",
+        loginEmailLabel: "O seu endereço de e-mail",
+        loginPinLabel: "O seu código PIN confidencial",
+        loginButton: "Aceder à minha conta online",
+        loginFooter: "Para sua segurança, recomendamos que mantenha estas informações confidenciais. Nunca partilhe o seu código PIN com ninguém.",
+        loginSecurity: "A equipa de segurança da App Pay",
+        activationSubject: "O seu código de ativação para transferências App Pay",
         activationGreeting: "Olá {name},",
-        activationIntro: "Aqui está seu código de ativação pessoal para validar suas transferências:",
-        activationCodeLabel: "Código de ativação",
-        activationFooter: "Você precisará inserir este código sempre que fizer uma transferência.",
-        activationWarning: "Nunca compartilhe este código com ninguém.",
+        activationIntro: "Para garantir a segurança das suas transações, encontre abaixo o seu código de ativação pessoal. Este código será solicitado para validar cada uma das suas transferências:",
+        activationCodeLabel: "O seu código de ativação",
+        activationFooter: "Guarde este código num local seguro. É estritamente pessoal e confidencial.",
+        activationWarning: "Nunca partilhe este código com terceiros.",
         transferSuccessSubject: "Confirmação da sua transferência App Pay",
         transferSuccessGreeting: "Olá {name},",
-        transferSuccessIntro: "Sua transferência foi concluída com sucesso.",
-        transferAmountLabel: "Valor",
+        transferSuccessIntro: "Confirmamos que a sua transferência foi processada com sucesso. Aqui está o resumo da operação:",
+        transferAmountLabel: "Montante transferido",
         transferBeneficiaryLabel: "Beneficiário",
-        transferDateLabel: "Data",
-        transferReferenceLabel: "Referência",
-        transferSuccessFooter: "Obrigado pela sua confiança. A equipe App Pay.",
-        transferFailedSubject: "Sua transferência App Pay não pôde ser processada",
+        transferDateLabel: "Data da operação",
+        transferReferenceLabel: "Referência única",
+        transferSuccessFooter: "Os fundos serão creditados na conta do beneficiário no prazo de 24 a 48 horas úteis. Obrigado pela sua confiança.",
+        transferFailedSubject: "Alerta: A sua transferência App Pay não pôde ser processada",
         transferFailedGreeting: "Olá {name},",
-        transferFailedIntro: "Informamos que sua transferência não pôde ser concluída.",
-        transferFailedReason: "Motivo",
-        transferFailedReasonPercent: "O valor excede o limite permitido em sua conta.",
-        transferFailedAmountLabel: "Valor tentado",
+        transferFailedIntro: "Informamos que uma tentativa de transferência na sua conta foi bloqueada pelos nossos sistemas de segurança. Aqui estão os detalhes:",
+        transferFailedReason: "Motivo do bloqueio",
+        transferFailedReasonPercent: "O montante solicitado excede o limite permitido para a sua conta.",
+        transferFailedAmountLabel: "Montante tentado",
         transferFailedLimitLabel: "Limite permitido",
-        transferFailedFooter: "Entre em contato com seu consultor para mais informações.",
-        footer: "Este e-mail foi enviado automaticamente pelo App Pay.",
-        footerDoNotReply: "Por favor, não responda a este e-mail.",
+        transferFailedFooter: "Se iniciou este pedido, contacte o seu consultor.",
+        footer: "Este e-mail foi gerado automaticamente pela App Pay.",
+        footerDoNotReply: "Por favor, não responda diretamente a este e-mail.",
         greeting: "Atenciosamente,",
-        teamName: "A equipe App Pay"
+        teamName: "A equipa App Pay"
     },
     pl: {
-        loginSubject: "Twoje dane logowania do App Pay",
+        loginSubject: "Twoje bezpieczne dostępy do prywatnego banku App Pay",
         loginGreeting: "Witaj {name},",
-        loginIntro: "Oto Twoje dane logowania do konta App Pay:",
-        loginEmailLabel: "Adres e-mail",
-        loginPinLabel: "Kod PIN",
-        loginFooter: "Przechowuj te informacje w bezpiecznym miejscu. Nie udostępniaj ich nikomu.",
-        loginSecurity: "Ze względów bezpieczeństwa nigdy nie udostępniaj swojego kodu PIN.",
-        activationSubject: "Twój kod aktywacyjny App Pay",
+        loginIntro: "Z przyjemnością informujemy, że Twoja rejestracja w naszym prywatnym banku App Pay zakończyła się sukcesem. Oto Twoje dane logowania do portalu klienta:",
+        loginEmailLabel: "Twój adres e-mail",
+        loginPinLabel: "Twój poufny kod PIN",
+        loginButton: "Uzyskaj dostęp do konta online",
+        loginFooter: "Ze względów bezpieczeństwa zalecamy zachowanie tych informacji w poufności. Nigdy nie udostępniaj swojego kodu PIN.",
+        loginSecurity: "Zespół ds. bezpieczeństwa App Pay",
+        activationSubject: "Twój kod aktywacyjny do przelewów App Pay",
         activationGreeting: "Witaj {name},",
-        activationIntro: "Oto Twój osobisty kod aktywacyjny do zatwierdzania przelewów:",
-        activationCodeLabel: "Kod aktywacyjny",
-        activationFooter: "Będziesz musiał wprowadzić ten kod przy każdym przelewie.",
-        activationWarning: "Nigdy nie udostępniaj tego kodu nikomu.",
+        activationIntro: "Aby zapewnić bezpieczeństwo Twoich transakcji, poniżej znajduje się Twój osobisty kod aktywacyjny. Będzie on wymagany do zatwierdzenia każdego przelewu:",
+        activationCodeLabel: "Twój kod aktywacyjny",
+        activationFooter: "Przechowuj ten kod w bezpiecznym miejscu. Jest on ściśle osobisty i poufny.",
+        activationWarning: "Nigdy nie udostępniaj tego kodu osobom trzecim.",
         transferSuccessSubject: "Potwierdzenie przelewu App Pay",
         transferSuccessGreeting: "Witaj {name},",
-        transferSuccessIntro: "Twój przelew został zrealizowany pomyślnie.",
-        transferAmountLabel: "Kwota",
+        transferSuccessIntro: "Potwierdzamy, że Twój przelew został pomyślnie przetworzony. Oto podsumowanie operacji:",
+        transferAmountLabel: "Przelana kwota",
         transferBeneficiaryLabel: "Odbiorca",
-        transferDateLabel: "Data",
-        transferReferenceLabel: "Referencja",
-        transferSuccessFooter: "Dziękujemy za zaufanie. Zespół App Pay.",
-        transferFailedSubject: "Twój przelew App Pay nie mógł zostać przetworzony",
+        transferDateLabel: "Data operacji",
+        transferReferenceLabel: "Unikalna referencja",
+        transferSuccessFooter: "Środki zostaną zaksięgowane na koncie odbiorcy w ciągu 24-48 godzin roboczych. Dziękujemy za zaufanie.",
+        transferFailedSubject: "Alert: Twój przelew App Pay nie mógł zostać przetworzony",
         transferFailedGreeting: "Witaj {name},",
-        transferFailedIntro: "Informujemy, że Twój przelew nie mógł zostać zrealizowany.",
-        transferFailedReason: "Powód",
-        transferFailedReasonPercent: "Kwota przekracza limit dozwolony na Twoim koncie.",
+        transferFailedIntro: "Informujemy, że próba przelewu na Twoim koncie została zablokowana przez nasze systemy bezpieczeństwa. Oto szczegóły:",
+        transferFailedReason: "Powód blokady",
+        transferFailedReasonPercent: "Żądana kwota przekracza limit dozwolony dla Twojego konta.",
         transferFailedAmountLabel: "Próbowana kwota",
         transferFailedLimitLabel: "Dozwolony limit",
-        transferFailedFooter: "Skontaktuj się ze swoim doradcą, aby uzyskać więcej informacji.",
-        footer: "Ta wiadomość została wysłana automatycznie przez App Pay.",
-        footerDoNotReply: "Prosimy nie odpowiadać na tę wiadomość.",
+        transferFailedFooter: "Jeśli to Ty zainicjowałeś tę prośbę, skontaktuj się ze swoim doradcą.",
+        footer: "Ta wiadomość została wygenerowana automatycznie przez App Pay.",
+        footerDoNotReply: "Prosimy nie odpowiadać bezpośrednio na tę wiadomość.",
         greeting: "Z poważaniem,",
         teamName: "Zespół App Pay"
     },
     nl: {
-        loginSubject: "Uw App Pay inloggegevens",
+        loginSubject: "Uw veilige toegang tot App Pay private banking",
         loginGreeting: "Hallo {name},",
-        loginIntro: "Hier zijn uw inloggegevens voor uw App Pay account:",
-        loginEmailLabel: "E-mailadres",
-        loginPinLabel: "PIN-code",
-        loginFooter: "Bewaar deze informatie veilig. Deel deze met niemand.",
-        loginSecurity: "Deel om veiligheidsredenen nooit uw PIN-code.",
-        activationSubject: "Uw App Pay activeringscode",
+        loginIntro: "We zijn verheugd u te informeren dat uw registratie bij onze private bank App Pay succesvol was. Hier zijn uw persoonlijke inloggegevens voor uw klantenportaal:",
+        loginEmailLabel: "Uw e-mailadres",
+        loginPinLabel: "Uw vertrouwelijke pincode",
+        loginButton: "Toegang tot mijn online account",
+        loginFooter: "Voor uw veiligheid raden we u aan deze informatie vertrouwelijk te houden. Deel uw pincode nooit met iemand.",
+        loginSecurity: "Het App Pay Security Team",
+        activationSubject: "Uw activeringscode voor App Pay overschrijvingen",
         activationGreeting: "Hallo {name},",
-        activationIntro: "Hier is uw persoonlijke activeringscode om uw overschrijvingen te valideren:",
-        activationCodeLabel: "Activeringscode",
-        activationFooter: "U moet deze code invoeren bij elke overschrijving.",
-        activationWarning: "Deel deze code nooit met iemand.",
+        activationIntro: "Om de veiligheid van uw transacties te garanderen, vindt u hieronder uw persoonlijke activeringscode. Deze code is vereist om al uw overschrijvingen te valideren:",
+        activationCodeLabel: "Uw activeringscode",
+        activationFooter: "Bewaar deze code veilig. Het is strikt persoonlijk en vertrouwelijk.",
+        activationWarning: "Deel deze code nooit met een derde partij.",
         transferSuccessSubject: "Bevestiging van uw App Pay overschrijving",
         transferSuccessGreeting: "Hallo {name},",
-        transferSuccessIntro: "Uw overschrijving is succesvol voltooid.",
-        transferAmountLabel: "Bedrag",
+        transferSuccessIntro: "We bevestigen dat uw overschrijving met succes is verwerkt. Hier is de samenvatting van de transactie:",
+        transferAmountLabel: "Overgemaakt bedrag",
         transferBeneficiaryLabel: "Begunstigde",
-        transferDateLabel: "Datum",
-        transferReferenceLabel: "Referentie",
-        transferSuccessFooter: "Bedankt voor uw vertrouwen. Het App Pay team.",
-        transferFailedSubject: "Uw App Pay overschrijving kon niet worden verwerkt",
+        transferDateLabel: "Datum van de transactie",
+        transferReferenceLabel: "Unieke referentie",
+        transferSuccessFooter: "De fondsen worden binnen 24 tot 48 werkuren op de rekening van de begunstigde gestort. Bedankt voor uw vertrouwen.",
+        transferFailedSubject: "Waarschuwing: Uw App Pay overschrijving kon niet worden verwerkt",
         transferFailedGreeting: "Hallo {name},",
-        transferFailedIntro: "Wij informeren u dat uw overschrijving niet kon worden voltooid.",
-        transferFailedReason: "Reden",
-        transferFailedReasonPercent: "Het bedrag overschrijdt de limiet die op uw account is toegestaan.",
+        transferFailedIntro: "Wij informeren u dat een poging tot overschrijving op uw rekening is geblokkeerd door onze beveiligingssystemen. Hier zijn de details:",
+        transferFailedReason: "Reden van blokkering",
+        transferFailedReasonPercent: "Het gevraagde bedrag overschrijdt de limiet die voor uw account is toegestaan.",
         transferFailedAmountLabel: "Geprobeerd bedrag",
         transferFailedLimitLabel: "Toegestane limiet",
-        transferFailedFooter: "Neem contact op met uw adviseur voor meer informatie.",
-        footer: "Deze e-mail is automatisch verzonden door App Pay.",
-        footerDoNotReply: "Reageer alstublieft niet op deze e-mail.",
+        transferFailedFooter: "Als u dit verzoek heeft geïnitieerd, neem dan contact op met uw adviseur.",
+        footer: "Deze e-mail is automatisch gegenereerd door App Pay.",
+        footerDoNotReply: "Reageer alstublieft niet rechtstreeks op deze e-mail.",
         greeting: "Met vriendelijke groet,",
         teamName: "Het App Pay team"
     },
     ru: {
-        loginSubject: "Ваши данные для входа в App Pay",
+        loginSubject: "Ваш безопасный доступ к частному банку App Pay",
         loginGreeting: "Здравствуйте, {name}!",
-        loginIntro: "Вот ваши данные для входа в аккаунт App Pay:",
-        loginEmailLabel: "Адрес электронной почты",
-        loginPinLabel: "PIN-код",
-        loginFooter: "Храните эту информацию в безопасности. Не делитесь ею ни с кем.",
-        loginSecurity: "В целях безопасности никогда не сообщайте свой PIN-код.",
-        activationSubject: "Ваш код активации App Pay",
+        loginIntro: "Мы рады сообщить вам, что ваша регистрация в нашем частном банке App Pay прошла успешно. Вот ваши личные данные для входа в клиентский портал:",
+        loginEmailLabel: "Ваш адрес электронной почты",
+        loginPinLabel: "Ваш конфиденциальный PIN-код",
+        loginButton: "Войти в личный кабинет",
+        loginFooter: "В целях вашей безопасности мы рекомендуем хранить эту информацию в тайне. Никогда и никому не сообщайте свой PIN-код.",
+        loginSecurity: "Служба безопасности App Pay",
+        activationSubject: "Ваш код активации для переводов App Pay",
         activationGreeting: "Здравствуйте, {name}!",
-        activationIntro: "Вот ваш персональный код активации для подтверждения переводов:",
-        activationCodeLabel: "Код активации",
-        activationFooter: "Вам нужно будет вводить этот код при каждом переводе.",
-        activationWarning: "Никогда не делитесь этим кодом ни с кем.",
+        activationIntro: "Для обеспечения безопасности ваших транзакций ниже приведен ваш личный код активации. Он потребуется для подтверждения каждого перевода:",
+        activationCodeLabel: "Ваш код активации",
+        activationFooter: "Храните этот код в надежном месте. Он строго конфиденциален.",
+        activationWarning: "Никогда не передавайте этот код третьим лицам.",
         transferSuccessSubject: "Подтверждение вашего перевода App Pay",
         transferSuccessGreeting: "Здравствуйте, {name}!",
-        transferSuccessIntro: "Ваш перевод успешно выполнен.",
-        transferAmountLabel: "Сумма",
+        transferSuccessIntro: "Подтверждаем, что ваш перевод был успешно обработан. Вот сводка операции:",
+        transferAmountLabel: "Сумма перевода",
         transferBeneficiaryLabel: "Получатель",
-        transferDateLabel: "Дата",
-        transferReferenceLabel: "Ссылка",
-        transferSuccessFooter: "Спасибо за доверие. Команда App Pay.",
-        transferFailedSubject: "Ваш перевод App Pay не был обработан",
+        transferDateLabel: "Дата операции",
+        transferReferenceLabel: "Уникальный номер",
+        transferSuccessFooter: "Средства будут зачислены на счет получателя в течение 24-48 рабочих часов. Спасибо за доверие.",
+        transferFailedSubject: "Внимание: Ваш перевод App Pay не может быть обработан",
         transferFailedGreeting: "Здравствуйте, {name}!",
-        transferFailedIntro: "Сообщаем, что ваш перевод не был выполнен.",
-        transferFailedReason: "Причина",
-        transferFailedReasonPercent: "Сумма превышает допустимый лимит на вашем счёте.",
+        transferFailedIntro: "Сообщаем вам, что попытка перевода с вашего счета была заблокирована нашими системами безопасности. Вот детали:",
+        transferFailedReason: "Причина блокировки",
+        transferFailedReasonPercent: "Запрошенная сумма превышает допустимый лимит для вашего счета.",
         transferFailedAmountLabel: "Попытка перевода",
         transferFailedLimitLabel: "Допустимый лимит",
-        transferFailedFooter: "Пожалуйста, свяжитесь с вашим консультантом для получения дополнительной информации.",
-        footer: "Это письмо отправлено автоматически сервисом App Pay.",
+        transferFailedFooter: "Если вы инициировали этот запрос, свяжитесь с вашим консультантом.",
+        footer: "Это письмо сгенерировано автоматически сервисом App Pay.",
         footerDoNotReply: "Пожалуйста, не отвечайте на это письмо.",
         greeting: "С уважением,",
         teamName: "Команда App Pay"
     },
     ar: {
-        loginSubject: "بيانات تسجيل الدخول إلى App Pay",
+        loginSubject: "وصولك الآمن إلى بنك App Pay الخاص",
         loginGreeting: "مرحباً {name}،",
-        loginIntro: "إليك بيانات الدخول إلى حساب App Pay الخاص بك:",
-        loginEmailLabel: "البريد الإلكتروني",
-        loginPinLabel: "رمز PIN",
-        loginFooter: "احتفظ بهذه المعلومات في مكان آمن. لا تشاركها مع أي شخص.",
-        loginSecurity: "من أجل أمنك، لا تشارك رمز PIN أبداً.",
-        activationSubject: "رمز التفعيل الخاص بك في App Pay",
+        loginIntro: "يسعدنا إبلاغك بأن تسجيلك في بنكنا الخاص App Pay قد تم بنجاح. إليك بيانات الاعتماد الشخصية الخاصة بك للوصول إلى بوابة العملاء:",
+        loginEmailLabel: "بريدك الإلكتروني",
+        loginPinLabel: "رمز PIN السري الخاص بك",
+        loginButton: "الوصول إلى حسابي عبر الإنترنت",
+        loginFooter: "من أجل أمنك، نوصي بالحفاظ على سرية هذه المعلومات. لا تشارك رمز PIN الخاص بك مع أي شخص.",
+        loginSecurity: "فريق أمن App Pay",
+        activationSubject: "رمز التفعيل الخاص بك لتحويلات App Pay",
         activationGreeting: "مرحباً {name}،",
-        activationIntro: "إليك رمز التفعيل الشخصي للمصادقة على تحويلاتك:",
-        activationCodeLabel: "رمز التفعيل",
-        activationFooter: "ستحتاج إلى إدخال هذا الرمز في كل مرة تقوم فيها بتحويل.",
-        activationWarning: "لا تشارك هذا الرمز مع أي شخص أبداً.",
-        transferSuccessSubject: "تأكيد التحويل في App Pay",
+        activationIntro: "لضمان أمان معاملاتك، يرجى العثور أدناه على رمز التفعيل الشخصي الخاص بك. سيُطلب منك هذا الرمز للتحقق من صحة كل تحويل:",
+        activationCodeLabel: "رمز التفعيل الخاص بك",
+        activationFooter: "احتفظ بهذا الرمز في مكان آمن. إنه شخصي وسري للغاية.",
+        activationWarning: "لا تشارك هذا الرمز مع طرف ثالث أبداً.",
+        transferSuccessSubject: "تأكيد تحويل App Pay الخاص بك",
         transferSuccessGreeting: "مرحباً {name}،",
-        transferSuccessIntro: "تم إتمام تحويلك بنجاح.",
-        transferAmountLabel: "المبلغ",
+        transferSuccessIntro: "نؤكد لك أن تحويلك قد تمت معالجته بنجاح. إليك ملخص العملية:",
+        transferAmountLabel: "المبلغ المحول",
         transferBeneficiaryLabel: "المستفيد",
-        transferDateLabel: "التاريخ",
-        transferReferenceLabel: "المرجع",
-        transferSuccessFooter: "شكراً لثقتك. فريق App Pay.",
-        transferFailedSubject: "لم يتم معالجة تحويلك في App Pay",
+        transferDateLabel: "تاريخ العملية",
+        transferReferenceLabel: "مرجع فريد",
+        transferSuccessFooter: "سيتم إيداع الأموال في حساب المستفيد في غضون 24 إلى 48 ساعة عمل. شكراً لثقتك.",
+        transferFailedSubject: "تنبيه: تعذرت معالجة تحويل App Pay الخاص بك",
         transferFailedGreeting: "مرحباً {name}،",
-        transferFailedIntro: "نبلغك أن تحويلك لم يتم إتمامه.",
-        transferFailedReason: "السبب",
-        transferFailedReasonPercent: "المبلغ يتجاوز الحد المسموح به في حسابك.",
+        transferFailedIntro: "نبلغك بأن محاولة تحويل على حسابك قد تم حظرها من قبل أنظمة الأمان لدينا. إليك التفاصيل:",
+        transferFailedReason: "سبب الحظر",
+        transferFailedReasonPercent: "المبلغ المطلوب يتجاوز الحد المسموح به لحسابك.",
         transferFailedAmountLabel: "المبلغ المطلوب",
         transferFailedLimitLabel: "الحد المسموح",
-        transferFailedFooter: "يرجى الاتصال بالمستشار الخاص بك للحصول على مزيد من المعلومات.",
-        footer: "تم إرسال هذا البريد تلقائياً من App Pay.",
-        footerDoNotReply: "يرجى عدم الرد على هذا البريد.",
+        transferFailedFooter: "إذا كنت قد بدأت هذا الطلب، يرجى الاتصال بالمستشار الخاص بك.",
+        footer: "تم إنشاء هذا البريد الإلكتروني تلقائياً بواسطة App Pay.",
+        footerDoNotReply: "يرجى عدم الرد مباشرة على هذا البريد الإلكتروني.",
         greeting: "مع أطيب التحيات،",
         teamName: "فريق App Pay"
     },
     zh: {
-        loginSubject: "您的 App Pay 登录信息",
+        loginSubject: "您的 App Pay 私人银行安全访问",
         loginGreeting: "您好 {name}，",
-        loginIntro: "以下是您登录 App Pay 账户的凭据：",
-        loginEmailLabel: "电子邮箱",
-        loginPinLabel: "PIN 码",
-        loginFooter: "请妥善保管此信息。不要与任何人分享。",
-        loginSecurity: "为了您的安全，请勿分享您的 PIN 码。",
-        activationSubject: "您的 App Pay 激活码",
+        loginIntro: "我们很高兴地通知您，您已成功注册我们的私人银行 App Pay。以下是您访问客户门户的个人凭据：",
+        loginEmailLabel: "您的电子邮箱",
+        loginPinLabel: "您的机密 PIN 码",
+        loginButton: "访问我的在线账户",
+        loginFooter: "为了您的安全，我们建议您对这些信息保密。切勿与任何人分享您的 PIN 码。",
+        loginSecurity: "App Pay 安全团队",
+        activationSubject: "您的 App Pay 转账激活码",
         activationGreeting: "您好 {name}，",
-        activationIntro: "以下是您用于验证转账的个人激活码：",
-        activationCodeLabel: "激活码",
-        activationFooter: "每次转账时您都需要输入此激活码。",
-        activationWarning: "切勿与任何人分享此激活码。",
+        activationIntro: "为确保您的交易安全，请在下方找到您的个人激活码。验证每笔转账时都需要输入此代码：",
+        activationCodeLabel: "您的激活码",
+        activationFooter: "请妥善保管此代码。它是严格个人且机密的。",
+        activationWarning: "切勿与第三方分享此代码。",
         transferSuccessSubject: "您的 App Pay 转账确认",
         transferSuccessGreeting: "您好 {name}，",
-        transferSuccessIntro: "您的转账已成功完成。",
-        transferAmountLabel: "金额",
+        transferSuccessIntro: "我们确认您的转账已成功处理。以下是操作摘要：",
+        transferAmountLabel: "转账金额",
         transferBeneficiaryLabel: "收款人",
-        transferDateLabel: "日期",
-        transferReferenceLabel: "参考编号",
-        transferSuccessFooter: "感谢您的信任。App Pay 团队。",
-        transferFailedSubject: "您的 App Pay 转账无法处理",
+        transferDateLabel: "操作日期",
+        transferReferenceLabel: "唯一参考号",
+        transferSuccessFooter: "资金将在 24 至 48 个工作小时内存入收款人账户。感谢您的信任。",
+        transferFailedSubject: "警报：您的 App Pay 转账无法处理",
         transferFailedGreeting: "您好 {name}，",
-        transferFailedIntro: "我们通知您，您的转账未能完成。",
-        transferFailedReason: "原因",
-        transferFailedReasonPercent: "金额超过了您账户允许的限额。",
+        transferFailedIntro: "我们通知您，您账户上的一笔转账尝试被我们的安全系统拦截。详情如下：",
+        transferFailedReason: "拦截原因",
+        transferFailedReasonPercent: "请求金额超过了您账户允许的限额。",
         transferFailedAmountLabel: "尝试金额",
         transferFailedLimitLabel: "允许限额",
-        transferFailedFooter: "请联系您的顾问获取更多信息。",
-        footer: "此邮件由 App Pay 自动发送。",
-        footerDoNotReply: "请勿回复此邮件。",
+        transferFailedFooter: "如果是您发起的此请求，请联系您的顾问。",
+        footer: "此邮件由 App Pay 自动生成。",
+        footerDoNotReply: "请勿直接回复此邮件。",
         greeting: "此致，",
         teamName: "App Pay 团队"
     },
     ja: {
-        loginSubject: "App Pay ログイン情報",
+        loginSubject: "App Pay プライベートバンクへの安全なアクセス",
         loginGreeting: "こんにちは {name} さん、",
-        loginIntro: "App Pay アカウントにアクセスするための認証情報です：",
+        loginIntro: "このたびは、プライベートバンク App Pay へのご登録が完了しましたことをお知らせいたします。クライアントポータルにアクセスするための個人認証情報は以下の通りです：",
         loginEmailLabel: "メールアドレス",
-        loginPinLabel: "PIN コード",
-        loginFooter: "この情報は安全な場所に保管してください。誰とも共有しないでください。",
-        loginSecurity: "セキュリティのため、PIN コードは絶対に共有しないでください。",
-        activationSubject: "App Pay アクティベーションコード",
+        loginPinLabel: "機密 PIN コード",
+        loginButton: "オンライン口座にアクセスする",
+        loginFooter: "セキュリティのため、この情報は機密に保つことをお勧めします。PIN コードは絶対に他人と共有しないでください。",
+        loginSecurity: "App Pay セキュリティチーム",
+        activationSubject: "App Pay 送金のためのアクティベーションコード",
         activationGreeting: "こんにちは {name} さん、",
-        activationIntro: "送金を承認するための個人アクティベーションコードです：",
+        activationIntro: "取引のセキュリティを確保するため、以下に個人用アクティベーションコードを記載します。このコードは各送金を承認するために必要です：",
         activationCodeLabel: "アクティベーションコード",
-        activationFooter: "送金のたびにこのコードを入力する必要があります。",
-        activationWarning: "このコードは絶対に誰とも共有しないでください。",
+        activationFooter: "このコードは安全な場所に保管してください。厳重に個人かつ機密の情報です。",
+        activationWarning: "このコードは絶対に第三者と共有しないでください。",
         transferSuccessSubject: "App Pay 送金の確認",
         transferSuccessGreeting: "こんにちは {name} さん、",
-        transferSuccessIntro: "送金が正常に完了しました。",
-        transferAmountLabel: "金額",
+        transferSuccessIntro: "送金が正常に処理されたことを確認いたします。操作の概要は以下の通りです：",
+        transferAmountLabel: "送金額",
         transferBeneficiaryLabel: "受取人",
-        transferDateLabel: "日付",
-        transferReferenceLabel: "参照番号",
-        transferSuccessFooter: "ご信頼ありがとうございます。App Pay チーム。",
-        transferFailedSubject: "App Pay 送金を処理できませんでした",
+        transferDateLabel: "操作日",
+        transferReferenceLabel: "固有の参照番号",
+        transferSuccessFooter: "資金は 24〜48 営業時間以内に受取人の口座に入金されます。ご信頼ありがとうございます。",
+        transferFailedSubject: "警告：App Pay 送金を処理できませんでした",
         transferFailedGreeting: "こんにちは {name} さん、",
-        transferFailedIntro: "送金が完了できなかったことをお知らせします。",
-        transferFailedReason: "理由",
-        transferFailedReasonPercent: "金額がアカウントで許可されている限度額を超えています。",
+        transferFailedIntro: "お客様の口座での送金試行が、当社のセキュリティシステムによってブロックされたことをお知らせします。詳細は以下の通りです：",
+        transferFailedReason: "ブロックの理由",
+        transferFailedReasonPercent: "要求された金額が口座で許可されている限度額を超えています。",
         transferFailedAmountLabel: "試行金額",
         transferFailedLimitLabel: "許可限度額",
-        transferFailedFooter: "詳細については、アドバイザーにお問い合わせください。",
-        footer: "このメールは App Pay から自動送信されました。",
-        footerDoNotReply: "このメールに返信しないでください。",
+        transferFailedFooter: "お客様がこのリクエストを開始した場合は、アドバイザーにご連絡ください。",
+        footer: "このメールは App Pay によって自動的に生成されました。",
+        footerDoNotReply: "このメールに直接返信しないでください。",
         greeting: "よろしくお願いいたします。",
         teamName: "App Pay チーム"
     }
-}
+};
 
 // ============================================================
 // UTILITAIRES
@@ -474,112 +495,61 @@ async function fetchWithTimeout(url, options = {}, timeout = REQUEST_TIMEOUT) {
     }
 }
 
-/** Convertit le HTML en texte brut (pour le champ "text" des emails) */
-function stripHtml(html) {
-    if (!html) return '';
-    return html
-        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'")
-        .replace(/\s+/g, ' ')
-        .trim();
-}
-
-/** Lit le corps d'une réponse d'erreur (JSON ou texte) */
-async function readErrorBody(res) {
-    try {
-        const text = await res.text();
-        try {
-            const json = JSON.parse(text);
-            return json.message || json.error || json.detail || JSON.stringify(json).substring(0, 200);
-        } catch {
-            return text.substring(0, 200);
-        }
-    } catch {
-        return '';
-    }
-}
-
 // ============================================================
-// FONCTION CENTRALE D'ENVOI (multi-format avec fallback)
-// Essaie automatiquement plusieurs formats de payload pour
-// contourner les HTTP 400 et s'adapter à toute API.
+// FONCTION CENTRALE D'ENVOI (Format unique et propre)
 // ============================================================
-async function sendEmail({ to, subject, html, extraData = {} }) {
+async function sendEmail({ to, subject, html }) {
     if (!isValidEmail(to)) {
         console.error(`❌ Adresse email invalide : "${to}"`);
         return { success: false, error: 'INVALID_EMAIL', message: 'Adresse email invalide.' };
     }
-    if (!subject || !html) {
-        console.error('❌ Sujet ou contenu HTML manquant.');
-        return { success: false, error: 'MISSING_FIELDS', message: 'Sujet ou contenu manquant.' };
-    }
 
-    const text = stripHtml(html);
-    console.log(`📧 Envoi email → ${to} | Sujet : "${subject}"`);
+    console.log(`📧 Envoi email à ${to} — sujet : "${subject}"`);
 
-    // 🔑 Différents formats de payload à essayer (du plus standard au plus exotique)
-    const payloadVariants = [
-        { name: 'to-subject-html',        payload: { to, subject, html } },
-        { name: 'to-subject-html-text',   payload: { to, subject, html, text } },
-        { name: 'email-subject-html',     payload: { email: to, subject, html } },
-        { name: 'to-subject-body',        payload: { to, subject, body: html } },
-        { name: 'to-subject-message',     payload: { to, subject, message: html } },
-        { name: 'to-subject-html-data',   payload: { to, subject, html, text, ...extraData } },
-        { name: 'recipient-subject-html', payload: { recipient: to, subject, html } },
-        { name: 'to-name-subject-html',   payload: { to, name: extraData.name || '', subject, html, text } },
-        { name: 'email-welcome-payload',  payload: { email: to, ...extraData, html, text, subject } }
-    ];
+    // Format standard unique : { to, subject, html }
+    const payload = JSON.stringify({ to, subject, html });
 
-    // 🔌 Fournisseurs à essayer (ordre : Vercel puis Render)
-    const providers = [
-        { name: 'Vercel', url: API_PRIMARY.url, headers: API_PRIMARY.headers },
-        { name: 'Render', url: API_BACKUP.url,  headers: API_BACKUP.headers }
-    ];
+    // 1️⃣ Essayer Vercel d'abord
+    try {
+        const res = await fetchWithTimeout(API_PRIMARY.url, {
+            method: "POST",
+            headers: API_PRIMARY.headers,
+            body: payload
+        });
 
-    let lastError = 'Aucun format accepté.';
-
-    for (const provider of providers) {
-        console.log(`\n🔌 Test du fournisseur : ${provider.name}`);
-
-        for (const variant of payloadVariants) {
-            try {
-                const res = await fetchWithTimeout(provider.url, {
-                    method: 'POST',
-                    headers: provider.headers,
-                    body: JSON.stringify(variant.payload)
-                });
-
-                if (res.ok) {
-                    console.log(`✅ SUCCÈS via ${provider.name} (format : ${variant.name})`);
-                    return { success: true, provider: provider.name, format: variant.name };
-                }
-
-                const errorBody = await readErrorBody(res);
-                lastError = `${provider.name}/${variant.name} → HTTP ${res.status}${errorBody ? ' | ' + errorBody : ''}`;
-                console.warn(`   ⚠️ ${variant.name} → ${res.status}${errorBody ? ' | ' + errorBody : ''}`);
-
-                // Si erreur d'authentification ou 5xx → passer au fournisseur suivant
-                if (res.status === 401 || res.status === 403 || res.status >= 500) {
-                    console.warn(`   ❌ ${provider.name} refuse ou crash → passage au fournisseur suivant`);
-                    break;
-                }
-            } catch (err) {
-                const reason = err.name === 'AbortError' ? 'Timeout' : err.message;
-                lastError = `${provider.name}/${variant.name} → ${reason}`;
-                console.warn(`   ⚠️ ${variant.name} → ${reason}`);
-            }
+        if (res.ok) {
+            console.log("✅ Email envoyé via Vercel");
+            return { success: true, provider: "vercel" };
         }
+
+        const errorText = await res.text().catch(() => '');
+        console.warn(`⚠️ Vercel a répondu ${res.status} - ${errorText}, tentative via Render...`);
+    } catch (err) {
+        const reason = err.name === 'AbortError' ? 'Timeout' : err.message;
+        console.warn(`⚠️ Vercel échoué (${reason}), tentative via Render...`);
     }
 
-    console.error(`❌ Aucun format n'a fonctionné. Dernière erreur : ${lastError}`);
-    return { success: false, error: 'ALL_FORMATS_FAILED', message: lastError };
+    // 2️⃣ Fallback vers Render
+    // (Note : Render utilise souvent son propre modèle par défaut, d'où l'importance que Vercel fonctionne)
+    try {
+        const res = await fetchWithTimeout(API_BACKUP.url, {
+            method: "POST",
+            headers: API_BACKUP.headers,
+            body: payload
+        });
+
+        if (res.ok) {
+            console.log("✅ Email envoyé via Render (fallback)");
+            return { success: true, provider: "render" };
+        }
+
+        console.error(`❌ Render a répondu ${res.status}`);
+        return { success: false, error: `HTTP ${res.status}`, message: `Render HTTP ${res.status}` };
+    } catch (err) {
+        const reason = err.name === 'AbortError' ? 'Timeout' : err.message;
+        console.error(`❌ Render échoué aussi : ${reason}`);
+        return { success: false, error: reason, message: reason };
+    }
 }
 
 // ============================================================
@@ -603,22 +573,31 @@ function getClientFirstName(client) {
 }
 
 // ============================================================
-// TEMPLATE HTML
+// TEMPLATE HTML PLEIN ÉCRAN (Sans marges)
 // ============================================================
-function buildEmailHTML({ title, greeting, intro, rows = [], warning = '', footer }) {
+function buildEmailHTML({ title, greeting, intro, rows = [], warning = '', buttonText = '', buttonLink = '', footer }) {
     const rowsHTML = rows.map(r => `
         <tr>
-            <td style="padding:8px 0;font-size:13px;color:#888;font-weight:500;">${r.label}</td>
-            <td style="padding:8px 0;font-size:14px;color:#111;font-weight:700;text-align:right;font-family:'Courier New',monospace;">${r.value}</td>
+            <td style="padding:12px 0; font-size:14px; color:#666666; font-weight:500; border-bottom: 1px solid #eeeeee;">${r.label}</td>
+            <td style="padding:12px 0; font-size:15px; color:#111111; font-weight:700; text-align:right; font-family:'Courier New',monospace; border-bottom: 1px solid #eeeeee;">${r.value}</td>
         </tr>
     `).join('');
 
     const warningHTML = warning ? `
-        <div style="background:#fff5eb;border-left:4px solid #ff7a00;padding:12px 16px;border-radius:6px;margin:20px 0;font-size:12px;color:#8a4400;line-height:1.5;">
-            ⚠️ ${warning}
+        <div style="background:#fff5eb; border-left:4px solid #ff7a00; padding:15px; border-radius:6px; margin:25px 0; font-size:13px; color:#8a4400; line-height:1.5;">
+            <strong>⚠️ Attention :</strong> ${warning}
         </div>
     ` : '';
 
+    const buttonHTML = (buttonText && buttonLink) ? `
+        <div style="text-align: center; margin: 35px 0;">
+            <a href="${buttonLink}" target="_blank" style="display: inline-block; background-color: #ff7a00; color: #ffffff; text-decoration: none; padding: 16px 35px; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);">
+                ${buttonText}
+            </a>
+        </div>
+    ` : '';
+
+    // Design pleine largeur (width: 100%) sans marges blanches
     return `
         <!DOCTYPE html>
         <html>
@@ -626,33 +605,50 @@ function buildEmailHTML({ title, greeting, intro, rows = [], warning = '', foote
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
         </head>
-        <body style="margin:0;padding:20px;background:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-            <div style="max-width:520px;margin:0 auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
-                <div style="background:linear-gradient(135deg,#ff7a00 0%,#ff9533 100%);padding:24px 30px;text-align:center;">
-                    <div style="font-size:22px;font-weight:800;color:white;letter-spacing:2px;">🏛️ APP PAY</div>
+        <body style="margin:0; padding:0; background-color:#ffffff; width: 100%; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <div style="width: 100%; max-width: 100%; background-color: #ffffff;">
+                
+                <!-- Header -->
+                <div style="background:linear-gradient(135deg,#ff7a00 0%,#ff9533 100%); padding:35px 20px; text-align:center;">
+                    <div style="font-size:26px; font-weight:900; color:white; letter-spacing:2px;">🏛️ APP PAY</div>
                 </div>
-                <div style="padding:30px;">
-                    <h1 style="font-size:18px;font-weight:700;color:#111;margin:0 0 16px 0;">${title}</h1>
-                    <p style="font-size:14px;color:#333;margin:0 0 12px 0;">${greeting}</p>
-                    <p style="font-size:14px;color:#555;line-height:1.6;margin:0 0 20px 0;">${intro}</p>
+
+                <!-- Body -->
+                <div style="padding:30px 20px; max-width: 600px; margin: 0 auto;">
+                    <h1 style="font-size:22px; font-weight:800; color:#111111; margin:0 0 20px 0; text-align:center;">${title}</h1>
+                    
+                    <p style="font-size:16px; color:#333333; margin:0 0 15px 0; font-weight:600;">${greeting}</p>
+                    <p style="font-size:15px; color:#555555; line-height:1.6; margin:0 0 25px 0;">${intro}</p>
+
                     ${rowsHTML ? `
-                        <table style="width:100%;border-collapse:collapse;background:#f8f9fa;border-radius:8px;padding:8px 16px;margin:20px 0;">
-                            <tbody style="display:block;padding:8px 16px;">${rowsHTML}</tbody>
+                        <table style="width:100%; border-collapse:collapse; background:#f9f9f9; border-radius:10px; padding:10px 20px; margin:25px 0;">
+                            <tbody style="display:block; padding:10px 20px;">
+                                ${rowsHTML}
+                            </tbody>
                         </table>
                     ` : ''}
+
+                    ${buttonHTML}
                     ${warningHTML}
-                    <p style="font-size:13px;color:#666;line-height:1.6;margin:20px 0 0 0;">${footer}</p>
-                    <p style="font-size:13px;color:#888;margin:30px 0 0 0;">
-                        ${EMAIL_TRANSLATIONS.fr.greeting}<br>
-                        <strong style="color:#ff7a00;">${EMAIL_TRANSLATIONS.fr.teamName}</strong>
-                    </p>
+
+                    <p style="font-size:14px; color:#666666; line-height:1.6; margin:25px 0 0 0;">${footer}</p>
+
+                    <div style="margin-top:40px; padding-top:20px; border-top:1px solid #eeeeee;">
+                        <p style="font-size:14px; color:#888888; margin:0;">
+                            ${EMAIL_TRANSLATIONS.fr.greeting}<br>
+                            <strong style="color:#ff7a00; font-size:15px;">${EMAIL_TRANSLATIONS.fr.teamName}</strong>
+                        </p>
+                    </div>
                 </div>
-                <div style="background:#f8f9fa;padding:16px 30px;text-align:center;border-top:1px solid #f0f0f0;">
-                    <p style="font-size:11px;color:#999;margin:0;line-height:1.5;">
+
+                <!-- Footer -->
+                <div style="background:#f4f4f4; padding:20px; text-align:center;">
+                    <p style="font-size:12px; color:#999999; margin:0; line-height:1.5;">
                         ${EMAIL_TRANSLATIONS.fr.footer}<br>
                         ${EMAIL_TRANSLATIONS.fr.footerDoNotReply}
                     </p>
                 </div>
+
             </div>
         </body>
         </html>
@@ -671,6 +667,10 @@ export async function sendLoginCredentials(client) {
     const t = getT(lang);
     const name = getClientFirstName(client);
 
+    // Construction du lien unique du client
+    const baseUrl = window.location.origin.includes('localhost') ? 'https://app.getzenpay.com' : window.location.origin;
+    const loginLink = `${baseUrl}/?id=${client.id}`;
+
     const html = buildEmailHTML({
         title: t.loginSubject,
         greeting: replaceVars(t.loginGreeting, { name }),
@@ -679,6 +679,8 @@ export async function sendLoginCredentials(client) {
             { label: t.loginEmailLabel, value: client.email },
             { label: t.loginPinLabel, value: client.pin }
         ],
+        buttonText: t.loginButton,
+        buttonLink: loginLink,
         warning: t.loginSecurity,
         footer: t.loginFooter
     });
@@ -686,17 +688,7 @@ export async function sendLoginCredentials(client) {
     return await sendEmail({
         to: client.email,
         subject: t.loginSubject,
-        html,
-        extraData: {
-            name,
-            firstName: client.firstName || '',
-            lastName: client.lastName || '',
-            clientName: `${client.firstName || ''} ${client.lastName || ''}`.trim(),
-            email: client.email,
-            pin: client.pin || '',
-            clientEmail: client.email,
-            clientPin: client.pin || ''
-        }
+        html
     });
 }
 
@@ -726,17 +718,7 @@ export async function sendActivationCode(client) {
     return await sendEmail({
         to: client.email,
         subject: t.activationSubject,
-        html,
-        extraData: {
-            name,
-            firstName: client.firstName || '',
-            lastName: client.lastName || '',
-            clientName: `${client.firstName || ''} ${client.lastName || ''}`.trim(),
-            email: client.email,
-            activationCode: client.activationCode || '',
-            clientEmail: client.email,
-            clientActivationCode: client.activationCode || ''
-        }
+        html
     });
 }
 
@@ -768,18 +750,7 @@ export async function sendTransferSuccess(client, transfer) {
     return await sendEmail({
         to: client.email,
         subject: t.transferSuccessSubject,
-        html,
-        extraData: {
-            name,
-            firstName: client.firstName || '',
-            lastName: client.lastName || '',
-            clientName: `${client.firstName || ''} ${client.lastName || ''}`.trim(),
-            email: client.email,
-            amount: transfer.amount,
-            beneficiary: transfer.beneficiary || '',
-            reference: transfer.reference || '',
-            date: transfer.date || ''
-        }
+        html
     });
 }
 
@@ -810,15 +781,6 @@ export async function sendTransferFailed(client, details = {}) {
     return await sendEmail({
         to: client.email,
         subject: t.transferFailedSubject,
-        html,
-        extraData: {
-            name,
-            firstName: client.firstName || '',
-            lastName: client.lastName || '',
-            clientName: `${client.firstName || ''} ${client.lastName || ''}`.trim(),
-            email: client.email,
-            amount: details.amount,
-            limit: details.limit
-        }
+        html
     });
 }
