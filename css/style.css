@@ -1259,6 +1259,54 @@ body {
     text-align: left;
 }
 
+/* ============ ÉCHEC DE VIREMENT (🆕 ajouté) ============ */
+.failed-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 40px 30px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    max-width: 600px;
+}
+
+.failed-icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #fde8e8;
+    color: #e02424;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    font-size: 36px;
+    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.failed-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+}
+
+.failed-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+.failed-summary {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
 /* ============ CARTE VIRTUELLE ============ */
 .virtual-card-wrapper {
     max-width: 480px;
