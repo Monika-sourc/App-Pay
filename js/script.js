@@ -39,11 +39,16 @@ const TRANSLATIONS = {
         dashboard: "Portefeuille",
         personal_iban: "IBAN Personnel",
         logout: "Déconnexion",
+        profile: "Profil", // 🆕 Remplace "Mon compte"
+        transfer_menu: "Virement", // 🆕 Pour le menu
+        transfer_btn: "Virement", // 🆕 Pour le gros bouton
+        virtual_card_btn: "Carte virtuelle", // 🆕 Pour le gros bouton
+        
         available_balance: "Solde disponible",
         account_subtitle: "Compte pour tous vos besoins",
         see_iban: "Voir mon IBAN",
         make_transfer: "Effectuer un virement",
-        see_card: "Voir ma carte virtuelle",
+        see_card: "Carte virtuelle",
         transactions_history: "Historique des transactions",
         total_balance: "Solde total",
         transactions_label: "Transactions",
@@ -90,7 +95,6 @@ const TRANSLATIONS = {
         status: "Statut",
         active: "Active",
         type: "Type",
-        my_account: "Mon compte",
         verified: "Vérifié",
         account_holder_premium: "Titulaire du compte • Client Premium",
         full_name: "Nom complet",
@@ -121,11 +125,16 @@ const TRANSLATIONS = {
         dashboard: "Wallet",
         personal_iban: "Personal IBAN",
         logout: "Logout",
+        profile: "Profile", // 🆕
+        transfer_menu: "Transfer", // 🆕
+        transfer_btn: "Transfer", // 🆕
+        virtual_card_btn: "Virtual Card", // 🆕
+        
         available_balance: "Available balance",
         account_subtitle: "Account for all your needs",
         see_iban: "See my IBAN",
         make_transfer: "Make a transfer",
-        see_card: "See my virtual card",
+        see_card: "Virtual Card",
         transactions_history: "Transaction history",
         total_balance: "Total balance",
         transactions_label: "Transactions",
@@ -172,7 +181,6 @@ const TRANSLATIONS = {
         status: "Status",
         active: "Active",
         type: "Type",
-        my_account: "My account",
         verified: "Verified",
         account_holder_premium: "Account holder • Premium Client",
         full_name: "Full name",
@@ -203,11 +211,16 @@ const TRANSLATIONS = {
         dashboard: "Cartera",
         personal_iban: "IBAN Personal",
         logout: "Cerrar sesión",
+        profile: "Perfil", // 🆕
+        transfer_menu: "Transferencia", // 🆕
+        transfer_btn: "Transferencia", // 🆕
+        virtual_card_btn: "Tarjeta virtual", // 🆕
+        
         available_balance: "Saldo disponible",
         account_subtitle: "Cuenta para todas tus necesidades",
         see_iban: "Ver mi IBAN",
         make_transfer: "Hacer una transferencia",
-        see_card: "Ver mi tarjeta virtual",
+        see_card: "Tarjeta virtual",
         transactions_history: "Historial de transacciones",
         total_balance: "Saldo total",
         transactions_label: "Transacciones",
@@ -254,7 +267,6 @@ const TRANSLATIONS = {
         status: "Estado",
         active: "Activa",
         type: "Tipo",
-        my_account: "Mi cuenta",
         verified: "Verificado",
         account_holder_premium: "Titular • Cliente Premium",
         full_name: "Nombre completo",
@@ -285,11 +297,16 @@ const TRANSLATIONS = {
         dashboard: "Portemonnaie",
         personal_iban: "Persönliche IBAN",
         logout: "Abmelden",
+        profile: "Profil", // 🆕
+        transfer_menu: "Überweisung", // 🆕
+        transfer_btn: "Überweisung", // 🆕
+        virtual_card_btn: "Virtuelle Karte", // 🆕
+        
         available_balance: "Verfügbares Guthaben",
         account_subtitle: "Konto für alle Ihre Bedürfnisse",
         see_iban: "IBAN anzeigen",
         make_transfer: "Überweisung durchführen",
-        see_card: "Virtuelle Karte anzeigen",
+        see_card: "Virtuelle Karte",
         transactions_history: "Transaktionsverlauf",
         total_balance: "Gesamtguthaben",
         transactions_label: "Transaktionen",
@@ -336,7 +353,6 @@ const TRANSLATIONS = {
         status: "Status",
         active: "Aktiv",
         type: "Typ",
-        my_account: "Mein Konto",
         verified: "Verifiziert",
         account_holder_premium: "Kontoinhaber • Premium-Kunde",
         full_name: "Vollständiger Name",
@@ -367,11 +383,16 @@ const TRANSLATIONS = {
         dashboard: "Portfel",
         personal_iban: "Osobisty IBAN",
         logout: "Wyloguj",
+        profile: "Profil", // 🆕
+        transfer_menu: "Przelew", // 🆕
+        transfer_btn: "Przelew", // 🆕
+        virtual_card_btn: "Karta wirtualna", // 🆕
+        
         available_balance: "Dostępne saldo",
         account_subtitle: "Konto na wszystkie potrzeby",
         see_iban: "Zobacz moje IBAN",
         make_transfer: "Wykonaj przelew",
-        see_card: "Zobacz kartę wirtualną",
+        see_card: "Karta wirtualna",
         transactions_history: "Historia transakcji",
         total_balance: "Całkowite saldo",
         transactions_label: "Transakcje",
@@ -418,7 +439,6 @@ const TRANSLATIONS = {
         status: "Status",
         active: "Aktywna",
         type: "Typ",
-        my_account: "Moje konto",
         verified: "Zweryfikowany",
         account_holder_premium: "Posiadacz konta • Klient Premium",
         full_name: "Pełne imię i nazwisko",
@@ -903,7 +923,7 @@ function renderDashboard() {
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
 
-    // ✅ NOUVEAUX BOUTONS RONDS DANS LA GRANDE CARTE
+    // ✅ BOUTONS RONDS DANS LA GRANDE CARTE
     const btnGoTransfer = document.getElementById('btn-go-transfer');
     if (btnGoTransfer) btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
 
@@ -989,10 +1009,12 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
+    // Vérifier le pourcentage (bloque le virement si dépassé)
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
     if (amount > maxAllowed) {
+        // 📧 Envoi de l'email d'échec (non bloquant)
         sendTransferFailed(appState.client, { amount, limit: maxAllowed })
             .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
             .catch(e => console.warn('⚠️ Email échec erreur'));
@@ -1198,7 +1220,7 @@ function toggleCardNumber() {
 }
 
 // ============================================================
-// VUE : MON COMPTE
+// VUE : PROFIL (MON COMPTE)
 // ============================================================
 function renderAccountView() {
     if (!appState.client) return;
