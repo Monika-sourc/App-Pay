@@ -18,7 +18,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* 🆕 CORRECTION : HAUTEUR À 100% POUR QUE LA SIDEBAR PRENNE TOUTE LA PAGE */
 html, body {
     height: 100%;
     margin: 0;
@@ -290,10 +289,9 @@ body {
 }
 #app-screen.active {
     display: flex;
-    height: 100%; /* 🆕 Force la hauteur à 100% de l'écran */
+    height: 100%;
 }
 
-/* 🆕 CORRECTION : HAUTEUR À 100% POUR LA SIDEBAR */
 .sidebar {
     width: 180px;
     background-color: var(--primary-color);
@@ -304,7 +302,7 @@ body {
     flex-shrink: 0;
     transition: background-color 0.3s;
     overflow: hidden;
-    height: 100%; /* Force la hauteur à 100% */
+    height: 100%;
 }
 
 .sidebar-top {
@@ -409,7 +407,7 @@ body {
     overflow-y: auto;
     background-color: #e8e9ec;
     min-width: 0;
-    height: 100%; /* 🆕 Force la hauteur à 100% */
+    height: 100%;
 }
 
 .header {
@@ -432,7 +430,6 @@ body {
     position: relative;
 }
 
-/* ICÔNES PLUS GRANDES */
 .icon-btn {
     width: 48px;
     height: 48px;
@@ -462,7 +459,6 @@ body {
     border: 2px solid #ffffff;
 }
 
-/* AVATAR PLUS GRAND */
 .user-avatar {
     width: 48px;
     height: 48px;
@@ -542,12 +538,11 @@ body {
     animation: fadeIn 0.3s ease;
 }
 
-/* 🆕 ESPACE AUGMENTÉ ENTRE LE NOM ET LA GRANDE CARTE (Point 2) */
 .welcome-title {
     font-size: 18px;
     font-weight: 700;
     color: #222;
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
 }
 
 /* ============ CARTE DE SOLDE ============ */
@@ -556,7 +551,7 @@ body {
     border-radius: 10px;
     padding: 25px 20px;
     box-shadow: var(--card-shadow);
-    margin-bottom: 25px; /* 🆕 ESPACE AUGMENTÉ (Point 3) */
+    margin-bottom: 25px;
     position: relative;
     overflow: hidden;
     text-align: center;
@@ -658,7 +653,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px; 
-    margin-bottom: 25px; /* 🆕 ESPACE AUGMENTÉ (Point 4) */
+    margin-bottom: 25px;
 }
 
 .stat-card {
@@ -1596,7 +1591,7 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* TOAST CENTRÉ ET PLUS GROS */
+/* ============ TOAST (CENTRÉ ET PLUS GROS) ============ */
 .toast {
     position: fixed;
     top: 50%;
