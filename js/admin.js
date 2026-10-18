@@ -40,7 +40,7 @@ let allClients = [];
 let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
-let isCardDetailsVisible = false; // État pour masquer/afficher la carte dans le modal admin
+let isCardDetailsVisible = false;
 
 // ============================================================
 // DONNÉES PAYS
@@ -224,7 +224,6 @@ function escapeHtml(str) {
     }[m]));
 }
 
-// GÉNÉRATEUR DE CARTE AUTOMATIQUE
 function generateCardDetails() {
     const prefix = "4823"; 
     const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
@@ -397,47 +396,20 @@ async function loadAdminProfile(user) {
 }
 
 // ============================================================
-// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
+// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION (FIX DU FLASH)
 // ============================================================
 function initAuthListener() {
-    const cachedUser = auth.currentUser;
+    // Toujours afficher l'écran de chargement au démarrage
+    showScreen('admin-loading-screen');
 
-    if (cachedUser && !cachedUser.isAnonymous) {
-        console.log('⚡ Session en cache détectée :', cachedUser.email);
-        loadAdminProfile(cachedUser).then(() => {
-            showAdminPanel();
-            loadClients();
-        });
-    } else {
-        console.log('🔒 Aucune session en cache → page de connexion');
-        showLoginScreen();
-    }
-
-    let isFirstCall = true;
     onAuthStateChanged(auth, async (user) => {
-        if (isFirstCall) {
-            isFirstCall = false;
-
-            if (user && !user.isAnonymous && !cachedUser) {
-                console.log('👤 Session restaurée (async) :', user.email);
-                await loadAdminProfile(user);
-                showAdminPanel();
-                await loadClients();
-            }
-            return;
-        }
-
         if (user && !user.isAnonymous) {
-            const panelActive = document.getElementById('admin-panel-screen').classList.contains('active');
-            if (panelActive) return;
-
             console.log('👤 Admin connecté :', user.email);
             await loadAdminProfile(user);
             showAdminPanel();
             await loadClients();
         } else {
-            if (!currentAdmin) return;
-            console.log('🔒 Déconnexion détectée');
+            console.log('🔒 Aucune session active');
             currentAdmin = null;
             allClients = [];
             showLoginScreen();
@@ -645,7 +617,7 @@ async function handleCreateClient(event) {
             cardNumber: newCard.cardNumber, 
             cardCVV: newCard.cvv,
             cardExpiry: newCard.expiry,
-            canViewCardDetails: false, // 🆕 MASQUÉ PAR DÉFAUT (L'admin doit autoriser)
+            canViewCardDetails: false, // Masqué par défaut
             transactions: initialTransactions,
             blocked: false,
             createdBy: currentAdmin.uid,
@@ -762,7 +734,7 @@ function openClientDetail(clientId) {
     if (!client) return;
 
     currentDetailClient = client;
-    isCardDetailsVisible = false; // Masqué par défaut
+    isCardDetailsVisible = false;
 
     const initials = getInitials(client.firstName, client.lastName);
     document.getElementById('cd-avatar').textContent = initials;
@@ -794,7 +766,6 @@ function openClientDetail(clientId) {
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
 
-    // Affichage masqué de la carte par défaut
     const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
     const cardCvv = client.cardCVV ? '•••' : '--';
     document.getElementById('cd-card-number').textContent = cardNum;
@@ -807,16 +778,12 @@ function openClientDetail(clientId) {
     document.getElementById('client-detail-modal').classList.add('show');
 }
 
-// ============================================================
-// FERMETURE DU MODAL CLIENT
-// ============================================================
 function closeClientDetail() {
     document.getElementById('client-detail-modal').classList.remove('show');
     currentDetailClient = null;
     isCardDetailsVisible = false;
 }
 
-// 🆕 MASQUER / AFFICHER LA CARTE DANS LE MODAL DÉTAILS (ADMIN UNIQUEMENT)
 window.toggleAdminCardVisibility = function() {
     if (!currentDetailClient) return;
     isCardDetailsVisible = !isCardDetailsVisible;
@@ -836,7 +803,6 @@ window.toggleAdminCardVisibility = function() {
     }
 };
 
-// 🆕 MASQUER / AFFICHER DANS LE FORMULAIRE DE MODIFICATION (ADMIN UNIQUEMENT)
 window.toggleEditCardVisibility = function() {
     const cardNumInput = document.getElementById('opt-card-number');
     const cardCvvInput = document.getElementById('opt-card-cvv');
@@ -1141,7 +1107,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // 🆕 OPTION CARTE VIRTUELLE AVEC BOUTONS RADIO
         case 'card_info':
             headerIcon = 'fa-credit-card';
             headerTitle = 'Carte virtuelle';
@@ -1375,7 +1340,6 @@ function renderOptionCard(option, client) {
         if (saveBtn) saveBtn.addEventListener('click', () => saveOption(option, client));
     }
 
-    // 🆕 AJOUT DES ÉCOUTEURS SUR LES BOUTONS RADIO POUR LE STYLE
     if (option === 'card_info') {
         const radios = container.querySelectorAll('input[name="card-visibility"]');
         radios.forEach(radio => {
@@ -1397,9 +1361,6 @@ function renderOptionCard(option, client) {
     }
 }
 
-// ============================================================
-// ANNULER LA CARTE D'OPTION
-// ============================================================
 function cancelOptionCard() {
     resetCustomSelect();
     document.getElementById('option-card-container').innerHTML = '';
@@ -1480,13 +1441,11 @@ async function saveOption(option, client) {
                 break;
             }
 
-            // 🆕 SAUVEGARDE DE LA CARTE ET DE L'AUTORISATION (BOUTONS RADIO)
             case 'card_info': {
                 const cardNumber = document.getElementById('opt-card-number').value.trim();
                 const cardExpiry = document.getElementById('opt-card-expiry').value.trim();
                 const cardCVV = document.getElementById('opt-card-cvv').value.trim();
                 
-                // Récupérer la valeur du bouton radio sélectionné
                 const visibilityRadio = document.querySelector('input[name="card-visibility"]:checked');
                 const canViewCardDetails = visibilityRadio ? visibilityRadio.value === 'shown' : false;
 
