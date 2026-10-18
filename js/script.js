@@ -119,7 +119,8 @@ const TRANSLATIONS = {
         welcome: "Bienvenue",
         login_success: "Connexion réussie. Bienvenue !",
         transfer_cancelled: "Virement annulé.",
-        transfer_finalized: "Virement finalisé avec succès !"
+        transfer_finalized: "Virement finalisé avec succès !",
+        err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur." // 🆕
     },
     en: {
         dashboard: "Wallet",
@@ -205,7 +206,8 @@ const TRANSLATIONS = {
         welcome: "Welcome",
         login_success: "Login successful. Welcome!",
         transfer_cancelled: "Transfer cancelled.",
-        transfer_finalized: "Transfer completed successfully!"
+        transfer_finalized: "Transfer completed successfully!",
+        err_card_locked: "Card details display is not authorized by the administrator." // 🆕
     },
     es: {
         dashboard: "Cartera",
@@ -291,7 +293,8 @@ const TRANSLATIONS = {
         welcome: "Bienvenido",
         login_success: "¡Inicio de sesión exitoso!",
         transfer_cancelled: "Transferencia cancelada.",
-        transfer_finalized: "¡Transferencia completada!"
+        transfer_finalized: "¡Transferencia completada!",
+        err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador." // 🆕
     },
     de: {
         dashboard: "Portemonnaie",
@@ -377,7 +380,8 @@ const TRANSLATIONS = {
         welcome: "Willkommen",
         login_success: "Anmeldung erfolgreich. Willkommen!",
         transfer_cancelled: "Überweisung abgebrochen.",
-        transfer_finalized: "Überweisung erfolgreich abgeschlossen!"
+        transfer_finalized: "Überweisung erfolgreich abgeschlossen!",
+        err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert." // 🆕
     },
     pl: {
         dashboard: "Portfel",
@@ -463,7 +467,8 @@ const TRANSLATIONS = {
         welcome: "Witaj",
         login_success: "Zalogowano pomyślnie. Witaj!",
         transfer_cancelled: "Przelew anulowany.",
-        transfer_finalized: "Przelew zakończony pomyślnie!"
+        transfer_finalized: "Przelew zakończony pomyślnie!",
+        err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora." // 🆕
     }
 };
 
@@ -736,14 +741,12 @@ async function loadClientFromFirestore() {
             console.log("🆕 Génération automatique des détails de la carte virtuelle...");
             const newCard = generateCardDetails();
             
-            // Mise à jour silencieuse dans Firestore
             await updateDoc(docRef, {
                 cardNumber: newCard.cardNumber,
                 cardCVV: newCard.cvv,
                 cardExpiry: newCard.expiry
             });
 
-            // Mise à jour de l'état local
             appState.client.cardNumber = newCard.cardNumber;
             appState.client.cardCVV = newCard.cvv;
             appState.client.cardExpiry = newCard.expiry;
@@ -1235,7 +1238,7 @@ function renderCardView() {
     const expiryEl = document.getElementById('vc-expiry');
     if (expiryEl) expiryEl.textContent = appState.client.cardExpiry || '12/28';
 
-    // 🆕 CVV - Masqué par défaut
+    // CVV masqué par défaut
     const cvvEl = document.getElementById('vc-cvv');
     if (cvvEl) cvvEl.textContent = '•••';
 
@@ -1252,8 +1255,16 @@ function renderCardView() {
     if (label) label.textContent = t('show_details');
 }
 
-// 🆕 MASQUER / AFFICHER LE NUMÉRO ET LE CVV SIMULTANÉMENT
+// 🆕 MASQUER / AFFICHER LE NUMÉRO ET LE CVV (AVEC VÉRIFICATION D'AUTORISATION)
 function toggleCardNumber() {
+    if (!appState.client) return;
+
+    // 🔒 VÉRIFICATION DE L'AUTORISATION ADMINISTRATEUR
+    if (appState.client.canViewCardDetails !== true) {
+        showToast(t('err_card_locked'), 'error');
+        return;
+    }
+
     cardNumberVisible = !cardNumberVisible;
     const display = document.getElementById('vc-number-display');
     const cvvEl = document.getElementById('vc-cvv');
