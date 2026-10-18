@@ -120,7 +120,10 @@ const TRANSLATIONS = {
         login_success: "Connexion réussie. Bienvenue !",
         transfer_cancelled: "Virement annulé.",
         transfer_finalized: "Virement finalisé avec succès !",
-        err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur."
+        err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur.",
+        err_iban_locked: "L'affichage de l'IBAN complet n'est pas autorisé par l'administrateur.",
+        iban_copied: "IBAN copié !",
+        swift_copied: "Code SWIFT copié !"
     },
     en: {
         dashboard: "Wallet",
@@ -207,7 +210,10 @@ const TRANSLATIONS = {
         login_success: "Login successful. Welcome!",
         transfer_cancelled: "Transfer cancelled.",
         transfer_finalized: "Transfer completed successfully!",
-        err_card_locked: "Card details display is not authorized by the administrator."
+        err_card_locked: "Card details display is not authorized by the administrator.",
+        err_iban_locked: "IBAN display is not authorized by the administrator.",
+        iban_copied: "IBAN copied!",
+        swift_copied: "SWIFT code copied!"
     },
     es: {
         dashboard: "Cartera",
@@ -294,7 +300,10 @@ const TRANSLATIONS = {
         login_success: "¡Inicio de sesión exitoso!",
         transfer_cancelled: "Transferencia cancelada.",
         transfer_finalized: "¡Transferencia completada!",
-        err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador."
+        err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador.",
+        err_iban_locked: "La visualización del IBAN no está autorizada por el administrador.",
+        iban_copied: "¡IBAN copiado!",
+        swift_copied: "¡Código SWIFT copiado!"
     },
     de: {
         dashboard: "Portemonnaie",
@@ -381,7 +390,10 @@ const TRANSLATIONS = {
         login_success: "Anmeldung erfolgreich. Willkommen!",
         transfer_cancelled: "Überweisung abgebrochen.",
         transfer_finalized: "Überweisung erfolgreich abgeschlossen!",
-        err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert."
+        err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert.",
+        err_iban_locked: "Die Anzeige der IBAN ist vom Administrator nicht autorisiert.",
+        iban_copied: "IBAN kopiert!",
+        swift_copied: "SWIFT-Code kopiert!"
     },
     pl: {
         dashboard: "Portfel",
@@ -468,7 +480,10 @@ const TRANSLATIONS = {
         login_success: "Zalogowano pomyślnie. Witaj!",
         transfer_cancelled: "Przelew anulowany.",
         transfer_finalized: "Przelew zakończony pomyślnie!",
-        err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora."
+        err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora.",
+        err_iban_locked: "Wyświetlanie IBAN nie jest autoryzowane przez administratora.",
+        iban_copied: "IBAN skopiowany!",
+        swift_copied: "Kod SWIFT skopiowany!"
     }
 };
 
@@ -561,6 +576,14 @@ function generateCardDetails() {
     const year = (now.getFullYear() + 3).toString().slice(-2);
     const expiry = `${month}/${year}`;
     return { cardNumber, cvv, expiry };
+}
+
+// 🆕 GÉNÉRATEUR D'IBAN AUTOMATIQUE
+function generateIbanDetails() {
+    const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
+    const iban = `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
+    const swift = `WBKPPLPP${rand(3)}`;
+    return { iban, swift };
 }
 
 function getDateGroupLabel(dateStr, lang) {
@@ -732,6 +755,7 @@ async function loadClientFromFirestore() {
             return null;
         }
 
+        // 🆕 GÉNÉRATION AUTOMATIQUE DE LA CARTE SI ELLE N'EXISTE PAS
         if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
             console.log("🆕 Génération automatique des détails de la carte virtuelle...");
             const newCard = generateCardDetails();
@@ -745,6 +769,22 @@ async function loadClientFromFirestore() {
             appState.client.cardNumber = newCard.cardNumber;
             appState.client.cardCVV = newCard.cvv;
             appState.client.cardExpiry = newCard.expiry;
+        }
+
+        // 🆕 GÉNÉRATION AUTOMATIQUE DE L'IBAN SI IL N'EXISTE PAS
+        if (!client.iban || !client.swift) {
+            console.log("🆕 Génération automatique des détails de l'IBAN...");
+            const newIban = generateIbanDetails();
+            
+            await updateDoc(docRef, {
+                iban: newIban.iban,
+                swift: newIban.swift,
+                canViewIban: false // Masqué par défaut
+            });
+
+            appState.client.iban = newIban.iban;
+            appState.client.swift = newIban.swift;
+            appState.client.canViewIban = false;
         }
 
         applyClientColor(client.color);
@@ -854,6 +894,7 @@ const viewTemplates = {
     success: 'tpl-success',
     failed: 'tpl-failed',
     card: 'tpl-card',
+    iban: 'tpl-iban', // 🆕 Ajout de la vue IBAN
     account: 'tpl-account'
 };
 
@@ -881,6 +922,7 @@ function navigateTo(viewName, data = {}) {
     if (viewName === 'success') renderSuccessView(data);
     if (viewName === 'failed') renderFailedView(data);
     if (viewName === 'card') renderCardView();
+    if (viewName === 'iban') renderIbanView(); // 🆕 Appel de la vue IBAN
     if (viewName === 'account') renderAccountView();
 
     container.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1275,11 +1317,9 @@ function toggleCardNumber() {
     }
 }
 
-// 🆕 COPIER LE NUMÉRO OU LE CVV
 window.copyCardInfo = function(type) {
     if (!appState.client) return;
 
-    // Vérification de l'autorisation
     if (appState.client.canViewCardDetails !== true) {
         showToast(t('err_card_locked'), 'error');
         return;
@@ -1296,6 +1336,81 @@ window.copyCardInfo = function(type) {
 
     const doCopy = () => {
         showToast('Copié !', 'success');
+    };
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy).then(doCopy).catch(() => prompt('Copiez :', textToCopy));
+    } else {
+        prompt('Copiez :', textToCopy);
+    }
+};
+
+// ============================================================
+// 🆕 VUE : IBAN PERSONNEL
+// ============================================================
+let ibanVisible = false;
+
+function renderIbanView() {
+    if (!appState.client) return;
+
+    const ibanDisplay = document.getElementById('client-iban-display');
+    const swiftDisplay = document.getElementById('client-swift-display');
+    
+    const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    const swift = appState.client.swift || '--------';
+    
+    // Masque les 4 derniers caractères
+    const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
+    
+    if (ibanDisplay) ibanDisplay.textContent = maskedIban;
+    if (swiftDisplay) swiftDisplay.textContent = swift;
+    
+    ibanVisible = false;
+    
+    const label = document.getElementById('iban-toggle-label');
+    if (label) label.textContent = t('show_details');
+}
+
+window.toggleIbanVisibility = function() {
+    if (!appState.client) return;
+    
+    if (appState.client.canViewIban !== true) {
+        showToast(t('err_iban_locked'), 'error');
+        return;
+    }
+
+    ibanVisible = !ibanVisible;
+    const ibanDisplay = document.getElementById('client-iban-display');
+    const label = document.getElementById('iban-toggle-label');
+    
+    const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    
+    if (ibanVisible) {
+        if (ibanDisplay) ibanDisplay.textContent = rawIban;
+        if (label) label.textContent = t('hide_details');
+    } else {
+        const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
+        if (ibanDisplay) ibanDisplay.textContent = maskedIban;
+        if (label) label.textContent = t('show_details');
+    }
+};
+
+window.copyIbanInfo = function(type) {
+    if (!appState.client) return;
+    
+    if (appState.client.canViewIban !== true) {
+        showToast(t('err_iban_locked'), 'error');
+        return;
+    }
+
+    let textToCopy = '';
+    if (type === 'iban') textToCopy = appState.client.iban || '';
+    else if (type === 'swift') textToCopy = appState.client.swift || '';
+
+    if (!textToCopy) return;
+
+    const doCopy = () => {
+        showToast(type === 'iban' ? t('iban_copied') : t('swift_copied'), 'success');
     };
 
     if (navigator.clipboard) {
@@ -1366,23 +1481,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.querySelectorAll('#nav-links li').forEach(li => {
-        if (li.id === 'menu-show-iban') return; 
         li.addEventListener('click', () => navigateTo(li.dataset.view));
     });
-
-    const menuIbanBtn = document.getElementById('menu-show-iban');
-    if (menuIbanBtn) {
-        menuIbanBtn.addEventListener('click', () => {
-            const id = appState.client?.id || '--';
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(id).then(() => {
-                    showToast('IBAN copié : ' + id, 'success');
-                }).catch(() => showToast('Votre IBAN : ' + id, 'info'));
-            } else {
-                showToast('Votre IBAN : ' + id, 'info');
-            }
-        });
-    }
 
     document.getElementById('views-container').addEventListener('submit', (e) => {
         if (e.target.id === 'transfer-form') {
