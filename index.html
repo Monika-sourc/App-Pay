@@ -432,7 +432,7 @@
     </div>
 </template>
 
-<!-- 🆕 NOUVELLE CARTE VIRTUELLE (Recto / Verso) -->
+<!-- 🆕 CARTE VIRTUELLE (Mise à jour) -->
 <template id="tpl-card">
     <div class="dashboard-body">
         <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
@@ -482,34 +482,53 @@
             </div>
         </div>
 
-        <div class="vc-actions">
+        <!-- 🆕 BOUTON UNIQUE "AFFICHER DÉTAILS" -->
+        <div class="vc-actions" style="margin-bottom: 25px;">
             <button class="action-chip" onclick="toggleCardNumber()">
                 <i class="fa-regular fa-eye"></i> <span id="vc-toggle-label" data-i18n="show_details">Afficher les détails</span>
             </button>
-            <button class="action-chip" onclick="showToast('Carte gelée avec succès', 'success')">
-                <i class="fa-solid fa-snowflake"></i> <span data-i18n="freeze_card">Geler la carte</span>
-            </button>
-            <button class="action-chip" onclick="showToast('Paramètres de la carte ouverts', 'info')">
-                <i class="fa-solid fa-gear"></i> <span data-i18n="settings">Paramètres</span>
-            </button>
         </div>
 
+        <!-- 🆕 4 PETITES CARTES AVEC ICÔNES -->
         <div class="vc-info-grid">
-            <div class="vc-info-item">
-                <div class="vc-info-label" data-i18n="monthly_limit">Plafond mensuel</div>
-                <div class="vc-info-value" id="card-limit">--</div>
+            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: var(--primary-color-soft); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div>
+                    <div class="vc-info-label" data-i18n="monthly_limit">Plafond mensuel</div>
+                    <div class="vc-info-value" id="card-limit">--</div>
+                </div>
             </div>
-            <div class="vc-info-item">
-                <div class="vc-info-label" data-i18n="monthly_spent">Dépenses du mois</div>
-                <div class="vc-info-value">0,00</div>
+            
+            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fee2e2; color: #e02424; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                </div>
+                <div>
+                    <div class="vc-info-label" data-i18n="monthly_spent">Dépenses du mois</div>
+                    <div class="vc-info-value">0,00</div>
+                </div>
             </div>
-            <div class="vc-info-item">
-                <div class="vc-info-label" data-i18n="status">Statut</div>
-                <div class="vc-info-value" style="color:#03543f;" data-i18n="active">Active</div>
+
+            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #def7ec; color: #00a04a; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <div class="vc-info-label" data-i18n="status">Statut</div>
+                    <div class="vc-info-value" style="color:#03543f;" data-i18n="active">Active</div>
+                </div>
             </div>
-            <div class="vc-info-item">
-                <div class="vc-info-label" data-i18n="type">Type</div>
-                <div class="vc-info-value">Visa Premium</div>
+
+            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
+                    <i class="fa-brands fa-cc-visa"></i>
+                </div>
+                <div>
+                    <div class="vc-info-label" data-i18n="type">Type</div>
+                    <div class="vc-info-value">Visa Premium</div>
+                </div>
             </div>
         </div>
     </div>
