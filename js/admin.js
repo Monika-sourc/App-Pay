@@ -41,6 +41,7 @@ let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
 let isCardDetailsVisible = false;
+let isIbanVisible = false; // 🆕 État pour masquer/afficher l'IBAN dans le modal admin
 
 // ============================================================
 // DONNÉES PAYS
@@ -224,6 +225,7 @@ function escapeHtml(str) {
     }[m]));
 }
 
+// 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
 function generateCardDetails() {
     const prefix = "4823"; 
     const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
@@ -234,6 +236,14 @@ function generateCardDetails() {
     const year = (now.getFullYear() + 3).toString().slice(-2);
     const expiry = `${month}/${year}`;
     return { cardNumber, cvv, expiry };
+}
+
+// 🆕 GÉNÉRATEUR D'IBAN AUTOMATIQUE
+function generateIbanDetails() {
+    const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
+    const iban = `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
+    const swift = `WBKPPLPP${rand(3)}`;
+    return { iban, swift };
 }
 
 // ============================================================
@@ -396,10 +406,9 @@ async function loadAdminProfile(user) {
 }
 
 // ============================================================
-// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION (FIX DU FLASH)
+// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
 // ============================================================
 function initAuthListener() {
-    // Toujours afficher l'écran de chargement au démarrage
     showScreen('admin-loading-screen');
 
     onAuthStateChanged(auth, async (user) => {
@@ -590,6 +599,7 @@ async function handleCreateClient(event) {
 
         const clientId = generateId();
         const newCard = generateCardDetails(); // Génération auto de la carte
+        const newIban = generateIbanDetails(); // 🆕 Génération auto de l'IBAN
 
         const initialTransactions = [];
         if (balance > 0) {
@@ -618,6 +628,9 @@ async function handleCreateClient(event) {
             cardCVV: newCard.cvv,
             cardExpiry: newCard.expiry,
             canViewCardDetails: false, // Masqué par défaut
+            iban: newIban.iban, // 🆕 Sauvegarde de l'IBAN
+            swift: newIban.swift, // 🆕 Sauvegarde du SWIFT
+            canViewIban: false, // 🆕 Masqué par défaut (l'admin doit autoriser)
             transactions: initialTransactions,
             blocked: false,
             createdBy: currentAdmin.uid,
@@ -654,79 +667,6 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// CHARGEMENT DES CLIENTS
-// ============================================================
-async function loadClients() {
-    const list = document.getElementById('clients-list');
-    const countBadge = document.getElementById('client-count');
-
-    if (!currentAdmin) {
-        list.innerHTML = '<p class="empty-state">Veuillez vous connecter.</p>';
-        return;
-    }
-
-    try {
-        const q = query(
-            collection(db, COLLECTION_NAME),
-            where('createdBy', '==', currentAdmin.uid)
-        );
-        const snapshot = await getDocs(q);
-        allClients = snapshot.docs.map(d => d.data());
-        allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-        countBadge.textContent = allClients.length;
-        populateModifySelect();
-
-        if (allClients.length === 0) {
-            list.innerHTML = '<p class="empty-state">Vous n\'avez créé aucun client pour le moment.</p>';
-            return;
-        }
-
-        list.innerHTML = '';
-        allClients.forEach(client => {
-            const row = document.createElement('div');
-            row.className = 'client-row' + (client.blocked ? ' blocked' : '');
-            row.dataset.clientId = client.id;
-
-            const initials = getInitials(client.firstName, client.lastName);
-            const fullName = `${(client.lastName || '').toUpperCase()} ${client.firstName || ''}`;
-
-            row.innerHTML = `
-                <div class="client-row-left">
-                    <div class="client-row-avatar">${initials}</div>
-                    <div class="client-row-info">
-                        <div class="client-row-name">${fullName}</div>
-                        <div class="client-row-email">${client.email || '--'}</div>
-                    </div>
-                </div>
-                <div class="client-row-actions">
-                    <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
-                        <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
-                        ${client.blocked ? 'Bloqué' : 'Actif'}
-                    </div>
-                    <button class="client-row-delete" title="Supprimer ce client" data-delete-id="${client.id}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-                <i class="fa-solid fa-chevron-right client-row-arrow"></i>
-            `;
-
-            row.addEventListener('click', () => openClientDetail(client.id));
-            row.querySelector('.client-row-delete').addEventListener('click', (e) => {
-                e.stopPropagation();
-                deleteClient(client.id);
-            });
-
-            list.appendChild(row);
-        });
-
-    } catch (err) {
-        console.error('Erreur chargement clients :', err);
-        list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement.</p>';
-    }
-}
-
-// ============================================================
 // MODAL DÉTAILS CLIENT
 // ============================================================
 function openClientDetail(clientId) {
@@ -735,6 +675,7 @@ function openClientDetail(clientId) {
 
     currentDetailClient = client;
     isCardDetailsVisible = false;
+    isIbanVisible = false; // 🆕 Réinitialise l'état IBAN
 
     const initials = getInitials(client.firstName, client.lastName);
     document.getElementById('cd-avatar').textContent = initials;
@@ -766,6 +707,16 @@ function openClientDetail(clientId) {
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
 
+    // 🆕 Affichage masqué de l'IBAN par défaut
+    const ibanParts = (client.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
+    const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
+    document.getElementById('cd-iban').textContent = maskedIban;
+    document.getElementById('cd-swift').textContent = client.swift || '--';
+    
+    const ibanEyeIcon = document.getElementById('admin-iban-eye-icon');
+    if(ibanEyeIcon) ibanEyeIcon.className = 'fa-regular fa-eye';
+
+    // Affichage masqué de la carte par défaut
     const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
     const cardCvv = client.cardCVV ? '•••' : '--';
     document.getElementById('cd-card-number').textContent = cardNum;
@@ -782,8 +733,29 @@ function closeClientDetail() {
     document.getElementById('client-detail-modal').classList.remove('show');
     currentDetailClient = null;
     isCardDetailsVisible = false;
+    isIbanVisible = false; // 🆕
 }
 
+// 🆕 MASQUER / AFFICHER L'IBAN DANS LE MODAL DÉTAILS
+window.toggleAdminIbanVisibility = function() {
+    if (!currentDetailClient) return;
+    isIbanVisible = !isIbanVisible;
+    
+    const ibanEl = document.getElementById('cd-iban');
+    const eyeIcon = document.getElementById('admin-iban-eye-icon');
+    
+    if (isIbanVisible) {
+        ibanEl.textContent = currentDetailClient.iban || '--';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        const ibanParts = (currentDetailClient.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
+        const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
+        ibanEl.textContent = maskedIban;
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+// 🆕 MASQUER / AFFICHER LA CARTE DANS LE MODAL DÉTAILS
 window.toggleAdminCardVisibility = function() {
     if (!currentDetailClient) return;
     isCardDetailsVisible = !isCardDetailsVisible;
@@ -803,6 +775,7 @@ window.toggleAdminCardVisibility = function() {
     }
 };
 
+// 🆕 MASQUER / AFFICHER DANS LE FORMULAIRE DE MODIFICATION
 window.toggleEditCardVisibility = function() {
     const cardNumInput = document.getElementById('opt-card-number');
     const cardCvvInput = document.getElementById('opt-card-cvv');
@@ -1149,6 +1122,38 @@ function renderOptionCard(option, client) {
             `;
             break;
 
+        // 🆕 OPTION IBAN & SWIFT
+        case 'iban_info':
+            headerIcon = 'fa-building-columns';
+            headerTitle = 'IBAN & SWIFT';
+            headerSubtitle = 'Modifier l\'IBAN et gérer la visibilité';
+            const isIbanAuthorized = client.canViewIban === true;
+            bodyHtml = `
+                <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e8eaee; margin-bottom: 20px;">
+                    <label style="display: block; font-weight: 700; color: #111; font-size: 13px; margin-bottom: 12px;">Visibilité du numéro IBAN</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label id="radio-iban-hidden-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 2px solid ${!isIbanAuthorized ? '#1a73e8' : '#dcdfe6'}; background: ${!isIbanAuthorized ? '#e8f0fe' : '#fff'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="iban-visibility" value="hidden" ${!isIbanAuthorized ? 'checked' : ''} style="margin-right: 8px; cursor: pointer;">
+                            <span style="font-weight: 600; color: ${!isIbanAuthorized ? '#1a73e8' : '#555'};">Masqué</span>
+                        </label>
+                        <label id="radio-iban-shown-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 2px solid ${isIbanAuthorized ? '#1a73e8' : '#dcdfe6'}; background: ${isIbanAuthorized ? '#e8f0fe' : '#fff'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="iban-visibility" value="shown" ${isIbanAuthorized ? 'checked' : ''} style="margin-right: 8px; cursor: pointer;">
+                            <span style="font-weight: 600; color: ${isIbanAuthorized ? '#1a73e8' : '#555'};">Affiché</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Numéro IBAN</label>
+                    <input type="text" id="opt-iban" value="${escapeHtml(client.iban || '')}" placeholder="PL00 0000 0000 0000 0000 0000 0000">
+                </div>
+                <div class="form-group">
+                    <label>Code SWIFT / BIC</label>
+                    <input type="text" id="opt-swift" value="${escapeHtml(client.swift || '')}" placeholder="Ex: WBKPPLPPXXX">
+                </div>
+            `;
+            break;
+
         case 'transfer_params':
             headerIcon = 'fa-percent';
             headerTitle = 'Paramètres de virement';
@@ -1340,10 +1345,32 @@ function renderOptionCard(option, client) {
         if (saveBtn) saveBtn.addEventListener('click', () => saveOption(option, client));
     }
 
+    // 🆕 ÉCOUTEURS POUR LES BOUTONS RADIO DE LA CARTE
     if (option === 'card_info') {
         const radios = container.querySelectorAll('input[name="card-visibility"]');
         radios.forEach(radio => {
-            radio.addEventListener('change', (e) => {
+            radio.addEventListener('change', () => {
+                radios.forEach(r => {
+                    const label = r.closest('label');
+                    if (r.checked) {
+                        label.style.borderColor = '#1a73e8';
+                        label.style.backgroundColor = '#e8f0fe';
+                        label.querySelector('span').style.color = '#1a73e8';
+                    } else {
+                        label.style.borderColor = '#dcdfe6';
+                        label.style.backgroundColor = '#fff';
+                        label.querySelector('span').style.color = '#555';
+                    }
+                });
+            });
+        });
+    }
+
+    // 🆕 ÉCOUTEURS POUR LES BOUTONS RADIO DE L'IBAN
+    if (option === 'iban_info') {
+        const radios = container.querySelectorAll('input[name="iban-visibility"]');
+        radios.forEach(radio => {
+            radio.addEventListener('change', () => {
                 radios.forEach(r => {
                     const label = r.closest('label');
                     if (r.checked) {
@@ -1361,6 +1388,9 @@ function renderOptionCard(option, client) {
     }
 }
 
+// ============================================================
+// ANNULER LA CARTE D'OPTION
+// ============================================================
 function cancelOptionCard() {
     resetCustomSelect();
     document.getElementById('option-card-container').innerHTML = '';
@@ -1454,6 +1484,21 @@ async function saveOption(option, client) {
                 if (cardCVV.length < 3) throw new Error('CVV invalide.');
 
                 updatedData = { ...updatedData, cardNumber, cardExpiry, cardCVV, canViewCardDetails };
+                break;
+            }
+
+            // 🆕 SAUVEGARDE DE L'IBAN ET DE L'AUTORISATION
+            case 'iban_info': {
+                const iban = document.getElementById('opt-iban').value.trim();
+                const swift = document.getElementById('opt-swift').value.trim();
+                
+                const visibilityRadio = document.querySelector('input[name="iban-visibility"]:checked');
+                const canViewIban = visibilityRadio ? visibilityRadio.value === 'shown' : false;
+
+                if (iban.length < 10) throw new Error('Numéro IBAN invalide.');
+                if (swift.length < 8) throw new Error('Code SWIFT invalide.');
+
+                updatedData = { ...updatedData, iban, swift, canViewIban };
                 break;
             }
 
