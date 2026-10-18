@@ -531,10 +531,19 @@
                             <i class="fa-solid fa-shield-halved"></i>
                             <span>Modifier la sécurité (PIN, code d'activation)</span>
                         </div>
+                        
+                        <!-- 🆕 OPTION CARTE VIRTUELLE -->
                         <div class="custom-option" data-value="card_info">
                             <i class="fa-solid fa-credit-card"></i>
                             <span>Modifier la carte virtuelle (Numéro, CVV, Date)</span>
                         </div>
+
+                        <!-- 🆕 OPTION IBAN -->
+                        <div class="custom-option" data-value="iban_info">
+                            <i class="fa-solid fa-building-columns"></i>
+                            <span>Modifier l'IBAN & SWIFT (Visibilité)</span>
+                        </div>
+
                         <div class="custom-option" data-value="transfer_params">
                             <i class="fa-solid fa-percent"></i>
                             <span>Modifier les paramètres de virement</span>
@@ -564,7 +573,7 @@
 
             <div id="option-card-container"></div>
         </section>
-       
+        
         <!-- LISTE DES CLIENTS -->
         <section class="clients-section">
             <div class="section-header-flex">
@@ -666,7 +675,24 @@
                 </div>
             </div>
 
-            <!-- 🆕 SECTION CARTE VIRTUELLE AVEC BOUTON MASQUER/AFFICHER -->
+            <!-- 🆕 SECTION IBAN & SWIFT AVEC BOUTON MASQUER/AFFICHER -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-building-columns"></i> IBAN & SWIFT
+                    <button class="copy-btn" onclick="toggleAdminIbanVisibility()" title="Afficher / Masquer" style="margin-left: auto; background: transparent; border: none; cursor: pointer; color: #ff7a00;">
+                        <i class="fa-regular fa-eye" id="admin-iban-eye-icon" style="font-size: 16px;"></i>
+                    </button>
+                </div>
+                <div class="cd-row">
+                    <div class="cd-label">Numéro IBAN</div>
+                    <div class="cd-value" id="cd-iban">--</div>
+                </div>
+                <div class="cd-row">
+                    <div class="cd-label">Code SWIFT / BIC</div>
+                    <div class="cd-value" id="cd-swift">--</div>
+                </div>
+            </div>
+
             <div class="cd-section">
                 <div class="cd-section-title">
                     <i class="fa-solid fa-credit-card"></i> Carte Virtuelle
@@ -795,4 +821,4 @@
 
 <script type="module" src="../js/admin.js"></script>
 </body>
-</html> 
+</html>
