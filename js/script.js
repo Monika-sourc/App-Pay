@@ -858,8 +858,9 @@ function loginSuccess() {
 
     startRealtimeListener();
 
+    // 🆕 Charger le dashboard et ajouter à l'historique
     setTimeout(() => {
-        navigateTo('dashboard');
+        navigateTo('dashboard', {}, true);
     }, 200);
 }
 
@@ -884,7 +885,26 @@ function handleLogout() {
 }
 
 // ============================================================
-// NAVIGATION
+// 🆕 LOADER GLOBAL
+// ============================================================
+function showLoader() {
+    let loader = document.getElementById('global-loader');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'global-loader';
+        loader.innerHTML = '<div class="loader-spinner"></div>';
+        document.body.appendChild(loader);
+    }
+    loader.classList.add('active');
+}
+
+function hideLoader() {
+    const loader = document.getElementById('global-loader');
+    if (loader) loader.classList.remove('active');
+}
+
+// ============================================================
+// NAVIGATION (Mise à jour avec Loader + History)
 // ============================================================
 const viewTemplates = {
     dashboard: 'tpl-dashboard',
@@ -894,39 +914,70 @@ const viewTemplates = {
     success: 'tpl-success',
     failed: 'tpl-failed',
     card: 'tpl-card',
-    iban: 'tpl-iban', // 🆕 Ajout de la vue IBAN
+    iban: 'tpl-iban',
     account: 'tpl-account'
 };
 
-function navigateTo(viewName, data = {}) {
-    const container = document.getElementById('views-container');
-    const templateId = viewTemplates[viewName];
-    if (!templateId) return;
+function navigateTo(viewName, data = {}, addToHistory = true) {
+    // 🔄 Afficher le loader (cercle qui tourne)
+    showLoader();
 
-    const template = document.getElementById(templateId);
-    if (!template) return;
+    // 🆕 Ajouter à l'historique du navigateur pour le bouton retour
+    if (addToHistory) {
+        history.pushState({ view: viewName, data: data }, '', `#${viewName}`);
+    }
 
-    container.innerHTML = '';
-    container.appendChild(template.content.cloneNode(true));
+    // Petit délai pour laisser le temps au loader de s'afficher
+    setTimeout(() => {
+        const container = document.getElementById('views-container');
+        const templateId = viewTemplates[viewName];
+        if (!templateId) {
+            hideLoader();
+            return;
+        }
 
-    document.querySelectorAll('#nav-links li').forEach(li => {
-        li.classList.toggle('active', li.dataset.view === viewName);
-    });
+        const template = document.getElementById(templateId);
+        if (!template) {
+            hideLoader();
+            return;
+        }
 
-    applyLanguage();
+        container.innerHTML = '';
+        container.appendChild(template.content.cloneNode(true));
 
-    if (viewName === 'dashboard') renderDashboard();
-    if (viewName === 'transfer') renderTransferView();
-    if (viewName === 'verification') renderVerificationView(data);
-    if (viewName === 'progress') renderProgressView(data);
-    if (viewName === 'success') renderSuccessView(data);
-    if (viewName === 'failed') renderFailedView(data);
-    if (viewName === 'card') renderCardView();
-    if (viewName === 'iban') renderIbanView(); // 🆕 Appel de la vue IBAN
-    if (viewName === 'account') renderAccountView();
+        document.querySelectorAll('#nav-links li').forEach(li => {
+            li.classList.toggle('active', li.dataset.view === viewName);
+        });
 
-    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        applyLanguage();
+
+        if (viewName === 'dashboard') renderDashboard();
+        if (viewName === 'transfer') renderTransferView();
+        if (viewName === 'verification') renderVerificationView(data);
+        if (viewName === 'progress') renderProgressView(data);
+        if (viewName === 'success') renderSuccessView(data);
+        if (viewName === 'failed') renderFailedView(data);
+        if (viewName === 'card') renderCardView();
+        if (viewName === 'iban') renderIbanView();
+        if (viewName === 'account') renderAccountView();
+
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Cacher le loader une fois la page chargée
+        hideLoader();
+    }, 300); // 300 ms de délai pour voir le cercle
 }
+
+// 🆕 GESTION DU BOUTON RETOUR DU TÉLÉPHONE
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.view) {
+        // Recharger la vue précédente sans ajouter à l'historique
+        navigateTo(event.state.view, event.state.data, false);
+    } else {
+        // Si pas d'état (retour à la racine), revenir au dashboard
+        navigateTo('dashboard', {}, false);
+    }
+});
 
 // ============================================================
 // ICÔNE DE TRANSACTION
@@ -1346,7 +1397,7 @@ window.copyCardInfo = function(type) {
 };
 
 // ============================================================
-// 🆕 VUE : IBAN PERSONNEL
+// VUE : IBAN PERSONNEL
 // ============================================================
 let ibanVisible = false;
 
@@ -1359,7 +1410,6 @@ function renderIbanView() {
     const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
     const swift = appState.client.swift || '--------';
     
-    // Masque les 4 derniers caractères
     const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
     
     if (ibanDisplay) ibanDisplay.textContent = maskedIban;
