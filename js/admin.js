@@ -40,7 +40,7 @@ let allClients = [];
 let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
-let isCardDetailsVisible = false; // 🆕 État pour masquer/afficher la carte
+let isCardDetailsVisible = false; // État pour masquer/afficher la carte dans le modal admin
 
 // ============================================================
 // DONNÉES PAYS
@@ -91,41 +91,41 @@ const COUNTRY_LIST = [
     { name: "Lettonie", flag: "🇱🇻" }, { name: "Liban", flag: "🇱🇧" },
     { name: "Libéria", flag: "🇱🇷" }, { name: "Libye", flag: "🇱🇾" },
     { name: "Liechtenstein", flag: "🇱🇮" }, { name: "Lituanie", flag: "🇱🇹" },
-    { name: "Luxembourg", flag: "🇱🇺" }, { name: "Madagascar", flag: "🇲🇬" },
-    { name: "Malaisie", flag: "🇲🇾" }, { name: "Malawi", flag: "🇲🇼" },
-    { name: "Mali", flag: "🇲🇱" }, { name: "Malte", flag: "🇲🇹" },
-    { name: "Maroc", flag: "🇲🇦" }, { name: "Maurice", flag: "🇲🇺" },
-    { name: "Mauritanie", flag: "🇲🇷" }, { name: "Mexique", flag: "🇲🇽" },
-    { name: "Moldavie", flag: "🇲🇩" }, { name: "Monaco", flag: "🇲🇨" },
-    { name: "Mongolie", flag: "🇲🇳" }, { name: "Monténégro", flag: "🇲🇪" },
-    { name: "Mozambique", flag: "🇲🇿" }, { name: "Namibie", flag: "🇳🇦" },
-    { name: "Népal", flag: "🇳🇵" }, { name: "Nicaragua", flag: "🇳🇮" },
-    { name: "Niger", flag: "🇳🇪" }, { name: "Nigéria", flag: "🇳🇬" },
-    { name: "Norvège", flag: "🇳🇴" }, { name: "Nouvelle-Zélande", flag: "🇳🇿" },
-    { name: "Oman", flag: "🇴🇲" }, { name: "Ouganda", flag: "🇺🇬" },
-    { name: "Ouzbékistan", flag: "🇺🇿" }, { name: "Pakistan", flag: "🇵🇰" },
-    { name: "Palestine", flag: "🇵🇸" }, { name: "Panama", flag: "🇵🇦" },
-    { name: "Paraguay", flag: "🇵🇾" }, { name: "Pays-Bas", flag: "🇳🇱" },
-    { name: "Pérou", flag: "🇵🇪" }, { name: "Philippines", flag: "🇵🇭" },
-    { name: "Pologne", flag: "🇵🇱" }, { name: "Portugal", flag: "🇵🇹" },
-    { name: "Qatar", flag: "🇶🇦" }, { name: "République Démocratique du Congo", flag: "🇨🇩" },
-    { name: "République Dominicaine", flag: "🇩🇴" }, { name: "République Tchèque", flag: "🇨🇿" },
-    { name: "Roumanie", flag: "🇷🇴" }, { name: "Royaume-Uni", flag: "🇬🇧" },
-    { name: "Russie", flag: "🇷🇺" }, { name: "Rwanda", flag: "🇷🇼" },
-    { name: "Sénégal", flag: "🇸🇳" }, { name: "Serbie", flag: "🇷🇸" },
-    { name: "Seychelles", flag: "🇸🇨" }, { name: "Sierra Leone", flag: "🇸🇱" },
-    { name: "Singapour", flag: "🇸🇬" }, { name: "Slovaquie", flag: "🇸🇰" },
-    { name: "Slovénie", flag: "🇸🇮" }, { name: "Somalie", flag: "🇸🇴" },
-    { name: "Soudan", flag: "🇸🇩" }, { name: "Sri Lanka", flag: "🇱🇰" },
-    { name: "Suède", flag: "🇸🇪" }, { name: "Suisse", flag: "🇨🇭" },
-    { name: "Suriname", flag: "🇸🇷" }, { name: "Syrie", flag: "🇸🇾" },
-    { name: "Tanzanie", flag: "🇹🇿" }, { name: "Tchad", flag: "🇹🇩" },
-    { name: "Thaïlande", flag: "🇹🇭" }, { name: "Togo", flag: "🇹🇬" },
-    { name: "Tunisie", flag: "🇹🇳" }, { name: "Turquie", flag: "🇹🇷" },
-    { name: "Ukraine", flag: "🇺🇦" }, { name: "Uruguay", flag: "🇺🇾" },
-    { name: "Venezuela", flag: "🇻🇪" }, { name: "Vietnam", flag: "🇻🇳" },
-    { name: "Yémen", flag: "🇾🇪" }, { name: "Zambie", flag: "🇿🇲" },
-    { name: "Zimbabwe", flag: "🇿🇼" }
+    { name: "Luxembourg", flag: "🇱🇺" }, { name: "Macédoine du Nord", flag: "🇲🇰" },
+    { name: "Madagascar", flag: "🇲🇬" }, { name: "Malaisie", flag: "🇲🇾" },
+    { name: "Malawi", flag: "🇲🇼" }, { name: "Mali", flag: "🇲🇱" },
+    { name: "Malte", flag: "🇲🇹" }, { name: "Maroc", flag: "🇲🇦" },
+    { name: "Maurice", flag: "🇲🇺" }, { name: "Mauritanie", flag: "🇲🇷" },
+    { name: "Mexique", flag: "🇲🇽" }, { name: "Moldavie", flag: "🇲🇩" },
+    { name: "Monaco", flag: "🇲🇨" }, { name: "Mongolie", flag: "🇲🇳" },
+    { name: "Monténégro", flag: "🇲🇪" }, { name: "Mozambique", flag: "🇲🇿" },
+    { name: "Namibie", flag: "🇳🇦" }, { name: "Népal", flag: "🇳🇵" },
+    { name: "Nicaragua", flag: "🇳🇮" }, { name: "Niger", flag: "🇳🇪" },
+    { name: "Nigéria", flag: "🇳🇬" }, { name: "Norvège", flag: "🇳🇴" },
+    { name: "Nouvelle-Zélande", flag: "🇳🇿" }, { name: "Oman", flag: "🇴🇲" },
+    { name: "Ouganda", flag: "🇺🇬" }, { name: "Ouzbékistan", flag: "🇺🇿" },
+    { name: "Pakistan", flag: "🇵🇰" }, { name: "Palestine", flag: "🇵🇸" },
+    { name: "Panama", flag: "🇵🇦" }, { name: "Paraguay", flag: "🇵🇾" },
+    { name: "Pays-Bas", flag: "🇳🇱" }, { name: "Pérou", flag: "🇵🇪" },
+    { name: "Philippines", flag: "🇵🇭" }, { name: "Pologne", flag: "🇵🇱" },
+    { name: "Portugal", flag: "🇵🇹" }, { name: "Qatar", flag: "🇶🇦" },
+    { name: "République Démocratique du Congo", flag: "🇨🇩" }, { name: "République Dominicaine", flag: "🇩🇴" },
+    { name: "République Tchèque", flag: "🇨🇿" }, { name: "Roumanie", flag: "🇷🇴" },
+    { name: "Royaume-Uni", flag: "🇬🇧" }, { name: "Russie", flag: "🇷🇺" },
+    { name: "Rwanda", flag: "🇷🇼" }, { name: "Sénégal", flag: "🇸🇳" },
+    { name: "Serbie", flag: "🇷🇸" }, { name: "Seychelles", flag: "🇸🇨" },
+    { name: "Sierra Leone", flag: "🇸🇱" }, { name: "Singapour", flag: "🇸🇬" },
+    { name: "Slovaquie", flag: "🇸🇰" }, { name: "Slovénie", flag: "🇸🇮" },
+    { name: "Somalie", flag: "🇸🇴" }, { name: "Soudan", flag: "🇸🇩" },
+    { name: "Sri Lanka", flag: "🇱🇰" }, { name: "Suède", flag: "🇸🇪" },
+    { name: "Suisse", flag: "🇨🇭" }, { name: "Suriname", flag: "🇸🇷" },
+    { name: "Syrie", flag: "🇸🇾" }, { name: "Tanzanie", flag: "🇹🇿" },
+    { name: "Tchad", flag: "🇹🇩" }, { name: "Thaïlande", flag: "🇹🇭" },
+    { name: "Togo", flag: "🇹🇬" }, { name: "Tunisie", flag: "🇹🇳" },
+    { name: "Turquie", flag: "🇹🇷" }, { name: "Ukraine", flag: "🇺🇦" },
+    { name: "Uruguay", flag: "🇺🇾" }, { name: "Venezuela", flag: "🇻🇪" },
+    { name: "Vietnam", flag: "🇻🇳" }, { name: "Yémen", flag: "🇾🇪" },
+    { name: "Zambie", flag: "🇿🇲" }, { name: "Zimbabwe", flag: "🇿🇼" }
 ];
 
 const CURRENCY_LIST = [
@@ -615,7 +615,7 @@ async function handleCreateClient(event) {
         }
 
         const clientId = generateId();
-        const newCard = generateCardDetails(); // 🆕 Génération auto de la carte
+        const newCard = generateCardDetails(); // Génération auto de la carte
 
         const initialTransactions = [];
         if (balance > 0) {
@@ -640,9 +640,10 @@ async function handleCreateClient(event) {
             balance, currency, pin, activationCode,
             percentValue, messageAfterTransfer, color,
             bankName, bankDomain, bankLogo,
-            cardNumber: newCard.cardNumber, // 🆕 Sauvegarde de la carte
-            cardCVV: newCard.cvv,           // 🆕
-            cardExpiry: newCard.expiry,     // 🆕
+            cardNumber: newCard.cardNumber, // Sauvegarde de la carte
+            cardCVV: newCard.cvv,
+            cardExpiry: newCard.expiry,
+            canViewCardDetails: false, // 🆕 MASQUÉ PAR DÉFAUT (L'admin doit autoriser)
             transactions: initialTransactions,
             blocked: false,
             createdBy: currentAdmin.uid,
@@ -759,7 +760,7 @@ function openClientDetail(clientId) {
     if (!client) return;
 
     currentDetailClient = client;
-    isCardDetailsVisible = false; // 🆕 Réinitialise l'état à masqué
+    isCardDetailsVisible = false; // Masqué par défaut
 
     const initials = getInitials(client.firstName, client.lastName);
     document.getElementById('cd-avatar').textContent = initials;
@@ -791,7 +792,7 @@ function openClientDetail(clientId) {
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
 
-    // 🆕 Affichage masqué de la carte
+    // Affichage masqué de la carte par défaut
     const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
     const cardCvv = client.cardCVV ? '•••' : '--';
     document.getElementById('cd-card-number').textContent = cardNum;
@@ -813,7 +814,7 @@ function closeClientDetail() {
     isCardDetailsVisible = false;
 }
 
-// 🆕 MASQUER / AFFICHER LA CARTE DANS LE MODAL DÉTAILS
+// 🆕 MASQUER / AFFICHER LA CARTE DANS LE MODAL DÉTAILS (ADMIN UNIQUEMENT)
 window.toggleAdminCardVisibility = function() {
     if (!currentDetailClient) return;
     isCardDetailsVisible = !isCardDetailsVisible;
@@ -833,7 +834,7 @@ window.toggleAdminCardVisibility = function() {
     }
 };
 
-// 🆕 MASQUER / AFFICHER DANS LE FORMULAIRE DE MODIFICATION
+// 🆕 MASQUER / AFFICHER DANS LE FORMULAIRE DE MODIFICATION (ADMIN UNIQUEMENT)
 window.toggleEditCardVisibility = function() {
     const cardNumInput = document.getElementById('opt-card-number');
     const cardCvvInput = document.getElementById('opt-card-cvv');
@@ -1138,12 +1139,21 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // 🆕 OPTION CARTE VIRTUELLE AVEC BOUTON MASQUER/AFFICHER
+        // 🆕 OPTION CARTE VIRTUELLE AVEC AUTORISATION
         case 'card_info':
             headerIcon = 'fa-credit-card';
             headerTitle = 'Carte virtuelle';
-            headerSubtitle = 'Modifier le numéro, la date ou le CVV';
+            headerSubtitle = 'Modifier la carte et gérer les autorisations';
+            const isAuthorized = client.canViewCardDetails === true;
             bodyHtml = `
+                <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e8eaee; margin-bottom: 20px;">
+                    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
+                        <span style="font-weight: 700; color: #111; font-size: 13px;">Autoriser le client à voir les détails de sa carte</span>
+                        <input type="checkbox" id="opt-can-view-card" ${isAuthorized ? 'checked' : ''} style="width: 20px; height: 20px; cursor: pointer;">
+                    </label>
+                    <small style="display: block; margin-top: 8px; color: #666;">Si désactivé, le client ne pourra pas afficher le numéro complet ni le CVV.</small>
+                </div>
+
                 <div class="form-group">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
                         <label style="margin-bottom:0;">Numéro de carte</label>
@@ -1162,10 +1172,6 @@ function renderOptionCard(option, client) {
                         <label>Code CVV</label>
                         <input type="password" id="opt-card-cvv" value="${escapeHtml(client.cardCVV || '')}" placeholder="3 chiffres">
                     </div>
-                </div>
-                <div class="option-info-box">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Le nom du titulaire est automatiquement lié au nom du client.</span>
                 </div>
             `;
             break;
@@ -1445,17 +1451,18 @@ async function saveOption(option, client) {
                 break;
             }
 
-            // 🆕 SAUVEGARDE DE LA CARTE (fonctionne même si les champs sont en password)
+            // 🆕 SAUVEGARDE DE LA CARTE ET DE L'AUTORISATION
             case 'card_info': {
                 const cardNumber = document.getElementById('opt-card-number').value.trim();
                 const cardExpiry = document.getElementById('opt-card-expiry').value.trim();
                 const cardCVV = document.getElementById('opt-card-cvv').value.trim();
+                const canViewCardDetails = document.getElementById('opt-can-view-card').checked;
 
                 if (cardNumber.length < 15) throw new Error('Numéro de carte invalide.');
                 if (cardExpiry.length < 4) throw new Error('Date d\'expiration invalide.');
                 if (cardCVV.length < 3) throw new Error('CVV invalide.');
 
-                updatedData = { ...updatedData, cardNumber, cardExpiry, cardCVV };
+                updatedData = { ...updatedData, cardNumber, cardExpiry, cardCVV, canViewCardDetails };
                 break;
             }
 
