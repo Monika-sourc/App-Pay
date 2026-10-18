@@ -1235,9 +1235,9 @@ function renderCardView() {
     const expiryEl = document.getElementById('vc-expiry');
     if (expiryEl) expiryEl.textContent = appState.client.cardExpiry || '12/28';
 
-    // CVV
+    // 🆕 CVV - Masqué par défaut
     const cvvEl = document.getElementById('vc-cvv');
-    if (cvvEl) cvvEl.textContent = appState.client.cardCVV || '123';
+    if (cvvEl) cvvEl.textContent = '•••';
 
     // Plafond
     const percentLimit = Number(appState.client.percentValue ?? 100);
@@ -1252,20 +1252,25 @@ function renderCardView() {
     if (label) label.textContent = t('show_details');
 }
 
+// 🆕 MASQUER / AFFICHER LE NUMÉRO ET LE CVV SIMULTANÉMENT
 function toggleCardNumber() {
     cardNumberVisible = !cardNumberVisible;
     const display = document.getElementById('vc-number-display');
+    const cvvEl = document.getElementById('vc-cvv');
     const label = document.getElementById('vc-toggle-label');
     
     const realNumber = appState.client?.cardNumber || '4823000000000000';
-    const masked = realNumber.substring(0, 4) + ' •••• •••• ' + realNumber.substring(12, 16);
+    const realCvv = appState.client?.cardCVV || '123';
+    const maskedNumber = realNumber.substring(0, 4) + ' •••• •••• ' + realNumber.substring(12, 16);
     const formattedReal = realNumber.replace(/(\d{4})/g, '$1 ').trim();
 
     if (cardNumberVisible) {
         display.textContent = formattedReal;
+        if (cvvEl) cvvEl.textContent = realCvv;
         if (label) label.textContent = t('hide_details');
     } else {
-        display.textContent = masked;
+        display.textContent = maskedNumber;
+        if (cvvEl) cvvEl.textContent = '•••';
         if (label) label.textContent = t('show_details');
     }
 }
