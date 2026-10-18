@@ -292,7 +292,7 @@ body {
     padding: 20px 0;
     flex-shrink: 0;
     transition: background-color 0.3s;
-    overflow: hidden; /* Empêche le bouton gonflé de sortir de la zone verte */
+    overflow: hidden;
 }
 
 .sidebar-top {
@@ -514,216 +514,6 @@ body {
     font-weight: 700;
     font-size: 13px;
     margin-bottom: 2px;
-}
-
-/* ============================================================
-   CARTE VIRTUELLE DORÉE (RECTO / VERSO)
-   ============================================================ */
-.virtual-card-wrapper {
-    max-width: 420px;
-    margin-bottom: 25px;
-    perspective: 1000px;
-}
-
-.gold-card {
-    width: 100%;
-    aspect-ratio: 1.586 / 1;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%); /* Couleur Or */
-    color: #1a1a1a; /* Texte noir pour contraster */
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(170, 119, 28, 0.4);
-    border: 1px solid #e5c687; /* Bordure dorée claire */
-}
-
-/* Effet de brillance */
-.gold-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
-    border-radius: 50%;
-    transform: rotate(-30deg);
-}
-
-.vc-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-logo {
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #1a1a1a;
-}
-
-/* Puce de la carte */
-.vc-chip {
-    width: 45px;
-    height: 35px;
-    background: linear-gradient(135deg, #e5c687 0%, #b88a2c 100%);
-    border-radius: 6px;
-    position: relative;
-    border: 1px solid #997520;
-}
-.vc-chip::after {
-    content: '';
-    position: absolute;
-    inset: 6px 4px;
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 3px;
-}
-
-.vc-number {
-    font-family: 'Courier New', monospace;
-    font-size: 22px;
-    letter-spacing: 3px;
-    font-weight: 800;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
-    position: relative;
-    z-index: 1;
-    margin: 15px 0;
-    color: #1a1a1a;
-}
-
-.vc-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-label {
-    font-size: 10px;
-    opacity: 0.8;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 3px;
-    font-weight: 700;
-    color: #1a1a1a;
-}
-
-.vc-value {
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #1a1a1a;
-}
-
-.vc-brand {
-    font-size: 32px;
-    color: #1a1a1a;
-}
-
-/* ============ FACE ARRIÈRE (VERSO) ============ */
-.vc-back {
-    justify-content: flex-start; /* Aligner vers le haut */
-    padding: 25px 0; /* Enlever le padding sur les côtés pour la bande noire */
-}
-
-.vc-magnetic-strip {
-    width: 100%;
-    height: 50px;
-    background-color: #111111; /* Bande noire */
-    margin-bottom: 20px;
-}
-
-.vc-signature-box {
-    width: 85%;
-    height: 40px;
-    background-color: #f8f9fa; /* Fond blanc */
-    margin: 0 25px 20px 25px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0 15px;
-    color: #111;
-    position: relative;
-}
-
-.vc-cvv-label {
-    position: absolute;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #666;
-}
-
-.vc-cvv {
-    font-family: 'Courier New', monospace;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #1a1a1a;
-}
-
-.vc-back-text {
-    font-size: 9px;
-    color: #1a1a1a;
-    opacity: 0.8;
-    line-height: 1.4;
-    padding: 0 25px;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.vc-back-logo {
-    font-size: 35px;
-    color: #1a1a1a;
-    position: absolute;
-    bottom: 20px;
-    right: 25px;
-}
-
-.vc-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.vc-info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.vc-info-item {
-    background: var(--card-bg);
-    padding: 14px 15px;
-    border-radius: 10px;
-    box-shadow: var(--card-shadow);
-}
-
-.vc-info-label {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 4px;
-    font-weight: 600;
-}
-
-.vc-info-value {
-    font-size: 15px;
-    font-weight: 800;
-    color: #111;
 }
 
 /* ============================================================
@@ -1481,6 +1271,212 @@ body {
     border: 2px solid #fecaca;
 }
 
+/* ============ CARTE VIRTUELLE (OR) ============ */
+.virtual-card-wrapper {
+    max-width: 420px;
+    margin-bottom: 25px;
+    perspective: 1000px;
+}
+
+.gold-card {
+    width: 100%;
+    aspect-ratio: 1.586 / 1;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+    color: #1a1a1a;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(170, 119, 28, 0.4);
+    border: 1px solid #e5c687;
+}
+
+.gold-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+}
+
+.vc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.vc-logo {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a1a1a;
+}
+
+.vc-chip {
+    width: 45px;
+    height: 35px;
+    background: linear-gradient(135deg, #e5c687 0%, #b88a2c 100%);
+    border-radius: 6px;
+    position: relative;
+    border: 1px solid #997520;
+}
+.vc-chip::after {
+    content: '';
+    position: absolute;
+    inset: 6px 4px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+.vc-number {
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
+    position: relative;
+    z-index: 1;
+    margin: 15px 0;
+    color: #1a1a1a;
+}
+
+.vc-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 1;
+}
+
+.vc-label {
+    font-size: 10px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.vc-value {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #1a1a1a;
+}
+
+.vc-brand {
+    font-size: 32px;
+    color: #1a1a1a;
+}
+
+/* ============ FACE ARRIÈRE (VERSO) ============ */
+.vc-back {
+    justify-content: flex-start;
+    padding: 25px 0;
+}
+
+.vc-magnetic-strip {
+    width: 100%;
+    height: 50px;
+    background-color: #111111;
+    margin-bottom: 20px;
+}
+
+.vc-signature-box {
+    width: 85%;
+    height: 40px;
+    background-color: #f8f9fa;
+    margin: 0 25px 20px 25px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 15px;
+    color: #111;
+    position: relative;
+}
+
+.vc-cvv-label {
+    position: absolute;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+}
+
+.vc-cvv {
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #1a1a1a;
+}
+
+.vc-back-text {
+    font-size: 9px;
+    color: #1a1a1a;
+    opacity: 0.8;
+    line-height: 1.4;
+    padding: 0 25px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.vc-back-logo {
+    font-size: 35px;
+    color: #1a1a1a;
+    position: absolute;
+    bottom: 20px;
+    right: 25px;
+}
+
+.vc-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.vc-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.vc-info-item {
+    background: var(--card-bg);
+    padding: 14px 15px;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+}
+
+.vc-info-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.vc-info-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: #111;
+}
+
 /* ============ MON COMPTE ============ */
 .account-header {
     display: flex;
@@ -1587,28 +1583,36 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* Toast */
+/* ============ TOAST (CENTRÉ ET PLUS GROS) ============ */
 .toast {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #111;
     color: white;
-    padding: 14px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    z-index: 9999;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    z-index: 99999;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
-    gap: 10px;
-    animation: fadeInDown 0.3s ease;
-    max-width: 350px;
+    gap: 15px;
+    animation: toastPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    text-align: center;
+    justify-content: center;
 }
-.toast i { color: var(--primary-color); }
+.toast i { font-size: 20px; color: var(--primary-color); }
 .toast.success i { color: #00c853; }
 .toast.error i { color: #e02424; }
+
+@keyframes toastPopIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
 
 .hidden {
     display: none !important;
