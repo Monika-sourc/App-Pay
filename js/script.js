@@ -120,7 +120,7 @@ const TRANSLATIONS = {
         login_success: "Connexion réussie. Bienvenue !",
         transfer_cancelled: "Virement annulé.",
         transfer_finalized: "Virement finalisé avec succès !",
-        err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur." // 🆕
+        err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur."
     },
     en: {
         dashboard: "Wallet",
@@ -207,7 +207,7 @@ const TRANSLATIONS = {
         login_success: "Login successful. Welcome!",
         transfer_cancelled: "Transfer cancelled.",
         transfer_finalized: "Transfer completed successfully!",
-        err_card_locked: "Card details display is not authorized by the administrator." // 🆕
+        err_card_locked: "Card details display is not authorized by the administrator."
     },
     es: {
         dashboard: "Cartera",
@@ -294,7 +294,7 @@ const TRANSLATIONS = {
         login_success: "¡Inicio de sesión exitoso!",
         transfer_cancelled: "Transferencia cancelada.",
         transfer_finalized: "¡Transferencia completada!",
-        err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador." // 🆕
+        err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador."
     },
     de: {
         dashboard: "Portemonnaie",
@@ -381,7 +381,7 @@ const TRANSLATIONS = {
         login_success: "Anmeldung erfolgreich. Willkommen!",
         transfer_cancelled: "Überweisung abgebrochen.",
         transfer_finalized: "Überweisung erfolgreich abgeschlossen!",
-        err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert." // 🆕
+        err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert."
     },
     pl: {
         dashboard: "Portfel",
@@ -468,7 +468,7 @@ const TRANSLATIONS = {
         login_success: "Zalogowano pomyślnie. Witaj!",
         transfer_cancelled: "Przelew anulowany.",
         transfer_finalized: "Przelew zakończony pomyślnie!",
-        err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora." // 🆕
+        err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora."
     }
 };
 
@@ -741,12 +741,14 @@ async function loadClientFromFirestore() {
             console.log("🆕 Génération automatique des détails de la carte virtuelle...");
             const newCard = generateCardDetails();
             
+            // Mise à jour silencieuse dans Firestore
             await updateDoc(docRef, {
                 cardNumber: newCard.cardNumber,
                 cardCVV: newCard.cvv,
                 cardExpiry: newCard.expiry
             });
 
+            // Mise à jour de l'état local
             appState.client.cardNumber = newCard.cardNumber;
             appState.client.cardCVV = newCard.cvv;
             appState.client.cardExpiry = newCard.expiry;
@@ -1226,12 +1228,12 @@ function renderCardView() {
         holder.textContent = `${appState.client.firstName || ''} ${appState.client.lastName || ''}`.toUpperCase();
     }
 
-    // Numéro de carte masqué par défaut
+    // Numéro de carte masqué (12 premiers chiffres visibles, 4 derniers masqués)
     const numberDisplay = document.getElementById('vc-number-display');
     if (numberDisplay) {
         const realNumber = appState.client.cardNumber || '4823000000000000';
-        const masked = realNumber.substring(0, 4) + ' •••• •••• ' + realNumber.substring(12, 16);
-        numberDisplay.textContent = masked;
+        const visiblePart = realNumber.substring(0, 12).replace(/(\d{4})/g, '$1 ').trim();
+        numberDisplay.textContent = visiblePart + ' ••••';
     }
 
     // Date d'expiration
@@ -1255,7 +1257,7 @@ function renderCardView() {
     if (label) label.textContent = t('show_details');
 }
 
-// 🆕 MASQUER / AFFICHER LE NUMÉRO ET LE CVV (AVEC VÉRIFICATION D'AUTORISATION)
+// 🆕 MASQUER / AFFICHER LES 4 DERNIERS CHIFFRES ET LE CVV (AVEC VÉRIFICATION D'AUTORISATION)
 function toggleCardNumber() {
     if (!appState.client) return;
 
@@ -1272,11 +1274,13 @@ function toggleCardNumber() {
     
     const realNumber = appState.client?.cardNumber || '4823000000000000';
     const realCvv = appState.client?.cardCVV || '123';
-    const maskedNumber = realNumber.substring(0, 4) + ' •••• •••• ' + realNumber.substring(12, 16);
-    const formattedReal = realNumber.replace(/(\d{4})/g, '$1 ').trim();
+    
+    const visiblePart = realNumber.substring(0, 12).replace(/(\d{4})/g, '$1 ').trim();
+    const maskedNumber = visiblePart + ' ••••';
+    const fullNumber = realNumber.replace(/(\d{4})/g, '$1 ').trim();
 
     if (cardNumberVisible) {
-        display.textContent = formattedReal;
+        display.textContent = fullNumber;
         if (cvvEl) cvvEl.textContent = realCvv;
         if (label) label.textContent = t('hide_details');
     } else {
