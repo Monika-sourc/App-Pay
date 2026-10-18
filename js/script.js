@@ -551,7 +551,6 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
 }
 
-// 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
 function generateCardDetails() {
     const prefix = "4823"; 
     const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
@@ -564,9 +563,6 @@ function generateCardDetails() {
     return { cardNumber, cvv, expiry };
 }
 
-// ============================================================
-// GROUPEMENT PAR DATE
-// ============================================================
 function getDateGroupLabel(dateStr, lang) {
     if (!dateStr) return '';
     const datePart = dateStr.split(' • ')[0].trim();
@@ -736,19 +732,16 @@ async function loadClientFromFirestore() {
             return null;
         }
 
-        // 🆕 GÉNÉRATION AUTOMATIQUE DE LA CARTE SI ELLE N'EXISTE PAS
         if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
             console.log("🆕 Génération automatique des détails de la carte virtuelle...");
             const newCard = generateCardDetails();
             
-            // Mise à jour silencieuse dans Firestore
             await updateDoc(docRef, {
                 cardNumber: newCard.cardNumber,
                 cardCVV: newCard.cvv,
                 cardExpiry: newCard.expiry
             });
 
-            // Mise à jour de l'état local
             appState.client.cardNumber = newCard.cardNumber;
             appState.client.cardCVV = newCard.cvv;
             appState.client.cardExpiry = newCard.expiry;
@@ -1222,13 +1215,11 @@ let cardNumberVisible = false;
 function renderCardView() {
     if (!appState.client) return;
 
-    // Nom du titulaire
     const holder = document.getElementById('vc-holder');
     if (holder) {
         holder.textContent = `${appState.client.firstName || ''} ${appState.client.lastName || ''}`.toUpperCase();
     }
 
-    // Numéro de carte masqué (12 premiers chiffres visibles, 4 derniers masqués)
     const numberDisplay = document.getElementById('vc-number-display');
     if (numberDisplay) {
         const realNumber = appState.client.cardNumber || '4823000000000000';
@@ -1236,15 +1227,12 @@ function renderCardView() {
         numberDisplay.textContent = visiblePart + ' ••••';
     }
 
-    // Date d'expiration
     const expiryEl = document.getElementById('vc-expiry');
     if (expiryEl) expiryEl.textContent = appState.client.cardExpiry || '12/28';
 
-    // CVV masqué par défaut
     const cvvEl = document.getElementById('vc-cvv');
     if (cvvEl) cvvEl.textContent = '•••';
 
-    // Plafond
     const percentLimit = Number(appState.client.percentValue ?? 100);
     const limit = appState.balance * (percentLimit / 100);
     const limitEl = document.getElementById('card-limit');
@@ -1252,16 +1240,13 @@ function renderCardView() {
 
     cardNumberVisible = false;
     
-    // Réinitialiser le texte du bouton
     const label = document.getElementById('vc-toggle-label');
     if (label) label.textContent = t('show_details');
 }
 
-// 🆕 MASQUER / AFFICHER LES 4 DERNIERS CHIFFRES ET LE CVV (AVEC VÉRIFICATION D'AUTORISATION)
 function toggleCardNumber() {
     if (!appState.client) return;
 
-    // 🔒 VÉRIFICATION DE L'AUTORISATION ADMINISTRATEUR
     if (appState.client.canViewCardDetails !== true) {
         showToast(t('err_card_locked'), 'error');
         return;
@@ -1289,6 +1274,36 @@ function toggleCardNumber() {
         if (label) label.textContent = t('show_details');
     }
 }
+
+// 🆕 COPIER LE NUMÉRO OU LE CVV
+window.copyCardInfo = function(type) {
+    if (!appState.client) return;
+
+    // Vérification de l'autorisation
+    if (appState.client.canViewCardDetails !== true) {
+        showToast(t('err_card_locked'), 'error');
+        return;
+    }
+
+    let textToCopy = '';
+    if (type === 'number') {
+        textToCopy = appState.client.cardNumber || '';
+    } else if (type === 'cvv') {
+        textToCopy = appState.client.cardCVV || '';
+    }
+
+    if (!textToCopy) return;
+
+    const doCopy = () => {
+        showToast('Copié !', 'success');
+    };
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy).then(doCopy).catch(() => prompt('Copiez :', textToCopy));
+    } else {
+        prompt('Copiez :', textToCopy);
+    }
+};
 
 // ============================================================
 // VUE : PROFIL (MON COMPTE)
