@@ -546,6 +546,22 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
 }
 
+// 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
+function generateCardDetails() {
+    const prefix = "4823"; // Début standard Visa
+    const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+    const cardNumber = prefix + randomDigits;
+    
+    const cvv = Math.floor(Math.random() * 900 + 100).toString();
+    
+    const now = new Date();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = (now.getFullYear() + 3).toString().slice(-2);
+    const expiry = `${month}/${year}`;
+    
+    return { cardNumber, cvv, expiry };
+}
+
 // ============================================================
 // GROUPEMENT PAR DATE
 // ============================================================
@@ -718,6 +734,24 @@ async function loadClientFromFirestore() {
             return null;
         }
 
+        // 🆕 GÉNÉRATION AUTOMATIQUE DE LA CARTE SI ELLE N'EXISTE PAS
+        if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
+            console.log("🆕 Génération automatique des détails de la carte virtuelle...");
+            const newCard = generateCardDetails();
+            
+            // Mise à jour silencieuse dans Firestore
+            await updateDoc(docRef, {
+                cardNumber: newCard.cardNumber,
+                cardCVV: newCard.cvv,
+                cardExpiry: newCard.expiry
+            });
+
+            // Mise à jour de l'état local
+            appState.client.cardNumber = newCard.cardNumber;
+            appState.client.cardCVV = newCard.cvv;
+            appState.client.cardExpiry = newCard.expiry;
+        }
+
         applyClientColor(client.color);
 
         const badgeText = document.getElementById('badge-text');
@@ -858,7 +892,7 @@ function navigateTo(viewName, data = {}) {
 }
 
 // ============================================================
-// ICÔNE DE TRANSACTION (logo banque ou icône générique)
+// ICÔNE DE TRANSACTION
 // ============================================================
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
@@ -869,10 +903,7 @@ function buildTransactionIcon(tx) {
 
         return `
             <div class="tx-icon-bank" data-urls='${urlsJson}' data-idx="0">
-                <img src="${urls[0]}"
-                     alt="${tx.bankName || 'Bank'}"
-                     loading="lazy"
-                     onerror="handleBankLogoError(this);">
+                <img src="${urls[0]}" alt="${tx.bankName || 'Bank'}" loading="lazy" onerror="handleBankLogoError(this);">
             </div>
         `;
     }
@@ -923,7 +954,6 @@ function renderDashboard() {
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
 
-    // ✅ BOUTONS RONDS DANS LA GRANDE CARTE
     const btnGoTransfer = document.getElementById('btn-go-transfer');
     if (btnGoTransfer) btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
 
@@ -1009,12 +1039,10 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // Vérifier le pourcentage (bloque le virement si dépassé)
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
     if (amount > maxAllowed) {
-        // 📧 Envoi de l'email d'échec (non bloquant)
         sendTransferFailed(appState.client, { amount, limit: maxAllowed })
             .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
             .catch(e => console.warn('⚠️ Email échec erreur'));
@@ -1127,7 +1155,6 @@ async function finalizeTransfer() {
             transactions: appState.transactions
         });
 
-        // 📧 Envoi de l'email de confirmation avec l'IBAN
         sendTransferSuccess(appState.client, {
             amount: tr.amount,
             beneficiary: tr.beneficiary,
@@ -1186,18 +1213,36 @@ function renderFailedView(data) {
 }
 
 // ============================================================
-// VUE : CARTE VIRTUELLE
+// VUE : CARTE VIRTUELLE (DORÉE)
 // ============================================================
 let cardNumberVisible = false;
 
 function renderCardView() {
     if (!appState.client) return;
 
+    // Nom du titulaire
     const holder = document.getElementById('vc-holder');
     if (holder) {
-        holder.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
+        holder.textContent = `${appState.client.firstName || ''} ${appState.client.lastName || ''}`.toUpperCase();
     }
 
+    // Numéro de carte masqué par défaut
+    const numberDisplay = document.getElementById('vc-number-display');
+    if (numberDisplay) {
+        const realNumber = appState.client.cardNumber || '4823000000000000';
+        const masked = realNumber.substring(0, 4) + ' •••• •••• ' + realNumber.substring(12, 16);
+        numberDisplay.textContent = masked;
+    }
+
+    // Date d'expiration
+    const expiryEl = document.getElementById('vc-expiry');
+    if (expiryEl) expiryEl.textContent = appState.client.cardExpiry || '12/28';
+
+    // CVV
+    const cvvEl = document.getElementById('vc-cvv');
+    if (cvvEl) cvvEl.textContent = appState.client.cardCVV || '123';
+
+    // Plafond
     const percentLimit = Number(appState.client.percentValue ?? 100);
     const limit = appState.balance * (percentLimit / 100);
     const limitEl = document.getElementById('card-limit');
@@ -1210,11 +1255,16 @@ function toggleCardNumber() {
     cardNumberVisible = !cardNumberVisible;
     const display = document.getElementById('vc-number-display');
     const label = document.getElementById('vc-toggle-label');
+    
+    const realNumber = appState.client?.cardNumber || '4823000000000000';
+    const masked = realNumber.substring(0, 4) + ' •••• •••• ' + realNumber.substring(12, 16);
+    const formattedReal = realNumber.replace(/(\d{4})/g, '$1 ').trim();
+
     if (cardNumberVisible) {
-        display.textContent = '4021 5580 7412 4823';
+        display.textContent = formattedReal;
         if (label) label.textContent = t('hide_details');
     } else {
-        display.textContent = '•••• •••• •••• 4823';
+        display.textContent = masked;
         if (label) label.textContent = t('show_details');
     }
 }
@@ -1280,11 +1330,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.querySelectorAll('#nav-links li').forEach(li => {
-        if (li.id === 'menu-show-iban') return; // Ignorer le bouton IBAN (géré séparément)
+        if (li.id === 'menu-show-iban') return; 
         li.addEventListener('click', () => navigateTo(li.dataset.view));
     });
 
-    // 🆕 ÉCOUTEUR POUR LE BOUTON IBAN DANS LE MENU DE GAUCHE
     const menuIbanBtn = document.getElementById('menu-show-iban');
     if (menuIbanBtn) {
         menuIbanBtn.addEventListener('click', () => {
@@ -1310,7 +1359,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadClientFromFirestore();
 });
 
-// Nettoyer le listener au déchargement
 window.addEventListener('beforeunload', () => {
     if (appState.unsubSnapshot) {
         appState.unsubSnapshot();
