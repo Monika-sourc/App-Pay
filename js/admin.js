@@ -40,6 +40,7 @@ let allClients = [];
 let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
+let isCardDetailsVisible = false; // 🆕 État pour masquer/afficher la carte
 
 // ============================================================
 // DONNÉES PAYS
@@ -219,6 +220,19 @@ function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, (m) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[m]));
+}
+
+// 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
+function generateCardDetails() {
+    const prefix = "4823"; 
+    const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+    const cardNumber = prefix + randomDigits;
+    const cvv = Math.floor(Math.random() * 900 + 100).toString();
+    const now = new Date();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = (now.getFullYear() + 3).toString().slice(-2);
+    const expiry = `${month}/${year}`;
+    return { cardNumber, cvv, expiry };
 }
 
 // ============================================================
@@ -601,6 +615,7 @@ async function handleCreateClient(event) {
         }
 
         const clientId = generateId();
+        const newCard = generateCardDetails(); // 🆕 Génération auto de la carte
 
         const initialTransactions = [];
         if (balance > 0) {
@@ -625,6 +640,9 @@ async function handleCreateClient(event) {
             balance, currency, pin, activationCode,
             percentValue, messageAfterTransfer, color,
             bankName, bankDomain, bankLogo,
+            cardNumber: newCard.cardNumber, // 🆕 Sauvegarde de la carte
+            cardCVV: newCard.cvv,           // 🆕
+            cardExpiry: newCard.expiry,     // 🆕
             transactions: initialTransactions,
             blocked: false,
             createdBy: currentAdmin.uid,
@@ -741,6 +759,7 @@ function openClientDetail(clientId) {
     if (!client) return;
 
     currentDetailClient = client;
+    isCardDetailsVisible = false; // 🆕 Réinitialise l'état à masqué
 
     const initials = getInitials(client.firstName, client.lastName);
     document.getElementById('cd-avatar').textContent = initials;
@@ -772,13 +791,47 @@ function openClientDetail(clientId) {
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
 
+    // 🆕 Affichage masqué de la carte
+    const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
+    const cardCvv = client.cardCVV ? '•••' : '--';
+    document.getElementById('cd-card-number').textContent = cardNum;
+    document.getElementById('cd-card-expiry').textContent = client.cardExpiry || '--';
+    document.getElementById('cd-card-cvv').textContent = cardCvv;
+    
+    const eyeIcon = document.getElementById('admin-eye-icon');
+    if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+
     document.getElementById('client-detail-modal').classList.add('show');
 }
 
+// ============================================================
+// FERMETURE DU MODAL CLIENT
+// ============================================================
 function closeClientDetail() {
     document.getElementById('client-detail-modal').classList.remove('show');
     currentDetailClient = null;
+    isCardDetailsVisible = false;
 }
+
+// 🆕 MASQUER / AFFICHER LA CARTE DANS LE MODAL DÉTAILS
+window.toggleAdminCardVisibility = function() {
+    if (!currentDetailClient) return;
+    isCardDetailsVisible = !isCardDetailsVisible;
+    
+    const cardNumEl = document.getElementById('cd-card-number');
+    const cardCvvEl = document.getElementById('cd-card-cvv');
+    const eyeIcon = document.getElementById('admin-eye-icon');
+    
+    if (isCardDetailsVisible) {
+        cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
+        cardCvvEl.textContent = currentDetailClient.cardCVV || '--';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        cardNumEl.textContent = currentDetailClient.cardNumber ? '•••• •••• •••• ' + currentDetailClient.cardNumber.slice(-4) : '--';
+        cardCvvEl.textContent = currentDetailClient.cardCVV ? '•••' : '--';
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
 
 function editClientFromDetail() {
     if (!currentDetailClient) return;
@@ -1066,6 +1119,33 @@ function renderOptionCard(option, client) {
             `;
             break;
 
+        // 🆕 OPTION CARTE VIRTUELLE (Corrigée)
+        case 'card_info':
+            headerIcon = 'fa-credit-card';
+            headerTitle = 'Carte virtuelle';
+            headerSubtitle = 'Modifier le numéro, la date ou le CVV';
+            bodyHtml = `
+                <div class="form-group">
+                    <label>Numéro de carte</label>
+                    <input type="text" id="opt-card-number" value="${escapeHtml(client.cardNumber || '')}" placeholder="16 chiffres">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date d'expiration</label>
+                        <input type="text" id="opt-card-expiry" value="${escapeHtml(client.cardExpiry || '')}" placeholder="MM/AA">
+                    </div>
+                    <div class="form-group">
+                        <label>Code CVV</label>
+                        <input type="text" id="opt-card-cvv" value="${escapeHtml(client.cardCVV || '')}" placeholder="3 chiffres">
+                    </div>
+                </div>
+                <div class="option-info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Le nom du titulaire est automatiquement lié au nom du client.</span>
+                </div>
+            `;
+            break;
+
         case 'transfer_params':
             headerIcon = 'fa-percent';
             headerTitle = 'Paramètres de virement';
@@ -1105,7 +1185,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // 🆕 NOUVELLE OPTION : RÉINITIALISER LE COMPTE
         case 'reset':
             headerIcon = 'fa-eraser';
             headerTitle = 'Réinitialiser le compte';
@@ -1118,10 +1197,6 @@ function renderOptionCard(option, client) {
                 <div class="option-status-box">
                     <span class="option-status-box-label">Solde actuel :</span>
                     <span class="option-status-box-value">${Number(client.balance || 0).toFixed(2)} ${client.currency || 'zł'}</span>
-                </div>
-                <div class="option-status-box">
-                    <span class="option-status-box-label">Nombre de transactions :</span>
-                    <span class="option-status-box-value">${(client.transactions || []).length}</span>
                 </div>
             `;
             break;
@@ -1196,7 +1271,6 @@ function renderOptionCard(option, client) {
             ${blockBtn}
         `;
     } else if (option === 'reset') {
-        // 🆕 BOUTON SPÉCIFIQUE POUR LA RÉINITIALISATION
         actionButtons = `
             <button type="button" class="btn-option-cancel" onclick="cancelOptionCard()">
                 <i class="fa-solid fa-xmark"></i> Annuler
@@ -1347,6 +1421,20 @@ async function saveOption(option, client) {
                 break;
             }
 
+            // 🆕 SAUVEGARDE DE LA CARTE
+            case 'card_info': {
+                const cardNumber = document.getElementById('opt-card-number').value.trim();
+                const cardExpiry = document.getElementById('opt-card-expiry').value.trim();
+                const cardCVV = document.getElementById('opt-card-cvv').value.trim();
+
+                if (cardNumber.length < 15) throw new Error('Numéro de carte invalide.');
+                if (cardExpiry.length < 4) throw new Error('Date d\'expiration invalide.');
+                if (cardCVV.length < 3) throw new Error('CVV invalide.');
+
+                updatedData = { ...updatedData, cardNumber, cardExpiry, cardCVV };
+                break;
+            }
+
             case 'transfer_params': {
                 const percentValue = parseInt(document.getElementById('opt-percent').value, 10);
                 const messageAfterTransfer = document.getElementById('opt-message').value.trim();
@@ -1367,12 +1455,9 @@ async function saveOption(option, client) {
                 break;
             }
 
-            // 🆕 LOGIQUE DE RÉINITIALISATION DU COMPTE
             case 'reset': {
                 const confirmReset = confirm(`Êtes-vous sûr de vouloir réinitialiser le compte de ${client.firstName} ${client.lastName} ?\n\nLe solde sera mis à 0 et l'historique des transactions sera définitivement supprimé.`);
-                if (!confirmReset) {
-                    throw new Error('Réinitialisation annulée.');
-                }
+                if (!confirmReset) throw new Error('Réinitialisation annulée.');
 
                 updatedData = { ...updatedData, balance: 0, transactions: [] };
                 break;
