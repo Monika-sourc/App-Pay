@@ -283,7 +283,6 @@ body {
     display: flex;
 }
 
-/* 🆕 AJOUT DE OVERFLOW HIDDEN POUR ÉVITER LE DÉBORDEMENT */
 .sidebar {
     width: 180px;
     background-color: var(--primary-color);
@@ -293,7 +292,7 @@ body {
     padding: 20px 0;
     flex-shrink: 0;
     transition: background-color 0.3s;
-    overflow: hidden; /* 🆕 Empêche le bouton gonflé de sortir de la zone verte */
+    overflow: hidden; /* Empêche le bouton gonflé de sortir de la zone verte */
 }
 
 .sidebar-top {
@@ -320,7 +319,6 @@ body {
     margin-top: 10px;
 }
 
-/* EFFET DE GONFLEMENT SUR LE MENU DE GAUCHE */
 .nav-links li {
     padding: 16px 15px;
     display: flex;
@@ -332,7 +330,7 @@ body {
     user-select: none;
     margin-bottom: 5px;
     transform: scale(1);
-    transform-origin: left center; /* Gonfle vers la droite */
+    transform-origin: left center;
     border-radius: 0 8px 8px 0;
 }
 
@@ -343,7 +341,6 @@ body {
     text-align: center;
 }
 
-/* QUAND LE BOUTON EST ACTIF (GONFLÉ) */
 .nav-links li.active {
     background-color: rgba(255, 255, 255, 0.2);
     font-weight: 800;
@@ -520,6 +517,216 @@ body {
 }
 
 /* ============================================================
+   CARTE VIRTUELLE DORÉE (RECTO / VERSO)
+   ============================================================ */
+.virtual-card-wrapper {
+    max-width: 420px;
+    margin-bottom: 25px;
+    perspective: 1000px;
+}
+
+.gold-card {
+    width: 100%;
+    aspect-ratio: 1.586 / 1;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%); /* Couleur Or */
+    color: #1a1a1a; /* Texte noir pour contraster */
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(170, 119, 28, 0.4);
+    border: 1px solid #e5c687; /* Bordure dorée claire */
+}
+
+/* Effet de brillance */
+.gold-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+}
+
+.vc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.vc-logo {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a1a1a;
+}
+
+/* Puce de la carte */
+.vc-chip {
+    width: 45px;
+    height: 35px;
+    background: linear-gradient(135deg, #e5c687 0%, #b88a2c 100%);
+    border-radius: 6px;
+    position: relative;
+    border: 1px solid #997520;
+}
+.vc-chip::after {
+    content: '';
+    position: absolute;
+    inset: 6px 4px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+.vc-number {
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
+    position: relative;
+    z-index: 1;
+    margin: 15px 0;
+    color: #1a1a1a;
+}
+
+.vc-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 1;
+}
+
+.vc-label {
+    font-size: 10px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.vc-value {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #1a1a1a;
+}
+
+.vc-brand {
+    font-size: 32px;
+    color: #1a1a1a;
+}
+
+/* ============ FACE ARRIÈRE (VERSO) ============ */
+.vc-back {
+    justify-content: flex-start; /* Aligner vers le haut */
+    padding: 25px 0; /* Enlever le padding sur les côtés pour la bande noire */
+}
+
+.vc-magnetic-strip {
+    width: 100%;
+    height: 50px;
+    background-color: #111111; /* Bande noire */
+    margin-bottom: 20px;
+}
+
+.vc-signature-box {
+    width: 85%;
+    height: 40px;
+    background-color: #f8f9fa; /* Fond blanc */
+    margin: 0 25px 20px 25px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 15px;
+    color: #111;
+    position: relative;
+}
+
+.vc-cvv-label {
+    position: absolute;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+}
+
+.vc-cvv {
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #1a1a1a;
+}
+
+.vc-back-text {
+    font-size: 9px;
+    color: #1a1a1a;
+    opacity: 0.8;
+    line-height: 1.4;
+    padding: 0 25px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.vc-back-logo {
+    font-size: 35px;
+    color: #1a1a1a;
+    position: absolute;
+    bottom: 20px;
+    right: 25px;
+}
+
+.vc-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.vc-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.vc-info-item {
+    background: var(--card-bg);
+    padding: 14px 15px;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+}
+
+.vc-info-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.vc-info-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: #111;
+}
+
+/* ============================================================
    Corps du dashboard
    ============================================================ */
 .dashboard-body {
@@ -581,11 +788,11 @@ body {
     font-weight: 500;
 }
 
-/* 🆕 BOUTONS RONDS : RAPPROCHÉS ET CENTRÉS */
+/* BOUTONS RONDS : CENTRÉS ET ESPACÉS */
 .balance-actions {
     display: flex;
-    justify-content: center; /* Centre les boutons */
-    gap: 70px; /* Espacement propre entre les deux boutons */
+    justify-content: center;
+    gap: 70px;
     margin-top: 25px;
     width: 100%;
 }
@@ -1272,152 +1479,6 @@ body {
 .failed-summary {
     background-color: #fef2f2;
     border: 2px solid #fecaca;
-}
-
-/* ============ CARTE VIRTUELLE ============ */
-.virtual-card-wrapper {
-    max-width: 400px;
-    margin-bottom: 20px;
-}
-
-.virtual-card {
-    width: 100%;
-    aspect-ratio: 1.586 / 1;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-light) 100%);
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 12px 30px var(--primary-color-soft);
-}
-
-.virtual-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-.virtual-card::after {
-    content: '';
-    position: absolute;
-    bottom: -40%;
-    left: -20%;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-.vc-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-logo {
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.vc-chip {
-    width: 38px;
-    height: 28px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
-    border-radius: 6px;
-    position: relative;
-}
-.vc-chip::after {
-    content: '';
-    position: absolute;
-    inset: 6px 4px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 3px;
-}
-
-.vc-number {
-    font-family: 'Courier New', monospace;
-    font-size: 20px;
-    letter-spacing: 2px;
-    font-weight: 800;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
-    position: relative;
-    z-index: 1;
-}
-
-.vc-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-label {
-    font-size: 8px;
-    opacity: 0.85;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-    font-weight: 600;
-}
-
-.vc-value {
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-}
-
-.vc-brand {
-    font-size: 22px;
-}
-
-.vc-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 15px;
-}
-
-.vc-info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.vc-info-item {
-    background: var(--card-bg);
-    padding: 14px 15px;
-    border-radius: 10px;
-    box-shadow: var(--card-shadow);
-}
-
-.vc-info-label {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 4px;
-    font-weight: 600;
-}
-
-.vc-info-value {
-    font-size: 15px;
-    font-weight: 800;
-    color: #111;
 }
 
 /* ============ MON COMPTE ============ */
