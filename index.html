@@ -93,7 +93,7 @@
                     <li data-view="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> <span data-i18n="transfer_menu">Virement</span></li>
                     <li data-view="card"><i class="fa-regular fa-credit-card"></i> <span data-i18n="my_virtual_card">Carte virtuelle</span></li>
                     
-                    <!-- 🆕 LE BOUTON IBAN EST MAINTENANT UNE VRAIE PAGE -->
+                    <!-- BOUTON IBAN PERSONNEL -->
                     <li data-view="iban"><i class="fa-solid fa-barcode"></i> <span data-i18n="personal_iban">IBAN Personnel</span></li>
                     
                     <li data-view="account"><i class="fa-regular fa-user"></i> <span data-i18n="profile">Profil</span></li>
@@ -548,7 +548,7 @@
     </div>
 </template>
 
-<!-- 🆕 PAGE IBAN PERSONNEL -->
+<!-- 🆕 PAGE IBAN PERSONNEL (CORRIGÉE) -->
 <template id="tpl-iban">
     <div class="dashboard-body">
         <h1 class="welcome-title" data-i18n="personal_iban">IBAN Personnel</h1>
@@ -562,7 +562,8 @@
             <div class="form-group" style="margin-bottom: 25px;">
                 <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;">Numéro IBAN</label>
                 <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
-                    <span id="client-iban-display" style="font-family: 'Courier New', monospace; font-size: 16px; font-weight: 800; color: #111; flex: 1; letter-spacing: 1px; word-break: break-all;">PL00 0000 0000 ••••</span>
+                    <!-- 🆕 STYLE INLINE SUPPRIMÉ POUR LAISSER LE CSS FAIRE SON TRAVAIL -->
+                    <span id="client-iban-display" style="flex: 1;">PL00 0000 0000 ••••</span>
                     <button onclick="copyIbanInfo('iban')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier l'IBAN">
                         <i class="fa-regular fa-copy"></i>
                     </button>
@@ -573,14 +574,15 @@
             <div class="form-group" style="margin-bottom: 25px;">
                 <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;">Code SWIFT / BIC</label>
                 <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
-                    <span id="client-swift-display" style="font-family: 'Courier New', monospace; font-size: 16px; font-weight: 800; color: #111; flex: 1; letter-spacing: 1px; word-break: break-all;">--------</span>
+                    <!-- 🆕 STYLE INLINE SUPPRIMÉ POUR LAISSER LE CSS FAIRE SON TRAVAIL -->
+                    <span id="client-swift-display" style="flex: 1;">--------</span>
                     <button onclick="copyIbanInfo('swift')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier le SWIFT">
                         <i class="fa-regular fa-copy"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- 🆕 BOUTON AFFICHER / MASQUER -->
+            <!-- BOUTON AFFICHER / MASQUER -->
             <div class="vc-actions" style="margin-bottom: 25px;">
                 <button class="action-chip" onclick="toggleIbanVisibility()">
                     <i class="fa-regular fa-eye"></i> <span id="iban-toggle-label" data-i18n="show_details">Afficher l'IBAN complet</span>
