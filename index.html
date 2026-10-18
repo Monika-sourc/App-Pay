@@ -432,19 +432,23 @@
     </div>
 </template>
 
+<!-- 🆕 NOUVELLE CARTE VIRTUELLE (Recto / Verso) -->
 <template id="tpl-card">
     <div class="dashboard-body">
         <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
 
         <div class="virtual-card-wrapper">
-            <div class="virtual-card" id="virtual-card">
+            <!-- CARTE FACE AVANT (RECTO) -->
+            <div class="virtual-card gold-card">
                 <div class="vc-top">
                     <div class="vc-logo">
-                        <i class="fa-solid fa-landmark"></i> APP PAY
+                        <i class="fa-solid fa-building-columns"></i> APP PAY
                     </div>
                     <div class="vc-chip"></div>
                 </div>
+                
                 <div class="vc-number" id="vc-number-display">•••• •••• •••• 4823</div>
+                
                 <div class="vc-bottom">
                     <div>
                         <div class="vc-label" data-i18n="holder">Titulaire</div>
@@ -452,11 +456,28 @@
                     </div>
                     <div>
                         <div class="vc-label" data-i18n="expires">Expire</div>
-                        <div class="vc-value">12/28</div>
+                        <div class="vc-value" id="vc-expiry">12/28</div>
                     </div>
                     <div class="vc-brand">
                         <i class="fa-brands fa-cc-visa"></i>
                     </div>
+                </div>
+            </div>
+
+            <!-- CARTE FACE ARRIÈRE (VERSO) -->
+            <div class="virtual-card gold-card vc-back" style="margin-top: 20px;">
+                <div class="vc-magnetic-strip"></div>
+                
+                <div class="vc-signature-box">
+                    <span class="vc-cvv-label">CVV</span>
+                    <span class="vc-cvv" id="vc-cvv">123</span>
+                </div>
+                
+                <div class="vc-back-text">
+                    Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.
+                </div>
+                <div class="vc-back-logo">
+                    <i class="fa-brands fa-cc-visa"></i>
                 </div>
             </div>
         </div>
