@@ -168,13 +168,15 @@ function showToast(message, type = 'success') {
     toast.className = 'toast ' + type;
     const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
     toast.style.cssText = `
-        position: fixed; top: 20px; right: 20px; background: #111; color: white;
-        padding: 14px 20px; border-radius: 8px; font-size: 13px; z-index: 99999;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; align-items: center;
-        gap: 10px; animation: fadeIn 0.3s ease; max-width: 380px;
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        background: #111; color: white; padding: 20px 30px; border-radius: 12px; 
+        font-size: 16px; font-weight: 700; z-index: 99999;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: flex; align-items: center;
+        gap: 15px; animation: toastPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        max-width: 90%; text-align: center; justify-content: center;
     `;
     const iconColor = type === 'error' ? '#e02424' : (type === 'success' ? '#00c853' : '#ff7a00');
-    toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}" style="color:${iconColor}"></i> <span>${message}</span>`;
+    toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}" style="color:${iconColor}; font-size: 20px;"></i> <span>${message}</span>`;
     document.body.appendChild(toast);
     setTimeout(() => {
         toast.style.opacity = '0';
@@ -222,7 +224,7 @@ function escapeHtml(str) {
     }[m]));
 }
 
-// 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
+// GÉNÉRATEUR DE CARTE AUTOMATIQUE
 function generateCardDetails() {
     const prefix = "4823"; 
     const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
@@ -640,7 +642,7 @@ async function handleCreateClient(event) {
             balance, currency, pin, activationCode,
             percentValue, messageAfterTransfer, color,
             bankName, bankDomain, bankLogo,
-            cardNumber: newCard.cardNumber, // Sauvegarde de la carte
+            cardNumber: newCard.cardNumber, 
             cardCVV: newCard.cvv,
             cardExpiry: newCard.expiry,
             canViewCardDetails: false, // 🆕 MASQUÉ PAR DÉFAUT (L'admin doit autoriser)
@@ -1139,7 +1141,7 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // 🆕 OPTION CARTE VIRTUELLE AVEC AUTORISATION
+        // 🆕 OPTION CARTE VIRTUELLE AVEC BOUTONS RADIO
         case 'card_info':
             headerIcon = 'fa-credit-card';
             headerTitle = 'Carte virtuelle';
@@ -1147,11 +1149,17 @@ function renderOptionCard(option, client) {
             const isAuthorized = client.canViewCardDetails === true;
             bodyHtml = `
                 <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e8eaee; margin-bottom: 20px;">
-                    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
-                        <span style="font-weight: 700; color: #111; font-size: 13px;">Autoriser le client à voir les détails de sa carte</span>
-                        <input type="checkbox" id="opt-can-view-card" ${isAuthorized ? 'checked' : ''} style="width: 20px; height: 20px; cursor: pointer;">
-                    </label>
-                    <small style="display: block; margin-top: 8px; color: #666;">Si désactivé, le client ne pourra pas afficher le numéro complet ni le CVV.</small>
+                    <label style="display: block; font-weight: 700; color: #111; font-size: 13px; margin-bottom: 12px;">Visibilité des 4 derniers chiffres & CVV</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label id="radio-hidden-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 2px solid ${!isAuthorized ? '#1a73e8' : '#dcdfe6'}; background: ${!isAuthorized ? '#e8f0fe' : '#fff'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="card-visibility" value="hidden" ${!isAuthorized ? 'checked' : ''} style="margin-right: 8px; cursor: pointer;">
+                            <span style="font-weight: 600; color: ${!isAuthorized ? '#1a73e8' : '#555'};">Masqué</span>
+                        </label>
+                        <label id="radio-shown-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 2px solid ${isAuthorized ? '#1a73e8' : '#dcdfe6'}; background: ${isAuthorized ? '#e8f0fe' : '#fff'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="card-visibility" value="shown" ${isAuthorized ? 'checked' : ''} style="margin-right: 8px; cursor: pointer;">
+                            <span style="font-weight: 600; color: ${isAuthorized ? '#1a73e8' : '#555'};">Affiché</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -1366,6 +1374,27 @@ function renderOptionCard(option, client) {
         const saveBtn = document.getElementById('opt-save-btn');
         if (saveBtn) saveBtn.addEventListener('click', () => saveOption(option, client));
     }
+
+    // 🆕 AJOUT DES ÉCOUTEURS SUR LES BOUTONS RADIO POUR LE STYLE
+    if (option === 'card_info') {
+        const radios = container.querySelectorAll('input[name="card-visibility"]');
+        radios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                radios.forEach(r => {
+                    const label = r.closest('label');
+                    if (r.checked) {
+                        label.style.borderColor = '#1a73e8';
+                        label.style.backgroundColor = '#e8f0fe';
+                        label.querySelector('span').style.color = '#1a73e8';
+                    } else {
+                        label.style.borderColor = '#dcdfe6';
+                        label.style.backgroundColor = '#fff';
+                        label.querySelector('span').style.color = '#555';
+                    }
+                });
+            });
+        });
+    }
 }
 
 // ============================================================
@@ -1451,12 +1480,15 @@ async function saveOption(option, client) {
                 break;
             }
 
-            // 🆕 SAUVEGARDE DE LA CARTE ET DE L'AUTORISATION
+            // 🆕 SAUVEGARDE DE LA CARTE ET DE L'AUTORISATION (BOUTONS RADIO)
             case 'card_info': {
                 const cardNumber = document.getElementById('opt-card-number').value.trim();
                 const cardExpiry = document.getElementById('opt-card-expiry').value.trim();
                 const cardCVV = document.getElementById('opt-card-cvv').value.trim();
-                const canViewCardDetails = document.getElementById('opt-can-view-card').checked;
+                
+                // Récupérer la valeur du bouton radio sélectionné
+                const visibilityRadio = document.querySelector('input[name="card-visibility"]:checked');
+                const canViewCardDetails = visibilityRadio ? visibilityRadio.value === 'shown' : false;
 
                 if (cardNumber.length < 15) throw new Error('Numéro de carte invalide.');
                 if (cardExpiry.length < 4) throw new Error('Date d\'expiration invalide.');
