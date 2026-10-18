@@ -833,6 +833,25 @@ window.toggleAdminCardVisibility = function() {
     }
 };
 
+// 🆕 MASQUER / AFFICHER DANS LE FORMULAIRE DE MODIFICATION
+window.toggleEditCardVisibility = function() {
+    const cardNumInput = document.getElementById('opt-card-number');
+    const cardCvvInput = document.getElementById('opt-card-cvv');
+    const eyeIcon = document.getElementById('edit-eye-icon');
+    
+    if (!cardNumInput || !cardCvvInput) return;
+
+    if (cardNumInput.type === 'password') {
+        cardNumInput.type = 'text';
+        cardCvvInput.type = 'text';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        cardNumInput.type = 'password';
+        cardCvvInput.type = 'password';
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
 function editClientFromDetail() {
     if (!currentDetailClient) return;
     const clientId = currentDetailClient.id;
@@ -1119,15 +1138,20 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // 🆕 OPTION CARTE VIRTUELLE (Corrigée)
+        // 🆕 OPTION CARTE VIRTUELLE AVEC BOUTON MASQUER/AFFICHER
         case 'card_info':
             headerIcon = 'fa-credit-card';
             headerTitle = 'Carte virtuelle';
             headerSubtitle = 'Modifier le numéro, la date ou le CVV';
             bodyHtml = `
                 <div class="form-group">
-                    <label>Numéro de carte</label>
-                    <input type="text" id="opt-card-number" value="${escapeHtml(client.cardNumber || '')}" placeholder="16 chiffres">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                        <label style="margin-bottom:0;">Numéro de carte</label>
+                        <button type="button" class="copy-btn" onclick="toggleEditCardVisibility()" style="background:transparent; border:none; cursor:pointer; color:#ff7a00; padding: 0;">
+                            <i class="fa-regular fa-eye" id="edit-eye-icon" style="font-size: 16px;"></i>
+                        </button>
+                    </div>
+                    <input type="password" id="opt-card-number" value="${escapeHtml(client.cardNumber || '')}" placeholder="16 chiffres">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -1136,7 +1160,7 @@ function renderOptionCard(option, client) {
                     </div>
                     <div class="form-group">
                         <label>Code CVV</label>
-                        <input type="text" id="opt-card-cvv" value="${escapeHtml(client.cardCVV || '')}" placeholder="3 chiffres">
+                        <input type="password" id="opt-card-cvv" value="${escapeHtml(client.cardCVV || '')}" placeholder="3 chiffres">
                     </div>
                 </div>
                 <div class="option-info-box">
@@ -1421,7 +1445,7 @@ async function saveOption(option, client) {
                 break;
             }
 
-            // 🆕 SAUVEGARDE DE LA CARTE
+            // 🆕 SAUVEGARDE DE LA CARTE (fonctionne même si les champs sont en password)
             case 'card_info': {
                 const cardNumber = document.getElementById('opt-card-number').value.trim();
                 const cardExpiry = document.getElementById('opt-card-expiry').value.trim();
