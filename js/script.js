@@ -548,17 +548,14 @@ function showScreen(screenId) {
 
 // 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
 function generateCardDetails() {
-    const prefix = "4823"; // Début standard Visa
+    const prefix = "4823"; 
     const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
     const cardNumber = prefix + randomDigits;
-    
     const cvv = Math.floor(Math.random() * 900 + 100).toString();
-    
     const now = new Date();
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const year = (now.getFullYear() + 3).toString().slice(-2);
     const expiry = `${month}/${year}`;
-    
     return { cardNumber, cvv, expiry };
 }
 
@@ -1249,6 +1246,10 @@ function renderCardView() {
     if (limitEl) limitEl.textContent = formatMoney(limit);
 
     cardNumberVisible = false;
+    
+    // Réinitialiser le texte du bouton
+    const label = document.getElementById('vc-toggle-label');
+    if (label) label.textContent = t('show_details');
 }
 
 function toggleCardNumber() {
