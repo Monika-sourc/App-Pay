@@ -92,9 +92,11 @@
                     <li data-view="dashboard" class="active"><i class="fa-solid fa-wallet"></i> <span data-i18n="dashboard">Portefeuille</span></li>
                     <li data-view="transfer"><i class="fa-solid fa-arrow-right-arrow-left"></i> <span data-i18n="transfer_menu">Virement</span></li>
                     <li data-view="card"><i class="fa-regular fa-credit-card"></i> <span data-i18n="my_virtual_card">Carte virtuelle</span></li>
-                    <li data-view="account"><i class="fa-regular fa-user"></i> <span data-i18n="profile">Profil</span></li>
                     
-                    <li id="menu-show-iban"><i class="fa-solid fa-barcode"></i> <span data-i18n="personal_iban">IBAN Personnel</span></li>
+                    <!-- 🆕 LE BOUTON IBAN EST MAINTENANT UNE VRAIE PAGE -->
+                    <li data-view="iban"><i class="fa-solid fa-barcode"></i> <span data-i18n="personal_iban">IBAN Personnel</span></li>
+                    
+                    <li data-view="account"><i class="fa-regular fa-user"></i> <span data-i18n="profile">Profil</span></li>
                 </ul>
                 
                 <div class="logout-container">
@@ -446,7 +448,6 @@
                     <div class="vc-chip"></div>
                 </div>
                 
-                <!-- 🆕 BOUTON COPIER LE NUMÉRO -->
                 <div class="vc-number" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <span id="vc-number-display">•••• •••• •••• 4823</span>
                     <button onclick="copyCardInfo('number')" style="background: transparent; border: none; color: #1a1a1a; cursor: pointer; font-size: 18px; padding: 5px;" title="Copier le numéro de carte">
@@ -473,7 +474,6 @@
             <div class="virtual-card gold-card vc-back" style="margin-top: 20px;">
                 <div class="vc-magnetic-strip"></div>
                 
-                <!-- 🆕 BOUTON COPIER LE CVV -->
                 <div class="vc-signature-box">
                     <span class="vc-cvv-label">CVV</span>
                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -543,6 +543,47 @@
                     <div class="vc-info-label" data-i18n="type">Type</div>
                     <div class="vc-info-value">Visa Premium</div>
                 </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- 🆕 NOUVELLE PAGE : IBAN PERSONNEL -->
+<template id="tpl-iban">
+    <div class="dashboard-body">
+        <h1 class="welcome-title" data-i18n="personal_iban">IBAN Personnel</h1>
+
+        <div class="transfer-card" style="padding: 25px;">
+            <div class="card-header-title" style="margin-bottom: 25px;">
+                <i class="fa-solid fa-building-columns"></i> <span>Coordonnées bancaires</span>
+            </div>
+
+            <!-- IBAN -->
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;">Numéro IBAN</label>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
+                    <span id="client-iban-display" style="font-family: 'Courier New', monospace; font-size: 16px; font-weight: 800; color: #111; flex: 1; letter-spacing: 1px; word-break: break-all;">•••• •••• •••• •••• •••• •••• ••••</span>
+                    <button onclick="copyIbanInfo('iban')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier l'IBAN">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SWIFT -->
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;">Code SWIFT / BIC</label>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
+                    <span id="client-swift-display" style="font-family: 'Courier New', monospace; font-size: 16px; font-weight: 800; color: #111; flex: 1; letter-spacing: 1px; word-break: break-all;">••••••••</span>
+                    <button onclick="copyIbanInfo('swift')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier le SWIFT">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MESSAGE D'INFORMATION -->
+            <div style="background: #f0f7ff; border: 1px solid #c5d8f5; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #1a73e8; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;">
+                <i class="fa-solid fa-circle-info" style="margin-top: 2px; font-size: 14px;"></i>
+                <span>Utilisez ces coordonnées pour recevoir des virements. Les 4 derniers chiffres de l'IBAN sont masqués pour des raisons de sécurité.</span>
             </div>
         </div>
     </div>
