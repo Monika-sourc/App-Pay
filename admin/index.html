@@ -531,6 +531,13 @@
                             <i class="fa-solid fa-shield-halved"></i>
                             <span>Modifier la sécurité (PIN, code d'activation)</span>
                         </div>
+                        
+                        <!-- 🆕 NOUVELLE OPTION POUR LA CARTE VIRTUELLE -->
+                        <div class="custom-option" data-value="card_info">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <span>Modifier la carte virtuelle (Numéro, CVV, Date)</span>
+                        </div>
+
                         <div class="custom-option" data-value="transfer_params">
                             <i class="fa-solid fa-percent"></i>
                             <span>Modifier les paramètres de virement</span>
@@ -539,13 +546,10 @@
                             <i class="fa-solid fa-palette"></i>
                             <span>Modifier la couleur du thème</span>
                         </div>
-                        
-                        <!-- 🆕 NOUVELLE OPTION : RÉINITIALISER -->
                         <div class="custom-option" data-value="reset">
                             <i class="fa-solid fa-eraser"></i>
                             <span>Réinitialiser le compte (solde + historique)</span>
                         </div>
-
                         <div class="custom-option" data-value="access">
                             <i class="fa-solid fa-ban"></i>
                             <span>Bloquer / Débloquer l'accès</span>
@@ -563,7 +567,7 @@
 
             <div id="option-card-container"></div>
         </section>
-
+        
         <!-- LISTE DES CLIENTS -->
         <section class="clients-section">
             <div class="section-header-flex">
@@ -662,6 +666,24 @@
                 <div class="cd-row">
                     <div class="cd-label">Pourcentage limite</div>
                     <div class="cd-value" id="cd-percent">--</div>
+                </div>
+            </div>
+
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-credit-card"></i> Carte Virtuelle
+                </div>
+                <div class="cd-row">
+                    <div class="cd-label">Numéro de carte</div>
+                    <div class="cd-value" id="cd-card-number">--</div>
+                </div>
+                <div class="cd-row">
+                    <div class="cd-label">Date d'expiration</div>
+                    <div class="cd-value" id="cd-card-expiry">--</div>
+                </div>
+                <div class="cd-row">
+                    <div class="cd-label">Code CVV</div>
+                    <div class="cd-value" id="cd-card-cvv">--</div>
                 </div>
             </div>
 
