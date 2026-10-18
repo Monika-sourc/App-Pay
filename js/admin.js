@@ -41,7 +41,7 @@ let selectedClientId = null;
 let selectedOption = null;
 let currentDetailClient = null;
 let isCardDetailsVisible = false;
-let isIbanVisible = false; // 🆕 État pour masquer/afficher l'IBAN dans le modal admin
+let isIbanVisible = false;
 
 // ============================================================
 // DONNÉES PAYS
@@ -225,7 +225,6 @@ function escapeHtml(str) {
     }[m]));
 }
 
-// 🆕 GÉNÉRATEUR DE CARTE AUTOMATIQUE
 function generateCardDetails() {
     const prefix = "4823"; 
     const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
@@ -238,7 +237,6 @@ function generateCardDetails() {
     return { cardNumber, cvv, expiry };
 }
 
-// 🆕 GÉNÉRATEUR D'IBAN AUTOMATIQUE
 function generateIbanDetails() {
     const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
     const iban = `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
@@ -598,8 +596,8 @@ async function handleCreateClient(event) {
         }
 
         const clientId = generateId();
-        const newCard = generateCardDetails(); // Génération auto de la carte
-        const newIban = generateIbanDetails(); // 🆕 Génération auto de l'IBAN
+        const newCard = generateCardDetails();
+        const newIban = generateIbanDetails();
 
         const initialTransactions = [];
         if (balance > 0) {
@@ -627,10 +625,10 @@ async function handleCreateClient(event) {
             cardNumber: newCard.cardNumber, 
             cardCVV: newCard.cvv,
             cardExpiry: newCard.expiry,
-            canViewCardDetails: false, // Masqué par défaut
-            iban: newIban.iban, // 🆕 Sauvegarde de l'IBAN
-            swift: newIban.swift, // 🆕 Sauvegarde du SWIFT
-            canViewIban: false, // 🆕 Masqué par défaut (l'admin doit autoriser)
+            canViewCardDetails: false,
+            iban: newIban.iban,
+            swift: newIban.swift,
+            canViewIban: false,
             transactions: initialTransactions,
             blocked: false,
             createdBy: currentAdmin.uid,
@@ -667,6 +665,79 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
+// CHARGEMENT DES CLIENTS
+// ============================================================
+async function loadClients() {
+    const list = document.getElementById('clients-list');
+    const countBadge = document.getElementById('client-count');
+
+    if (!currentAdmin) {
+        list.innerHTML = '<p class="empty-state">Veuillez vous connecter.</p>';
+        return;
+    }
+
+    try {
+        const q = query(
+            collection(db, COLLECTION_NAME),
+            where('createdBy', '==', currentAdmin.uid)
+        );
+        const snapshot = await getDocs(q);
+        allClients = snapshot.docs.map(d => d.data());
+        allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        countBadge.textContent = allClients.length;
+        populateModifySelect();
+
+        if (allClients.length === 0) {
+            list.innerHTML = '<p class="empty-state">Vous n\'avez créé aucun client pour le moment.</p>';
+            return;
+        }
+
+        list.innerHTML = '';
+        allClients.forEach(client => {
+            const row = document.createElement('div');
+            row.className = 'client-row' + (client.blocked ? ' blocked' : '');
+            row.dataset.clientId = client.id;
+
+            const initials = getInitials(client.firstName, client.lastName);
+            const fullName = `${(client.lastName || '').toUpperCase()} ${client.firstName || ''}`;
+
+            row.innerHTML = `
+                <div class="client-row-left">
+                    <div class="client-row-avatar">${initials}</div>
+                    <div class="client-row-info">
+                        <div class="client-row-name">${fullName}</div>
+                        <div class="client-row-email">${client.email || '--'}</div>
+                    </div>
+                </div>
+                <div class="client-row-actions">
+                    <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
+                        <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
+                        ${client.blocked ? 'Bloqué' : 'Actif'}
+                    </div>
+                    <button class="client-row-delete" title="Supprimer ce client" data-delete-id="${client.id}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+                <i class="fa-solid fa-chevron-right client-row-arrow"></i>
+            `;
+
+            row.addEventListener('click', () => openClientDetail(client.id));
+            row.querySelector('.client-row-delete').addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteClient(client.id);
+            });
+
+            list.appendChild(row);
+        });
+
+    } catch (err) {
+        console.error('Erreur chargement clients :', err);
+        list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement.</p>';
+    }
+}
+
+// ============================================================
 // MODAL DÉTAILS CLIENT
 // ============================================================
 function openClientDetail(clientId) {
@@ -675,7 +746,7 @@ function openClientDetail(clientId) {
 
     currentDetailClient = client;
     isCardDetailsVisible = false;
-    isIbanVisible = false; // 🆕 Réinitialise l'état IBAN
+    isIbanVisible = false;
 
     const initials = getInitials(client.firstName, client.lastName);
     document.getElementById('cd-avatar').textContent = initials;
@@ -707,8 +778,9 @@ function openClientDetail(clientId) {
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
 
-    // 🆕 Affichage masqué de l'IBAN par défaut
-    const ibanParts = (client.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
+    // IBAN masqué
+    const clientIban = client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    const ibanParts = clientIban.split(' ');
     const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
     document.getElementById('cd-iban').textContent = maskedIban;
     document.getElementById('cd-swift').textContent = client.swift || '--';
@@ -716,7 +788,7 @@ function openClientDetail(clientId) {
     const ibanEyeIcon = document.getElementById('admin-iban-eye-icon');
     if(ibanEyeIcon) ibanEyeIcon.className = 'fa-regular fa-eye';
 
-    // Affichage masqué de la carte par défaut
+    // Carte masquée
     const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
     const cardCvv = client.cardCVV ? '•••' : '--';
     document.getElementById('cd-card-number').textContent = cardNum;
@@ -729,11 +801,14 @@ function openClientDetail(clientId) {
     document.getElementById('client-detail-modal').classList.add('show');
 }
 
+// ============================================================
+// FERMETURE DU MODAL CLIENT
+// ============================================================
 function closeClientDetail() {
     document.getElementById('client-detail-modal').classList.remove('show');
     currentDetailClient = null;
     isCardDetailsVisible = false;
-    isIbanVisible = false; // 🆕
+    isIbanVisible = false;
 }
 
 // 🆕 MASQUER / AFFICHER L'IBAN DANS LE MODAL DÉTAILS
@@ -775,7 +850,6 @@ window.toggleAdminCardVisibility = function() {
     }
 };
 
-// 🆕 MASQUER / AFFICHER DANS LE FORMULAIRE DE MODIFICATION
 window.toggleEditCardVisibility = function() {
     const cardNumInput = document.getElementById('opt-card-number');
     const cardCvvInput = document.getElementById('opt-card-cvv');
