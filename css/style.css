@@ -282,21 +282,21 @@ body {
     font-weight: 600;
 }
 
-/* ============ ÉCRAN APPLICATION (NOUVEAU LAYOUT) ============ */
+/* ============ ÉCRAN APPLICATION ============ */
 #app-screen {
     background-color: #e8e9ec;
     display: none;
 }
 #app-screen.active {
     display: flex;
-    flex-direction: column; /* Changé de row à column */
+    flex-direction: column;
     height: 100%;
 }
 
-/* --- NOUVEAU HEADER --- */
+/* --- HEADER --- */
 .header {
     display: flex;
-    justify-content: space-between; /* Logo à gauche, icônes à droite */
+    justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
     background-color: var(--card-bg);
@@ -354,12 +354,6 @@ body {
     border-radius: 50%;
     border: 2px solid #ffffff;
 }
-
-.logout-icon-btn {
-    color: #e02424;
-    background-color: #fde8e8;
-}
-.logout-icon-btn:hover { background-color: #fecaca; }
 
 .user-avatar {
     width: 38px;
@@ -439,27 +433,30 @@ body {
     background-color: #e8e9ec;
     min-width: 0;
     width: 100%;
-    padding-bottom: 70px; /* Laisse de la place pour la barre en bas */
+    padding-bottom: 100px; /* Laisse de la place pour la barre flottante */
 }
 
-/* --- NOUVELLE BARRE DE NAVIGATION EN BAS --- */
+/* --- NOUVELLE BARRE DE NAVIGATION FLOTTANTE --- */
 .bottom-nav {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 65px;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    height: 70px;
     background-color: #ffffff;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f0;
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 10px;
 }
 
 .nav-links {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     list-style: none;
@@ -477,9 +474,11 @@ body {
     font-weight: 600;
     color: #888;
     cursor: pointer;
-    transition: color 0.2s, transform 0.1s;
-    padding: 8px 0;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 12px;
     flex: 1;
+    max-width: 80px;
 }
 
 .nav-links li i {
@@ -488,8 +487,10 @@ body {
     transition: transform 0.2s;
 }
 
+/* Effet de pilule pour le bouton actif (comme sur l'image 2) */
 .nav-links li.active {
     color: var(--primary-color);
+    background-color: var(--primary-color-soft);
     font-weight: 800;
 }
 
@@ -1322,16 +1323,16 @@ body {
     border: 2px solid #fecaca;
 }
 
-/* ============ CARTE VIRTUELLE (OR) ============ */
+/* ============ CARTE VIRTUELLE (TAILLE RÉDUITE) ============ */
 .virtual-card-wrapper {
-    max-width: 100%;
-    margin-bottom: 20px;
+    max-width: 340px; /* Taille réduite pour ressembler à une vraie carte */
+    margin: 0 auto 20px auto; /* Centré */
     perspective: 1000px;
 }
 
 .gold-card {
     width: 100%;
-    aspect-ratio: 1.586 / 1;
+    aspect-ratio: 1.586 / 1; /* Ratio standard d'une carte bancaire */
     border-radius: 12px;
     background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
     color: #1a1a1a;
@@ -1366,7 +1367,7 @@ body {
 }
 
 .vc-logo {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
     letter-spacing: 1px;
     display: flex;
@@ -1376,8 +1377,8 @@ body {
 }
 
 .vc-chip {
-    width: 40px;
-    height: 30px;
+    width: 38px;
+    height: 28px;
     background: linear-gradient(135deg, #e5c687 0%, #b88a2c 100%);
     border-radius: 6px;
     position: relative;
@@ -1393,7 +1394,7 @@ body {
 
 .vc-number {
     font-family: 'Courier New', monospace;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 2px;
     font-weight: 800;
     text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
@@ -1412,7 +1413,7 @@ body {
 }
 
 .vc-label {
-    font-size: 9px;
+    font-size: 8px;
     opacity: 0.8;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -1422,17 +1423,18 @@ body {
 }
 
 .vc-value {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 1px;
     color: #1a1a1a;
 }
 
 .vc-brand {
-    font-size: 28px;
+    font-size: 26px;
     color: #ffffff; 
 }
 
+/* ============ FACE ARRIÈRE (VERSO) ============ */
 .vc-back {
     justify-content: flex-start;
     padding: 20px 0;
@@ -1440,55 +1442,55 @@ body {
 
 .vc-magnetic-strip {
     width: 100%;
-    height: 45px;
+    height: 40px;
     background-color: #0044cc; 
     margin-bottom: 15px;
 }
 
 .vc-signature-box {
     width: 85%;
-    height: 35px;
+    height: 32px;
     background-color: #f8f9fa;
-    margin: 0 20px 15px 20px;
+    margin: 0 15px 15px 15px;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 10px;
     color: #111;
     position: relative;
 }
 
 .vc-cvv-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: #666;
 }
 
 .vc-cvv {
     font-family: 'Courier New', monospace;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     letter-spacing: 2px;
     color: #1a1a1a;
 }
 
 .vc-back-text {
-    font-size: 8px;
+    font-size: 7px;
     color: #1a1a1a;
     opacity: 0.8;
     line-height: 1.4;
-    padding: 0 20px;
+    padding: 0 15px;
     margin-bottom: 10px;
     font-weight: 600;
 }
 
 .vc-back-logo {
-    font-size: 30px;
+    font-size: 26px;
     color: #ffffff; 
     position: absolute;
     bottom: 15px;
-    right: 20px;
+    right: 15px;
 }
 
 .vc-actions {
@@ -1496,6 +1498,7 @@ body {
     gap: 10px;
     flex-wrap: wrap;
     margin-top: 10px;
+    justify-content: center;
 }
 
 .vc-info-grid {
@@ -1611,6 +1614,30 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* ============ BOUTON DÉCONNEXION PROFIL ============ */
+.btn-logout-profile {
+    width: 100%;
+    background-color: transparent;
+    color: #e02424;
+    border: 2px solid #fde8e8;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.1s;
+}
+.btn-logout-profile:hover {
+    background-color: #fde8e8;
+}
+.btn-logout-profile:active {
+    transform: scale(0.98);
 }
 
 /* ============ ANIMATIONS ============ */
