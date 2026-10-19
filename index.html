@@ -205,7 +205,7 @@
     </div>
 </template>
 
-<!-- NOUVELLE VUE TRANSFERT CORRIGÉE -->
+<!-- VUE TRANSFERT CORRIGÉE -->
 <template id="tpl-transfer">
     <div class="dashboard-body">
         <h1 class="welcome-title" data-i18n="make_transfer">Effectuer un virement</h1>
@@ -220,8 +220,23 @@
                 <span data-i18n="available_balance">Solde disponible</span> : <strong id="transfer-balance">--</strong>
             </div>
 
+            <!-- NOUVELLE ICÔNE SVG PERSONNALISÉE -->
             <div class="international-link">
-                <i class="fa-solid fa-money-bill-transfer"></i> <span data-i18n="international_transfer">Effectuer un virement international</span>
+                <svg class="transfer-custom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- Le rectangle (billet) -->
+                    <rect x="4" y="3" width="16" height="12" rx="2" />
+                    <!-- Les 4 points aux coins -->
+                    <circle cx="7" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+                    <circle cx="17" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+                    <circle cx="7" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                    <circle cx="17" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                    <!-- Le point central -->
+                    <circle cx="12" cy="9" r="1.5" fill="currentColor" stroke="none"/>
+                    <!-- La flèche qui fait le tour -->
+                    <path d="M 2 15 L 2 21 L 22 21" />
+                    <path d="M 19 18 L 22 21 L 19 24" />
+                </svg>
+                <span data-i18n="international_transfer">Effectuer un virement international</span>
             </div>
 
             <form id="transfer-form">
