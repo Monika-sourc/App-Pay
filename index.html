@@ -220,19 +220,15 @@
                 <span data-i18n="available_balance">Solde disponible</span> : <strong id="transfer-balance">--</strong>
             </div>
 
-            <!-- NOUVELLE ICÔNE SVG PERSONNALISÉE -->
+            <!-- ICÔNE SVG PERSONNALISÉE -->
             <div class="international-link">
                 <svg class="transfer-custom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Le rectangle (billet) -->
                     <rect x="4" y="3" width="16" height="12" rx="2" />
-                    <!-- Les 4 points aux coins -->
                     <circle cx="7" cy="6" r="1.5" fill="currentColor" stroke="none"/>
                     <circle cx="17" cy="6" r="1.5" fill="currentColor" stroke="none"/>
                     <circle cx="7" cy="12" r="1.5" fill="currentColor" stroke="none"/>
                     <circle cx="17" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-                    <!-- Le point central -->
                     <circle cx="12" cy="9" r="1.5" fill="currentColor" stroke="none"/>
-                    <!-- La flèche qui fait le tour -->
                     <path d="M 2 15 L 2 21 L 22 21" />
                     <path d="M 19 18 L 22 21 L 19 24" />
                 </svg>
@@ -285,58 +281,68 @@
     </div>
 </template>
 
+<!-- VUE VERIFICATION CORRIGÉE -->
 <template id="tpl-verification">
     <div class="dashboard-body">
         <h1 class="welcome-title" data-i18n="identity_verification">Vérification d'identité</h1>
 
         <div class="verification-card">
-            <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+            <!-- Icône grise en haut à droite -->
+            <div class="verification-icon-top-right">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+
             <div class="card-header-title">
                 <i class="fa-regular fa-file-lines"></i> <span data-i18n="pending_transfer_details">Détails du virement en attente</span>
             </div>
 
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="amount">Montant du virement :</div>
-                <div class="detail-value" id="vf-amount">-</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="beneficiary_name">Nom du bénéficiaire :</div>
-                <div class="detail-value" id="vf-beneficiary">-</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="iban">IBAN / Numéro de Compte :</div>
-                <div class="detail-value" id="vf-iban">-</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="bic">Code Banque (BIC / SWIFT) :</div>
-                <div class="detail-value" id="vf-bic">-</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="bank_name">Nom de la Banque :</div>
-                <div class="detail-value" id="vf-bank">-</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="reason">Raison du virement :</div>
-                <div class="detail-value" id="vf-reason">-</div>
+            <!-- Carte grise pour les détails -->
+            <div class="verification-details-grey-box">
+                <div class="detail-row">
+                    <div class="detail-label" data-i18n="amount">Montant du virement :</div>
+                    <div class="detail-value" id="vf-amount">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label" data-i18n="beneficiary_name">Nom du bénéficiaire :</div>
+                    <div class="detail-value" id="vf-beneficiary">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label" data-i18n="iban">IBAN / Numéro de Compte :</div>
+                    <div class="detail-value" id="vf-iban">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label" data-i18n="bic">Code Banque (BIC / SWIFT) :</div>
+                    <div class="detail-value" id="vf-bic">-</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label" data-i18n="bank_name">Nom de la Banque :</div>
+                    <div class="detail-value" id="vf-bank">-</div>
+                </div>
+                <div class="detail-row" style="margin-bottom: 20px;">
+                    <div class="detail-label" data-i18n="reason">Raison du virement :</div>
+                    <div class="detail-value" id="vf-reason">-</div>
+                </div>
+
+                <!-- Bouton Annuler (style plein) -->
+                <button class="btn-cancel-solid" onclick="cancelTransfer()">
+                    <span data-i18n="cancel_transfer">Annuler le virement</span> &rarr;
+                </button>
             </div>
 
-            <button class="btn-cancel" onclick="cancelTransfer()">
-                <span data-i18n="cancel_transfer">Annuler le virement</span> &rarr;
-            </button>
+            <!-- Section Code d'activation (déplacée à l'intérieur de la carte blanche) -->
+            <div class="activation-section-title" style="margin-top: 25px;">
+                <i class="fa-solid fa-lock"></i> <span data-i18n="enter_activation_code">Veuillez saisir le code d'activation du virement</span>
+            </div>
+
+            <form id="verify-form">
+                <div class="form-group">
+                    <label data-i18n="activation_code">Code d'activation</label>
+                    <input type="password" class="standard-input" id="vf-code" placeholder="Entrez votre code secret" data-i18n-placeholder="placeholder_activation" required autocomplete="off" style="text-align: center;">
+                </div>
+
+                <button type="submit" class="btn-continue" style="margin-top: 20px;"><span data-i18n="continue">Confirmer le transfert</span> &rarr;</button>
+            </form>
         </div>
-
-        <div class="activation-section-title">
-            <i class="fa-solid fa-lock"></i> <span data-i18n="enter_activation_code">Veuillez saisir le code d'activation du virement</span>
-        </div>
-
-        <form id="verify-form">
-            <div class="form-group">
-                <label data-i18n="activation_code">Code d'activation</label>
-                <input type="password" class="standard-input" id="vf-code" placeholder="Entrez votre code secret" data-i18n-placeholder="placeholder_activation" required autocomplete="off">
-            </div>
-
-            <button type="submit" class="btn-continue"><span data-i18n="continue">Continuer</span> &rarr;</button>
-        </form>
     </div>
 </template>
 
