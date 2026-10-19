@@ -205,19 +205,23 @@
     </div>
 </template>
 
+<!-- NOUVELLE VUE TRANSFERT CORRIGÉE -->
 <template id="tpl-transfer">
     <div class="dashboard-body">
         <h1 class="welcome-title" data-i18n="make_transfer">Effectuer un virement</h1>
 
         <div class="transfer-card">
-            <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+            <!-- Icône grise en haut à droite -->
+            <div class="transfer-card-icon-top-right">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
 
             <div class="transfer-info-top">
                 <span data-i18n="available_balance">Solde disponible</span> : <strong id="transfer-balance">--</strong>
             </div>
 
             <div class="international-link">
-                <i class="fa-solid fa-arrow-right-arrow-left"></i> <span data-i18n="international_transfer">Envoyer un virement international</span>
+                <i class="fa-solid fa-money-bill-transfer"></i> <span data-i18n="international_transfer">Effectuer un virement international</span>
             </div>
 
             <form id="transfer-form">
@@ -231,27 +235,33 @@
 
                 <div class="form-group">
                     <label data-i18n="beneficiary_name">Nom du bénéficiaire</label>
-                    <input type="text" class="standard-input" id="tf-beneficiary" placeholder="Nom complet" data-i18n-placeholder="placeholder_name" required>
+                    <input type="text" class="standard-input" id="tf-beneficiary" required>
                 </div>
 
                 <div class="form-group">
                     <label data-i18n="iban">IBAN / Numéro de Compte</label>
-                    <input type="text" class="standard-input" id="tf-iban" placeholder="PL00 0000 0000 0000 0000 0000 0000" required>
+                    <input type="text" class="standard-input" id="tf-iban" required>
                 </div>
 
                 <div class="form-group">
                     <label data-i18n="bic">Code Banque (BIC / SWIFT)</label>
-                    <input type="text" class="standard-input" id="tf-bic" placeholder="BIC" required>
+                    <input type="text" class="standard-input" id="tf-bic" required>
                 </div>
 
                 <div class="form-group">
                     <label data-i18n="bank_name">Nom de la Banque</label>
-                    <input type="text" class="standard-input" id="tf-bank" placeholder="Nom de la banque" data-i18n-placeholder="placeholder_bank" required>
+                    <input type="text" class="standard-input" id="tf-bank" required>
                 </div>
 
                 <div class="form-group">
                     <label data-i18n="reason">Raison du virement</label>
-                    <input type="text" class="standard-input" id="tf-reason" placeholder="Motif du virement" data-i18n-placeholder="placeholder_reason" required>
+                    <input type="text" class="standard-input" id="tf-reason" required>
+                </div>
+
+                <!-- Bandeau d'avertissement -->
+                <div class="transfer-warning">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span data-i18n="transfer_warning">Le traitement du transfert prend de 1 à 3 minutes après la vérification finale.</span>
                 </div>
 
                 <button type="submit" class="btn-continue"><span data-i18n="continue">Continuer</span> &rarr;</button>
