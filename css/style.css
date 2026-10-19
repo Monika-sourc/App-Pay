@@ -940,7 +940,7 @@ body {
     font-weight: 500;
 }
 
-/* ============ FORMULAIRE DE VIREMENT (MODIFIÉ) ============ */
+/* ============ FORMULAIRE DE VIREMENT ============ */
 .transfer-card {
     background: #ffffff;
     border-radius: 6px;
@@ -978,10 +978,11 @@ body {
     font-weight: 800;
 }
 
+/* NOUVELLE ICÔNE SVG */
 .international-link {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-size: 13px;
     font-weight: 500;
     color: #666;
@@ -992,9 +993,11 @@ body {
     transform: scale(0.97);
 }
 
-.international-link i {
+.transfer-custom-icon {
+    width: 24px;
+    height: 24px;
     color: #888;
-    font-size: 15px;
+    flex-shrink: 0;
 }
 
 .form-group {
@@ -1009,7 +1012,7 @@ body {
     font-weight: 700;
 }
 
-/* Champs plus rectangulaires */
+/* Champs avec devise encadrée */
 .input-with-addon {
     display: flex;
     align-items: center;
@@ -1039,12 +1042,17 @@ body {
 
 .input-addon {
     padding: 0 15px;
+    height: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 800;
     color: #333;
     background-color: #f8f9fa;
     font-size: 13px;
     flex-shrink: 0;
-    border-left: 1px solid #dcdfe6;
+    border-left: 1px solid #dcdfe6; /* Encadrement de la devise */
 }
 
 .standard-input {
