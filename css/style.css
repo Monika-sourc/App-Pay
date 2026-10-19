@@ -978,7 +978,6 @@ body {
     font-weight: 800;
 }
 
-/* NOUVELLE ICÔNE SVG */
 .international-link {
     display: flex;
     align-items: center;
@@ -1052,7 +1051,7 @@ body {
     background-color: #f8f9fa;
     font-size: 13px;
     flex-shrink: 0;
-    border-left: 1px solid #dcdfe6; /* Encadrement de la devise */
+    border-left: 1px solid #dcdfe6;
 }
 
 .standard-input {
@@ -1112,14 +1111,24 @@ body {
 .btn-continue:active { transform: scale(0.98); }
 .btn-continue:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ============ VÉRIFICATION ============ */
+/* ============ VÉRIFICATION (NOUVELLE VERSION) ============ */
 .verification-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 20px 15px;
-    box-shadow: var(--card-shadow);
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     position: relative;
+    border: 1px solid #f0f0f0;
+}
+
+.verification-icon-top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 45px;
+    color: #f0f2f5; 
+    pointer-events: none;
 }
 
 .card-header-title {
@@ -1137,55 +1146,67 @@ body {
     font-size: 16px;
 }
 
-.detail-row {
-    margin-bottom: 12px;
+/* La carte grise au milieu */
+.verification-details-grey-box {
+    background-color: #f4f5f7;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 
-.detail-label {
+.verification-details-grey-box .detail-row {
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.verification-details-grey-box .detail-label {
     font-size: 13px;
     color: #666;
-    margin-bottom: 3px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
-.detail-value {
+.verification-details-grey-box .detail-value {
     font-size: 14px;
     font-weight: 800;
     color: #111;
     word-break: break-all;
 }
 
-.btn-cancel {
-    background-color: #fff;
-    border: 2px solid #f5c6cb;
-    color: #e02424;
-    padding: 9px 15px;
-    border-radius: 8px;
+/* Bouton Annuler rouge plein */
+.btn-cancel-solid {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 18px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 10px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     transition: background 0.2s, transform 0.1s;
+    margin-top: 10px;
 }
-.btn-cancel:hover { background-color: #fff5f5; }
-.btn-cancel:active { transform: scale(0.95); }
+.btn-cancel-solid:hover { background-color: #dc2626; }
+.btn-cancel-solid:active { transform: scale(0.95); }
 
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
-    color: #222;
-    margin-bottom: 12px;
+    color: #333;
+    margin-bottom: 15px;
     gap: 8px;
 }
 
 .activation-section-title i {
-    color: #444;
-    font-size: 15px;
+    color: #333;
+    font-size: 16px;
 }
 
 /* ============ PROGRESSION ============ */
