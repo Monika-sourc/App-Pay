@@ -1111,7 +1111,7 @@ body {
 .btn-continue:active { transform: scale(0.98); }
 .btn-continue:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ============ VÉRIFICATION (NOUVELLE VERSION) ============ */
+/* ============ VÉRIFICATION (CORRECTION COULEUR ET ESPACEMENT) ============ */
 .verification-card {
     background: #ffffff;
     border-radius: 6px;
@@ -1156,7 +1156,7 @@ body {
 }
 
 .verification-details-grey-box .detail-row {
-    margin-bottom: 14px;
+    margin-bottom: 10px; /* Espacement réduit entre les lignes */
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -1164,15 +1164,16 @@ body {
 
 .verification-details-grey-box .detail-label {
     font-size: 13px;
-    color: #666;
+    color: #555555 !important; 
     font-weight: 500;
 }
 
 .verification-details-grey-box .detail-value {
     font-size: 14px;
     font-weight: 800;
-    color: #111;
+    color: #000000 !important; 
     word-break: break-all;
+    padding-left: 15px; /* Indentation des valeurs demandée */
 }
 
 /* Bouton Annuler rouge plein */
