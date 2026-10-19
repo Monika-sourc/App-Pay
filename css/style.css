@@ -28,7 +28,7 @@ body {
     background-color: #e8e9ec;
     color: #333;
     overflow-x: hidden;
-    zoom: 0.7;
+    zoom: 0.7; /* Taille de l'interface */
 }
 
 .screen {
@@ -292,8 +292,9 @@ body {
     height: 100%;
 }
 
+/* Sidebar moins large pour agrandir la partie blanche */
 .sidebar {
-    width: 180px;
+    width: 150px; 
     background-color: var(--primary-color);
     color: white;
     display: flex;
@@ -414,25 +415,25 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 15px 20px;
+    padding: 12px 15px;
     background-color: var(--card-bg);
     border-bottom: 1px solid #e8eaee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 75px;
+    min-height: 60px;
 }
 
 .header-icons {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 15px;
     position: relative;
 }
 
 .icon-btn {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background-color: #e4e6eb;
     display: flex;
@@ -460,8 +461,8 @@ body {
 }
 
 .user-avatar {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background-color: var(--primary-color);
     color: white;
@@ -477,9 +478,9 @@ body {
 
 .notif-dropdown {
     position: absolute;
-    top: 65px;
+    top: 55px;
     right: 0;
-    width: 300px;
+    width: 280px;
     background: var(--card-bg);
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -532,7 +533,7 @@ body {
    Corps du dashboard
    ============================================================ */
 .dashboard-body {
-    padding: 15px 15px 25px 15px;
+    padding: 12px 12px 25px 12px;
     max-width: 100%;
     width: 100%;
     animation: fadeIn 0.3s ease;
@@ -542,16 +543,16 @@ body {
     font-size: 18px;
     font-weight: 700;
     color: #222;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 /* ============ CARTE DE SOLDE ============ */
 .balance-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 25px 20px;
+    padding: 20px 15px;
     box-shadow: var(--card-shadow);
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     position: relative;
     overflow: hidden;
     text-align: center;
@@ -593,7 +594,7 @@ body {
 .balance-actions {
     display: flex;
     justify-content: center;
-    gap: 70px;
+    gap: 40px;
     margin-top: 25px;
     width: 100%;
 }
@@ -614,8 +615,8 @@ body {
 }
 
 .round-action-btn {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-color: #111111;
     color: white;
@@ -642,8 +643,8 @@ body {
 
 .wallet-bg-icon {
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 15px;
+    top: 15px;
     font-size: 40px;
     color: #f0f2f5;
 }
@@ -652,14 +653,14 @@ body {
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px; 
-    margin-bottom: 25px;
+    gap: 10px; 
+    margin-bottom: 20px;
 }
 
 .stat-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 15px 10px;
+    padding: 15px 8px;
     box-shadow: var(--card-shadow);
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -721,7 +722,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
+    padding: 15px;
     border-bottom: 1px solid #f0f0f0;
     gap: 10px;
 }
@@ -747,7 +748,7 @@ body {
 }
 
 .history-card-header-left span {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     color: #111;
     white-space: nowrap;
@@ -780,7 +781,7 @@ body {
 }
 
 .history-date-separator {
-    padding: 14px 20px 8px 20px;
+    padding: 12px 15px 8px 15px;
     font-size: 13px;
     color: #888;
     font-weight: 600;
@@ -794,8 +795,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
-    gap: 12px;
+    padding: 12px 15px;
+    gap: 10px;
     transition: background 0.15s, transform 0.1s;
     border-bottom: 1px solid #f5f5f5;
     cursor: pointer;
@@ -819,14 +820,14 @@ body {
 .transaction-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     min-width: 0;
     flex: 1;
 }
 
 .tx-icon {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -839,8 +840,8 @@ body {
 .tx-icon.green { background-color: #def7ec; color: #00a04a; }
 
 .tx-icon-bank {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     background-color: #ffffff;
     border: 2px solid #e8eaee;
@@ -875,11 +876,11 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
 }
 
 .tx-details h4 {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
     color: #111;
     margin: 0;
@@ -889,7 +890,7 @@ body {
 }
 
 .tx-details p {
-    font-size: 12px;
+    font-size: 11px;
     color: #666;
     margin: 0;
     white-space: nowrap;
@@ -899,7 +900,7 @@ body {
 }
 
 .tx-details .tx-time {
-    font-size: 11px;
+    font-size: 10px;
     color: #999;
     font-weight: 500;
 }
@@ -908,13 +909,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 3px;
+    gap: 2px;
     flex-shrink: 0;
-    margin-left: 8px;
+    margin-left: 5px;
 }
 
 .tx-amount {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     white-space: nowrap;
 }
@@ -923,7 +924,7 @@ body {
 .tx-amount.green { color: #00a04a; }
 
 .tx-status {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     white-space: nowrap;
 }
@@ -943,7 +944,7 @@ body {
 .transfer-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 25px 20px;
+    padding: 20px 15px;
     box-shadow: var(--card-shadow);
     position: relative;
 }
@@ -1065,7 +1066,7 @@ body {
 .verification-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 22px;
+    padding: 20px 15px;
     box-shadow: var(--card-shadow);
     margin-bottom: 20px;
     position: relative;
@@ -1141,7 +1142,7 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 22px;
+    padding: 20px 15px;
     box-shadow: var(--card-shadow);
     position: relative;
 }
@@ -1211,14 +1212,14 @@ body {
 .inner-details-box {
     background-color: #f8f9fa;
     border-radius: 8px;
-    padding: 15px;
+    padding: 12px;
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
 .success-card, .failed-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 30px 25px;
+    padding: 25px 15px;
     box-shadow: var(--card-shadow);
     text-align: center;
     max-width: 600px;
@@ -1271,7 +1272,7 @@ body {
 .success-summary, .failed-summary {
     background-color: #f8f9fa;
     border-radius: 8px;
-    padding: 15px;
+    padding: 12px;
     margin-bottom: 20px;
     text-align: left;
 }
@@ -1283,8 +1284,8 @@ body {
 
 /* ============ CARTE VIRTUELLE (OR) ============ */
 .virtual-card-wrapper {
-    max-width: 420px;
-    margin-bottom: 25px;
+    max-width: 100%;
+    margin-bottom: 20px;
     perspective: 1000px;
 }
 
@@ -1294,7 +1295,7 @@ body {
     border-radius: 12px;
     background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
     color: #1a1a1a;
-    padding: 25px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1325,18 +1326,18 @@ body {
 }
 
 .vc-logo {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 900;
     letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #ffffff;
+    color: #ffffff; /* APP PAY en blanc */
 }
 
 .vc-chip {
-    width: 45px;
-    height: 35px;
+    width: 40px;
+    height: 30px;
     background: linear-gradient(135deg, #e5c687 0%, #b88a2c 100%);
     border-radius: 6px;
     position: relative;
@@ -1345,20 +1346,20 @@ body {
 .vc-chip::after {
     content: '';
     position: absolute;
-    inset: 6px 4px;
+    inset: 5px 3px;
     border: 1px solid rgba(0,0,0,0.2);
     border-radius: 3px;
 }
 
 .vc-number {
     font-family: 'Courier New', monospace;
-    font-size: 22px;
-    letter-spacing: 3px;
+    font-size: 18px;
+    letter-spacing: 2px;
     font-weight: 800;
     text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
     position: relative;
     z-index: 1;
-    margin: 15px 0;
+    margin: 10px 0;
     color: #1a1a1a;
 }
 
@@ -1371,7 +1372,7 @@ body {
 }
 
 .vc-label {
-    font-size: 10px;
+    font-size: 9px;
     opacity: 0.8;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -1381,74 +1382,74 @@ body {
 }
 
 .vc-value {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: 1px;
     color: #1a1a1a;
 }
 
 .vc-brand {
-    font-size: 32px;
-    color: #ffffff;
+    font-size: 28px;
+    color: #ffffff; /* VISA recto en blanc */
 }
 
 /* ============ FACE ARRIÈRE (VERSO) ============ */
 .vc-back {
     justify-content: flex-start;
-    padding: 25px 0;
+    padding: 20px 0;
 }
 
 .vc-magnetic-strip {
     width: 100%;
-    height: 50px;
-    background-color: #0044cc;
-    margin-bottom: 20px;
+    height: 45px;
+    background-color: #0044cc; /* Bande noire devenue bleue */
+    margin-bottom: 15px;
 }
 
 .vc-signature-box {
     width: 85%;
-    height: 40px;
+    height: 35px;
     background-color: #f8f9fa;
-    margin: 0 25px 20px 25px;
+    margin: 0 20px 15px 20px;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 12px;
     color: #111;
     position: relative;
 }
 
 .vc-cvv-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #666;
 }
 
 .vc-cvv {
     font-family: 'Courier New', monospace;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: 2px;
     color: #1a1a1a;
 }
 
 .vc-back-text {
-    font-size: 9px;
+    font-size: 8px;
     color: #1a1a1a;
     opacity: 0.8;
     line-height: 1.4;
-    padding: 0 25px;
-    margin-bottom: 15px;
+    padding: 0 20px;
+    margin-bottom: 10px;
     font-weight: 600;
 }
 
 .vc-back-logo {
-    font-size: 35px;
-    color: #ffffff;
+    font-size: 30px;
+    color: #ffffff; /* VISA verso en blanc */
     position: absolute;
-    bottom: 20px;
-    right: 25px;
+    bottom: 15px;
+    right: 20px;
 }
 
 .vc-actions {
@@ -1461,26 +1462,26 @@ body {
 .vc-info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .vc-info-item {
     background: var(--card-bg);
-    padding: 14px 15px;
+    padding: 12px;
     border-radius: 10px;
     box-shadow: var(--card-shadow);
 }
 
 .vc-info-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #666;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     font-weight: 600;
 }
 
 .vc-info-value {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     color: #111;
 }
@@ -1489,17 +1490,17 @@ body {
 .account-header {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 20px;
+    gap: 12px;
+    padding: 15px;
     background: var(--card-bg);
     border-radius: 10px;
     box-shadow: var(--card-shadow);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .account-avatar-lg {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--primary-color), var(--primary-color-light));
     color: white;
@@ -1507,19 +1508,19 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 22px;
+    font-size: 20px;
     flex-shrink: 0;
 }
 
 .account-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     color: #111;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .account-role {
-    font-size: 13px;
+    font-size: 12px;
     color: #777;
     font-weight: 500;
 }
@@ -1528,7 +1529,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 11px;
+    font-size: 10px;
     background-color: #def7ec;
     color: #00a04a;
     padding: 2px 6px;
@@ -1683,8 +1684,8 @@ body {
     .tx-amount { font-size: 13px; }
     
     /* Ajustement des boutons ronds sur mobile */
-    .balance-actions { gap: 40px; }
-    .round-action-btn { width: 55px; height: 55px; font-size: 20px; }
+    .balance-actions { gap: 30px; }
+    .round-action-btn { width: 50px; height: 50px; font-size: 18px; }
     .round-action-wrapper span { font-size: 11px; }
 }
 
