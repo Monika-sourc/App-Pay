@@ -83,7 +83,7 @@
     <!-- ÉCRAN 2 : APPLICATION -->
     <div class="screen" id="app-screen">
 
-        <!-- HEADER (Contient maintenant la déconnexion) -->
+        <!-- HEADER (Sans le bouton déconnexion) -->
         <header class="header">
             <div class="header-logo">
                 <i class="fa-solid fa-landmark"></i> APP PAY
@@ -92,10 +92,6 @@
                 <button class="icon-btn" id="notif-btn">
                     <i class="fa-regular fa-bell"></i>
                     <span class="notif-dot"></span>
-                </button>
-                <!-- Bouton déconnexion déplacé ici -->
-                <button class="icon-btn logout-icon-btn" onclick="handleLogout()" title="Déconnexion">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 </button>
                 <div class="user-avatar" id="header-avatar">--</div>
             </div>
@@ -117,7 +113,7 @@
             <div id="views-container"></div>
         </main>
 
-        <!-- NOUVELLE BARRE DE NAVIGATION EN BAS -->
+        <!-- BARRE DE NAVIGATION FLOTTANTE EN BAS -->
         <nav class="bottom-nav">
             <ul class="nav-links" id="nav-links">
                 <li data-view="dashboard" class="active">
@@ -661,6 +657,14 @@
             </button>
             <button class="action-chip" onclick="showToast('Préférences de notifications', 'info')">
                 <i class="fa-regular fa-bell"></i> <span data-i18n="notifications">Notifications</span>
+            </button>
+        </div>
+
+        <!-- BOUTON DÉCONNEXION DÉPLACÉ ICI -->
+        <div style="margin-top: 30px; margin-bottom: 20px;">
+            <button class="btn-logout-profile" onclick="handleLogout()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span data-i18n="logout">Déconnexion</span>
             </button>
         </div>
     </div>
