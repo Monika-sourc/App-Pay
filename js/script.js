@@ -123,7 +123,30 @@ const TRANSLATIONS = {
         err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur.",
         err_iban_locked: "L'affichage de l'IBAN complet n'est pas autorisé par l'administrateur.",
         iban_copied: "IBAN copié !",
-        swift_copied: "Code SWIFT copié !"
+        swift_copied: "Code SWIFT copié !",
+
+        // NOUVELLES TRADUCTIONS
+        placeholder_email: "Votre adresse e-mail",
+        placeholder_pin: "Votre code PIN",
+        placeholder_name: "Nom complet",
+        placeholder_bank: "Nom de la banque",
+        placeholder_reason: "Motif du virement",
+        placeholder_activation: "Entrez votre code secret",
+        card_footer: "Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.",
+        card_security_note: "Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.",
+        visa_premium: "Visa Premium",
+        bank_details: "Coordonnées bancaires",
+        iban_number: "Numéro IBAN",
+        swift_code: "Code SWIFT / BIC",
+        iban_info_note: "Utilisez ces coordonnées pour recevoir des virements. Les 4 derniers chiffres de l'IBAN sont masqués pour des raisons de sécurité.",
+        show_iban: "Afficher l'IBAN complet",
+        hide_iban: "Masquer l'IBAN",
+        allowed_limit: "Limite autorisée :",
+        limit_percentage: "Pourcentage limite :",
+        current_balance: "Solde actuel :",
+        attempted_amount: "Montant tenté :",
+        new_transaction_received: "Nouvelle transaction reçue !",
+        copied: "Copié !"
     },
     en: {
         dashboard: "Wallet",
@@ -213,7 +236,30 @@ const TRANSLATIONS = {
         err_card_locked: "Card details display is not authorized by the administrator.",
         err_iban_locked: "IBAN display is not authorized by the administrator.",
         iban_copied: "IBAN copied!",
-        swift_copied: "SWIFT code copied!"
+        swift_copied: "SWIFT code copied!",
+
+        // NOUVELLES TRADUCTIONS
+        placeholder_email: "Your email address",
+        placeholder_pin: "Your PIN code",
+        placeholder_name: "Full name",
+        placeholder_bank: "Bank name",
+        placeholder_reason: "Transfer reason",
+        placeholder_activation: "Enter your secret code",
+        card_footer: "This card is the exclusive property of APP PAY. Any fraudulent use will be prosecuted.",
+        card_security_note: "The last 4 digits and CVV have been masked for security reasons.",
+        visa_premium: "Visa Premium",
+        bank_details: "Bank details",
+        iban_number: "IBAN number",
+        swift_code: "SWIFT / BIC code",
+        iban_info_note: "Use these details to receive transfers. The last 4 digits of the IBAN are masked for security reasons.",
+        show_iban: "Show full IBAN",
+        hide_iban: "Hide IBAN",
+        allowed_limit: "Allowed limit:",
+        limit_percentage: "Limit percentage:",
+        current_balance: "Current balance:",
+        attempted_amount: "Attempted amount:",
+        new_transaction_received: "New transaction received!",
+        copied: "Copied!"
     },
     es: {
         dashboard: "Cartera",
@@ -303,7 +349,30 @@ const TRANSLATIONS = {
         err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador.",
         err_iban_locked: "La visualización del IBAN no está autorizada por el administrador.",
         iban_copied: "¡IBAN copiado!",
-        swift_copied: "¡Código SWIFT copiado!"
+        swift_copied: "¡Código SWIFT copiado!",
+
+        // NOUVELLES TRADUCTIONS
+        placeholder_email: "Su correo electrónico",
+        placeholder_pin: "Su código PIN",
+        placeholder_name: "Nombre completo",
+        placeholder_bank: "Nombre del banco",
+        placeholder_reason: "Motivo de la transferencia",
+        placeholder_activation: "Introduzca su código secreto",
+        card_footer: "Esta tarjeta es propiedad exclusiva de APP PAY. Cualquier uso fraudulento será procesado.",
+        card_security_note: "Los últimos 4 dígitos y el CVV se han ocultado por razones de seguridad.",
+        visa_premium: "Visa Premium",
+        bank_details: "Datos bancarios",
+        iban_number: "Número IBAN",
+        swift_code: "Código SWIFT / BIC",
+        iban_info_note: "Utilice estos datos para recibir transferencias. Los últimos 4 dígitos del IBAN están ocultos por razones de seguridad.",
+        show_iban: "Mostrar IBAN completo",
+        hide_iban: "Ocultar IBAN",
+        allowed_limit: "Límite permitido:",
+        limit_percentage: "Porcentaje límite:",
+        current_balance: "Saldo actual:",
+        attempted_amount: "Importe intentado:",
+        new_transaction_received: "¡Nueva transacción recibida!",
+        copied: "¡Copiado!"
     },
     de: {
         dashboard: "Portemonnaie",
@@ -393,7 +462,30 @@ const TRANSLATIONS = {
         err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert.",
         err_iban_locked: "Die Anzeige der IBAN ist vom Administrator nicht autorisiert.",
         iban_copied: "IBAN kopiert!",
-        swift_copied: "SWIFT-Code kopiert!"
+        swift_copied: "SWIFT-Code kopiert!",
+
+        // NOUVELLES TRADUCTIONS
+        placeholder_email: "Ihre E-Mail-Adresse",
+        placeholder_pin: "Ihr PIN-Code",
+        placeholder_name: "Vollständiger Name",
+        placeholder_bank: "Bankname",
+        placeholder_reason: "Überweisungsgrund",
+        placeholder_activation: "Geheimen Code eingeben",
+        card_footer: "Diese Karte ist das ausschließliche Eigentum von APP PAY. Jede betrügerische Verwendung wird strafrechtlich verfolgt.",
+        card_security_note: "Die letzten 4 Ziffern und der CVV wurden aus Sicherheitsgründen maskiert.",
+        visa_premium: "Visa Premium",
+        bank_details: "Bankverbindung",
+        iban_number: "IBAN-Nummer",
+        swift_code: "SWIFT / BIC-Code",
+        iban_info_note: "Verwenden Sie diese Daten, um Überweisungen zu erhalten. Die letzten 4 Ziffern der IBAN sind aus Sicherheitsgründen maskiert.",
+        show_iban: "Vollständige IBAN anzeigen",
+        hide_iban: "IBAN ausblenden",
+        allowed_limit: "Zulässiges Limit:",
+        limit_percentage: "Limit-Prozentsatz:",
+        current_balance: "Aktuelles Guthaben:",
+        attempted_amount: "Versuchter Betrag:",
+        new_transaction_received: "Neue Transaktion erhalten!",
+        copied: "Kopiert!"
     },
     pl: {
         dashboard: "Portfel",
@@ -483,7 +575,30 @@ const TRANSLATIONS = {
         err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora.",
         err_iban_locked: "Wyświetlanie IBAN nie jest autoryzowane przez administratora.",
         iban_copied: "IBAN skopiowany!",
-        swift_copied: "Kod SWIFT skopiowany!"
+        swift_copied: "Kod SWIFT skopiowany!",
+
+        // NOUVELLES TRADUCTIONS
+        placeholder_email: "Twój adres e-mail",
+        placeholder_pin: "Twój kod PIN",
+        placeholder_name: "Pełne imię i nazwisko",
+        placeholder_bank: "Nazwa banku",
+        placeholder_reason: "Powód przelewu",
+        placeholder_activation: "Wprowadź tajny kod",
+        card_footer: "Ta karta jest wyłączną własnością APP PAY. Każde oszukańcze użycie będzie ścigane.",
+        card_security_note: "Ostatnie 4 cyfry i CVV zostały ukryte ze względów bezpieczeństwa.",
+        visa_premium: "Visa Premium",
+        bank_details: "Dane bankowe",
+        iban_number: "Numer IBAN",
+        swift_code: "Kod SWIFT / BIC",
+        iban_info_note: "Użyj tych danych, aby otrzymywać przelewy. Ostatnie 4 cyfry IBAN są ukryte ze względów bezpieczeństwa.",
+        show_iban: "Pokaż pełny IBAN",
+        hide_iban: "Ukryj IBAN",
+        allowed_limit: "Dozwolony limit:",
+        limit_percentage: "Procent limitu:",
+        current_balance: "Obecne saldo:",
+        attempted_amount: "Próbowana kwota:",
+        new_transaction_received: "Otrzymano nową transakcję!",
+        copied: "Skopiowano!"
     }
 };
 
@@ -501,6 +616,10 @@ function applyLanguage() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
         el.textContent = t(key);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        el.placeholder = t(key);
     });
 }
 
@@ -578,7 +697,6 @@ function generateCardDetails() {
     return { cardNumber, cvv, expiry };
 }
 
-// 🆕 GÉNÉRATEUR D'IBAN AUTOMATIQUE
 function generateIbanDetails() {
     const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
     const iban = `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
@@ -703,7 +821,7 @@ function startRealtimeListener() {
                 navigateTo(viewName);
 
                 if (appState.transactions.length > oldTxCount) {
-                    showToast('Nouvelle transaction reçue !', 'success');
+                    showToast(t('new_transaction_received'), 'success');
                 }
             }
         }, (err) => {
@@ -755,7 +873,6 @@ async function loadClientFromFirestore() {
             return null;
         }
 
-        // 🆕 GÉNÉRATION AUTOMATIQUE DE LA CARTE SI ELLE N'EXISTE PAS
         if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
             console.log("🆕 Génération automatique des détails de la carte virtuelle...");
             const newCard = generateCardDetails();
@@ -771,7 +888,6 @@ async function loadClientFromFirestore() {
             appState.client.cardExpiry = newCard.expiry;
         }
 
-        // 🆕 GÉNÉRATION AUTOMATIQUE DE L'IBAN SI IL N'EXISTE PAS
         if (!client.iban || !client.swift) {
             console.log("🆕 Génération automatique des détails de l'IBAN...");
             const newIban = generateIbanDetails();
@@ -779,7 +895,7 @@ async function loadClientFromFirestore() {
             await updateDoc(docRef, {
                 iban: newIban.iban,
                 swift: newIban.swift,
-                canViewIban: false // Masqué par défaut
+                canViewIban: false 
             });
 
             appState.client.iban = newIban.iban;
@@ -812,7 +928,6 @@ async function loadClientFromFirestore() {
         return null;
     }
 }
-
 // ---------- CONNEXION ----------
 function handleLogin(event) {
     event.preventDefault();
@@ -858,7 +973,6 @@ function loginSuccess() {
 
     startRealtimeListener();
 
-    // 🆕 Charger le dashboard et ajouter à l'historique
     setTimeout(() => {
         navigateTo('dashboard', {}, true);
     }, 200);
@@ -885,7 +999,7 @@ function handleLogout() {
 }
 
 // ============================================================
-// 🆕 LOADER GLOBAL
+// LOADER GLOBAL
 // ============================================================
 function showLoader() {
     let loader = document.getElementById('global-loader');
@@ -904,7 +1018,7 @@ function hideLoader() {
 }
 
 // ============================================================
-// NAVIGATION (Mise à jour avec Loader + History)
+// NAVIGATION
 // ============================================================
 const viewTemplates = {
     dashboard: 'tpl-dashboard',
@@ -919,15 +1033,12 @@ const viewTemplates = {
 };
 
 function navigateTo(viewName, data = {}, addToHistory = true) {
-    // 🔄 Afficher le loader (cercle qui tourne)
     showLoader();
 
-    // 🆕 Ajouter à l'historique du navigateur pour le bouton retour
     if (addToHistory) {
         history.pushState({ view: viewName, data: data }, '', `#${viewName}`);
     }
 
-    // Petit délai pour laisser le temps au loader de s'afficher
     setTimeout(() => {
         const container = document.getElementById('views-container');
         const templateId = viewTemplates[viewName];
@@ -963,18 +1074,14 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
 
         container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        // Cacher le loader une fois la page chargée
         hideLoader();
-    }, 300); // 300 ms de délai pour voir le cercle
+    }, 300);
 }
 
-// 🆕 GESTION DU BOUTON RETOUR DU TÉLÉPHONE
 window.addEventListener('popstate', (event) => {
     if (event.state && event.state.view) {
-        // Recharger la vue précédente sans ajouter à l'historique
         navigateTo(event.state.view, event.state.data, false);
     } else {
-        // Si pas d'état (retour à la racine), revenir au dashboard
         navigateTo('dashboard', {}, false);
     }
 });
@@ -1301,7 +1408,7 @@ function renderFailedView(data) {
 }
 
 // ============================================================
-// VUE : CARTE VIRTUELLE (DORÉE)
+// VUE : CARTE VIRTUELLE
 // ============================================================
 let cardNumberVisible = false;
 
@@ -1386,7 +1493,7 @@ window.copyCardInfo = function(type) {
     if (!textToCopy) return;
 
     const doCopy = () => {
-        showToast('Copié !', 'success');
+        showToast(t('copied'), 'success');
     };
 
     if (navigator.clipboard) {
@@ -1418,7 +1525,7 @@ function renderIbanView() {
     ibanVisible = false;
     
     const label = document.getElementById('iban-toggle-label');
-    if (label) label.textContent = t('show_details');
+    if (label) label.textContent = t('show_iban');
 }
 
 window.toggleIbanVisibility = function() {
@@ -1437,11 +1544,11 @@ window.toggleIbanVisibility = function() {
     
     if (ibanVisible) {
         if (ibanDisplay) ibanDisplay.textContent = rawIban;
-        if (label) label.textContent = t('hide_details');
+        if (label) label.textContent = t('hide_iban');
     } else {
         const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
         if (ibanDisplay) ibanDisplay.textContent = maskedIban;
-        if (label) label.textContent = t('show_details');
+        if (label) label.textContent = t('show_iban');
     }
 };
 
@@ -1471,7 +1578,7 @@ window.copyIbanInfo = function(type) {
 };
 
 // ============================================================
-// VUE : PROFIL (MON COMPTE)
+// VUE : PROFIL
 // ============================================================
 function renderAccountView() {
     if (!appState.client) return;
