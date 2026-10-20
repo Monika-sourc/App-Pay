@@ -451,9 +451,7 @@
     </div>
 </template>
 
-<!-- ============================================= -->
-<!-- NOUVELLE PAGE CARTE VIRTUELLE PREMIUM         -->
-<!-- ============================================= -->
+<!-- PAGE CARTE VIRTUELLE PREMIUM -->
 <template id="tpl-card">
     <div class="dashboard-body card-page-wrapper">
         <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
@@ -518,30 +516,24 @@
             </div>
         </div>
 
-        <div class="card-hint">
-            <i class="fa-solid fa-rotate"></i> <span data-i18n="tap_to_flip">Appuyez sur la carte pour la retourner</span>
-        </div>
+        <!-- NOUVEAU BOUTON DE ROTATION BIEN PROPRE -->
+        <button class="btn-flip-custom" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
+            <i class="fa-solid fa-rotate"></i> 
+            <span data-i18n="flip_card">Retourner la carte</span>
+        </button>
 
         <div class="card-security-note">
             <i class="fa-solid fa-shield-halved"></i>
             <span data-i18n="card_security_note">Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.</span>
         </div>
 
-        <!-- BOUTONS PREMIUM -->
+        <!-- BOUTON AFFICHER LES DÉTAILS -->
         <div class="vc-actions-premium">
             <button class="btn-premium" onclick="toggleCardNumber()">
                 <div class="btn-premium-icon"><i class="fa-regular fa-eye"></i></div>
                 <div class="btn-premium-text">
                     <strong id="vc-toggle-label" data-i18n="show_details">Afficher les détails</strong>
                     <small data-i18n="view_full_card">Voir le numéro complet</small>
-                </div>
-            </button>
-
-            <button class="btn-premium" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
-                <div class="btn-premium-icon"><i class="fa-solid fa-rotate"></i></div>
-                <div class="btn-premium-text">
-                    <strong data-i18n="flip_card">Retourner la carte</strong>
-                    <small data-i18n="view_cvv">Voir le code CVV</small>
                 </div>
             </button>
         </div>
