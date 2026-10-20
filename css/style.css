@@ -436,7 +436,7 @@ body {
     padding-bottom: 100px; 
 }
 
-/* --- BARRE DE NAVIGATION FLOTTANTE --- */
+/* --- BARRE DE NAVIGATION FLOTTANTE (CORRIGÉE POUR 1 LIGNE) --- */
 .bottom-nav {
     position: fixed;
     bottom: 15px;
@@ -451,7 +451,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 10px;
+    padding: 0 5px;
 }
 
 .nav-links {
@@ -470,21 +470,28 @@ body {
     align-items: center;
     justify-content: center;
     gap: 4px;
-    font-size: 10px;
+    font-size: 9px; /* Taille réduite pour éviter le retour à la ligne */
     font-weight: 600;
     color: #888;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 8px 12px;
+    padding: 6px 4px;
     border-radius: 12px;
     flex: 1;
-    max-width: 80px;
+    text-align: center;
 }
 
 .nav-links li i {
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
     transition: transform 0.2s;
+}
+
+.nav-links li span {
+    white-space: nowrap; /* FORCE UNE SEULE LIGNE */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .nav-links li.active {
@@ -551,14 +558,14 @@ body {
     font-size: 30px;
     font-weight: 800;
     color: #111;
-    margin-bottom: 22px; /* Augmenté : espace entre solde et sous-titre */
+    margin-bottom: 22px; 
     text-align: center;
 }
 
 .balance-subtitle {
     font-size: 13px;
     color: #777;
-    margin-bottom: 25px; /* Augmenté : espace entre sous-titre et boutons */
+    margin-bottom: 25px; 
     text-align: center;
     font-weight: 500;
 }
@@ -567,7 +574,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-top: 30px; /* Augmenté : espace supplémentaire au dessus des boutons */
+    margin-top: 30px; 
     width: 100%;
 }
 
@@ -1322,17 +1329,53 @@ body {
     border: 2px solid #fecaca;
 }
 
-/* ============ CARTE VIRTUELLE (TAILLE RÉDUITE) ============ */
-.virtual-card-wrapper {
-    max-width: 340px; 
-    margin: 0 auto 20px auto; 
-    perspective: 1000px;
+/* ============================================================
+   NOUVELLE CARTE VIRTUELLE PREMIUM (FLIP 3D)
+   ============================================================ */
+.card-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.gold-card {
+/* Conteneur de l'animation */
+.flip-card-container {
     width: 100%;
-    aspect-ratio: 1.586 / 1; 
-    border-radius: 12px;
+    max-width: 340px;
+    height: 215px;
+    perspective: 1000px;
+    margin: 10px auto 15px auto;
+    cursor: pointer;
+}
+
+.flip-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(170, 119, 28, 0.3);
+    border: 1px solid #e5c687;
+    overflow: hidden;
+}
+
+/* Styles communs Recto/Verso (l'or) */
+.gold-card {
     background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
     color: #1a1a1a;
     padding: 20px;
@@ -1340,9 +1383,6 @@ body {
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(170, 119, 28, 0.4);
-    border: 1px solid #e5c687;
 }
 
 .gold-card::before {
@@ -1352,9 +1392,15 @@ body {
     right: -30%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
     border-radius: 50%;
     transform: rotate(-30deg);
+    z-index: 0;
+}
+
+/* Recto */
+.flip-card-front {
+    z-index: 2;
 }
 
 .vc-top {
@@ -1393,14 +1439,31 @@ body {
 
 .vc-number {
     font-family: 'Courier New', monospace;
-    font-size: 16px;
+    font-size: 17px;
     letter-spacing: 2px;
     font-weight: 800;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.3);
     position: relative;
     z-index: 1;
     margin: 10px 0;
     color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.vc-copy-btn {
+    background: transparent;
+    border: none;
+    color: #1a1a1a;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+.vc-copy-btn:active {
+    transform: scale(0.8);
 }
 
 .vc-bottom {
@@ -1429,39 +1492,44 @@ body {
 }
 
 .vc-brand {
-    font-size: 26px;
+    font-size: 28px;
     color: #ffffff; 
 }
 
-/* ============ FACE ARRIÈRE (VERSO) ============ */
-.vc-back {
+/* Verso */
+.flip-card-back {
+    transform: rotateY(180deg);
     justify-content: flex-start;
     padding: 20px 0;
+    z-index: 1;
 }
 
 .vc-magnetic-strip {
     width: 100%;
-    height: 40px;
+    height: 45px;
     background-color: #0044cc; 
     margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
 }
 
 .vc-signature-box {
     width: 85%;
-    height: 32px;
+    height: 35px;
     background-color: #f8f9fa;
-    margin: 0 15px 15px 15px;
+    margin: 0 20px 15px 20px;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 12px;
     color: #111;
     position: relative;
+    z-index: 1;
 }
 
 .vc-cvv-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     color: #666;
 }
@@ -1479,50 +1547,167 @@ body {
     color: #1a1a1a;
     opacity: 0.8;
     line-height: 1.4;
-    padding: 0 15px;
+    padding: 0 20px;
     margin-bottom: 10px;
     font-weight: 600;
+    position: relative;
+    z-index: 1;
 }
 
 .vc-back-logo {
-    font-size: 26px;
+    font-size: 28px;
     color: #ffffff; 
     position: absolute;
     bottom: 15px;
-    right: 15px;
+    right: 20px;
+    z-index: 1;
 }
 
-.vc-actions {
+/* Indication sous la carte */
+.card-hint {
+    font-size: 11px;
+    color: #888;
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 10px;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Note de sécurité */
+.card-security-note {
+    background-color: #ffffff;
+    border: 1px solid #e8eaee;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 340px;
+    line-height: 1.4;
+    text-align: center;
     justify-content: center;
 }
+.card-security-note i {
+    color: var(--primary-color);
+    font-size: 14px;
+}
 
-.vc-info-grid {
+/* Boutons premium */
+.vc-actions-premium {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 25px;
+}
+
+.btn-premium {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e8eaee;
+    border-radius: 12px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    width: 100%;
+}
+
+.btn-premium:hover {
+    background: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.btn-premium:active {
+    transform: scale(0.98);
+}
+
+.btn-premium-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background-color: var(--primary-color-soft);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.btn-premium-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.btn-premium-text strong {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+}
+
+.btn-premium-text small {
+    font-size: 11px;
+    color: #777;
+    font-weight: 500;
+}
+
+/* Grille d'infos */
+.premium-grid {
+    width: 100%;
+    max-width: 340px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-top: 15px;
 }
 
 .vc-info-item {
     background: var(--card-bg);
-    padding: 12px;
-    border-radius: 10px;
-    box-shadow: var(--card-shadow);
+    padding: 12px 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
+.vc-info-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.icon-blue { background: #e0f2fe; color: #0284c7; }
+.icon-red { background: #fee2e2; color: #e02424; }
+.icon-green { background: #def7ec; color: #00a04a; }
+.icon-cyan { background: #e0f2fe; color: #0284c7; }
+
 .vc-info-label {
-    font-size: 11px;
+    font-size: 10px;
     color: #666;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     font-weight: 600;
 }
 
 .vc-info-value {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
     color: #111;
 }
