@@ -92,7 +92,7 @@ body {
     color: #666;
     line-height: 1.6;
     margin-bottom: 25px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .invalid-info {
@@ -107,7 +107,7 @@ body {
     font-size: 12px;
     color: #555;
     line-height: 1.5;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .invalid-info i {
@@ -159,14 +159,14 @@ body {
 
 .logo-text {
     font-size: 26px;
-    font-weight: 600; /* Ajusté */
+    font-weight: 700; /* Ajusté pour le logo */
     color: #111;
     letter-spacing: 2px;
 }
 
 .login-title {
     font-size: 18px;
-    font-weight: 500; /* Ajusté */
+    font-weight: 500;
     color: #555;
     margin-bottom: 20px;
     text-align: center;
@@ -178,7 +178,7 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 500; /* Ajusté */
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -246,7 +246,7 @@ body {
     outline: none;
     padding: 14px 15px 14px 0;
     font-size: 15px;
-    font-weight: 500; /* Ajusté */
+    font-weight: 500;
     color: #111;
     background: transparent;
     min-width: 0;
@@ -265,7 +265,7 @@ body {
     border-radius: 10px;
     padding: 16px;
     font-size: 16px;
-    font-weight: 600; /* Ajusté */
+    font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s, transform 0.1s;
@@ -316,7 +316,7 @@ body {
 
 .header-logo {
     font-size: 18px; 
-    font-weight: 600; /* Ajusté */
+    font-weight: 700; /* Ajusté */
     color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -422,7 +422,7 @@ body {
     font-size: 12px;
     color: #555;
     line-height: 1.4;
-    font-weight: 400;
+    font-weight: 500;
 }
 .notif-item-text strong {
     display: block;
@@ -478,8 +478,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 4px;
-    font-size: 11px; /* Ajusté */
-    font-weight: 500; /* Ajusté */
+    font-size: 11px;
+    font-weight: 500;
     color: #444;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -507,7 +507,7 @@ body {
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
-    font-weight: 600; /* Ajusté */
+    font-weight: 600;
 }
 
 .nav-links li.active i {
@@ -532,7 +532,7 @@ body {
 
 .welcome-title {
     font-size: 22px; 
-    font-weight: 500; /* Ajusté (plus léger) */
+    font-weight: 600; /* Juste milieu */
     color: #222;
     margin-bottom: 20px;
 }
@@ -559,7 +559,7 @@ body {
     opacity: 0.8;
     margin-bottom: 10px;
     gap: 6px;
-    font-weight: 400; /* Ajusté */
+    font-weight: 500; /* Ajusté */
 }
 
 .balance-header i {
@@ -570,10 +570,10 @@ body {
 
 .balance-amount {
     font-size: 36px; 
-    font-weight: 600; /* Ajusté (beaucoup plus lisible) */
+    font-weight: 700; /* Ajusté pour le solde */
     margin-bottom: 22px; 
     text-align: center;
-    letter-spacing: 0px; /* Retiré pour aérer les chiffres */
+    letter-spacing: 0px; 
 }
 
 .balance-subtitle {
@@ -581,7 +581,7 @@ body {
     opacity: 0.7;
     margin-bottom: 25px; 
     text-align: center;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .balance-actions {
@@ -626,7 +626,7 @@ body {
 
 .round-action-wrapper span {
     font-size: 14px; 
-    font-weight: 500; /* Ajusté */
+    font-weight: 600; /* Ajusté */
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -683,7 +683,7 @@ body {
 
 .stat-value {
     font-size: 18px; 
-    font-weight: 600; /* Ajusté */
+    font-weight: 700; /* Ajusté */
     color: #111;
     margin-bottom: 4px; 
     white-space: nowrap;
@@ -695,7 +695,7 @@ body {
     font-size: 13px; 
     color: #888;
     letter-spacing: 0.2px;
-    font-weight: 400; /* Ajusté */
+    font-weight: 500; /* Ajusté */
 }
 
 /* ============================================================
@@ -740,7 +740,7 @@ body {
 
 .history-card-header-left span {
     font-size: 16px; 
-    font-weight: 600; /* Ajusté */
+    font-weight: 700; /* Ajusté */
     color: #111;
     white-space: nowrap;
     overflow: hidden;
@@ -873,7 +873,7 @@ body {
 
 .tx-details h4 {
     font-size: 16px; 
-    font-weight: 500; /* Ajusté (moins épais) */
+    font-weight: 600; /* Ajusté pour la lisibilité */
     color: #111;
     margin: 0;
     line-height: 1.2;
@@ -890,13 +890,13 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 400; /* Ajusté */
+    font-weight: 500; /* Ajusté */
 }
 
 .tx-details .tx-time {
     font-size: 13px; 
     color: #999;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.2;
 }
 
@@ -911,7 +911,7 @@ body {
 
 .tx-amount {
     font-size: 17px; 
-    font-weight: 600; /* Ajusté (moins épais) */
+    font-weight: 700; /* Ajusté */
     white-space: nowrap;
 }
 
@@ -920,7 +920,7 @@ body {
 
 .tx-status {
     font-size: 13px; 
-    font-weight: 400; /* Ajusté */
+    font-weight: 500; /* Ajusté */
     white-space: nowrap;
 }
 
@@ -932,7 +932,7 @@ body {
     color: #999;
     font-size: 15px; 
     padding: 30px 15px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 /* ============ FORMULAIRE DE VIREMENT ============ */
@@ -961,7 +961,7 @@ body {
     font-size: 15px; 
     color: #333;
     margin-bottom: 15px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .transfer-info-top i {
@@ -978,7 +978,7 @@ body {
     align-items: center;
     gap: 10px;
     font-size: 14px; 
-    font-weight: 400;
+    font-weight: 500;
     color: #666;
     margin-bottom: 25px;
     cursor: pointer;
@@ -1003,7 +1003,7 @@ body {
     font-size: 13px; 
     color: #333;
     margin-bottom: 8px;
-    font-weight: 500; /* Ajusté */
+    font-weight: 500; 
 }
 
 .input-with-addon {
@@ -1078,7 +1078,7 @@ body {
     gap: 10px;
     margin-bottom: 20px;
     margin-top: 25px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .transfer-warning i {
@@ -1157,7 +1157,7 @@ body {
 .verification-details-grey-box .detail-label {
     font-size: 14px;
     color: #555555 !important; 
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .verification-details-grey-box .detail-value {
@@ -1230,7 +1230,7 @@ body {
     color: #666;
     margin-bottom: 15px;
     line-height: 1.4;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .progress-container {
@@ -1329,7 +1329,7 @@ body {
     margin-bottom: 20px;
     line-height: 1.5;
     white-space: pre-line;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .success-summary, .failed-summary {
@@ -1589,7 +1589,7 @@ body {
     line-height: 1.4;
     padding: 0 25px;
     margin-bottom: 15px;
-    font-weight: 400;
+    font-weight: 500;
     position: relative;
     z-index: 1;
 }
@@ -1646,7 +1646,7 @@ body {
     width: 100%; 
     line-height: 1.4;
     justify-content: flex-start;
-    font-weight: 400;
+    font-weight: 500;
 }
 .card-security-note i {
     color: var(--primary-color);
@@ -1707,14 +1707,14 @@ body {
 
 .btn-premium-text strong {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     color: #111;
 }
 
 .btn-premium-text small {
     font-size: 13px;
     color: #777;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .premium-grid {
@@ -1755,7 +1755,7 @@ body {
     font-size: 12px;
     color: #666;
     margin-bottom: 2px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .vc-info-value {
@@ -1800,7 +1800,7 @@ body {
 .account-role {
     font-size: 13px;
     color: #777;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .account-verified {
@@ -1813,7 +1813,7 @@ body {
     padding: 2px 6px;
     border-radius: 10px;
     margin-left: 6px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 /* ============ BOUTONS D'ACTION GÉNÉRIQUES ============ */
@@ -1861,7 +1861,7 @@ body {
     border-radius: 8px;
     padding: 14px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -2098,7 +2098,7 @@ body {
     line-height: 1.5;
     margin-bottom: 25px;
     white-space: pre-line;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .confirm-actions {
@@ -2283,7 +2283,7 @@ body {
 
 .profile-header-text h2 {
     font-size: 22px;
-    font-weight: 500;
+    font-weight: 600;
     color: #ffffff;
     margin: 0;
     letter-spacing: 0.5px;
@@ -2319,7 +2319,7 @@ body {
 .profile-section-title {
     font-size: 15px;
     color: #334155;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.3px;
     padding: 20px 20px 12px 20px;
     display: flex;
@@ -2380,13 +2380,13 @@ body {
 .profile-list-label {
     font-size: 13px;
     color: #64748b;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .profile-list-value {
     font-size: 16px;
     color: #0f172a;
-    font-weight: 500;
+    font-weight: 600;
     word-break: break-word;
 }
 
@@ -2478,7 +2478,7 @@ body {
     white-space: nowrap !important;
     word-break: normal !important;
     font-size: 15px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     letter-spacing: 0.5px !important;
     overflow: hidden;
     text-overflow: ellipsis;
