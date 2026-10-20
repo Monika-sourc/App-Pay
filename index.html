@@ -762,6 +762,11 @@
                 <span>Banque</span>
                 <span id="rcpt-bank">--</span>
             </div>
+            <!-- Ligne IBAN (ajoutée pour le virement envoyé) -->
+            <div class="receipt-row" id="rcpt-iban-row" style="display: none;">
+                <span>IBAN</span>
+                <span id="rcpt-iban">--</span>
+            </div>
 
             <div class="receipt-divider"></div>
 
@@ -783,7 +788,7 @@
         </div>
 
         <button class="receipt-close-btn" onclick="closeReceipt()">
-            <i class="fa-solid fa-xmark"></i> Fermer
+            <i class="fa-solid fa-xmark"></i> <span data-i18n="close">Fermer</span>
         </button>
     </div>
 </div>
