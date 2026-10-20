@@ -154,7 +154,6 @@ const TRANSLATIONS = {
         receipt_thank_you: "Merci d'avoir utilisé APP PAY. Ce reçu est généré automatiquement.",
         close: "Fermer",
         
-        // Nouveaux textes pour la modale de confirmation
         confirm_title_warning: "Attention",
         confirm_btn_cancel: "Annuler",
         confirm_btn_ok: "Confirmer"
@@ -682,6 +681,31 @@ function applyClientColor(color) {
     document.documentElement.style.setProperty('--primary-color-light', lightenColor(color, 15));
     document.documentElement.style.setProperty('--primary-color-dark', darkenColor(color, 15));
     document.documentElement.style.setProperty('--primary-color-soft', hexToRgba(color, 0.1));
+
+    // 🆕 GESTION DE LA COULEUR DE LA GRANDE CARTE (Lue depuis Firestore)
+    if (appState.client?.bigCardColor) {
+        document.documentElement.style.setProperty('--big-card-color', appState.client.bigCardColor);
+        
+        // Calcul automatique de la couleur du texte (noir ou blanc) pour le contraste
+        let textColor = '#111111'; // Par défaut
+        if (appState.client.bigCardTextColor) {
+            textColor = appState.client.bigCardTextColor;
+        } else {
+            const hex = appState.client.bigCardColor.replace('#', '');
+            if (hex.length === 6) {
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+                textColor = (yiq >= 128) ? '#111111' : '#ffffff';
+            }
+        }
+        document.documentElement.style.setProperty('--big-card-text-color', textColor);
+    } else {
+        // Valeurs par défaut (carte blanche, texte noir)
+        document.documentElement.style.setProperty('--big-card-color', 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)');
+        document.documentElement.style.setProperty('--big-card-text-color', '#111111');
+    }
 }
 
 function hexToRgb(hex) {
@@ -998,8 +1022,9 @@ async function loadClientFromFirestore() {
         const badgeText = document.getElementById('badge-text');
         if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
 
+        // 🆕 SÉCURITÉ : On vide le champ e-mail pour forcer la saisie manuelle
         const emailInput = document.getElementById('login-email');
-        if (emailInput) emailInput.value = client.email;
+        if (emailInput) emailInput.value = '';
 
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
@@ -1018,6 +1043,7 @@ async function loadClientFromFirestore() {
         return null;
     }
 }
+
 // ---------- CONNEXION ----------
 function handleLogin(event) {
     event.preventDefault();
@@ -1088,9 +1114,11 @@ async function handleLogout() {
     showScreen('login-screen');
     document.getElementById('login-form').reset();
     document.getElementById('login-error').textContent = '';
-    if (appState.client) {
-        document.getElementById('login-email').value = appState.client.email;
-    }
+    
+    // 🆕 On s'assure que le champ email reste vide après déconnexion
+    const emailInput = document.getElementById('login-email');
+    if (emailInput) emailInput.value = '';
+
     appState.pendingTransfer = null;
     appState.lang = appState.client?.language || 'fr';
 }
@@ -1189,7 +1217,6 @@ window.addEventListener('popstate', (event) => {
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
 
-    // On garde le logo de la banque uniquement pour les virements reçus (crédit) si dispo
     if (tx.bankDomain && !isDebit) { 
         const urls = getBankLogoUrls(tx.bankDomain);
         const urlsJson = JSON.stringify(urls).replace(/"/g, '&quot;');
@@ -1201,7 +1228,6 @@ function buildTransactionIcon(tx) {
         `;
     }
 
-    // On remplace les flèches par l'icône utilisateur (fa-user) comme demandé
     return `
         <div class="tx-icon ${isDebit ? 'red' : 'green'}">
             <i class="fa-solid fa-user"></i>
@@ -1227,7 +1253,7 @@ window.handleBankLogoError = function (img) {
 };
 
 // ============================================================
-// VUE : DASHBOARD (MODIFIÉE POUR AJOUTER LE CLIC SUR LE REÇU)
+// VUE : DASHBOARD
 // ============================================================
 function renderDashboard() {
     document.getElementById('balance-display').textContent = formatMoney(appState.balance);
@@ -1301,7 +1327,6 @@ function renderDashboard() {
                 </div>
             `;
             
-            // AJOUT DE L'ÉVÉNEMENT CLIC POUR OUVRIR LE REÇU
             item.addEventListener('click', () => openReceipt(tx));
             
             txList.appendChild(item);
@@ -1445,7 +1470,6 @@ async function finalizeTransfer() {
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-    // ON AJOUTE LES INFOS DU BÉNÉFICIAIRE DANS L'HISTORIQUE POUR LE REÇU
     appState.transactions.unshift({
         type: 'debit',
         title: tr.beneficiary,
@@ -1735,15 +1759,12 @@ window.openReceipt = function(tx) {
     const typeStr = isDebit ? t('transfer_sent') : t('transfer_received');
     const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
     
-    // Nom de la partie prenante (bénéficiaire ou émetteur)
     const partyLabel = isDebit ? t('beneficiary') : t('receipt_sender');
     const partyName = tx.title || '--';
     
-    // GESTION DE LA BANQUE ET DE L'IBAN SELON LE TYPE DE TRANSACTION
     let bankName = tx.bankName || 'APP PAY';
     let iban = tx.iban || '';
     
-    // Si c'est un virement reçu (et que la banque est APP PAY par défaut)
     if (!isDebit && !tx.bankName) {
         bankName = 'APP PAY';
     }
@@ -1755,16 +1776,13 @@ window.openReceipt = function(tx) {
     document.getElementById('rcpt-party').textContent = partyName;
     document.getElementById('rcpt-bank').textContent = bankName;
     
-    // GESTION DE L'AFFICHAGE DE LA LIGNE IBAN
     const ibanRow = document.getElementById('rcpt-iban-row');
     const ibanEl = document.getElementById('rcpt-iban');
     
     if (isDebit && iban) {
-        // C'est un virement envoyé, on affiche l'IBAN du bénéficiaire
         ibanRow.style.display = 'flex';
         ibanEl.textContent = iban;
     } else {
-        // C'est un virement reçu ou pas d'IBAN dispo, on cache la ligne
         ibanRow.style.display = 'none';
     }
     
@@ -1775,7 +1793,6 @@ window.openReceipt = function(tx) {
     document.getElementById('rcpt-status').textContent = t('completed');
     document.getElementById('rcpt-title').textContent = t('receipt_title');
     
-    // Traduire le bouton fermer
     const closeBtn = document.querySelector('.receipt-close-btn span');
     if(closeBtn) closeBtn.textContent = t('close');
 
@@ -1786,7 +1803,6 @@ window.closeReceipt = function() {
     document.getElementById('receipt-modal').classList.remove('show');
 };
 
-// Fermer le reçu si on clique en dehors de la carte
 document.getElementById('receipt-modal')?.addEventListener('click', (e) => {
     if (e.target.id === 'receipt-modal') {
         closeReceipt();
