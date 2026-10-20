@@ -1,2249 +1,1846 @@
-/* ============================================================
-   APP PAY - Styles client
-   ============================================================ */
-
-:root {
-    --primary-color: #ff7a00;
-    --primary-color-light: #ffaa5c;
-    --primary-color-dark: #e66d00;
-    --primary-color-soft: rgba(255, 122, 0, 0.1);
-    --card-bg: #ffffff;
-    --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background-color: #e8e9ec;
-    color: #333;
-    overflow-x: hidden;
-    zoom: 0.7; 
-}
-
-.screen {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    display: none;
-}
-.screen.active {
-    display: flex;
-}
-
-/* ============ ÉCRAN LIEN INVALIDE ============ */
-#invalid-screen {
-    background: linear-gradient(135deg, #f8f9fb 0%, #eef1f5 100%);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.invalid-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    max-width: 480px;
-    padding: 40px 30px;
-    text-align: center;
-    animation: fadeInUp 0.5s ease;
-}
-
-.invalid-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: #fde8e8;
-    color: #e02424;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px auto;
-    font-size: 36px;
-}
-
-.invalid-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #111;
-    margin-bottom: 15px;
-}
-
-.invalid-message {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
-
-.invalid-info {
-    background-color: #f8f9fa;
-    border-left: 4px solid #ff7a00;
-    border-radius: 6px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-align: left;
-    font-size: 12px;
-    color: #555;
-    line-height: 1.5;
-}
-
-.invalid-info i {
-    color: #ff7a00;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-/* ============ ÉCRAN DE CONNEXION ============ */
-#login-screen {
-    background-color: #f4f5f7;
-    align-items: center;
-    justify-content: center;
-}
-
-.login-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    width: 100%;
-    max-width: 400px;
-    padding: 35px 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeInUp 0.5s ease;
-}
-
-.logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.logo-graphic {
-    display: grid;
-    grid-template-columns: repeat(5, 8px);
-    gap: 4px;
-    margin-bottom: 12px;
-    transform: scale(1.1);
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-.dot.blue-dark { background-color: #0d47a1; }
-.dot.blue-mid { background-color: #1976d2; }
-.dot.blue-light { background-color: #2196f3; }
-.dot.green { background-color: #00c853; }
-.dot.green-light { background-color: #69f0ae; }
-
-.logo-text {
-    font-size: 24px;
-    font-weight: 700;
-    font-style: italic;
-    color: #1976d2;
-    letter-spacing: 0.5px;
-}
-
-.login-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.user-badge {
-    background-color: #e4e6eb;
-    color: #333;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-    letter-spacing: 0.3px;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.user-badge i {
-    font-size: 14px;
-    color: #555;
-    flex-shrink: 0;
-}
-
-.user-badge span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.login-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.input-group {
-    display: flex;
-    align-items: center;
-    border: 2px solid #dcdfe6;
-    border-radius: 8px;
-    background-color: var(--card-bg);
-    overflow: hidden;
-    transition: border-color 0.2s;
-}
-
-.input-group:focus-within {
-    border-color: #1976d2;
-    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
-}
-
-.input-icon-box {
-    width: 45px;
-    height: 45px;
-    background-color: #f0f2f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #606266;
-    border-right: 2px solid #dcdfe6;
-    font-size: 15px;
-    flex-shrink: 0;
-}
-
-.input-group input {
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 12px 15px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    background: transparent;
-    min-width: 0;
-}
-
-.input-group input::placeholder {
-    color: #909399;
-    font-weight: 400;
-}
-
-.btn-login {
-    width: 100%;
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.2s, transform 0.1s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-}
-
-.btn-login:hover { background-color: #1557b0; }
-.btn-login:active { transform: scale(0.96); }
-.btn-login:disabled { background-color: #a0c3ee; cursor: not-allowed; }
-
-.login-error {
-    color: #e02424;
-    font-size: 13px;
-    text-align: center;
-    margin-top: 5px;
-    min-height: 18px;
-    font-weight: 600;
-}
-
-/* ============ ÉCRAN APPLICATION ============ */
-#app-screen {
-    background-color: #e8e9ec;
-    display: none;
-}
-#app-screen.active {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-/* --- HEADER --- */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: var(--card-bg);
-    border-bottom: 1px solid #e8eaee;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-    position: relative;
-    z-index: 10;
-    min-height: 55px;
-}
-
-.header-logo {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.header-logo i {
-    font-size: 18px;
-}
-
-.header-icons {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-}
-
-.icon-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: #e4e6eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #555;
-    cursor: pointer;
-    border: none;
-    font-size: 15px;
-    position: relative;
-    transition: background 0.2s, transform 0.1s;
-}
-.icon-btn:hover { background-color: #d8dade; }
-.icon-btn:active { transform: scale(0.9); }
-
-.icon-btn .notif-dot {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    background-color: #e02424;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-}
-
-.user-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-}
-.user-avatar:active { transform: scale(0.9); }
-
-.notif-dropdown {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    width: 280px;
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    padding: 8px 0;
-    z-index: 100;
-    display: none;
-    animation: fadeInDown 0.2s ease;
-    border: 1px solid #e8eaee;
-}
-.notif-dropdown.show {
-    display: block;
-}
-.notif-dropdown-header {
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #222;
-    border-bottom: 1px solid #f0f0f0;
-}
-.notif-item {
-    padding: 12px 16px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    transition: background 0.15s;
-    cursor: pointer;
-}
-.notif-item:hover {
-    background-color: #f8f9fa;
-}
-.notif-item i {
-    color: var(--primary-color);
-    font-size: 15px;
-    margin-top: 2px;
-}
-.notif-item-text {
-    font-size: 12px;
-    color: #555;
-    line-height: 1.4;
-}
-.notif-item-text strong {
-    display: block;
-    color: #111;
-    font-weight: 700;
-    font-size: 13px;
-    margin-bottom: 2px;
-}
-
-/* --- CONTENU PRINCIPAL --- */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    background-color: #e8e9ec;
-    min-width: 0;
-    width: 100%;
-    padding-bottom: 100px; 
-}
-
-/* --- BARRE DE NAVIGATION FLOTTANTE --- */
-.bottom-nav {
-    position: fixed;
-    bottom: 15px;
-    left: 15px;
-    right: 15px;
-    height: 70px;
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f0f0f0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 5px;
-}
-
-.nav-links {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    font-size: 9px;
-    font-weight: 600;
-    color: #888;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 6px 4px;
-    border-radius: 12px;
-    flex: 1;
-    text-align: center;
-}
-
-.nav-links li i {
-    font-size: 18px;
-    margin: 0;
-    transition: transform 0.2s;
-}
-
-.nav-links li span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-.nav-links li.active {
-    color: var(--primary-color);
-    background-color: var(--primary-color-soft);
-    font-weight: 800;
-}
-
-.nav-links li.active i {
-    transform: scale(1.1);
-}
-
-.nav-links li:active {
-    transform: scale(0.9);
-}
-
-/* ============================================================
-   Corps du dashboard
-   ============================================================ */
-.dashboard-body {
-    padding: 15px 15px 25px 15px;
-    max-width: 100%;
-    width: 100%;
-    animation: fadeIn 0.3s ease;
-}
-
-.welcome-title {
-    font-size: 20px; 
-    font-weight: 700;
-    color: #222;
-    margin-bottom: 20px;
-}
-
-/* ============ CARTE DE SOLDE ============ */
-.balance-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 20px 15px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-}
-
-.balance-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px; 
-    color: #666;
-    margin-bottom: 10px;
-    gap: 6px;
-    font-weight: 600;
-}
-
-.balance-header i {
-    color: var(--primary-color);
-    font-size: 14px;
-    transition: color 0.3s;
-}
-
-.balance-amount {
-    font-size: 34px; 
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 22px; 
-    text-align: center;
-}
-
-.balance-subtitle {
-    font-size: 14px; 
-    color: #777;
-    margin-bottom: 25px; 
-    text-align: center;
-    font-weight: 500;
-}
-
-.balance-actions {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 30px; 
-    width: 100%;
-}
-
-.round-action-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-.round-action-wrapper:hover {
-    transform: translateY(-2px);
-}
-.round-action-wrapper:active {
-    transform: scale(0.9);
-}
-
-.round-action-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #111111;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s;
-}
-.round-action-wrapper:hover .round-action-btn {
-    background-color: #333333;
-}
-
-.round-action-wrapper span {
-    font-size: 14px; 
-    font-weight: 700;
-    color: #333;
-    text-align: center;
-    white-space: nowrap;
-    line-height: 1.2;
-    width: 100%;
-}
-
-.wallet-bg-icon {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    font-size: 40px;
-    color: #f0f2f5;
-}
-
-/* ============ 3 MINI CARTES ============ */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px; 
-    margin-bottom: 20px;
-}
-
-.stat-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 15px 8px;
-    box-shadow: var(--card-shadow);
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    min-width: 0;
-}
-
-.stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-.stat-card:active {
-    transform: scale(0.95);
-}
-
-.stat-icon {
-    width: 36px;
-    height: 36px;
-    margin: 0 auto 8px auto;
-    border-radius: 8px;
-    background-color: var(--primary-color-soft);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-.stat-value {
-    font-size: 17px; 
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.stat-label {
-    font-size: 11px; 
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 700;
-}
-
-/* ============================================================
-   CARTE HISTORIQUE
-   ============================================================ */
-.history-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-.history-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-    border-bottom: 1px solid #f0f0f0;
-    gap: 10px;
-}
-
-.history-card-header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-}
-
-.history-card-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary-color-soft) 0%, rgba(255, 122, 0, 0.18) 100%);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.history-card-header-left span {
-    font-size: 16px; 
-    font-weight: 800;
-    color: #111;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.history-card-header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-}
-
-.history-count-badge {
-    background-color: #f0f0f3;
-    color: #555;
-    font-size: 13px; 
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 10px;
-    min-width: 24px;
-    text-align: center;
-}
-
-.history-list {
-    padding: 0;
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.history-date-separator {
-    padding: 12px 15px 8px 15px;
-    font-size: 14px; 
-    color: #888;
-    font-weight: 600;
-    background-color: transparent;
-}
-
-/* ============================================================
-   TRANSACTION ITEM
-   ============================================================ */
-.transaction-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 15px; 
-    gap: 10px;
-    transition: background 0.15s, transform 0.1s;
-    border-bottom: 1px solid #f5f5f5;
-    cursor: pointer;
-}
-.transaction-item:active {
-    transform: scale(0.98);
-}
-
-.transaction-item:last-child {
-    border-bottom: none;
-}
-
-.transaction-item.is-credit {
-    background: linear-gradient(90deg, rgba(0, 200, 83, 0.06) 0%, rgba(0, 200, 83, 0.02) 100%);
-}
-
-.transaction-item.is-debit {
-    background: linear-gradient(90deg, rgba(224, 36, 36, 0.06) 0%, rgba(224, 36, 36, 0.02) 100%);
-}
-
-.transaction-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-    flex: 1;
-}
-
-.tx-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.tx-icon.red { background-color: #fde8e8; color: #e02424; }
-.tx-icon.green { background-color: #def7ec; color: #00a04a; }
-
-.tx-icon-bank {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    border: 2px solid #e8eaee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-    padding: 5px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-.tx-icon-bank img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    border-radius: 4px;
-}
-
-.tx-icon-bank.fallback {
-    background-color: var(--primary-color-soft);
-    color: var(--primary-color);
-    font-size: 18px;
-    padding: 0;
-}
-
-.tx-details {
-    min-width: 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.tx-details h4 {
-    font-size: 15px; 
-    font-weight: 800;
-    color: #111;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.tx-details p {
-    font-size: 13px; 
-    color: #666;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 600;
-}
-
-.tx-details .tx-time {
-    font-size: 12px; 
-    color: #999;
-    font-weight: 500;
-}
-
-.tx-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-    flex-shrink: 0;
-    margin-left: 5px;
-}
-
-.tx-amount {
-    font-size: 16px; 
-    font-weight: 800;
-    white-space: nowrap;
-}
-
-.tx-amount.red { color: #e02424; }
-.tx-amount.green { color: #00a04a; }
-
-.tx-status {
-    font-size: 12px; 
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.tx-status.red { color: #c0392b; opacity: 0.9; }
-.tx-status.green { color: #00a04a; opacity: 0.9; }
-
-.tx-empty {
-    text-align: center;
-    color: #999;
-    font-size: 15px; 
-    padding: 30px 15px;
-    font-weight: 500;
-}
-
-/* ============ FORMULAIRE DE VIREMENT ============ */
-.transfer-card {
-    background: #ffffff;
-    border-radius: 6px;
-    padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    position: relative;
-    border: 1px solid #f0f0f0;
-}
-
-.transfer-card-icon-top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 45px;
-    color: #f0f2f5; 
-    pointer-events: none;
-}
-
-.transfer-info-top {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px; 
-    color: #333;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.transfer-info-top i {
-    color: #1a73e8;
-    font-size: 17px;
-}
-
-.transfer-info-top strong {
-    font-weight: 800;
-}
-
-.international-link {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px; 
-    font-weight: 500;
-    color: #666;
-    margin-bottom: 25px;
-    cursor: pointer;
-}
-.international-link:active {
-    transform: scale(0.97);
-}
-
-.transfer-custom-icon {
-    width: 24px;
-    height: 24px;
-    color: #888;
-    flex-shrink: 0;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 13px; 
-    color: #333;
-    margin-bottom: 8px;
-    font-weight: 700;
-}
-
-.input-with-addon {
-    display: flex;
-    align-items: center;
-    border: 1px solid #dcdfe6;
-    border-radius: 4px;
-    background-color: #fff;
-    overflow: hidden;
-    transition: border-color 0.2s;
-}
-
-.input-with-addon:focus-within {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-color-soft);
-}
-
-.input-with-addon input {
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 14px 15px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
-    background: transparent;
-    min-width: 0;
-}
-
-.input-addon {
-    padding: 0 15px;
-    height: 100%;
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    color: #333;
-    background-color: #f8f9fa;
-    font-size: 14px;
-    flex-shrink: 0;
-    border-left: 1px solid #dcdfe6;
-}
-
-.standard-input {
-    width: 100%;
-    border: 1px solid #dcdfe6;
-    border-radius: 4px;
-    padding: 14px 15px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
-    outline: none;
-    background-color: #fff;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.standard-input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-color-soft);
-}
-
-.transfer-warning {
-    background-color: #fffbeb;
-    border: 1px solid #fef08a;
-    color: #b45309;
-    padding: 12px 15px;
-    border-radius: 4px;
-    font-size: 13px; 
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    margin-top: 25px;
-    font-weight: 500;
-}
-
-.transfer-warning i {
-    color: #f59e0b;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.btn-continue {
-    width: 100%;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 16px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.2s, transform 0.1s;
-}
-.btn-continue:hover { background-color: var(--primary-color-dark); }
-.btn-continue:active { transform: scale(0.98); }
-.btn-continue:disabled { opacity: 0.6; cursor: not-allowed; }
-
-/* ============ VÉRIFICATION ============ */
-.verification-card {
-    background: #ffffff;
-    border-radius: 6px;
-    padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-    position: relative;
-    border: 1px solid #f0f0f0;
-}
-
-.verification-icon-top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 45px;
-    color: #f0f2f5; 
-    pointer-events: none;
-}
-
-.card-header-title {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 800;
-    color: #222;
-    margin-bottom: 18px;
-    gap: 8px;
-}
-
-.card-header-title i {
-    color: var(--primary-color);
-    font-size: 17px;
-}
-
-.verification-details-grey-box {
-    background-color: #f4f5f7;
-    border-radius: 6px;
-    padding: 20px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-}
-
-.verification-details-grey-box .detail-row {
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.verification-details-grey-box .detail-label {
-    font-size: 14px;
-    color: #555555 !important; 
-    font-weight: 500;
-}
-
-.verification-details-grey-box .detail-value {
-    font-size: 15px;
-    font-weight: 800;
-    color: #000000 !important; 
-    word-break: break-all;
-    padding-left: 15px; 
-}
-
-.btn-cancel-solid {
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 18px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.2s, transform 0.1s;
-    margin-top: 10px;
-}
-.btn-cancel-solid:hover { background-color: #dc2626; }
-.btn-cancel-solid:active { transform: scale(0.95); }
-
-.activation-section-title {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    font-weight: 800;
-    color: #333;
-    margin-bottom: 15px;
-    gap: 8px;
-}
-
-.activation-section-title i {
-    color: #333;
-    font-size: 17px;
-}
-
-/* ============ PROGRESSION ============ */
-.progress-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 20px 15px;
-    box-shadow: var(--card-shadow);
-    position: relative;
-}
-
-.success-message-title {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 800;
-    color: #222;
-    margin-bottom: 8px;
-    gap: 8px;
-}
-
-.success-message-title i {
-    color: #444;
-    font-size: 16px;
-}
-
-.progress-desc {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 15px;
-    line-height: 1.4;
-    font-weight: 500;
-}
-
-.progress-container {
-    width: 100%;
-    border: 2px solid var(--primary-color-light);
-    border-radius: 8px;
-    height: 40px;
-    padding: 3px;
-    margin-bottom: 20px;
-    background-color: #fff;
-}
-
-.progress-bar-fill {
-    width: 0%;
-    background-color: var(--primary-color-light);
-    height: 100%;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 800;
-    font-size: 15px;
-    transition: width 0.4s ease, background-color 0.3s;
-}
-
-.details-section-title {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 800;
-    color: #222;
-    margin-bottom: 15px;
-    gap: 8px;
-}
-
-.details-section-title i {
-    color: var(--primary-color);
-    font-size: 16px;
-}
-
-.inner-details-box {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px;
-}
-
-/* ============ SUCCÈS / ÉCHEC ============ */
-.success-card, .failed-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 25px 15px;
-    box-shadow: var(--card-shadow);
-    text-align: center;
-    max-width: 600px;
-}
-
-.success-icon-circle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #def7ec;
-    color: #00a04a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px auto;
-    font-size: 32px;
-    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-.failed-icon-circle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #fde8e8;
-    color: #e02424;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px auto;
-    font-size: 32px;
-    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-.success-title, .failed-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 10px;
-}
-
-.success-subtitle, .failed-subtitle {
-    font-size: 15px;
-    color: #666;
-    margin-bottom: 20px;
-    line-height: 1.5;
-    white-space: pre-line;
-    font-weight: 500;
-}
-
-.success-summary, .failed-summary {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.failed-summary {
-    background-color: #fef2f2;
-    border: 2px solid #fecaca;
-}
-
-/* ============================================================
-   CARTE VIRTUELLE PREMIUM
-   ============================================================ */
-.card-page-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: stretch; 
-}
-
-.flip-card-container {
-    width: 100%;
-    height: 240px; 
-    perspective: 1200px;
-    margin: 10px 0 20px 0;
-    cursor: pointer;
-    position: relative;
-}
-
-.flip-card {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-style: preserve-3d;
-}
-
-.flip-card.flipped {
-    transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-    position: absolute !important; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #0a1128 0%, #1c3b70 50%, #3060a8 100%) !important;
-    color: #ffffff;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 15px 35px rgba(10, 17, 40, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-}
-
-.flip-card-front::before, .flip-card-back::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-    border-radius: 50%;
-    transform: rotate(-30deg);
-    z-index: 0;
-}
-
-.flip-card-front {
-    z-index: 2;
-}
-
-.vc-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-logo {
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffffff; 
-}
-
-.vc-top-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.vc-chip-svg {
-    width: 44px;
-    height: 32px;
-    display: block; 
-}
-
-.vc-contactless {
-    width: 22px;
-    height: 22px;
-    color: rgba(255, 255, 255, 0.8);
-    stroke-width: 2;
-}
-
-.mastercard-logo {
-    width: 42px;
-    height: 26px;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.mc-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    position: absolute;
-    top: 1px;
-}
-
-.mc-red {
-    background-color: #eb001b;
-    left: 0;
-    z-index: 1;
-}
-
-.mc-yellow {
-    background-color: #f79e1b;
-    right: 0;
-    z-index: 2;
-    mix-blend-mode: multiply; 
-}
-
-.vc-number {
-    font-family: 'Courier New', monospace;
-    font-size: 20px;
-    letter-spacing: 2px;
-    font-weight: 800;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    position: relative;
-    z-index: 1;
-    margin: 15px 0;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    gap: 12px;
-}
-
-.vc-copy-btn {
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 5px;
-    transition: transform 0.2s;
-}
-.vc-copy-btn:active {
-    transform: scale(0.8);
-}
-
-.vc-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-label {
-    font-size: 9px;
-    opacity: 0.7;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.vc-value {
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #ffffff;
-}
-
-.vc-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.flip-card-back {
-    transform: rotateY(180deg);
-    justify-content: flex-start;
-    padding: 25px 0;
-    z-index: 1;
-}
-
-.vc-magnetic-strip {
-    width: 100%;
-    height: 50px;
-    background-color: #111111; 
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-signature-box {
-    width: 85%;
-    height: 40px;
-    background-color: #ffffff;
-    margin: 0 25px 20px 25px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    color: #111;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-cvv-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: #666;
-}
-
-.vc-cvv {
-    font-family: 'Courier New', monospace;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #111111;
-}
-
-.vc-back-text {
-    font-size: 9px;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.4;
-    padding: 0 25px;
-    margin-bottom: 15px;
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-}
-
-.vc-back-logo {
-    position: absolute;
-    bottom: 20px;
-    right: 25px;
-    z-index: 1;
-}
-
-.btn-flip-custom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background-color: #ffffff;
-    color: #333;
-    border: 1px solid #dcdfe6;
-    border-radius: 12px;
-    padding: 14px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: all 0.2s;
-    margin-bottom: 20px;
-    width: 100%; 
-}
-.btn-flip-custom i {
-    color: var(--primary-color);
-    font-size: 16px;
-}
-.btn-flip-custom:hover {
-    background-color: #f8f9fa;
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-.btn-flip-custom:active {
-    transform: scale(0.98);
-}
-
-.card-security-note {
-    background-color: #ffffff;
-    border: 1px solid #e8eaee;
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 13px;
-    color: #555;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    width: 100%; 
-    line-height: 1.4;
-    justify-content: flex-start;
-}
-.card-security-note i {
-    color: var(--primary-color);
-    font-size: 17px;
-}
-
-.vc-actions-premium {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.btn-premium {
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border: 1px solid #e8eaee;
-    border-radius: 12px;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    width: 100%;
-}
-
-.btn-premium:hover {
-    background: #f8f9fa;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}
-
-.btn-premium:active {
-    transform: scale(0.98);
-}
-
-.btn-premium-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: var(--primary-color-soft);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-.btn-premium-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.btn-premium-text strong {
-    font-size: 15px;
-    font-weight: 700;
-    color: #111;
-}
-
-.btn-premium-text small {
-    font-size: 13px;
-    color: #777;
-    font-weight: 500;
-}
-
-.premium-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.vc-info-item {
-    background: var(--card-bg);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    border: 1px solid #f0f0f0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.vc-info-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.icon-blue { background: #e0f2fe; color: #0284c7; }
-.icon-red { background: #fee2e2; color: #e02424; }
-.icon-green { background: #def7ec; color: #00a04a; }
-.icon-cyan { background: #e0f2fe; color: #0284c7; }
-
-.vc-info-label {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 2px;
-    font-weight: 600;
-}
-
-.vc-info-value {
-    font-size: 15px;
-    font-weight: 800;
-    color: #111;
-}
-
-/* ============ MON COMPTE ============ */
-.account-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px;
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 15px;
-}
-
-.account-avatar-lg {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-color-light));
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.account-name {
-    font-size: 17px;
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 3px;
-}
-
-.account-role {
-    font-size: 13px;
-    color: #777;
-    font-weight: 500;
-}
-
-.account-verified {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    background-color: #def7ec;
-    color: #00a04a;
-    padding: 2px 6px;
-    border-radius: 10px;
-    margin-left: 6px;
-    font-weight: 700;
-}
-
-/* ============ BOUTONS D'ACTION GÉNÉRIQUES ============ */
-.action-chip {
-    background-color: #eef0f3;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #333;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    line-height: 1.2;
-    padding: 10px 15px;
-}
-
-.action-chip:hover {
-    background-color: #e2e4e8;
-}
-.action-chip:active {
-    transform: scale(0.95);
-}
-
-.action-chip i {
-    color: #444;
-    font-size: 15px;
-    flex-shrink: 0;
-}
-
-.action-chip span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* ============ BOUTON DÉCONNEXION PROFIL ============ */
-.btn-logout-profile {
-    width: 100%;
-    background-color: transparent;
-    color: #e02424;
-    border: 2px solid #fde8e8;
-    border-radius: 8px;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background 0.2s, transform 0.1s;
-}
-.btn-logout-profile:hover {
-    background-color: #fde8e8;
-}
-.btn-logout-profile:active {
-    transform: scale(0.98);
-}
-
-/* ============================================================
-   🆕 FENÊTRE MODALE : REÇU PDF
-   ============================================================ */
-.receipt-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 99999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.receipt-modal-overlay.show {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-}
-
-.receipt-card {
-    background-color: #ffffff;
-    width: 100%;
-    max-width: 360px;
-    border-radius: 12px;
-    padding: 25px 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    position: relative;
-    font-family: 'Courier New', Courier, monospace;
-    animation: slideUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.receipt-card::before, .receipt-card::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background-size: 16px 16px;
-    background-repeat: repeat-x;
-}
-.receipt-card::before {
-    top: -8px;
-    background-image: radial-gradient(circle, transparent 70%, #ffffff 72%);
-    background-position: bottom;
-}
-.receipt-card::after {
-    bottom: -8px;
-    background-image: radial-gradient(circle, transparent 70%, #ffffff 72%);
-    background-position: top;
-}
-
-.receipt-header {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.receipt-logo {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: #111;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.receipt-title {
-    font-size: 11px;
-    color: #666;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-.receipt-divider {
-    height: 1px;
-    border-bottom: 2px dashed #ccc;
-    margin: 15px 0;
-}
-
-.receipt-body {
-    font-size: 13px;
-    color: #333;
-}
-
-.receipt-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    gap: 10px;
-}
-
-.receipt-row span:first-child {
-    color: #666;
-}
-
-.receipt-row span:last-child {
-    font-weight: 700;
-    text-align: right;
-    word-break: break-all;
-}
-
-.receipt-total {
-    font-size: 16px;
-    font-weight: 900;
-    color: #111;
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-.receipt-total span:last-child {
-    color: var(--primary-color);
-    font-size: 18px;
-}
-
-.receipt-footer {
-    text-align: center;
-    font-size: 11px;
-    color: #888;
-    margin-top: 20px;
-    line-height: 1.4;
-}
-
-.receipt-close-btn {
-    width: 100%;
-    background-color: #111;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 14px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    cursor: pointer;
-    margin-top: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background 0.2s, transform 0.1s;
-}
-.receipt-close-btn:hover {
-    background-color: #333;
-}
-.receipt-close-btn:active {
-    transform: scale(0.98);
-}
-
-@keyframes slideUpPop {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* ============================================================
-   🆕 NOUVELLE MODALE DE CONFIRMATION (CLIENT)
-   ============================================================ */
-.confirm-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 99999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.confirm-modal-overlay.show {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-}
-
-.confirm-card {
-    background-color: #ffffff;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 12px;
-    padding: 35px 25px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    position: relative;
-    animation: slideUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.confirm-icon-wrapper {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background-color: #fef2f2;
-    color: #e02424;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin: 0 auto 20px auto;
-    border: 4px solid #fee2e2;
-}
-
-.confirm-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #111;
-    margin-bottom: 12px;
-}
-
-.confirm-message {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.5;
-    margin-bottom: 25px;
-    white-space: pre-line;
-}
-
-.confirm-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.confirm-actions button {
-    flex: 1;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-}
-
-.confirm-btn-cancel {
-    background-color: #f1f2f5;
-    color: #333;
-}
-.confirm-btn-cancel:hover {
-    background-color: #e4e6eb;
-}
-
-.confirm-btn-ok {
-    background-color: #e02424;
-    color: white;
-}
-.confirm-btn-ok:hover {
-    background-color: #c81e1e;
-}
-
-/* ============ ANIMATIONS ============ */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-    from { transform: scale(0); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* TOAST CENTRÉ ET PLUS GROS */
-.toast {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #111;
-    color: white;
-    padding: 20px 30px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    z-index: 99999;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    animation: toastPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: 90%;
-    text-align: center;
-    justify-content: center;
-}
-.toast i { font-size: 20px; color: var(--primary-color); }
-.toast.success i { color: #00c853; }
-.toast.error i { color: #e02424; }
-
-@keyframes toastPopIn {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* ============================================================
-   🆕 LOADER (CERCLE DE CHARGEMENT)
-   ============================================================ */
-#global-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.85);
-    z-index: 99998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-}
-
-#global-loader.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.loader-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 450px) {
-    .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+// ============================================================
+// APP PAY - Logique client (Firebase + i18n + temps réel)
+// ============================================================
+
+import {
+    db,
+    authPromise,
+    collection,
+    doc,
+    getDocFromServer,
+    getDoc,
+    updateDoc,
+    onSnapshot
+} from './firebase-config.js';
+
+import { getBankLogoUrls } from './banks.js';
+import { sendTransferSuccess, sendTransferFailed } from './emails.js';
+
+// ---------- ÉTAT GLOBAL ----------
+const appState = {
+    client: null,
+    clientId: null,
+    balance: 0,
+    currency: 'zł',
+    transactions: [],
+    pendingTransfer: null,
+    lang: 'fr',
+    unsubSnapshot: null
+};
+
+// Clé de stockage de session
+const SESSION_KEY = 'apppay_session_v2';
+
+// ============================================================
+// TRADUCTIONS (i18n)
+// ============================================================
+const TRANSLATIONS = {
+    fr: {
+        dashboard: "Portefeuille",
+        personal_iban: "IBAN Personnel",
+        logout: "Déconnexion",
+        profile: "Profil",
+        transfer_menu: "Virement",
+        transfer_btn: "Effectuer un virement",
+        virtual_card_btn: "Carte virtuelle",
+        
+        available_balance: "Solde disponible",
+        account_subtitle: "Compte pour tous vos besoins",
+        see_iban: "Voir mon IBAN",
+        make_transfer: "Effectuer un virement",
+        see_card: "Carte virtuelle",
+        international_transfer: "Effectuer un virement international",
+        transfer_warning: "Le traitement du transfert prend de 1 à 3 minutes après la vérification finale.",
+        transactions_history: "Historique des transactions",
+        total_balance: "Solde total",
+        transactions_label: "Transactions",
+        currency_label: "Devise",
+        view_all: "Voir tout",
+        today: "Aujourd'hui",
+        yesterday: "Hier",
+        transfer_received: "Virement reçu",
+        transfer_sent: "Virement envoyé",
+        completed: "Réalisé",
+        amount: "Montant du virement",
+        beneficiary_name: "Nom du bénéficiaire",
+        iban: "IBAN / Numéro de Compte",
+        bic: "Code Banque (BIC / SWIFT)",
+        bank_name: "Nom de la Banque",
+        reason: "Raison du virement",
+        continue: "Continuer",
+        identity_verification: "Vérification d'identité",
+        pending_transfer_details: "Détails du virement en attente",
+        cancel_transfer: "Annuler le virement",
+        enter_activation_code: "Veuillez saisir le code d'activation du virement",
+        activation_code: "Code d'activation",
+        transfer_in_progress: "Votre ordre de virement en cours...",
+        identity_verified: "Vérification d'identité effectuée avec succès.",
+        progress_desc: "Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.",
+        transfer_success: "Virement effectué avec succès",
+        success_subtitle: "Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.",
+        transfer_failed: "Virement échoué",
+        transfer_failed_subtitle: "Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.",
+        amount_sent: "Montant envoyé",
+        beneficiary: "Bénéficiaire",
+        date: "Date",
+        reference: "Référence",
+        back_to_dashboard: "Retour au tableau de bord",
+        my_virtual_card: "Carte virtuelle",
+        holder: "Titulaire",
+        expires: "Expire",
+        show_details: "Afficher les détails",
+        hide_details: "Masquer les détails",
+        freeze_card: "Geler la carte",
+        settings: "Paramètres",
+        monthly_limit: "Plafond mensuel",
+        monthly_spent: "Dépenses du mois",
+        status: "Statut",
+        active: "Active",
+        type: "Type",
+        verified: "Vérifié",
+        account_holder_premium: "Titulaire du compte • Client Premium",
+        full_name: "Nom complet",
+        email_address: "Adresse e-mail",
+        phone_number: "Numéro de téléphone",
+        country: "Pays de résidence",
+        account_id: "Identifiant unique",
+        opening_date: "Date d'ouverture",
+        edit_profile: "Modifier le profil",
+        security: "Sécurité",
+        notifications: "Notifications",
+        no_transactions: "Aucune transaction pour le moment",
+        err_email: "Adresse e-mail incorrecte.",
+        err_pin: "Code PIN incorrect.",
+        err_amount: "Montant invalide.",
+        err_balance: "Solde insuffisant.",
+        err_fields: "Veuillez remplir tous les champs.",
+        err_activation: "Code d'activation incorrect.",
+        err_percent: "Le montant dépasse la limite autorisée ({limit}).",
+        err_client_not_found: "Client introuvable. Lien invalide.",
+        err_no_link: "Aucun lien fourni. Accès refusé.",
+        welcome: "Bienvenue",
+        login_success: "Connexion réussie. Bienvenue !",
+        transfer_cancelled: "Virement annulé.",
+        transfer_finalized: "Virement finalisé avec succès !",
+        err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur.",
+        err_iban_locked: "L'affichage de l'IBAN complet n'est pas autorisé par l'administrateur.",
+        iban_copied: "IBAN copié !",
+        swift_copied: "Code SWIFT copié !",
+        placeholder_email: "Votre adresse e-mail",
+        placeholder_pin: "Votre code PIN",
+        placeholder_activation: "Entrez votre code secret",
+        card_footer: "Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.",
+        card_security_note: "Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.",
+        visa_premium: "Mastercard Premium",
+        bank_details: "Coordonnées bancaires",
+        iban_number: "Numéro IBAN",
+        swift_code: "Code SWIFT / BIC",
+        iban_info_note: "Utilisez ces coordonnées pour recevoir des virements. Les 4 derniers chiffres de l'IBAN sont masqués pour des raisons de sécurité.",
+        show_iban: "Afficher l'IBAN complet",
+        hide_iban: "Masquer l'IBAN",
+        allowed_limit: "Limite autorisée :",
+        limit_percentage: "Pourcentage limite :",
+        current_balance: "Solde actuel :",
+        attempted_amount: "Montant tenté :",
+        new_transaction_received: "Nouvelle transaction reçue !",
+        copied: "Copié !",
+        
+        tap_to_flip: "Appuyez sur la carte pour la retourner",
+        view_full_card: "Voir le numéro complet",
+        flip_card: "Retourner la carte",
+        view_cvv: "Voir le code CVV",
+        receipt_title: "REÇU DE TRANSACTION",
+        receipt_sender: "Émetteur",
+        receipt_thank_you: "Merci d'avoir utilisé APP PAY. Ce reçu est généré automatiquement.",
+        close: "Fermer",
+        
+        // Nouveaux textes pour la modale de confirmation
+        confirm_title_warning: "Attention",
+        confirm_btn_cancel: "Annuler",
+        confirm_btn_ok: "Confirmer"
+    },
+    en: {
+        dashboard: "Wallet",
+        personal_iban: "Personal IBAN",
+        logout: "Logout",
+        profile: "Profile",
+        transfer_menu: "Transfer",
+        transfer_btn: "Make a transfer",
+        virtual_card_btn: "Virtual Card",
+        
+        available_balance: "Available balance",
+        account_subtitle: "Account for all your needs",
+        see_iban: "See my IBAN",
+        make_transfer: "Make a transfer",
+        see_card: "Virtual Card",
+        international_transfer: "Make an international transfer",
+        transfer_warning: "Transfer processing takes 1 to 3 minutes after final verification.",
+        transactions_history: "Transaction history",
+        total_balance: "Total balance",
+        transactions_label: "Transactions",
+        currency_label: "Currency",
+        view_all: "View all",
+        today: "Today",
+        yesterday: "Yesterday",
+        transfer_received: "Transfer received",
+        transfer_sent: "Transfer sent",
+        completed: "Completed",
+        amount: "Transfer amount",
+        beneficiary_name: "Beneficiary name",
+        iban: "IBAN / Account number",
+        bic: "Bank code (BIC / SWIFT)",
+        bank_name: "Bank name",
+        reason: "Transfer reason",
+        continue: "Continue",
+        identity_verification: "Identity verification",
+        pending_transfer_details: "Pending transfer details",
+        cancel_transfer: "Cancel transfer",
+        enter_activation_code: "Please enter the transfer activation code",
+        activation_code: "Activation code",
+        transfer_in_progress: "Your transfer is in progress...",
+        identity_verified: "Identity verification successful.",
+        progress_desc: "Please wait for the funds to reach your bank before refreshing this page.",
+        transfer_success: "Transfer completed successfully",
+        success_subtitle: "Your transfer has been processed and will be credited to the beneficiary within 24 to 48 hours.",
+        transfer_failed: "Transfer failed",
+        transfer_failed_subtitle: "The entered amount exceeds the limit allowed by your account. Please contact your advisor.",
+        amount_sent: "Amount sent",
+        beneficiary: "Beneficiary",
+        date: "Date",
+        reference: "Reference",
+        back_to_dashboard: "Back to dashboard",
+        my_virtual_card: "Virtual Card",
+        holder: "Holder",
+        expires: "Expires",
+        show_details: "Show details",
+        hide_details: "Hide details",
+        freeze_card: "Freeze card",
+        settings: "Settings",
+        monthly_limit: "Monthly limit",
+        monthly_spent: "Monthly spent",
+        status: "Status",
+        active: "Active",
+        type: "Type",
+        verified: "Verified",
+        account_holder_premium: "Account holder • Premium Client",
+        full_name: "Full name",
+        email_address: "Email address",
+        phone_number: "Phone number",
+        country: "Country of residence",
+        account_id: "Unique ID",
+        opening_date: "Opening date",
+        edit_profile: "Edit profile",
+        security: "Security",
+        notifications: "Notifications",
+        no_transactions: "No transactions yet",
+        err_email: "Incorrect email address.",
+        err_pin: "Incorrect PIN code.",
+        err_amount: "Invalid amount.",
+        err_balance: "Insufficient balance.",
+        err_fields: "Please fill in all fields.",
+        err_activation: "Incorrect activation code.",
+        err_percent: "Amount exceeds allowed limit ({limit}).",
+        err_client_not_found: "Client not found. Invalid link.",
+        err_no_link: "No link provided. Access denied.",
+        welcome: "Welcome",
+        login_success: "Login successful. Welcome!",
+        transfer_cancelled: "Transfer cancelled.",
+        transfer_finalized: "Transfer completed successfully!",
+        err_card_locked: "Card details display is not authorized by the administrator.",
+        err_iban_locked: "IBAN display is not authorized by the administrator.",
+        iban_copied: "IBAN copied!",
+        swift_copied: "SWIFT code copied!",
+        placeholder_email: "Your email address",
+        placeholder_pin: "Your PIN code",
+        placeholder_activation: "Enter your secret code",
+        card_footer: "This card is the exclusive property of APP PAY. Any fraudulent use will be prosecuted.",
+        card_security_note: "The last 4 digits and CVV have been masked for security reasons.",
+        visa_premium: "Mastercard Premium",
+        bank_details: "Bank details",
+        iban_number: "IBAN number",
+        swift_code: "SWIFT / BIC code",
+        iban_info_note: "Use these details to receive transfers. The last 4 digits of the IBAN are masked for security reasons.",
+        show_iban: "Show full IBAN",
+        hide_iban: "Hide IBAN",
+        allowed_limit: "Allowed limit:",
+        limit_percentage: "Limit percentage:",
+        current_balance: "Current balance:",
+        attempted_amount: "Attempted amount:",
+        new_transaction_received: "New transaction received!",
+        copied: "Copied!",
+        
+        tap_to_flip: "Tap the card to flip",
+        view_full_card: "View full number",
+        flip_card: "Flip card",
+        view_cvv: "View CVV code",
+        receipt_title: "TRANSACTION RECEIPT",
+        receipt_sender: "Sender",
+        receipt_thank_you: "Thank you for using APP PAY. This receipt is generated automatically.",
+        close: "Close",
+        
+        confirm_title_warning: "Warning",
+        confirm_btn_cancel: "Cancel",
+        confirm_btn_ok: "Confirm"
+    },
+    es: {
+        dashboard: "Cartera",
+        personal_iban: "IBAN Personal",
+        logout: "Cerrar sesión",
+        profile: "Perfil",
+        transfer_menu: "Transferencia",
+        transfer_btn: "Hacer una transferencia",
+        virtual_card_btn: "Tarjeta virtual",
+        
+        available_balance: "Saldo disponible",
+        account_subtitle: "Cuenta para todas tus necesidades",
+        see_iban: "Ver mi IBAN",
+        make_transfer: "Hacer una transferencia",
+        see_card: "Tarjeta virtual",
+        international_transfer: "Hacer una transferencia internacional",
+        transfer_warning: "El procesamiento de la transferencia tarda de 1 a 3 minutos después de la verificación final.",
+        transactions_history: "Historial de transacciones",
+        total_balance: "Saldo total",
+        transactions_label: "Transacciones",
+        currency_label: "Moneda",
+        view_all: "Ver todo",
+        today: "Hoy",
+        yesterday: "Ayer",
+        transfer_received: "Transferencia recibida",
+        transfer_sent: "Transferencia enviada",
+        completed: "Completado",
+        amount: "Importe de la transferencia",
+        beneficiary_name: "Nombre del beneficiario",
+        iban: "IBAN / Número de cuenta",
+        bic: "Código bancario (BIC / SWIFT)",
+        bank_name: "Nombre del banco",
+        reason: "Motivo de la transferencia",
+        continue: "Continuar",
+        identity_verification: "Verificación de identidad",
+        pending_transfer_details: "Detalles de la transferencia pendiente",
+        cancel_transfer: "Cancelar transferencia",
+        enter_activation_code: "Introduzca el código de activación",
+        activation_code: "Código de activación",
+        transfer_in_progress: "Su transferencia está en curso...",
+        identity_verified: "Verificación de identidad exitosa.",
+        progress_desc: "Espere a que los fondos lleguen a su banco antes de actualizar.",
+        transfer_success: "Transferencia completada con éxito",
+        success_subtitle: "Su transferencia ha sido procesada y se acreditará en 24 a 48 horas.",
+        transfer_failed: "Transferencia fallida",
+        transfer_failed_subtitle: "El importe introducido supera el límite permitido por su cuenta.",
+        amount_sent: "Importe enviado",
+        beneficiary: "Beneficiario",
+        date: "Fecha",
+        reference: "Referencia",
+        back_to_dashboard: "Volver al panel",
+        my_virtual_card: "Tarjeta virtual",
+        holder: "Titular",
+        expires: "Caduca",
+        show_details: "Mostrar detalles",
+        hide_details: "Ocultar detalles",
+        freeze_card: "Congelar tarjeta",
+        settings: "Ajustes",
+        monthly_limit: "Límite mensual",
+        monthly_spent: "Gastos del mes",
+        status: "Estado",
+        active: "Activa",
+        type: "Tipo",
+        verified: "Verificado",
+        account_holder_premium: "Titular • Cliente Premium",
+        full_name: "Nombre completo",
+        email_address: "Correo electrónico",
+        phone_number: "Número de teléfono",
+        country: "País de residencia",
+        account_id: "ID único",
+        opening_date: "Fecha de apertura",
+        edit_profile: "Editar perfil",
+        security: "Seguridad",
+        notifications: "Notificaciones",
+        no_transactions: "Sin transacciones por ahora",
+        err_email: "Correo electrónico incorrecto.",
+        err_pin: "PIN incorrecto.",
+        err_amount: "Importe inválido.",
+        err_balance: "Saldo insuficiente.",
+        err_fields: "Por favor, rellene todos los campos.",
+        err_activation: "Código de activación incorrecto.",
+        err_percent: "El importe supera el límite permitido ({limit}).",
+        err_client_not_found: "Cliente no encontrado. Enlace inválido.",
+        err_no_link: "Sin enlace. Acceso denegado.",
+        welcome: "Bienvenido",
+        login_success: "¡Inicio de sesión exitoso!",
+        transfer_cancelled: "Transferencia cancelada.",
+        transfer_finalized: "¡Transferencia completada!",
+        err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador.",
+        err_iban_locked: "La visualización del IBAN no está autorizada por el administrador.",
+        iban_copied: "¡IBAN copiado!",
+        swift_copied: "¡Código SWIFT copiado!",
+        placeholder_email: "Su correo electrónico",
+        placeholder_pin: "Su código PIN",
+        placeholder_activation: "Introduzca su código secreto",
+        card_footer: "Esta tarjeta es propiedad exclusiva de APP PAY. Cualquier uso fraudulento será procesado.",
+        card_security_note: "Los últimos 4 dígitos y el CVV se han ocultado por razones de seguridad.",
+        visa_premium: "Mastercard Premium",
+        bank_details: "Datos bancarios",
+        iban_number: "Número IBAN",
+        swift_code: "Código SWIFT / BIC",
+        iban_info_note: "Utilice estos datos para recibir transferencias. Los últimos 4 dígitos del IBAN están ocultos por razones de seguridad.",
+        show_iban: "Mostrar IBAN completo",
+        hide_iban: "Ocultar IBAN",
+        allowed_limit: "Límite permitido:",
+        limit_percentage: "Porcentaje límite:",
+        current_balance: "Saldo actual:",
+        attempted_amount: "Importe intentado:",
+        new_transaction_received: "¡Nueva transacción recibida!",
+        copied: "¡Copiado!",
+        
+        tap_to_flip: "Toca la tarjeta para voltearla",
+        view_full_card: "Ver número completo",
+        flip_card: "Voltear tarjeta",
+        view_cvv: "Ver código CVV",
+        receipt_title: "RECIBO DE TRANSACCIÓN",
+        receipt_sender: "Remitente",
+        receipt_thank_you: "Gracias por usar APP PAY. Este recibo se genera automáticamente.",
+        close: "Cerrar",
+        
+        confirm_title_warning: "Atención",
+        confirm_btn_cancel: "Cancelar",
+        confirm_btn_ok: "Confirmar"
+    },
+    de: {
+        dashboard: "Portemonnaie",
+        personal_iban: "Persönliche IBAN",
+        logout: "Abmelden",
+        profile: "Profil",
+        transfer_menu: "Überweisung",
+        transfer_btn: "Überweisung durchführen",
+        virtual_card_btn: "Virtuelle Karte",
+        
+        available_balance: "Verfügbares Guthaben",
+        account_subtitle: "Konto für alle Ihre Bedürfnisse",
+        see_iban: "IBAN anzeigen",
+        make_transfer: "Überweisung durchführen",
+        see_card: "Virtuelle Karte",
+        international_transfer: "Internationale Überweisung durchführen",
+        transfer_warning: "Die Bearbeitung der Überweisung dauert nach der endgültigen Überprüfung 1 bis 3 Minuten.",
+        transactions_history: "Transaktionsverlauf",
+        total_balance: "Gesamtguthaben",
+        transactions_label: "Transaktionen",
+        currency_label: "Währung",
+        view_all: "Alle anzeigen",
+        today: "Heute",
+        yesterday: "Gestern",
+        transfer_received: "Überweisung erhalten",
+        transfer_sent: "Überweisung gesendet",
+        completed: "Abgeschlossen",
+        amount: "Überweisungsbetrag",
+        beneficiary_name: "Name des Begünstigten",
+        iban: "IBAN / Kontonummer",
+        bic: "Bankleitzahl (BIC / SWIFT)",
+        bank_name: "Bankname",
+        reason: "Überweisungsgrund",
+        continue: "Weiter",
+        identity_verification: "Identitätsüberprüfung",
+        pending_transfer_details: "Details der ausstehenden Überweisung",
+        cancel_transfer: "Überweisung abbrechen",
+        enter_activation_code: "Bitte geben Sie den Aktivierungscode ein",
+        activation_code: "Aktivierungscode",
+        transfer_in_progress: "Ihre Überweisung wird bearbeitet...",
+        identity_verified: "Identitätsprüfung erfolgreich.",
+        progress_desc: "Bitte warten Sie, bis das Geld bei Ihrer Bank eingegangen ist.",
+        transfer_success: "Überweisung erfolgreich abgeschlossen",
+        success_subtitle: "Ihre Überweisung wurde bearbeitet und wird innerhalb von 24 bis 48 Stunden gutgeschrieben.",
+        transfer_failed: "Überweisung fehlgeschlagen",
+        transfer_failed_subtitle: "Der eingegebene Betrag überschreitet das von Ihrem Konto zugelassene Limit.",
+        amount_sent: "Gesendeter Betrag",
+        beneficiary: "Begünstigter",
+        date: "Datum",
+        reference: "Referenz",
+        back_to_dashboard: "Zurück zum Dashboard",
+        my_virtual_card: "Virtuelle Karte",
+        holder: "Inhaber",
+        expires: "Gültig bis",
+        show_details: "Details anzeigen",
+        hide_details: "Details verbergen",
+        freeze_card: "Karte sperren",
+        settings: "Einstellungen",
+        monthly_limit: "Monatliches Limit",
+        monthly_spent: "Diesen Monat ausgegeben",
+        status: "Status",
+        active: "Aktiv",
+        type: "Typ",
+        verified: "Verifiziert",
+        account_holder_premium: "Kontoinhaber • Premium-Kunde",
+        full_name: "Vollständiger Name",
+        email_address: "E-Mail-Adresse",
+        phone_number: "Telefonnummer",
+        country: "Wohnsitzland",
+        account_id: "Eindeutige ID",
+        opening_date: "Eröffnungsdatum",
+        edit_profile: "Profil bearbeiten",
+        security: "Sicherheit",
+        notifications: "Benachrichtigungen",
+        no_transactions: "Noch keine Transaktionen",
+        err_email: "Falsche E-Mail-Adresse.",
+        err_pin: "Falscher PIN-Code.",
+        err_amount: "Ungültiger Betrag.",
+        err_balance: "Unzureichendes Guthaben.",
+        err_fields: "Bitte alle Felder ausfüllen.",
+        err_activation: "Falscher Aktivierungscode.",
+        err_percent: "Betrag überschreitet das Limit ({limit}).",
+        err_client_not_found: "Kunde nicht gefunden. Ungültiger Link.",
+        err_no_link: "Kein Link. Zugriff verweigert.",
+        welcome: "Willkommen",
+        login_success: "Anmeldung erfolgreich. Willkommen!",
+        transfer_cancelled: "Überweisung abgebrochen.",
+        transfer_finalized: "Überweisung erfolgreich abgeschlossen!",
+        err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert.",
+        err_iban_locked: "Die Anzeige der IBAN ist vom Administrator nicht autorisiert.",
+        iban_copied: "IBAN kopiert!",
+        swift_copied: "SWIFT-Code kopiert!",
+        placeholder_email: "Ihre E-Mail-Adresse",
+        placeholder_pin: "Ihr PIN-Code",
+        placeholder_activation: "Geheimen Code eingeben",
+        card_footer: "Diese Karte ist das ausschließliche Eigentum von APP PAY. Jede betrügerische Verwendung wird strafrechtlich verfolgt.",
+        card_security_note: "Die letzten 4 Ziffern und der CVV wurden aus Sicherheitsgründen maskiert.",
+        visa_premium: "Mastercard Premium",
+        bank_details: "Bankverbindung",
+        iban_number: "IBAN-Nummer",
+        swift_code: "SWIFT / BIC-Code",
+        iban_info_note: "Verwenden Sie diese Daten, um Überweisungen zu erhalten. Die letzten 4 Ziffern der IBAN sind aus Sicherheitsgründen maskiert.",
+        show_iban: "Vollständige IBAN anzeigen",
+        hide_iban: "IBAN ausblenden",
+        allowed_limit: "Zulässiges Limit:",
+        limit_percentage: "Limit-Prozentsatz:",
+        current_balance: "Aktuelles Guthaben:",
+        attempted_amount: "Versuchter Betrag:",
+        new_transaction_received: "Neue Transaktion erhalten!",
+        copied: "Kopiert!",
+        
+        tap_to_flip: "Tippen Sie auf die Karte, um sie umzudrehen",
+        view_full_card: "Vollständige Nummer anzeigen",
+        flip_card: "Karte umdrehen",
+        view_cvv: "CVV-Code anzeigen",
+        receipt_title: "TRANSAKTIONSBELEG",
+        receipt_sender: "Absender",
+        receipt_thank_you: "Vielen Dank, dass Sie APP PAY nutzen. Dieser Beleg wird automatisch generiert.",
+        close: "Schließen",
+        
+        confirm_title_warning: "Warnung",
+        confirm_btn_cancel: "Abbrechen",
+        confirm_btn_ok: "Bestätigen"
+    },
+    pl: {
+        dashboard: "Portfel",
+        personal_iban: "Osobisty IBAN",
+        logout: "Wyloguj",
+        profile: "Profil",
+        transfer_menu: "Przelew",
+        transfer_btn: "Wykonaj przelew",
+        virtual_card_btn: "Karta wirtualna",
+        
+        available_balance: "Dostępne saldo",
+        account_subtitle: "Konto na wszystkie potrzeby",
+        see_iban: "Zobacz moje IBAN",
+        make_transfer: "Wykonaj przelew",
+        see_card: "Karta wirtualna",
+        international_transfer: "Wykonaj przelew międzynarodowy",
+        transfer_warning: "Przetwarzanie przelewu zajmuje od 1 do 3 minut po ostatecznej weryfikacji.",
+        transactions_history: "Historia transakcji",
+        total_balance: "Całkowite saldo",
+        transactions_label: "Transakcje",
+        currency_label: "Waluta",
+        view_all: "Zobacz wszystko",
+        today: "Dzisiaj",
+        yesterday: "Wczoraj",
+        transfer_received: "Przelew otrzymany",
+        transfer_sent: "Przelew wysłany",
+        completed: "Zrealizowane",
+        amount: "Kwota przelewu",
+        beneficiary_name: "Nazwa odbiorcy",
+        iban: "IBAN / Numer konta",
+        bic: "Kod banku (BIC / SWIFT)",
+        bank_name: "Nazwa banku",
+        reason: "Powód przelewu",
+        continue: "Kontynuuj",
+        identity_verification: "Weryfikacja tożsamości",
+        pending_transfer_details: "Szczegóły oczekującego przelewu",
+        cancel_transfer: "Anuluj przelew",
+        enter_activation_code: "Wprowadź kod aktywacyjny przelewu",
+        activation_code: "Kod aktywacyjny",
+        transfer_in_progress: "Twój przelew jest w trakcie realizacji...",
+        identity_verified: "Weryfikacja tożsamości zakończona pomyślnie.",
+        progress_desc: "Poczekaj na zaksięgowanie środków w banku.",
+        transfer_success: "Przelew zakończony pomyślnie",
+        success_subtitle: "Twój przelew został przetworzony i zostanie zaksięgowany w ciągu 24-48 godzin.",
+        transfer_failed: "Przelew nieudany",
+        transfer_failed_subtitle: "Wprowadzona kwota przekracza limit dozwolony dla Twojego konta.",
+        amount_sent: "Wysłana kwota",
+        beneficiary: "Odbiorca",
+        date: "Data",
+        reference: "Referencja",
+        back_to_dashboard: "Powrót do pulpitu",
+        my_virtual_card: "Karta wirtualna",
+        holder: "Posiadacz",
+        expires: "Ważna do",
+        show_details: "Pokaż szczegóły",
+        hide_details: "Ukryj szczegóły",
+        freeze_card: "Zablokuj kartę",
+        settings: "Ustawienia",
+        monthly_limit: "Miesięczny limit",
+        monthly_spent: "Wydatki w tym miesiącu",
+        status: "Status",
+        active: "Aktywna",
+        type: "Typ",
+        verified: "Zweryfikowany",
+        account_holder_premium: "Posiadacz konta • Klient Premium",
+        full_name: "Pełne imię i nazwisko",
+        email_address: "Adres e-mail",
+        phone_number: "Numer telefonu",
+        country: "Kraj zamieszkania",
+        account_id: "Unikalny identyfikator",
+        opening_date: "Data otwarcia",
+        edit_profile: "Edytuj profil",
+        security: "Bezpieczeństwo",
+        notifications: "Powiadomienia",
+        no_transactions: "Brak transakcji",
+        err_email: "Nieprawidłowy adres e-mail.",
+        err_pin: "Nieprawidłowy kod PIN.",
+        err_amount: "Nieprawidłowa kwota.",
+        err_balance: "Niewystarczające saldo.",
+        err_fields: "Wypełnij wszystkie pola.",
+        err_activation: "Nieprawidłowy kod aktywacyjny.",
+        err_percent: "Kwota przekracza dozwolony limit ({limit}).",
+        err_client_not_found: "Nie znaleziono klienta. Nieprawidłowy link.",
+        err_no_link: "Brak linku. Odmowa dostępu.",
+        welcome: "Witaj",
+        login_success: "Zalogowano pomyślnie. Witaj!",
+        transfer_cancelled: "Przelew anulowany.",
+        transfer_finalized: "Przelew zakończony pomyślnie!",
+        err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora.",
+        err_iban_locked: "Wyświetlanie IBAN nie jest autoryzowane przez administratora.",
+        iban_copied: "IBAN skopiowany!",
+        swift_copied: "Kod SWIFT skopiowany!",
+        placeholder_email: "Twój adres e-mail",
+        placeholder_pin: "Twój kod PIN",
+        placeholder_activation: "Wprowadź tajny kod",
+        card_footer: "Ta karta jest wyłączną własnością APP PAY. Każde oszukańcze użycie będzie ścigane.",
+        card_security_note: "Ostatnie 4 cyfry i CVV zostały ukryte ze względów bezpieczeństwa.",
+        visa_premium: "Mastercard Premium",
+        bank_details: "Dane bankowe",
+        iban_number: "Numer IBAN",
+        swift_code: "Kod SWIFT / BIC",
+        iban_info_note: "Użyj tych danych, aby otrzymywać przelewy. Ostatnie 4 cyfry IBAN są ukryte ze względów bezpieczeństwa.",
+        show_iban: "Pokaż pełny IBAN",
+        hide_iban: "Ukryj IBAN",
+        allowed_limit: "Dozwolony limit:",
+        limit_percentage: "Procent limitu:",
+        current_balance: "Obecne saldo:",
+        attempted_amount: "Próbowana kwota:",
+        new_transaction_received: "Otrzymano nową transakcję!",
+        copied: "Skopiowano!",
+        
+        tap_to_flip: "Dotknij karty, aby ją odwrócić",
+        view_full_card: "Pokaż pełny numer",
+        flip_card: "Odwróć kartę",
+        view_cvv: "Pokaż kod CVV",
+        receipt_title: "POKWITOWANIE TRANSAKCJI",
+        receipt_sender: "Nadawca",
+        receipt_thank_you: "Dziękujemy za korzystanie z APP PAY. To pokwitowanie jest generowane automatycznie.",
+        close: "Zamknij",
+        
+        confirm_title_warning: "Ostrzeżenie",
+        confirm_btn_cancel: "Anuluj",
+        confirm_btn_ok: "Potwierdź"
     }
-    .stat-card { padding: 12px 6px; }
-    .stat-icon { width: 30px; height: 30px; font-size: 13px; margin-bottom: 6px; }
-    .stat-value { font-size: 14px; }
-    .stat-label { font-size: 10px; }
-    .history-card-header { padding: 14px 16px; }
-    .transaction-item { padding: 16px 16px; gap: 10px; }
-    .tx-icon, .tx-icon-bank { width: 40px; height: 40px; }
-    .tx-details h4 { font-size: 14px; }
-    .tx-amount { font-size: 15px; }
-    
-    .balance-actions { gap: 30px; }
-    .round-action-btn { width: 50px; height: 50px; font-size: 18px; }
-    .round-action-wrapper span { font-size: 12px; }
+};
+
+// ---------- TRADUCTION ----------
+function t(key, vars = {}) {
+    const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.fr;
+    let text = dict[key] || TRANSLATIONS.fr[key] || key;
+    Object.keys(vars).forEach(k => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
+    });
+    return text;
 }
 
-/* ============================================================
-   🆕 CORRECTION AFFICHAGE IBAN (UNE SEULE LIGNE + POLICE PROPRE)
-   ============================================================ */
-#client-iban-display, #client-swift-display {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    white-space: nowrap !important;
-    word-break: normal !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px !important;
-    overflow: hidden;
-    text-overflow: ellipsis;
+function applyLanguage() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        el.textContent = t(key);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        el.placeholder = t(key);
+    });
 }
+
+// ---------- COULEUR DYNAMIQUE ----------
+function applyClientColor(color) {
+    if (!color) color = '#ff7a00';
+    document.getElementById('app-screen')?.style.setProperty('--primary-color', color);
+    document.documentElement.style.setProperty('--primary-color', color);
+    document.documentElement.style.setProperty('--primary-color-light', lightenColor(color, 15));
+    document.documentElement.style.setProperty('--primary-color-dark', darkenColor(color, 15));
+    document.documentElement.style.setProperty('--primary-color-soft', hexToRgba(color, 0.1));
+}
+
+function hexToRgb(hex) {
+    const h = hex.replace('#', '');
+    return { r: parseInt(h.substring(0, 2), 16), g: parseInt(h.substring(2, 4), 16), b: parseInt(h.substring(4, 6), 16) };
+}
+function rgbToHex(r, g, b) {
+    return '#' + [r, g, b].map(x => {
+        const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+}
+function lightenColor(hex, percent) {
+    const { r, g, b } = hexToRgb(hex);
+    return rgbToHex(r + (255 - r) * (percent / 100), g + (255 - g) * (percent / 100), b + (255 - b) * (percent / 100));
+}
+function darkenColor(hex, percent) {
+    const { r, g, b } = hexToRgb(hex);
+    return rgbToHex(r * (1 - percent / 100), g * (1 - percent / 100), b * (1 - percent / 100));
+}
+function hexToRgba(hex, alpha) {
+    const { r, g, b } = hexToRgb(hex);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+// ---------- UTILITAIRES ----------
+function formatMoney(amount) {
+    const num = Number(amount) || 0;
+    return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+    toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i> <span>${message}</span>`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// 🆕 FONCTION DE CONFIRMATION PERSONNALISÉE
+function showConfirmModal({ title = '', message = '', confirmText = '', cancelText = '', type = 'danger' }) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        const titleEl = document.getElementById('confirm-title');
+        const msgEl = document.getElementById('confirm-message');
+        const btnOk = document.getElementById('confirm-btn-ok');
+        const btnCancel = document.getElementById('confirm-btn-cancel');
+
+        // Traduction par défaut si non fourni
+        titleEl.textContent = title || t('confirm_title_warning');
+        msgEl.textContent = message;
+        btnOk.textContent = confirmText || t('confirm_btn_ok');
+        btnCancel.textContent = cancelText || t('confirm_btn_cancel');
+
+        // Clonage pour éviter les fuites d'écouteurs
+        const newBtnOk = btnOk.cloneNode(true);
+        const newBtnCancel = btnCancel.cloneNode(true);
+        btnOk.parentNode.replaceChild(newBtnOk, btnOk);
+        btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+
+        if (type === 'primary') {
+            newBtnOk.style.backgroundColor = 'var(--primary-color)';
+        } else {
+            newBtnOk.style.backgroundColor = '#e02424';
+        }
+
+        const close = (result) => {
+            modal.classList.remove('show');
+            resolve(result);
+        };
+
+        newBtnOk.addEventListener('click', () => close(true));
+        newBtnCancel.addEventListener('click', () => close(false));
+
+        modal.classList.add('show');
+    });
+}
+
+function getClientIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
+
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+}
+
+function generateCardDetails() {
+    const prefix = "4823"; 
+    const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+    const cardNumber = prefix + randomDigits;
+    const cvv = Math.floor(Math.random() * 900 + 100).toString();
+    const now = new Date();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const year = (now.getFullYear() + 3).toString().slice(-2);
+    const expiry = `${month}/${year}`;
+    return { cardNumber, cvv, expiry };
+}
+
+function generateIbanDetails() {
+    const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
+    const iban = `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
+    const swift = `WBKPPLPP${rand(3)}`;
+    return { iban, swift };
+}
+
+function getDateGroupLabel(dateStr, lang) {
+    if (!dateStr) return '';
+    const datePart = dateStr.split(' • ')[0].trim();
+    const parts = datePart.split('/');
+    if (parts.length !== 3) return datePart;
+
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = parseInt(parts[2], 10);
+
+    const txDate = new Date(year, month, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    txDate.setHours(0, 0, 0, 0);
+
+    const diffDays = Math.floor((today - txDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return t('today');
+    if (diffDays === 1) return t('yesterday');
+    return datePart;
+}
+
+// ============================================================
+// SESSION
+// ============================================================
+function saveSession() {
+    if (!appState.clientId) return;
+    try {
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ clientId: appState.clientId, loggedIn: true, savedAt: Date.now() }));
+    } catch (e) {}
+}
+
+function getSession() {
+    try {
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (Date.now() - data.savedAt > 7 * 24 * 60 * 60 * 1000) {
+            localStorage.removeItem(SESSION_KEY);
+            return null;
+        }
+        return data;
+    } catch { return null; }
+}
+
+function clearSession() {
+    try { localStorage.removeItem(SESSION_KEY); } catch {}
+}
+
+// ============================================================
+// ÉCRAN DE BLOCAGE
+// ============================================================
+function showBlockedScreen(client) {
+    const card = document.querySelector('#invalid-screen .invalid-card');
+    if (card) {
+        const iconBox = card.querySelector('.invalid-icon');
+        iconBox.innerHTML = '<i class="fa-solid fa-lock"></i>';
+        iconBox.style.backgroundColor = '#fef3c7';
+        iconBox.style.color = '#d97706';
+        card.querySelector('.invalid-title').textContent = 'Compte temporairement bloqué';
+        const name = client ? `${client.firstName || ''} ${client.lastName || ''}`.trim() : '';
+        card.querySelector('.invalid-message').textContent = name
+            ? `Bonjour ${name}, votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`
+            : `Votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`;
+        const infoSpan = card.querySelector('.invalid-info span');
+        if (infoSpan) infoSpan.textContent = 'Veuillez contacter l\'administrateur pour rétablir votre accès.';
+    }
+    showScreen('invalid-screen');
+}
+
+// ============================================================
+// TEMPS RÉEL : ÉCOUTE DES CHANGEMENTS FIRESTORE
+// ============================================================
+function startRealtimeListener() {
+    if (!appState.clientId) return;
+
+    if (appState.unsubSnapshot) {
+        appState.unsubSnapshot();
+        appState.unsubSnapshot = null;
+    }
+
+    try {
+        const docRef = doc(db, 'clients', appState.clientId);
+        appState.unsubSnapshot = onSnapshot(docRef, (docSnap) => {
+            if (!docSnap.exists()) {
+                clearSession();
+                showScreen('invalid-screen');
+                return;
+            }
+
+            const newData = docSnap.data();
+            if (newData.blocked === true) {
+                clearSession();
+                showBlockedScreen(newData);
+                return;
+            }
+
+            const oldTxCount = (appState.transactions || []).length;
+            const oldColor = appState.client?.color;
+            const oldLang = appState.lang;
+
+            appState.client = newData;
+            appState.balance = Number(newData.balance) || 0;
+            appState.currency = newData.currency || 'zł';
+            appState.transactions = newData.transactions || [];
+            appState.lang = newData.language || 'fr';
+
+            if (oldColor !== newData.color) applyClientColor(newData.color);
+            if (oldLang !== appState.lang) applyLanguage();
+
+            const appScreen = document.getElementById('app-screen');
+            if (appScreen && appScreen.classList.contains('active')) {
+                const activeView = document.querySelector('#nav-links li.active');
+                const viewName = activeView ? activeView.dataset.view : 'dashboard';
+                navigateTo(viewName);
+
+                if (appState.transactions.length > oldTxCount) {
+                    showToast(t('new_transaction_received'), 'success');
+                }
+            }
+        }, (err) => {
+            console.error('Erreur listener Firestore :', err);
+        });
+    } catch (err) {
+        console.error('Erreur démarrage temps réel :', err);
+    }
+}
+
+// ============================================================
+// CHARGEMENT INITIAL DU CLIENT
+// ============================================================
+async function loadClientFromFirestore() {
+    const clientId = getClientIdFromURL();
+
+    if (!clientId) {
+        showScreen('invalid-screen');
+        return null;
+    }
+
+    appState.clientId = clientId;
+
+    try {
+        await authPromise;
+        const docRef = doc(db, 'clients', clientId);
+        let docSnap;
+        try {
+            docSnap = await getDocFromServer(docRef);
+        } catch (err) {
+            docSnap = await getDoc(docRef);
+        }
+
+        if (!docSnap.exists()) {
+            showScreen('invalid-screen');
+            return null;
+        }
+
+        const client = docSnap.data();
+        appState.client = client;
+        appState.balance = Number(client.balance) || 0;
+        appState.currency = client.currency || 'zł';
+        appState.transactions = client.transactions || [];
+        appState.lang = client.language || 'fr';
+
+        if (client.blocked === true) {
+            clearSession();
+            showBlockedScreen(client);
+            return null;
+        }
+
+        if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
+            console.log("🆕 Génération automatique des détails de la carte virtuelle...");
+            const newCard = generateCardDetails();
+            
+            await updateDoc(docRef, {
+                cardNumber: newCard.cardNumber,
+                cardCVV: newCard.cvv,
+                cardExpiry: newCard.expiry
+            });
+
+            appState.client.cardNumber = newCard.cardNumber;
+            appState.client.cardCVV = newCard.cvv;
+            appState.client.cardExpiry = newCard.expiry;
+        }
+
+        if (!client.iban || !client.swift) {
+            console.log("🆕 Génération automatique des détails de l'IBAN...");
+            const newIban = generateIbanDetails();
+            
+            await updateDoc(docRef, {
+                iban: newIban.iban,
+                swift: newIban.swift,
+                canViewIban: false 
+            });
+
+            appState.client.iban = newIban.iban;
+            appState.client.swift = newIban.swift;
+            appState.client.canViewIban = false;
+        }
+
+        applyClientColor(client.color);
+
+        const badgeText = document.getElementById('badge-text');
+        if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
+
+        const emailInput = document.getElementById('login-email');
+        if (emailInput) emailInput.value = client.email;
+
+        const session = getSession();
+        const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
+
+        if (shouldAutoLogin) {
+            loginSuccess();
+        } else {
+            showScreen('login-screen');
+        }
+
+        return client;
+
+    } catch (err) {
+        console.error('Erreur chargement client :', err);
+        showScreen('invalid-screen');
+        return null;
+    }
+}
+// ---------- CONNEXION ----------
+function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const pin = document.getElementById('login-password').value.trim();
+    const errorEl = document.getElementById('login-error');
+    const client = appState.client;
+
+    if (!client) {
+        errorEl.textContent = t('err_client_not_found');
+        return;
+    }
+
+    if (client.blocked === true) {
+        clearSession();
+        showBlockedScreen(client);
+        return;
+    }
+
+    if (email !== (client.email || '').toLowerCase()) {
+        errorEl.textContent = t('err_email');
+        return;
+    }
+
+    if (pin !== client.pin) {
+        errorEl.textContent = t('err_pin');
+        return;
+    }
+
+    errorEl.textContent = '';
+    saveSession();
+    loginSuccess();
+}
+
+function loginSuccess() {
+    const client = appState.client;
+    showScreen('app-screen');
+
+    const initials = ((client.firstName || 'X')[0] + (client.lastName || 'X')[0]).toUpperCase();
+    document.getElementById('header-avatar').textContent = initials;
+
+    applyLanguage();
+
+    startRealtimeListener();
+
+    setTimeout(() => {
+        navigateTo('dashboard', {}, true);
+    }, 200);
+}
+
+// ---------- DÉCONNEXION ----------
+async function handleLogout() {
+    const isConfirmed = await showConfirmModal({
+        title: t('logout'),
+        message: 'Voulez-vous vraiment vous déconnecter de votre espace client ?',
+        confirmText: t('logout'),
+        type: 'primary'
+    });
+    
+    if (!isConfirmed) return;
+
+    if (appState.unsubSnapshot) {
+        appState.unsubSnapshot();
+        appState.unsubSnapshot = null;
+    }
+
+    clearSession();
+    showScreen('login-screen');
+    document.getElementById('login-form').reset();
+    document.getElementById('login-error').textContent = '';
+    if (appState.client) {
+        document.getElementById('login-email').value = appState.client.email;
+    }
+    appState.pendingTransfer = null;
+    appState.lang = appState.client?.language || 'fr';
+}
+
+// ============================================================
+// LOADER GLOBAL
+// ============================================================
+function showLoader() {
+    let loader = document.getElementById('global-loader');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'global-loader';
+        loader.innerHTML = '<div class="loader-spinner"></div>';
+        document.body.appendChild(loader);
+    }
+    loader.classList.add('active');
+}
+
+function hideLoader() {
+    const loader = document.getElementById('global-loader');
+    if (loader) loader.classList.remove('active');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const viewTemplates = {
+    dashboard: 'tpl-dashboard',
+    transfer: 'tpl-transfer',
+    verification: 'tpl-verification',
+    progress: 'tpl-progress',
+    success: 'tpl-success',
+    failed: 'tpl-failed',
+    card: 'tpl-card',
+    iban: 'tpl-iban',
+    account: 'tpl-account'
+};
+
+function navigateTo(viewName, data = {}, addToHistory = true) {
+    showLoader();
+
+    if (addToHistory) {
+        history.pushState({ view: viewName, data: data }, '', `#${viewName}`);
+    }
+
+    setTimeout(() => {
+        const container = document.getElementById('views-container');
+        const templateId = viewTemplates[viewName];
+        if (!templateId) {
+            hideLoader();
+            return;
+        }
+
+        const template = document.getElementById(templateId);
+        if (!template) {
+            hideLoader();
+            return;
+        }
+
+        container.innerHTML = '';
+        container.appendChild(template.content.cloneNode(true));
+
+        document.querySelectorAll('#nav-links li').forEach(li => {
+            li.classList.toggle('active', li.dataset.view === viewName);
+        });
+
+        applyLanguage();
+
+        if (viewName === 'dashboard') renderDashboard();
+        if (viewName === 'transfer') renderTransferView();
+        if (viewName === 'verification') renderVerificationView(data);
+        if (viewName === 'progress') renderProgressView(data);
+        if (viewName === 'success') renderSuccessView(data);
+        if (viewName === 'failed') renderFailedView(data);
+        if (viewName === 'card') renderCardView();
+        if (viewName === 'iban') renderIbanView();
+        if (viewName === 'account') renderAccountView();
+
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        hideLoader();
+    }, 300);
+}
+
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.view) {
+        navigateTo(event.state.view, event.state.data, false);
+    } else {
+        navigateTo('dashboard', {}, false);
+    }
+});
+
+// ============================================================
+// ICÔNE DE TRANSACTION
+// ============================================================
+function buildTransactionIcon(tx) {
+    const isDebit = tx.amount < 0;
+
+    // On garde le logo de la banque uniquement pour les virements reçus (crédit) si dispo
+    if (tx.bankDomain && !isDebit) { 
+        const urls = getBankLogoUrls(tx.bankDomain);
+        const urlsJson = JSON.stringify(urls).replace(/"/g, '&quot;');
+
+        return `
+            <div class="tx-icon-bank" data-urls='${urlsJson}' data-idx="0">
+                <img src="${urls[0]}" alt="${tx.bankName || 'Bank'}" loading="lazy" onerror="handleBankLogoError(this);">
+            </div>
+        `;
+    }
+
+    // On remplace les flèches par l'icône utilisateur (fa-user) comme demandé
+    return `
+        <div class="tx-icon ${isDebit ? 'red' : 'green'}">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    `;
+}
+
+window.handleBankLogoError = function (img) {
+    const parent = img.parentNode;
+    if (!parent) return;
+    try {
+        const urls = JSON.parse(parent.dataset.urls || '[]');
+        let idx = parseInt(parent.dataset.idx || '0', 10);
+        idx++;
+        if (idx < urls.length) {
+            parent.dataset.idx = idx;
+            img.src = urls[idx];
+            return;
+        }
+    } catch (e) {}
+    parent.classList.add('fallback');
+    parent.innerHTML = '<i class="fa-solid fa-building-columns"></i>';
+};
+
+// ============================================================
+// VUE : DASHBOARD (MODIFIÉE POUR AJOUTER LE CLIC SUR LE REÇU)
+// ============================================================
+function renderDashboard() {
+    document.getElementById('balance-display').textContent = formatMoney(appState.balance);
+
+    const welcomeName = document.getElementById('welcome-name');
+    if (welcomeName && appState.client) {
+        welcomeName.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
+    }
+
+    const statBalance = document.getElementById('stat-balance');
+    const statTx = document.getElementById('stat-transactions');
+    const statCurr = document.getElementById('stat-currency');
+    if (statBalance) statBalance.textContent = formatMoney(appState.balance);
+    if (statTx) statTx.textContent = (appState.transactions || []).length;
+    if (statCurr) statCurr.textContent = appState.currency;
+
+    const historyCount = document.getElementById('history-count');
+    if (historyCount) historyCount.textContent = (appState.transactions || []).length;
+
+    const btnGoTransfer = document.getElementById('btn-go-transfer');
+    if (btnGoTransfer) btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
+
+    const btnGoCard = document.getElementById('btn-go-card');
+    if (btnGoCard) btnGoCard.addEventListener('click', () => navigateTo('card'));
+
+    const txList = document.getElementById('tx-list');
+    if (!txList) return;
+
+    txList.innerHTML = '';
+
+    if (!appState.transactions || appState.transactions.length === 0) {
+        txList.innerHTML = `<p class="tx-empty">${t('no_transactions')}</p>`;
+        return;
+    }
+
+    const grouped = {};
+    appState.transactions.forEach(tx => {
+        const datePart = (tx.date || '').split(' • ')[0].trim() || '—';
+        if (!grouped[datePart]) grouped[datePart] = [];
+        grouped[datePart].push(tx);
+    });
+
+    Object.entries(grouped).forEach(([datePart, txs]) => {
+        const separator = document.createElement('div');
+        separator.className = 'history-date-separator';
+        separator.textContent = getDateGroupLabel(datePart + ' • 00:00', appState.lang);
+        txList.appendChild(separator);
+
+        txs.forEach(tx => {
+            const isDebit = tx.amount < 0;
+            const timePart = (tx.date || '').split(' • ')[1] || '';
+            const txLabel = isDebit ? t('transfer_sent') : t('transfer_received');
+            const displaySubtitle = tx.bankName || tx.title || '';
+
+            const item = document.createElement('div');
+            item.className = 'transaction-item ' + (isDebit ? 'is-debit' : 'is-credit');
+            item.innerHTML = `
+                <div class="transaction-left">
+                    ${buildTransactionIcon(tx)}
+                    <div class="tx-details">
+                        <h4>${txLabel}</h4>
+                        <p>${displaySubtitle}</p>
+                        <span class="tx-time">${timePart}</span>
+                    </div>
+                </div>
+                <div class="tx-right">
+                    <div class="tx-amount ${isDebit ? 'red' : 'green'}">
+                        ${isDebit ? '−' : '+'}${formatMoney(Math.abs(tx.amount))}
+                    </div>
+                    <div class="tx-status ${isDebit ? 'red' : 'green'}">${t('completed')}</div>
+                </div>
+            `;
+            
+            // AJOUT DE L'ÉVÉNEMENT CLIC POUR OUVRIR LE REÇU
+            item.addEventListener('click', () => openReceipt(tx));
+            
+            txList.appendChild(item);
+        });
+    });
+}
+
+// ============================================================
+// VUE : VIREMENT
+// ============================================================
+function renderTransferView() {
+    const balEl = document.getElementById('transfer-balance');
+    if (balEl) balEl.textContent = formatMoney(appState.balance);
+
+    const currEl = document.getElementById('tf-currency');
+    if (currEl) currEl.textContent = appState.currency;
+}
+
+function handleTransferSubmit(event) {
+    event.preventDefault();
+
+    const amount = parseFloat(document.getElementById('tf-amount').value);
+    const beneficiary = document.getElementById('tf-beneficiary').value.trim();
+    const iban = document.getElementById('tf-iban').value.trim();
+    const bic = document.getElementById('tf-bic').value.trim();
+    const bank = document.getElementById('tf-bank').value.trim();
+    const reason = document.getElementById('tf-reason').value.trim();
+
+    if (!amount || amount <= 0) return showToast(t('err_amount'), 'error');
+    if (amount > appState.balance) return showToast(t('err_balance'), 'error');
+    if (!beneficiary || !iban || !bic || !bank || !reason) {
+        return showToast(t('err_fields'), 'error');
+    }
+
+    const percentLimit = Number(appState.client?.percentValue ?? 100);
+    const maxAllowed = appState.balance * (percentLimit / 100);
+
+    if (amount > maxAllowed) {
+        sendTransferFailed(appState.client, { amount, limit: maxAllowed })
+            .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
+            .catch(e => console.warn('⚠️ Email échec erreur'));
+
+        navigateTo('failed', {
+            amount,
+            limit: maxAllowed,
+            percent: percentLimit,
+            beneficiary
+        });
+        return;
+    }
+
+    appState.pendingTransfer = { amount, beneficiary, iban, bic, bank, reason };
+    navigateTo('verification', appState.pendingTransfer);
+}
+
+// ============================================================
+// VUE : VÉRIFICATION
+// ============================================================
+function renderVerificationView(data) {
+    const tr = appState.pendingTransfer || data;
+    if (!tr) return navigateTo('dashboard');
+
+    document.getElementById('vf-amount').textContent = formatMoney(tr.amount);
+    document.getElementById('vf-beneficiary').textContent = tr.beneficiary;
+    document.getElementById('vf-iban').textContent = tr.iban;
+    document.getElementById('vf-bic').textContent = tr.bic;
+    document.getElementById('vf-bank').textContent = tr.bank;
+    document.getElementById('vf-reason').textContent = tr.reason;
+}
+
+function handleVerifySubmit(event) {
+    event.preventDefault();
+    const code = document.getElementById('vf-code').value.trim();
+
+    if (!appState.client) {
+        return showToast(t('err_client_not_found'), 'error');
+    }
+
+    if (code !== appState.client.activationCode) {
+        return showToast(t('err_activation'), 'error');
+    }
+
+    navigateTo('progress', appState.pendingTransfer);
+}
+
+// 🆕 ANNULATION DE VIREMENT (Utilisation de la modale)
+async function cancelTransfer() {
+    const isConfirmed = await showConfirmModal({
+        title: t('cancel_transfer'),
+        message: 'Voulez-vous vraiment annuler ce virement en cours ?',
+        confirmText: t('cancel_transfer'),
+        type: 'danger'
+    });
+
+    if (!isConfirmed) return;
+
+    appState.pendingTransfer = null;
+    navigateTo('dashboard');
+    showToast(t('transfer_cancelled'), 'info');
+}
+
+// ============================================================
+// VUE : PROGRESSION
+// ============================================================
+function renderProgressView(data) {
+    const tr = appState.pendingTransfer || data;
+    if (!tr) return navigateTo('dashboard');
+
+    document.getElementById('pf-amount').textContent = formatMoney(tr.amount);
+    document.getElementById('pf-beneficiary').textContent = tr.beneficiary;
+    document.getElementById('pf-iban').textContent = tr.iban;
+    document.getElementById('pf-bank').textContent = tr.bank;
+
+    let progress = 0;
+    const fill = document.getElementById('progress-fill');
+    fill.style.width = '0%';
+    fill.textContent = '0%';
+
+    const interval = setInterval(() => {
+        progress += 1;
+        if (progress >= 90) {
+            progress = 90;
+            clearInterval(interval);
+            setTimeout(finalizeTransfer, 1500);
+        }
+        fill.style.width = progress + '%';
+        fill.textContent = progress + '%';
+    }, 30);
+}
+
+// ============================================================
+// FINALISATION DU VIREMENT
+// ============================================================
+async function finalizeTransfer() {
+    const tr = appState.pendingTransfer;
+    if (!tr || !appState.client) return;
+
+    appState.balance -= tr.amount;
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
+        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+    // ON AJOUTE LES INFOS DU BÉNÉFICIAIRE DANS L'HISTORIQUE POUR LE REÇU
+    appState.transactions.unshift({
+        type: 'debit',
+        title: tr.beneficiary,
+        date: dateStr,
+        amount: -tr.amount,
+        bankName: tr.bank,
+        iban: tr.iban,
+        bic: tr.bic,
+        reason: tr.reason
+    });
+
+    const ref = 'AP' + Date.now().toString().slice(-8);
+
+    try {
+        await authPromise;
+        await updateDoc(doc(db, 'clients', appState.clientId), {
+            balance: appState.balance,
+            transactions: appState.transactions
+        });
+
+        sendTransferSuccess(appState.client, {
+            amount: tr.amount,
+            beneficiary: tr.beneficiary,
+            date: dateStr,
+            reference: ref,
+            iban: tr.iban
+        })
+            .then(r => r.success ? console.log('✅ Email confirmation envoyé') : console.warn('⚠️ Email confirmation non envoyé'))
+            .catch(e => console.warn('⚠️ Email confirmation erreur'));
+
+    } catch (err) {
+        console.error('Erreur sauvegarde virement :', err);
+    }
+
+    navigateTo('success', {
+        amount: tr.amount,
+        beneficiary: tr.beneficiary,
+        date: dateStr,
+        reference: ref
+    });
+
+    showToast(t('transfer_finalized'), 'success');
+    appState.pendingTransfer = null;
+}
+
+// ============================================================
+// VUE : SUCCÈS
+// ============================================================
+function renderSuccessView(data) {
+    document.getElementById('sf-amount').textContent = formatMoney(data.amount);
+    document.getElementById('sf-beneficiary').textContent = data.beneficiary;
+    document.getElementById('sf-date').textContent = data.date;
+    document.getElementById('sf-ref').textContent = data.reference;
+
+    const customMsg = appState.client?.messageAfterTransfer;
+    const msgEl = document.getElementById('sf-custom-message');
+    if (msgEl && customMsg) {
+        msgEl.textContent = customMsg;
+    }
+}
+
+// ============================================================
+// VUE : VIREMENT ÉCHOUÉ
+// ============================================================
+function renderFailedView(data) {
+    const d = data || {};
+    const amountEl = document.getElementById('ff-amount');
+    const limitEl = document.getElementById('ff-limit');
+    const percentEl = document.getElementById('ff-percent');
+    const balanceEl = document.getElementById('ff-balance');
+
+    if (amountEl) amountEl.textContent = formatMoney(d.amount || 0);
+    if (limitEl) limitEl.textContent = formatMoney(d.limit || 0);
+    if (percentEl) percentEl.textContent = (d.percent || 0) + '%';
+    if (balanceEl) balanceEl.textContent = formatMoney(appState.balance);
+}
+
+// ============================================================
+// VUE : CARTE VIRTUELLE (PREMIUM)
+// ============================================================
+let cardNumberVisible = false;
+
+function renderCardView() {
+    if (!appState.client) return;
+
+    const holder = document.getElementById('vc-holder');
+    if (holder) {
+        holder.textContent = `${appState.client.firstName || ''} ${appState.client.lastName || ''}`.toUpperCase();
+    }
+
+    const numberDisplay = document.getElementById('vc-number-display');
+    if (numberDisplay) {
+        const realNumber = appState.client.cardNumber || '4823000000000000';
+        const visiblePart = realNumber.substring(0, 12).replace(/(\d{4})/g, '$1 ').trim();
+        numberDisplay.textContent = visiblePart + ' ••••';
+    }
+
+    const expiryEl = document.getElementById('vc-expiry');
+    if (expiryEl) expiryEl.textContent = appState.client.cardExpiry || '12/28';
+
+    const cvvEl = document.getElementById('vc-cvv');
+    if (cvvEl) cvvEl.textContent = '•••';
+
+    const percentLimit = Number(appState.client.percentValue ?? 100);
+    const limit = appState.balance * (percentLimit / 100);
+    const limitEl = document.getElementById('card-limit');
+    if (limitEl) limitEl.textContent = formatMoney(limit);
+
+    cardNumberVisible = false;
+    const flipCard = document.getElementById('flip-card');
+    if (flipCard) flipCard.classList.remove('flipped');
+    
+    const label = document.getElementById('vc-toggle-label');
+    if (label) label.textContent = t('show_details');
+}
+
+function toggleCardNumber() {
+    if (!appState.client) return;
+
+    if (appState.client.canViewCardDetails !== true) {
+        showToast(t('err_card_locked'), 'error');
+        return;
+    }
+
+    cardNumberVisible = !cardNumberVisible;
+    const display = document.getElementById('vc-number-display');
+    const cvvEl = document.getElementById('vc-cvv');
+    const label = document.getElementById('vc-toggle-label');
+    
+    const realNumber = appState.client?.cardNumber || '4823000000000000';
+    const realCvv = appState.client?.cardCVV || '123';
+    
+    const visiblePart = realNumber.substring(0, 12).replace(/(\d{4})/g, '$1 ').trim();
+    const maskedNumber = visiblePart + ' ••••';
+    const fullNumber = realNumber.replace(/(\d{4})/g, '$1 ').trim();
+
+    if (cardNumberVisible) {
+        display.textContent = fullNumber;
+        if (cvvEl) cvvEl.textContent = realCvv;
+        if (label) label.textContent = t('hide_details');
+    } else {
+        display.textContent = maskedNumber;
+        if (cvvEl) cvvEl.textContent = '•••';
+        if (label) label.textContent = t('show_details');
+    }
+}
+
+window.copyCardInfo = function(type) {
+    if (!appState.client) return;
+
+    if (appState.client.canViewCardDetails !== true) {
+        showToast(t('err_card_locked'), 'error');
+        return;
+    }
+
+    let textToCopy = '';
+    if (type === 'number') {
+        textToCopy = appState.client.cardNumber || '';
+    } else if (type === 'cvv') {
+        textToCopy = appState.client.cardCVV || '';
+    }
+
+    if (!textToCopy) return;
+
+    const doCopy = () => {
+        showToast(t('copied'), 'success');
+    };
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy).then(doCopy).catch(() => prompt('Copiez :', textToCopy));
+    } else {
+        prompt('Copiez :', textToCopy);
+    }
+};
+
+// ============================================================
+// VUE : IBAN PERSONNEL
+// ============================================================
+let ibanVisible = false;
+
+function renderIbanView() {
+    if (!appState.client) return;
+
+    const ibanDisplay = document.getElementById('client-iban-display');
+    const swiftDisplay = document.getElementById('client-swift-display');
+    
+    const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    const swift = appState.client.swift || '--------';
+    
+    const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
+    
+    if (ibanDisplay) ibanDisplay.textContent = maskedIban;
+    if (swiftDisplay) swiftDisplay.textContent = swift;
+    
+    ibanVisible = false;
+    
+    const label = document.getElementById('iban-toggle-label');
+    if (label) label.textContent = t('show_iban');
+}
+
+window.toggleIbanVisibility = function() {
+    if (!appState.client) return;
+    
+    if (appState.client.canViewIban !== true) {
+        showToast(t('err_iban_locked'), 'error');
+        return;
+    }
+
+    ibanVisible = !ibanVisible;
+    const ibanDisplay = document.getElementById('client-iban-display');
+    const label = document.getElementById('iban-toggle-label');
+    
+    const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    
+    if (ibanVisible) {
+        if (ibanDisplay) ibanDisplay.textContent = rawIban;
+        if (label) label.textContent = t('hide_iban');
+    } else {
+        const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
+        if (ibanDisplay) ibanDisplay.textContent = maskedIban;
+        if (label) label.textContent = t('show_iban');
+    }
+};
+
+window.copyIbanInfo = function(type) {
+    if (!appState.client) return;
+    
+    if (appState.client.canViewIban !== true) {
+        showToast(t('err_iban_locked'), 'error');
+        return;
+    }
+
+    let textToCopy = '';
+    if (type === 'iban') textToCopy = appState.client.iban || '';
+    else if (type === 'swift') textToCopy = appState.client.swift || '';
+
+    if (!textToCopy) return;
+
+    const doCopy = () => {
+        showToast(type === 'iban' ? t('iban_copied') : t('swift_copied'), 'success');
+    };
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy).then(doCopy).catch(() => prompt('Copiez :', textToCopy));
+    } else {
+        prompt('Copiez :', textToCopy);
+    }
+};
+
+// ============================================================
+// VUE : PROFIL
+// ============================================================
+function renderAccountView() {
+    if (!appState.client) return;
+    const c = appState.client;
+    const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    const fullName = `${c.lastName} ${c.firstName}`.toUpperCase();
+    const initials = ((c.firstName || 'X')[0] + (c.lastName || 'X')[0]).toUpperCase();
+
+    setEl('account-initials', initials);
+    setEl('account-fullname', fullName);
+    setEl('account-name', fullName);
+    setEl('account-email', c.email || '--');
+    setEl('account-phone', c.phone || '—');
+    setEl('account-country', (c.country || '--') + ' ' + (c.countryFlag || ''));
+    setEl('account-id', c.id ? c.id.toUpperCase() : '--');
+    setEl('account-created', c.createdAt ? new Date(c.createdAt).toLocaleDateString('fr-FR') : '--');
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+function toggleNotifications(event) {
+    event.stopPropagation();
+    document.getElementById('notif-dropdown').classList.toggle('show');
+}
+
+// ============================================================
+// 🆕 REÇU PDF (MODALE AVEC GESTION IBAN ET BANQUE)
+// ============================================================
+window.openReceipt = function(tx) {
+    if (!tx) return;
+
+    const isDebit = tx.amount < 0;
+    const dateStr = tx.date || '--';
+    const typeStr = isDebit ? t('transfer_sent') : t('transfer_received');
+    const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
+    
+    // Nom de la partie prenante (bénéficiaire ou émetteur)
+    const partyLabel = isDebit ? t('beneficiary') : t('receipt_sender');
+    const partyName = tx.title || '--';
+    
+    // GESTION DE LA BANQUE ET DE L'IBAN SELON LE TYPE DE TRANSACTION
+    let bankName = tx.bankName || 'APP PAY';
+    let iban = tx.iban || '';
+    
+    // Si c'est un virement reçu (et que la banque est APP PAY par défaut)
+    if (!isDebit && !tx.bankName) {
+        bankName = 'APP PAY';
+    }
+
+    document.getElementById('rcpt-date').textContent = dateStr;
+    document.getElementById('rcpt-type').textContent = typeStr;
+    document.getElementById('rcpt-ref').textContent = refStr;
+    document.getElementById('rcpt-party-label').textContent = partyLabel;
+    document.getElementById('rcpt-party').textContent = partyName;
+    document.getElementById('rcpt-bank').textContent = bankName;
+    
+    // GESTION DE L'AFFICHAGE DE LA LIGNE IBAN
+    const ibanRow = document.getElementById('rcpt-iban-row');
+    const ibanEl = document.getElementById('rcpt-iban');
+    
+    if (isDebit && iban) {
+        // C'est un virement envoyé, on affiche l'IBAN du bénéficiaire
+        ibanRow.style.display = 'flex';
+        ibanEl.textContent = iban;
+    } else {
+        // C'est un virement reçu ou pas d'IBAN dispo, on cache la ligne
+        ibanRow.style.display = 'none';
+    }
+    
+    const amountEl = document.getElementById('rcpt-amount');
+    amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount));
+    amountEl.style.color = isDebit ? '#e02424' : '#00a04a';
+    
+    document.getElementById('rcpt-status').textContent = t('completed');
+    document.getElementById('rcpt-title').textContent = t('receipt_title');
+    
+    // Traduire le bouton fermer
+    const closeBtn = document.querySelector('.receipt-close-btn span');
+    if(closeBtn) closeBtn.textContent = t('close');
+
+    document.getElementById('receipt-modal').classList.add('show');
+};
+
+window.closeReceipt = function() {
+    document.getElementById('receipt-modal').classList.remove('show');
+};
+
+// Fermer le reçu si on clique en dehors de la carte
+document.getElementById('receipt-modal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'receipt-modal') {
+        closeReceipt();
+    }
+});
+
+// ============================================================
+// EXPOSITION GLOBALE
+// ============================================================
+window.navigateTo = navigateTo;
+window.handleLogout = handleLogout;
+window.cancelTransfer = cancelTransfer;
+window.toggleCardNumber = toggleCardNumber;
+window.showToast = showToast;
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+    const clientId = getClientIdFromURL();
+
+    if (!clientId) {
+        showScreen('invalid-screen');
+        return;
+    }
+
+    document.getElementById('login-form').addEventListener('submit', handleLogin);
+    document.getElementById('notif-btn').addEventListener('click', toggleNotifications);
+
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('notif-dropdown');
+        const btn = document.getElementById('notif-btn');
+        if (dropdown && !dropdown.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    document.querySelectorAll('#nav-links li').forEach(li => {
+        li.addEventListener('click', () => navigateTo(li.dataset.view));
+    });
+
+    document.getElementById('views-container').addEventListener('submit', (e) => {
+        if (e.target.id === 'transfer-form') {
+            handleTransferSubmit(e);
+        } else if (e.target.id === 'verify-form') {
+            handleVerifySubmit(e);
+        }
+    });
+
+    await loadClientFromFirestore();
+});
+
+window.addEventListener('beforeunload', () => {
+    if (appState.unsubSnapshot) {
+        appState.unsubSnapshot();
+    }
+});
