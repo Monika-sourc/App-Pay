@@ -509,7 +509,7 @@ body {
 }
 
 /* ============================================================
-   Corps du dashboard (TEXTES AGRANDIS)
+   Corps du dashboard
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -519,7 +519,7 @@ body {
 }
 
 .welcome-title {
-    font-size: 20px; /* Augmenté */
+    font-size: 20px; 
     font-weight: 700;
     color: #222;
     margin-bottom: 20px;
@@ -541,7 +541,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px; /* Augmenté */
+    font-size: 15px; 
     color: #666;
     margin-bottom: 10px;
     gap: 6px;
@@ -555,7 +555,7 @@ body {
 }
 
 .balance-amount {
-    font-size: 34px; /* Augmenté */
+    font-size: 34px; 
     font-weight: 800;
     color: #111;
     margin-bottom: 22px; 
@@ -563,7 +563,7 @@ body {
 }
 
 .balance-subtitle {
-    font-size: 14px; /* Augmenté */
+    font-size: 14px; 
     color: #777;
     margin-bottom: 25px; 
     text-align: center;
@@ -611,7 +611,7 @@ body {
 }
 
 .round-action-wrapper span {
-    font-size: 14px; /* Augmenté */
+    font-size: 14px; 
     font-weight: 700;
     color: #333;
     text-align: center;
@@ -669,7 +669,7 @@ body {
 }
 
 .stat-value {
-    font-size: 17px; /* Augmenté */
+    font-size: 17px; 
     font-weight: 800;
     color: #111;
     margin-bottom: 2px;
@@ -679,7 +679,7 @@ body {
 }
 
 .stat-label {
-    font-size: 11px; /* Augmenté */
+    font-size: 11px; 
     color: #888;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -727,7 +727,7 @@ body {
 }
 
 .history-card-header-left span {
-    font-size: 16px; /* Augmenté */
+    font-size: 16px; 
     font-weight: 800;
     color: #111;
     white-space: nowrap;
@@ -745,7 +745,7 @@ body {
 .history-count-badge {
     background-color: #f0f0f3;
     color: #555;
-    font-size: 13px; /* Augmenté */
+    font-size: 13px; 
     font-weight: 800;
     padding: 4px 10px;
     border-radius: 10px;
@@ -761,24 +761,24 @@ body {
 
 .history-date-separator {
     padding: 12px 15px 8px 15px;
-    font-size: 14px; /* Augmenté */
+    font-size: 14px; 
     color: #888;
     font-weight: 600;
     background-color: transparent;
 }
 
 /* ============================================================
-   TRANSACTION ITEM
+   TRANSACTION ITEM (MODIFIÉ ICI : ÉPAISSEUR AUGMENTÉE)
    ============================================================ */
 .transaction-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 15px;
+    padding: 16px 15px; /* <-- MODIFICATION : padding vertical passé de 12px à 16px */
     gap: 10px;
     transition: background 0.15s, transform 0.1s;
     border-bottom: 1px solid #f5f5f5;
-    cursor: pointer; /* Ajouté pour indiquer que c'est cliquable */
+    cursor: pointer;
 }
 .transaction-item:active {
     transform: scale(0.98);
@@ -804,7 +804,6 @@ body {
     flex: 1;
 }
 
-/* Modification de l'icône pour le profil utilisateur */
 .tx-icon {
     width: 40px;
     height: 40px;
@@ -860,7 +859,7 @@ body {
 }
 
 .tx-details h4 {
-    font-size: 15px; /* Augmenté */
+    font-size: 15px; 
     font-weight: 800;
     color: #111;
     margin: 0;
@@ -870,7 +869,7 @@ body {
 }
 
 .tx-details p {
-    font-size: 13px; /* Augmenté */
+    font-size: 13px; 
     color: #666;
     margin: 0;
     white-space: nowrap;
@@ -880,7 +879,7 @@ body {
 }
 
 .tx-details .tx-time {
-    font-size: 12px; /* Augmenté */
+    font-size: 12px; 
     color: #999;
     font-weight: 500;
 }
@@ -895,7 +894,7 @@ body {
 }
 
 .tx-amount {
-    font-size: 16px; /* Augmenté */
+    font-size: 16px; 
     font-weight: 800;
     white-space: nowrap;
 }
@@ -904,7 +903,7 @@ body {
 .tx-amount.green { color: #00a04a; }
 
 .tx-status {
-    font-size: 12px; /* Augmenté */
+    font-size: 12px; 
     font-weight: 600;
     white-space: nowrap;
 }
@@ -915,7 +914,7 @@ body {
 .tx-empty {
     text-align: center;
     color: #999;
-    font-size: 15px; /* Augmenté */
+    font-size: 15px; 
     padding: 30px 15px;
     font-weight: 500;
 }
@@ -943,7 +942,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 15px; /* Augmenté */
+    font-size: 15px; 
     color: #333;
     margin-bottom: 15px;
     font-weight: 600;
@@ -962,7 +961,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 14px; /* Augmenté */
+    font-size: 14px; 
     font-weight: 500;
     color: #666;
     margin-bottom: 25px;
@@ -985,7 +984,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 13px; /* Augmenté */
+    font-size: 13px; 
     color: #333;
     margin-bottom: 8px;
     font-weight: 700;
@@ -1057,7 +1056,7 @@ body {
     color: #b45309;
     padding: 12px 15px;
     border-radius: 4px;
-    font-size: 13px; /* Augmenté */
+    font-size: 13px; 
     display: flex;
     align-items: center;
     gap: 10px;
@@ -2123,13 +2122,14 @@ body {
     }
     .stat-card { padding: 12px 6px; }
     .stat-icon { width: 30px; height: 30px; font-size: 13px; margin-bottom: 6px; }
-    .stat-value { font-size: 13px; }
-    .stat-label { font-size: 9px; }
+    .stat-value { font-size: 14px; }
+    .stat-label { font-size: 10px; }
     .history-card-header { padding: 14px 16px; }
-    .transaction-item { padding: 14px 16px; gap: 10px; }
+    /* MODIFICATION ICI : on augmente aussi légèrement sur mobile */
+    .transaction-item { padding: 16px 16px; gap: 10px; }
     .tx-icon, .tx-icon-bank { width: 40px; height: 40px; }
     .tx-details h4 { font-size: 14px; }
-    .tx-amount { font-size: 14px; }
+    .tx-amount { font-size: 15px; }
     
     .balance-actions { gap: 30px; }
     .round-action-btn { width: 50px; height: 50px; font-size: 18px; }
