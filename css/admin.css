@@ -1710,7 +1710,7 @@ body {
 }
 
 /* ============================================================
-   BOUTONS D'ENVOI D'EMAIL (🆕 ajoutés)
+   BOUTONS D'ENVOI D'EMAIL
    ============================================================ */
 .email-actions-grid {
     display: grid;
@@ -1948,6 +1948,65 @@ body {
 @keyframes popIn {
     from { transform: scale(0.85); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   NOUVELLE MODALE DE CONFIRMATION (AJOUTÉE)
+   ============================================================ */
+.confirm-card {
+    max-width: 400px;
+    padding: 35px 25px;
+    text-align: center;
+}
+
+.confirm-icon-wrapper {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: #fef2f2;
+    color: #e02424;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px auto;
+    border: 4px solid #fee2e2;
+}
+
+.confirm-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 12px;
+}
+
+.confirm-message {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    white-space: pre-line; /* Pour gérer les sauts de ligne \n */
+}
+
+.btn-danger {
+    background-color: #e02424;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-danger:hover {
+    background-color: #c81e1e;
 }
 
 /* ============================================================
