@@ -639,60 +639,101 @@
 </template>
 
 <template id="tpl-account">
-    <div class="dashboard-body">
+    <div class="dashboard-body profile-page">
         <h1 class="welcome-title" data-i18n="profile">Profil</h1>
 
-        <div class="account-header">
-            <div class="account-avatar-lg" id="account-initials">--</div>
-            <div>
-                <div class="account-name" id="account-fullname">
-                    --
-                    <span class="account-verified"><i class="fa-solid fa-circle-check"></i> <span data-i18n="verified">Vérifié</span></span>
+        <!-- Premium Profile Header -->
+        <div class="profile-header-card">
+            <div class="profile-avatar-large" id="account-initials">--</div>
+            <div class="profile-header-text">
+                <h2 id="account-fullname">--</h2>
+                <span class="profile-badge"><i class="fa-solid fa-check-circle"></i> <span data-i18n="verified">Vérifié</span></span>
+            </div>
+        </div>
+
+        <!-- Personal Info Section -->
+        <div class="profile-section-card">
+            <h3 class="profile-section-title"><i class="fa-regular fa-id-card"></i> Informations personnelles</h3>
+            <div class="profile-list">
+                <div class="profile-list-item">
+                    <div class="profile-list-icon blue"><i class="fa-solid fa-signature"></i></div>
+                    <div class="profile-list-content">
+                        <span class="profile-list-label" data-i18n="full_name">Nom complet</span>
+                        <span class="profile-list-value" id="account-name">--</span>
+                    </div>
                 </div>
-                <div class="account-role" id="account-role" data-i18n="account_holder_premium">Titulaire du compte • Client Premium</div>
+                <div class="profile-list-item">
+                    <div class="profile-list-icon purple"><i class="fa-regular fa-envelope"></i></div>
+                    <div class="profile-list-content">
+                        <span class="profile-list-label" data-i18n="email_address">Adresse e-mail</span>
+                        <span class="profile-list-value" id="account-email">--</span>
+                    </div>
+                </div>
+                <div class="profile-list-item">
+                    <div class="profile-list-icon green"><i class="fa-solid fa-phone"></i></div>
+                    <div class="profile-list-content">
+                        <span class="profile-list-label" data-i18n="phone_number">Numéro de téléphone</span>
+                        <span class="profile-list-value" id="account-phone">--</span>
+                    </div>
+                </div>
+                <div class="profile-list-item">
+                    <div class="profile-list-icon orange"><i class="fa-solid fa-earth-africa"></i></div>
+                    <div class="profile-list-content">
+                        <span class="profile-list-label" data-i18n="country">Pays de résidence</span>
+                        <span class="profile-list-value" id="account-country">--</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="transactions-card" style="padding: 25px;">
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="full_name">Nom complet</div>
-                <div class="detail-value" id="account-name">--</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="email_address">Adresse e-mail</div>
-                <div class="detail-value" id="account-email">--</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="phone_number">Numéro de téléphone</div>
-                <div class="detail-value" id="account-phone">--</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="country">Pays de résidence</div>
-                <div class="detail-value" id="account-country">--</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="account_id">Identifiant unique</div>
-                <div class="detail-value" id="account-id">--</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label" data-i18n="opening_date">Date d'ouverture</div>
-                <div class="detail-value" id="account-created">--</div>
+        <!-- Account Details Section -->
+        <div class="profile-section-card">
+            <h3 class="profile-section-title"><i class="fa-solid fa-building-columns"></i> Détails du compte</h3>
+            <div class="profile-list">
+                <div class="profile-list-item">
+                    <div class="profile-list-icon dark"><i class="fa-solid fa-fingerprint"></i></div>
+                    <div class="profile-list-content">
+                        <span class="profile-list-label" data-i18n="account_id">Identifiant unique</span>
+                        <span class="profile-list-value" id="account-id">--</span>
+                    </div>
+                </div>
+                <div class="profile-list-item">
+                    <div class="profile-list-icon dark"><i class="fa-regular fa-calendar-check"></i></div>
+                    <div class="profile-list-content">
+                        <span class="profile-list-label" data-i18n="opening_date">Date d'ouverture</span>
+                        <span class="profile-list-value" id="account-created">--</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
-            <button class="action-chip" onclick="showToast('Modification du profil', 'info')">
-                <i class="fa-solid fa-pen"></i> <span data-i18n="edit_profile">Modifier le profil</span>
+        <!-- Settings Actions -->
+        <div class="profile-section-card">
+            <button class="profile-action-btn" onclick="showToast('Modification du profil', 'info')">
+                <div class="profile-action-left">
+                    <div class="profile-action-icon"><i class="fa-solid fa-pen"></i></div>
+                    <span data-i18n="edit_profile">Modifier le profil</span>
+                </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </button>
-            <button class="action-chip" onclick="showToast('Paramètres de sécurité ouverts', 'info')">
-                <i class="fa-solid fa-shield-halved"></i> <span data-i18n="security">Sécurité</span>
+            <button class="profile-action-btn" onclick="showToast('Paramètres de sécurité ouverts', 'info')">
+                <div class="profile-action-left">
+                    <div class="profile-action-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <span data-i18n="security">Sécurité</span>
+                </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </button>
-            <button class="action-chip" onclick="showToast('Préférences de notifications', 'info')">
-                <i class="fa-regular fa-bell"></i> <span data-i18n="notifications">Notifications</span>
+            <button class="profile-action-btn" onclick="showToast('Préférences de notifications', 'info')" style="border-bottom: none;">
+                <div class="profile-action-left">
+                    <div class="profile-action-icon"><i class="fa-regular fa-bell"></i></div>
+                    <span data-i18n="notifications">Notifications</span>
+                </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </button>
         </div>
 
-        <div style="margin-top: 30px; margin-bottom: 20px;">
+        <!-- Logout -->
+        <div style="margin-top: 25px; margin-bottom: 25px;">
             <button class="btn-logout-profile" onclick="handleLogout()">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span data-i18n="logout">Déconnexion</span>
