@@ -467,7 +467,7 @@
                             <i class="fa-solid fa-building-columns"></i> APP PAY
                         </div>
                         <div class="vc-top-right">
-                            <!-- NOUVELLE PUCE EN SVG (Dessin réaliste) -->
+                            <!-- PUCE SVG -->
                             <svg class="vc-chip-svg" viewBox="0 0 50 36" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="chipBase" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -483,26 +483,16 @@
                                         <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.4"/>
                                     </filter>
                                 </defs>
-                                <!-- Base de la puce -->
                                 <rect x="1" y="1" width="48" height="34" rx="4" fill="url(#chipBase)" stroke="#9e6b1d" stroke-width="1" filter="url(#chipShadow)"/>
-                                
-                                <!-- Lignes de contact -->
-                                <!-- Centre -->
                                 <rect x="16" y="14" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
                                 <rect x="6" y="14" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
                                 <rect x="36" y="14" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                
-                                <!-- Haut -->
                                 <rect x="16" y="4" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
                                 <rect x="6" y="4" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
                                 <rect x="36" y="4" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                
-                                <!-- Bas -->
                                 <rect x="16" y="24" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
                                 <rect x="6" y="24" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
                                 <rect x="36" y="24" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                
-                                <!-- Grille de séparation -->
                                 <line x1="15" y1="1" x2="15" y2="35" stroke="#9e6b1d" stroke-width="1"/>
                                 <line x1="35" y1="1" x2="35" y2="35" stroke="#9e6b1d" stroke-width="1"/>
                                 <line x1="1" y1="13" x2="49" y2="13" stroke="#9e6b1d" stroke-width="1"/>
@@ -535,7 +525,6 @@
                             <div class="vc-value" id="vc-expiry">12/28</div>
                         </div>
                         <div class="vc-brand">
-                            <!-- Logo Mastercard (Ronds rouge et jaune) -->
                             <div class="mastercard-logo">
                                 <div class="mc-circle mc-red"></div>
                                 <div class="mc-circle mc-yellow"></div>
@@ -736,6 +725,68 @@
         </div>
     </div>
 </template>
+
+<!-- ============================================= -->
+<!-- NOUVELLE FENÊTRE MODALE : REÇU DE TRANSACTION -->
+<!-- ============================================= -->
+<div class="receipt-modal-overlay" id="receipt-modal">
+    <div class="receipt-card">
+        <div class="receipt-header">
+            <div class="receipt-logo"><i class="fa-solid fa-landmark"></i> APP PAY</div>
+            <div class="receipt-title" id="rcpt-title">REÇU DE TRANSACTION</div>
+        </div>
+        
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-body">
+            <div class="receipt-row">
+                <span>Date</span>
+                <span id="rcpt-date">--</span>
+            </div>
+            <div class="receipt-row">
+                <span>Type</span>
+                <span id="rcpt-type">--</span>
+            </div>
+            <div class="receipt-row">
+                <span>Référence</span>
+                <span id="rcpt-ref">--</span>
+            </div>
+            
+            <div class="receipt-divider"></div>
+
+            <div class="receipt-row">
+                <span id="rcpt-party-label">Bénéficiaire</span>
+                <span id="rcpt-party">--</span>
+            </div>
+            <div class="receipt-row">
+                <span>Banque</span>
+                <span id="rcpt-bank">--</span>
+            </div>
+
+            <div class="receipt-divider"></div>
+
+            <div class="receipt-row receipt-total">
+                <span>Montant</span>
+                <span id="rcpt-amount">--</span>
+            </div>
+            <div class="receipt-row">
+                <span>Statut</span>
+                <span id="rcpt-status" style="color: #00a04a; font-weight: bold;">Réalisé</span>
+            </div>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-footer">
+            <p>Merci d'avoir utilisé APP PAY.</p>
+            <p>Ce reçu est généré automatiquement.</p>
+        </div>
+
+        <button class="receipt-close-btn" onclick="closeReceipt()">
+            <i class="fa-solid fa-xmark"></i> Fermer
+        </button>
+    </div>
+</div>
 
 <script type="module" src="js/script.js"></script>
 </body>
