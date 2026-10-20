@@ -1424,29 +1424,11 @@ body {
     gap: 12px;
 }
 
-.vc-chip {
-    width: 42px;
-    height: 30px;
-    /* Dégradé doré */
-    background: linear-gradient(135deg, #f6e27a 0%, #e4b24d 50%, #c99a36 100%);
-    border-radius: 5px;
-    position: relative;
-    border: 1px solid #b88328;
-    /* Création des lignes internes de la puce avec un fond */
-    background-image: 
-        linear-gradient(90deg, transparent 30%, #b88328 30%, #b88328 33%, transparent 33%, transparent 67%, #b88328 67%, #b88328 70%, transparent 70%),
-        linear-gradient(0deg, transparent 30%, #b88328 30%, #b88328 33%, transparent 33%, transparent 67%, #b88328 67%, #b88328 70%, transparent 70%);
-    overflow: hidden;
-}
-
-/* Lignes de contact centrales */
-.vc-chip::after {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border: 1px solid rgba(184, 131, 40, 0.6);
-    border-radius: 2px;
-    pointer-events: none;
+.vc-chip-svg {
+    width: 44px;
+    height: 32px;
+    /* On s'assure que le SVG ne dépasse pas */
+    display: block; 
 }
 
 .vc-contactless {
