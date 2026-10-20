@@ -143,7 +143,13 @@ const TRANSLATIONS = {
         current_balance: "Solde actuel :",
         attempted_amount: "Montant tenté :",
         new_transaction_received: "Nouvelle transaction reçue !",
-        copied: "Copié !"
+        copied: "Copié !",
+        
+        // NOUVELLES TRADUCTIONS POUR LA CARTE
+        tap_to_flip: "Appuyez sur la carte pour la retourner",
+        view_full_card: "Voir le numéro complet",
+        flip_card: "Retourner la carte",
+        view_cvv: "Voir le code CVV"
     },
     en: {
         dashboard: "Wallet",
@@ -253,7 +259,13 @@ const TRANSLATIONS = {
         current_balance: "Current balance:",
         attempted_amount: "Attempted amount:",
         new_transaction_received: "New transaction received!",
-        copied: "Copied!"
+        copied: "Copied!",
+        
+        // NOUVELLES TRADUCTIONS POUR LA CARTE
+        tap_to_flip: "Tap the card to flip",
+        view_full_card: "View full number",
+        flip_card: "Flip card",
+        view_cvv: "View CVV code"
     },
     es: {
         dashboard: "Cartera",
@@ -363,7 +375,13 @@ const TRANSLATIONS = {
         current_balance: "Saldo actual:",
         attempted_amount: "Importe intentado:",
         new_transaction_received: "¡Nueva transacción recibida!",
-        copied: "¡Copiado!"
+        copied: "¡Copiado!",
+        
+        // NOUVELLES TRADUCTIONS POUR LA CARTE
+        tap_to_flip: "Toca la tarjeta para voltearla",
+        view_full_card: "Ver número completo",
+        flip_card: "Voltear tarjeta",
+        view_cvv: "Ver código CVV"
     },
     de: {
         dashboard: "Portemonnaie",
@@ -473,7 +491,13 @@ const TRANSLATIONS = {
         current_balance: "Aktuelles Guthaben:",
         attempted_amount: "Versuchter Betrag:",
         new_transaction_received: "Neue Transaktion erhalten!",
-        copied: "Kopiert!"
+        copied: "Kopiert!",
+        
+        // NOUVELLES TRADUCTIONS POUR LA CARTE
+        tap_to_flip: "Tippen Sie auf die Karte, um sie umzudrehen",
+        view_full_card: "Vollständige Nummer anzeigen",
+        flip_card: "Karte umdrehen",
+        view_cvv: "CVV-Code anzeigen"
     },
     pl: {
         dashboard: "Portfel",
@@ -583,7 +607,13 @@ const TRANSLATIONS = {
         current_balance: "Obecne saldo:",
         attempted_amount: "Próbowana kwota:",
         new_transaction_received: "Otrzymano nową transakcję!",
-        copied: "Skopiowano!"
+        copied: "Skopiowano!",
+        
+        // NOUVELLES TRADUCTIONS POUR LA CARTE
+        tap_to_flip: "Dotknij karty, aby ją odwrócić",
+        view_full_card: "Pokaż pełny numer",
+        flip_card: "Odwróć kartę",
+        view_cvv: "Pokaż kod CVV"
     }
 };
 
@@ -1393,7 +1423,7 @@ function renderFailedView(data) {
 }
 
 // ============================================================
-// VUE : CARTE VIRTUELLE
+// VUE : CARTE VIRTUELLE (PREMIUM)
 // ============================================================
 let cardNumberVisible = false;
 
@@ -1423,7 +1453,10 @@ function renderCardView() {
     const limitEl = document.getElementById('card-limit');
     if (limitEl) limitEl.textContent = formatMoney(limit);
 
+    // Réinitialiser l'état de visibilité et de rotation
     cardNumberVisible = false;
+    const flipCard = document.getElementById('flip-card');
+    if (flipCard) flipCard.classList.remove('flipped');
     
     const label = document.getElementById('vc-toggle-label');
     if (label) label.textContent = t('show_details');
