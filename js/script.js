@@ -673,6 +673,17 @@ function applyLanguage() {
     });
 }
 
+// 🆕 CONVERSION SYMBOLE -> CODE DEVISE
+function getCurrencyCode(symbol) {
+    const map = {
+        'zł': 'PLN', '€': 'EUR', '$': 'USD', '£': 'GBP',
+        'CHF': 'CHF', '¥': 'JPY', 'FCFA': 'XOF', 'NGN': 'NGN',
+        'GHS': 'GHS', 'KES': 'KES', 'ZAR': 'ZAR', 'MAD': 'MAD',
+        'CAD': 'CAD', 'AUD': 'AUD'
+    };
+    return map[symbol] || symbol;
+}
+
 // ---------- COULEUR DYNAMIQUE ----------
 function applyClientColor(color) {
     if (!color) color = '#ff7a00';
@@ -682,12 +693,10 @@ function applyClientColor(color) {
     document.documentElement.style.setProperty('--primary-color-dark', darkenColor(color, 15));
     document.documentElement.style.setProperty('--primary-color-soft', hexToRgba(color, 0.1));
 
-    // 🆕 GESTION DE LA COULEUR DE LA GRANDE CARTE (Lue depuis Firestore)
     if (appState.client?.bigCardColor) {
         document.documentElement.style.setProperty('--big-card-color', appState.client.bigCardColor);
         
-        // Calcul automatique de la couleur du texte (noir ou blanc) pour le contraste
-        let textColor = '#111111'; // Par défaut
+        let textColor = '#111111';
         if (appState.client.bigCardTextColor) {
             textColor = appState.client.bigCardTextColor;
         } else {
@@ -702,7 +711,6 @@ function applyClientColor(color) {
         }
         document.documentElement.style.setProperty('--big-card-text-color', textColor);
     } else {
-        // Valeurs par défaut (carte blanche, texte noir)
         document.documentElement.style.setProperty('--big-card-color', 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)');
         document.documentElement.style.setProperty('--big-card-text-color', '#111111');
     }
@@ -750,7 +758,6 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// 🆕 FONCTION DE CONFIRMATION PERSONNALISÉE
 function showConfirmModal({ title = '', message = '', confirmText = '', cancelText = '', type = 'danger' }) {
     return new Promise((resolve) => {
         const modal = document.getElementById('confirm-modal');
@@ -759,13 +766,11 @@ function showConfirmModal({ title = '', message = '', confirmText = '', cancelTe
         const btnOk = document.getElementById('confirm-btn-ok');
         const btnCancel = document.getElementById('confirm-btn-cancel');
 
-        // Traduction par défaut si non fourni
         titleEl.textContent = title || t('confirm_title_warning');
         msgEl.textContent = message;
         btnOk.textContent = confirmText || t('confirm_btn_ok');
         btnCancel.textContent = cancelText || t('confirm_btn_cancel');
 
-        // Clonage pour éviter les fuites d'écouteurs
         const newBtnOk = btnOk.cloneNode(true);
         const newBtnCancel = btnCancel.cloneNode(true);
         btnOk.parentNode.replaceChild(newBtnOk, btnOk);
@@ -1020,9 +1025,9 @@ async function loadClientFromFirestore() {
         applyClientColor(client.color);
 
         const badgeText = document.getElementById('badge-text');
-        if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`.toUpperCase();
+        // 🆕 Enlever les majuscules du badge
+        if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`;
 
-        // 🆕 SÉCURITÉ : On vide le champ e-mail pour forcer la saisie manuelle
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = '';
 
@@ -1115,7 +1120,6 @@ async function handleLogout() {
     document.getElementById('login-form').reset();
     document.getElementById('login-error').textContent = '';
     
-    // 🆕 On s'assure que le champ email reste vide après déconnexion
     const emailInput = document.getElementById('login-email');
     if (emailInput) emailInput.value = '';
 
@@ -1260,7 +1264,8 @@ function renderDashboard() {
 
     const welcomeName = document.getElementById('welcome-name');
     if (welcomeName && appState.client) {
-        welcomeName.textContent = `${appState.client.lastName} ${appState.client.firstName}`.toUpperCase();
+        // 🆕 Affichage Prénom NOM sans majuscules forcées
+        welcomeName.textContent = `${appState.client.firstName} ${appState.client.lastName}`;
     }
 
     const statBalance = document.getElementById('stat-balance');
@@ -1268,7 +1273,8 @@ function renderDashboard() {
     const statCurr = document.getElementById('stat-currency');
     if (statBalance) statBalance.textContent = formatMoney(appState.balance);
     if (statTx) statTx.textContent = (appState.transactions || []).length;
-    if (statCurr) statCurr.textContent = appState.currency;
+    // 🆕 Affichage du code devise (PLN) au lieu du symbole (zł)
+    if (statCurr) statCurr.textContent = getCurrencyCode(appState.currency);
 
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
@@ -1412,7 +1418,6 @@ function handleVerifySubmit(event) {
     navigateTo('progress', appState.pendingTransfer);
 }
 
-// 🆕 ANNULATION DE VIREMENT (Utilisation de la modale)
 async function cancelTransfer() {
     const isConfirmed = await showConfirmModal({
         title: t('cancel_transfer'),
@@ -1727,7 +1732,8 @@ function renderAccountView() {
     const c = appState.client;
     const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
-    const fullName = `${c.lastName} ${c.firstName}`.toUpperCase();
+    // 🆕 Prénom Nom sans majuscules
+    const fullName = `${c.firstName} ${c.lastName}`;
     const initials = ((c.firstName || 'X')[0] + (c.lastName || 'X')[0]).toUpperCase();
 
     setEl('account-initials', initials);
