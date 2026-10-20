@@ -186,6 +186,46 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
+// 🆕 NOUVELLE FONCTION : MODALE DE CONFIRMATION PERSONNALISÉE
+function showConfirmModal({ title = 'Attention', message = '', confirmText = 'Confirmer', cancelText = 'Annuler', type = 'danger' }) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        const titleEl = document.getElementById('confirm-title');
+        const msgEl = document.getElementById('confirm-message');
+        const btnOk = document.getElementById('confirm-btn-ok');
+        const btnCancel = document.getElementById('confirm-btn-cancel');
+
+        titleEl.textContent = title;
+        // On remplace les \n par des <br> pour garder les sauts de ligne
+        msgEl.innerHTML = message.replace(/\n/g, '<br>'); 
+        btnOk.textContent = confirmText;
+        btnCancel.textContent = cancelText;
+
+        // On clone les boutons pour supprimer les anciens écouteurs d'événements
+        const newBtnOk = btnOk.cloneNode(true);
+        const newBtnCancel = btnCancel.cloneNode(true);
+        btnOk.parentNode.replaceChild(newBtnOk, btnOk);
+        btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+
+        // Style du bouton de confirmation (rouge ou bleu)
+        if (type === 'danger') {
+            newBtnOk.className = 'btn-danger';
+        } else {
+            newBtnOk.className = 'btn-primary';
+        }
+
+        const close = (result) => {
+            modal.classList.remove('show');
+            resolve(result);
+        };
+
+        newBtnOk.addEventListener('click', () => close(true));
+        newBtnCancel.addEventListener('click', () => close(false));
+
+        modal.classList.add('show');
+    });
+}
+
 function generateId() {
     return 'ap' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
@@ -365,7 +405,15 @@ async function handleAdminLogin(event) {
 // DÉCONNEXION
 // ============================================================
 async function handleAdminLogout() {
-    if (!confirm('Voulez-vous vraiment vous déconnecter ?')) return;
+    // MODIFICATION ICI : Utilisation de la nouvelle modale
+    const isConfirmed = await showConfirmModal({
+        title: 'Déconnexion',
+        message: 'Voulez-vous vraiment vous déconnecter ?',
+        confirmText: 'Se déconnecter',
+        type: 'primary'
+    });
+
+    if (!isConfirmed) return;
 
     try {
         await signOut(auth);
@@ -1597,8 +1645,19 @@ async function saveOption(option, client) {
             }
 
             case 'reset': {
-                const confirmReset = confirm(`Êtes-vous sûr de vouloir réinitialiser le compte de ${client.firstName} ${client.lastName} ?\n\nLe solde sera mis à 0 et l'historique des transactions sera définitivement supprimé.`);
-                if (!confirmReset) throw new Error('Réinitialisation annulée.');
+                // MODIFICATION ICI : Utilisation de la nouvelle modale
+                const isConfirmed = await showConfirmModal({
+                    title: 'Réinitialiser le compte',
+                    message: `Êtes-vous sûr de vouloir réinitialiser le compte de ${client.firstName} ${client.lastName} ?\n\nLe solde sera mis à 0 et l'historique des transactions sera définitivement supprimé.`,
+                    confirmText: 'Réinitialiser',
+                    type: 'danger'
+                });
+
+                if (!isConfirmed) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                    return;
+                }
 
                 updatedData = { ...updatedData, balance: 0, transactions: [] };
                 break;
@@ -1674,7 +1733,15 @@ async function handleToggleAccess() {
         ? `Bloquer l'accès de ${client.firstName} ${client.lastName} ?`
         : `Débloquer l'accès de ${client.firstName} ${client.lastName} ?`;
 
-    if (!confirm(confirmMsg)) return;
+    // MODIFICATION ICI : Utilisation de la nouvelle modale
+    const isConfirmed = await showConfirmModal({
+        title: willBlock ? 'Bloquer le client' : 'Débloquer le client',
+        message: confirmMsg,
+        confirmText: willBlock ? 'Bloquer' : 'Débloquer',
+        type: willBlock ? 'danger' : 'primary'
+    });
+
+    if (!isConfirmed) return;
 
     const btn = document.getElementById('opt-access-btn');
     const originalHTML = btn.innerHTML;
@@ -1705,7 +1772,16 @@ async function handleToggleAccess() {
 async function deleteClient(id) {
     const client = allClients.find(c => c.id === id);
     if (!client) return;
-    if (!confirm(`Supprimer définitivement ${client.firstName} ${client.lastName} ?`)) return;
+    
+    // MODIFICATION ICI : Utilisation de la nouvelle modale
+    const isConfirmed = await showConfirmModal({
+        title: 'Supprimer le client',
+        message: `Supprimer définitivement ${client.firstName} ${client.lastName} ?`,
+        confirmText: 'Supprimer',
+        type: 'danger'
+    });
+
+    if (!isConfirmed) return;
 
     try {
         await deleteDoc(doc(db, COLLECTION_NAME, id));
@@ -1726,7 +1802,16 @@ async function deleteClient(id) {
 
 async function clearAllClients() {
     if (allClients.length === 0) return;
-    if (!confirm(`Supprimer TOUS vos ${allClients.length} clients ? Cette action est irréversible.`)) return;
+    
+    // MODIFICATION ICI : Utilisation de la nouvelle modale
+    const isConfirmed = await showConfirmModal({
+        title: 'Tout effacer',
+        message: `Supprimer TOUS vos ${allClients.length} clients ? Cette action est irréversible.`,
+        confirmText: 'Tout supprimer',
+        type: 'danger'
+    });
+
+    if (!isConfirmed) return;
 
     try {
         for (const client of allClients) {
