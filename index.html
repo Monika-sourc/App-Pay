@@ -30,27 +30,13 @@
     <div class="screen" id="login-screen">
         <div class="login-card">
             <div class="logo-container">
-                <div class="logo-graphic">
-                    <div class="dot blue-dark"></div>
-                    <div class="dot blue-dark"></div>
-                    <div class="dot blue-mid"></div>
-                    <div class="dot green"></div>
-                    <div class="dot green-light"></div>
-                    <div class="dot blue-dark"></div>
-                    <div class="dot blue-light"></div>
-                    <div class="dot green"></div>
-                    <div class="dot green-light"></div>
-                    <div class="dot blue-light"></div>
-                    <div class="dot blue-mid"></div>
-                    <div class="dot blue-mid"></div>
-                    <div class="dot blue-light"></div>
-                    <div class="dot blue-light"></div>
-                    <div class="dot blue-dark"></div>
+                <div class="logo-icon">
+                    <i class="fa-solid fa-landmark"></i>
                 </div>
-                <div class="logo-text">TRANSFERWIRE</div>
+                <div class="logo-text">APP PAY</div>
             </div>
 
-            <h1 class="login-title" id="login-title-text">Connexion à votre compte</h1>
+            <h1 class="login-title" id="login-title-text">Connexion sécurisée</h1>
 
             <div class="user-badge" id="user-badge">
                 <i class="fa-solid fa-id-card-clip"></i> <span id="badge-text">Chargement...</span>
@@ -61,6 +47,7 @@
                     <div class="input-icon-box">
                         <i class="fa-regular fa-envelope"></i>
                     </div>
+                    <!-- Le champ email n'est plus rempli automatiquement par le JS -->
                     <input type="email" id="login-email" placeholder="Votre adresse e-mail" data-i18n-placeholder="placeholder_email" required>
                 </div>
 
@@ -457,6 +444,7 @@
 
         <div class="flip-card-container" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
             <div class="flip-card" id="flip-card">
+                <!-- FACE AVANT (RECTO) -->
                 <div class="flip-card-front">
                     <div class="vc-top">
                         <div class="vc-logo">
@@ -526,6 +514,7 @@
                     </div>
                 </div>
 
+                <!-- FACE ARRIÈRE (VERSO) -->
                 <div class="flip-card-back">
                     <div class="vc-magnetic-strip"></div>
                     <div class="vc-signature-box">
