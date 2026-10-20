@@ -83,7 +83,7 @@
     <!-- ÉCRAN 2 : APPLICATION -->
     <div class="screen" id="app-screen">
 
-        <!-- HEADER (Sans le bouton déconnexion) -->
+        <!-- HEADER -->
         <header class="header">
             <div class="header-logo">
                 <i class="fa-solid fa-landmark"></i> APP PAY
@@ -451,109 +451,129 @@
     </div>
 </template>
 
+<!-- ============================================= -->
+<!-- NOUVELLE PAGE CARTE VIRTUELLE PREMIUM         -->
+<!-- ============================================= -->
 <template id="tpl-card">
-    <div class="dashboard-body">
+    <div class="dashboard-body card-page-wrapper">
         <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
 
-        <div class="virtual-card-wrapper">
-            <div class="virtual-card gold-card">
-                <div class="vc-top">
-                    <div class="vc-logo">
-                        <i class="fa-solid fa-building-columns"></i> APP PAY
-                    </div>
-                    <div class="vc-chip"></div>
-                </div>
+        <!-- Conteneur de la carte avec animation 3D -->
+        <div class="flip-card-container" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
+            <div class="flip-card" id="flip-card">
                 
-                <div class="vc-number" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                    <span id="vc-number-display">•••• •••• •••• 4823</span>
-                    <button onclick="copyCardInfo('number')" style="background: transparent; border: none; color: #1a1a1a; cursor: pointer; font-size: 18px; padding: 5px;" title="Copier le numéro de carte">
-                        <i class="fa-regular fa-copy"></i>
-                    </button>
-                </div>
-                
-                <div class="vc-bottom">
-                    <div>
-                        <div class="vc-label" data-i18n="holder">Titulaire</div>
-                        <div class="vc-value" id="vc-holder">--</div>
+                <!-- FACE AVANT (RECTO) -->
+                <div class="flip-card-front gold-card">
+                    <div class="vc-top">
+                        <div class="vc-logo">
+                            <i class="fa-solid fa-building-columns"></i> APP PAY
+                        </div>
+                        <div class="vc-chip"></div>
                     </div>
-                    <div>
-                        <div class="vc-label" data-i18n="expires">Expire</div>
-                        <div class="vc-value" id="vc-expiry">12/28</div>
-                    </div>
-                    <div class="vc-brand">
-                        <i class="fa-brands fa-cc-visa"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="virtual-card gold-card vc-back" style="margin-top: 20px;">
-                <div class="vc-magnetic-strip"></div>
-                
-                <div class="vc-signature-box">
-                    <span class="vc-cvv-label">CVV</span>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span class="vc-cvv" id="vc-cvv">•••</span>
-                        <button onclick="copyCardInfo('cvv')" style="background: transparent; border: none; color: #1a1a1a; cursor: pointer; font-size: 16px; padding: 5px;" title="Copier le CVV">
+                    
+                    <div class="vc-number">
+                        <span id="vc-number-display">•••• •••• •••• 4823</span>
+                        <button onclick="event.stopPropagation(); copyCardInfo('number')" class="vc-copy-btn" title="Copier le numéro de carte">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                     </div>
+                    
+                    <div class="vc-bottom">
+                        <div>
+                            <div class="vc-label" data-i18n="holder">Titulaire</div>
+                            <div class="vc-value" id="vc-holder">--</div>
+                        </div>
+                        <div>
+                            <div class="vc-label" data-i18n="expires">Expire</div>
+                            <div class="vc-value" id="vc-expiry">12/28</div>
+                        </div>
+                        <div class="vc-brand">
+                            <i class="fa-brands fa-cc-visa"></i>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="vc-back-text" data-i18n="card_footer">
-                    Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.
+
+                <!-- FACE ARRIÈRE (VERSO) -->
+                <div class="flip-card-back gold-card vc-back">
+                    <div class="vc-magnetic-strip"></div>
+                    
+                    <div class="vc-signature-box">
+                        <span class="vc-cvv-label">CVV</span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="vc-cvv" id="vc-cvv">•••</span>
+                            <button onclick="event.stopPropagation(); copyCardInfo('cvv')" class="vc-copy-btn" title="Copier le CVV">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vc-back-text" data-i18n="card_footer">
+                        Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.
+                    </div>
+                    <div class="vc-back-logo">
+                        <i class="fa-brands fa-cc-visa"></i>
+                    </div>
                 </div>
-                <div class="vc-back-logo">
-                    <i class="fa-brands fa-cc-visa"></i>
-                </div>
+
             </div>
         </div>
 
-        <div style="margin-top: 15px; margin-bottom: 20px; text-align: center; font-size: 12px; color: #666; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid #e8eaee;">
-            <i class="fa-solid fa-shield-halved" style="color: #ff7a00; margin-right: 5px;"></i>
+        <div class="card-hint">
+            <i class="fa-solid fa-rotate"></i> <span data-i18n="tap_to_flip">Appuyez sur la carte pour la retourner</span>
+        </div>
+
+        <div class="card-security-note">
+            <i class="fa-solid fa-shield-halved"></i>
             <span data-i18n="card_security_note">Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.</span>
         </div>
 
-        <div class="vc-actions" style="margin-bottom: 25px;">
-            <button class="action-chip" onclick="toggleCardNumber()">
-                <i class="fa-regular fa-eye"></i> <span id="vc-toggle-label" data-i18n="show_details">Afficher les détails</span>
+        <!-- BOUTONS PREMIUM -->
+        <div class="vc-actions-premium">
+            <button class="btn-premium" onclick="toggleCardNumber()">
+                <div class="btn-premium-icon"><i class="fa-regular fa-eye"></i></div>
+                <div class="btn-premium-text">
+                    <strong id="vc-toggle-label" data-i18n="show_details">Afficher les détails</strong>
+                    <small data-i18n="view_full_card">Voir le numéro complet</small>
+                </div>
+            </button>
+
+            <button class="btn-premium" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
+                <div class="btn-premium-icon"><i class="fa-solid fa-rotate"></i></div>
+                <div class="btn-premium-text">
+                    <strong data-i18n="flip_card">Retourner la carte</strong>
+                    <small data-i18n="view_cvv">Voir le code CVV</small>
+                </div>
             </button>
         </div>
 
-        <div class="vc-info-grid">
-            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: var(--primary-color-soft); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
+        <!-- GRILLE D'INFOS PREMIUM -->
+        <div class="vc-info-grid premium-grid">
+            <div class="vc-info-item">
+                <div class="vc-info-icon icon-blue"><i class="fa-solid fa-chart-line"></i></div>
                 <div>
                     <div class="vc-info-label" data-i18n="monthly_limit">Plafond mensuel</div>
                     <div class="vc-info-value" id="card-limit">--</div>
                 </div>
             </div>
             
-            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fee2e2; color: #e02424; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                    <i class="fa-solid fa-money-bill-transfer"></i>
-                </div>
+            <div class="vc-info-item">
+                <div class="vc-info-icon icon-red"><i class="fa-solid fa-money-bill-transfer"></i></div>
                 <div>
                     <div class="vc-info-label" data-i18n="monthly_spent">Dépenses du mois</div>
                     <div class="vc-info-value">0,00</div>
                 </div>
             </div>
 
-            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #def7ec; color: #00a04a; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
+            <div class="vc-info-item">
+                <div class="vc-info-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
                 <div>
                     <div class="vc-info-label" data-i18n="status">Statut</div>
                     <div class="vc-info-value" style="color:#03543f;" data-i18n="active">Active</div>
                 </div>
             </div>
 
-            <div class="vc-info-item" style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                    <i class="fa-brands fa-cc-visa"></i>
-                </div>
+            <div class="vc-info-item">
+                <div class="vc-info-icon icon-cyan"><i class="fa-brands fa-cc-visa"></i></div>
                 <div>
                     <div class="vc-info-label" data-i18n="type">Type</div>
                     <div class="vc-info-value" data-i18n="visa_premium">Visa Premium</div>
@@ -660,7 +680,6 @@
             </button>
         </div>
 
-        <!-- BOUTON DÉCONNEXION DÉPLACÉ ICI -->
         <div style="margin-top: 30px; margin-bottom: 20px;">
             <button class="btn-logout-profile" onclick="handleLogout()">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
