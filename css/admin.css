@@ -1951,7 +1951,7 @@ body {
 }
 
 /* ============================================================
-   NOUVELLE MODALE DE CONFIRMATION (AJOUTÉE)
+   NOUVELLE MODALE DE CONFIRMATION
    ============================================================ */
 .confirm-card {
     max-width: 400px;
@@ -1985,7 +1985,7 @@ body {
     color: #555;
     line-height: 1.5;
     margin-bottom: 25px;
-    white-space: pre-line; /* Pour gérer les sauts de ligne \n */
+    white-space: pre-line;
 }
 
 .btn-danger {
