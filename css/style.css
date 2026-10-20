@@ -782,7 +782,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 18px; /* Espacement global de la ligne augmenté */
+    padding: 20px 18px; 
     gap: 14px; 
     transition: background 0.15s, transform 0.1s;
     border-bottom: 1px solid #f5f5f5;
@@ -864,7 +864,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Augmenté de 5px à 8px pour aérer Titre / Banque / Heure */
+    gap: 8px; 
 }
 
 .tx-details h4 {
@@ -890,7 +890,7 @@ body {
 }
 
 .tx-details .tx-time {
-    font-size: 13px; /* Augmenté légèrement */
+    font-size: 13px; 
     color: #999;
     font-weight: 500;
     line-height: 1.2;
@@ -900,7 +900,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 6px; /* Augmenté pour aérer le montant et le statut */
+    gap: 6px; 
     flex-shrink: 0;
     margin-left: 5px;
 }
@@ -915,7 +915,7 @@ body {
 .tx-amount.green { color: #00a04a; }
 
 .tx-status {
-    font-size: 13px; /* Augmenté légèrement */
+    font-size: 13px; 
     font-weight: 600;
     white-space: nowrap;
 }
@@ -2225,6 +2225,215 @@ body {
 }
 
 /* ============================================================
+   🆕 NOUVEAU PROFIL PREMIUM
+   ============================================================ */
+.profile-header-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 16px;
+    padding: 25px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.profile-avatar-large {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d81b60, #ff7a00);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 26px;
+    flex-shrink: 0;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.profile-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 1;
+}
+
+.profile-header-text h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    width: fit-content;
+}
+
+.profile-section-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.profile-section-title {
+    font-size: 13px;
+    color: #888;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 18px 20px 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.profile-section-title i {
+    color: var(--primary-color);
+}
+
+.profile-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-list-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-list-item:last-child {
+    border-bottom: none;
+}
+
+.profile-list-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.profile-list-icon.blue { background: #e0f2fe; color: #0284c7; }
+.profile-list-icon.purple { background: #f3e8ff; color: #9333ea; }
+.profile-list-icon.green { background: #def7ec; color: #00a04a; }
+.profile-list-icon.orange { background: #ffedd5; color: #ea580c; }
+.profile-list-icon.dark { background: #f1f5f9; color: #475569; }
+
+.profile-list-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+}
+
+.profile-list-label {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+}
+
+.profile-list-value {
+    font-size: 15px;
+    color: #111;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.profile-action-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.profile-action-btn:last-child {
+    border-bottom: none;
+}
+
+.profile-action-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.profile-action-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-action-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #f1f2f5;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.profile-action-btn span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.profile-action-btn .chevron {
+    color: #c0c4cc;
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.profile-action-btn:hover .chevron {
+    transform: translateX(3px);
+    color: var(--primary-color);
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 450px) {
@@ -2237,7 +2446,6 @@ body {
     .stat-value { font-size: 16px; }
     .stat-label { font-size: 11px; }
     .history-card-header { padding: 14px 16px; }
-    /* Ajustement mobile des transactions */
     .transaction-item { padding: 18px 16px; gap: 12px; } 
     .tx-icon, .tx-icon-bank { width: 42px; height: 42px; }
     .tx-details h4 { font-size: 15px; }
