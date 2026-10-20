@@ -131,7 +131,7 @@ const TRANSLATIONS = {
         placeholder_activation: "Entrez votre code secret",
         card_footer: "Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.",
         card_security_note: "Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.",
-        visa_premium: "Visa Premium",
+        visa_premium: "Mastercard Premium",
         bank_details: "Coordonnées bancaires",
         iban_number: "Numéro IBAN",
         swift_code: "Code SWIFT / BIC",
@@ -145,11 +145,15 @@ const TRANSLATIONS = {
         new_transaction_received: "Nouvelle transaction reçue !",
         copied: "Copié !",
         
-        // NOUVELLES TRADUCTIONS POUR LA CARTE
+        // NOUVELLES TRADUCTIONS POUR LA CARTE ET LE REÇU
         tap_to_flip: "Appuyez sur la carte pour la retourner",
         view_full_card: "Voir le numéro complet",
         flip_card: "Retourner la carte",
-        view_cvv: "Voir le code CVV"
+        view_cvv: "Voir le code CVV",
+        receipt_title: "REÇU DE TRANSACTION",
+        receipt_sender: "Émetteur",
+        receipt_thank_you: "Merci d'avoir utilisé APP PAY. Ce reçu est généré automatiquement.",
+        close: "Fermer"
     },
     en: {
         dashboard: "Wallet",
@@ -247,7 +251,7 @@ const TRANSLATIONS = {
         placeholder_activation: "Enter your secret code",
         card_footer: "This card is the exclusive property of APP PAY. Any fraudulent use will be prosecuted.",
         card_security_note: "The last 4 digits and CVV have been masked for security reasons.",
-        visa_premium: "Visa Premium",
+        visa_premium: "Mastercard Premium",
         bank_details: "Bank details",
         iban_number: "IBAN number",
         swift_code: "SWIFT / BIC code",
@@ -261,11 +265,14 @@ const TRANSLATIONS = {
         new_transaction_received: "New transaction received!",
         copied: "Copied!",
         
-        // NOUVELLES TRADUCTIONS POUR LA CARTE
         tap_to_flip: "Tap the card to flip",
         view_full_card: "View full number",
         flip_card: "Flip card",
-        view_cvv: "View CVV code"
+        view_cvv: "View CVV code",
+        receipt_title: "TRANSACTION RECEIPT",
+        receipt_sender: "Sender",
+        receipt_thank_you: "Thank you for using APP PAY. This receipt is generated automatically.",
+        close: "Close"
     },
     es: {
         dashboard: "Cartera",
@@ -363,7 +370,7 @@ const TRANSLATIONS = {
         placeholder_activation: "Introduzca su código secreto",
         card_footer: "Esta tarjeta es propiedad exclusiva de APP PAY. Cualquier uso fraudulento será procesado.",
         card_security_note: "Los últimos 4 dígitos y el CVV se han ocultado por razones de seguridad.",
-        visa_premium: "Visa Premium",
+        visa_premium: "Mastercard Premium",
         bank_details: "Datos bancarios",
         iban_number: "Número IBAN",
         swift_code: "Código SWIFT / BIC",
@@ -377,11 +384,14 @@ const TRANSLATIONS = {
         new_transaction_received: "¡Nueva transacción recibida!",
         copied: "¡Copiado!",
         
-        // NOUVELLES TRADUCTIONS POUR LA CARTE
         tap_to_flip: "Toca la tarjeta para voltearla",
         view_full_card: "Ver número completo",
         flip_card: "Voltear tarjeta",
-        view_cvv: "Ver código CVV"
+        view_cvv: "Ver código CVV",
+        receipt_title: "RECIBO DE TRANSACCIÓN",
+        receipt_sender: "Remitente",
+        receipt_thank_you: "Gracias por usar APP PAY. Este recibo se genera automáticamente.",
+        close: "Cerrar"
     },
     de: {
         dashboard: "Portemonnaie",
@@ -479,7 +489,7 @@ const TRANSLATIONS = {
         placeholder_activation: "Geheimen Code eingeben",
         card_footer: "Diese Karte ist das ausschließliche Eigentum von APP PAY. Jede betrügerische Verwendung wird strafrechtlich verfolgt.",
         card_security_note: "Die letzten 4 Ziffern und der CVV wurden aus Sicherheitsgründen maskiert.",
-        visa_premium: "Visa Premium",
+        visa_premium: "Mastercard Premium",
         bank_details: "Bankverbindung",
         iban_number: "IBAN-Nummer",
         swift_code: "SWIFT / BIC-Code",
@@ -493,11 +503,14 @@ const TRANSLATIONS = {
         new_transaction_received: "Neue Transaktion erhalten!",
         copied: "Kopiert!",
         
-        // NOUVELLES TRADUCTIONS POUR LA CARTE
         tap_to_flip: "Tippen Sie auf die Karte, um sie umzudrehen",
         view_full_card: "Vollständige Nummer anzeigen",
         flip_card: "Karte umdrehen",
-        view_cvv: "CVV-Code anzeigen"
+        view_cvv: "CVV-Code anzeigen",
+        receipt_title: "TRANSAKTIONSBELEG",
+        receipt_sender: "Absender",
+        receipt_thank_you: "Vielen Dank, dass Sie APP PAY nutzen. Dieser Beleg wird automatisch generiert.",
+        close: "Schließen"
     },
     pl: {
         dashboard: "Portfel",
@@ -595,7 +608,7 @@ const TRANSLATIONS = {
         placeholder_activation: "Wprowadź tajny kod",
         card_footer: "Ta karta jest wyłączną własnością APP PAY. Każde oszukańcze użycie będzie ścigane.",
         card_security_note: "Ostatnie 4 cyfry i CVV zostały ukryte ze względów bezpieczeństwa.",
-        visa_premium: "Visa Premium",
+        visa_premium: "Mastercard Premium",
         bank_details: "Dane bankowe",
         iban_number: "Numer IBAN",
         swift_code: "Kod SWIFT / BIC",
@@ -609,11 +622,14 @@ const TRANSLATIONS = {
         new_transaction_received: "Otrzymano nową transakcję!",
         copied: "Skopiowano!",
         
-        // NOUVELLES TRADUCTIONS POUR LA CARTE
         tap_to_flip: "Dotknij karty, aby ją odwrócić",
         view_full_card: "Pokaż pełny numer",
         flip_card: "Odwróć kartę",
-        view_cvv: "Pokaż kod CVV"
+        view_cvv: "Pokaż kod CVV",
+        receipt_title: "POKWITOWANIE TRANSAKCJI",
+        receipt_sender: "Nadawca",
+        receipt_thank_you: "Dziękujemy za korzystanie z APP PAY. To pokwitowanie jest generowane automatycznie.",
+        close: "Zamknij"
     }
 };
 
@@ -1102,12 +1118,13 @@ window.addEventListener('popstate', (event) => {
 });
 
 // ============================================================
-// ICÔNE DE TRANSACTION
+// ICÔNE DE TRANSACTION (MODIFIÉE POUR UTILISER LE PROFIL)
 // ============================================================
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
 
-    if (tx.bankDomain) {
+    // On garde le logo de la banque uniquement pour les virements reçus (crédit) si dispo
+    if (tx.bankDomain && !isDebit) { 
         const urls = getBankLogoUrls(tx.bankDomain);
         const urlsJson = JSON.stringify(urls).replace(/"/g, '&quot;');
 
@@ -1118,10 +1135,10 @@ function buildTransactionIcon(tx) {
         `;
     }
 
+    // On remplace les flèches par l'icône utilisateur (fa-user) comme demandé
     return `
         <div class="tx-icon ${isDebit ? 'red' : 'green'}">
-            <i class="fa-solid ${isDebit ? 'fa-arrow-trend-up' : 'fa-arrow-right-arrow-left'}"
-               ${isDebit ? 'style="transform: rotate(90deg);"' : ''}></i>
+            <i class="fa-solid fa-user"></i>
         </div>
     `;
 }
@@ -1144,7 +1161,7 @@ window.handleBankLogoError = function (img) {
 };
 
 // ============================================================
-// VUE : DASHBOARD
+// VUE : DASHBOARD (MODIFIÉE POUR AJOUTER LE CLIC SUR LE REÇU)
 // ============================================================
 function renderDashboard() {
     document.getElementById('balance-display').textContent = formatMoney(appState.balance);
@@ -1217,6 +1234,10 @@ function renderDashboard() {
                     <div class="tx-status ${isDebit ? 'red' : 'green'}">${t('completed')}</div>
                 </div>
             `;
+            
+            // AJOUT DE L'ÉVÉNEMENT CLIC POUR OUVRIR LE REÇU
+            item.addEventListener('click', () => openReceipt(tx));
+            
             txList.appendChild(item);
         });
     });
@@ -1453,7 +1474,6 @@ function renderCardView() {
     const limitEl = document.getElementById('card-limit');
     if (limitEl) limitEl.textContent = formatMoney(limit);
 
-    // Réinitialiser l'état de visibilité et de rotation
     cardNumberVisible = false;
     const flipCard = document.getElementById('flip-card');
     if (flipCard) flipCard.classList.remove('flipped');
@@ -1623,6 +1643,54 @@ function toggleNotifications(event) {
     event.stopPropagation();
     document.getElementById('notif-dropdown').classList.toggle('show');
 }
+
+// ============================================================
+// 🆕 REÇU PDF (MODALE)
+// ============================================================
+window.openReceipt = function(tx) {
+    if (!tx) return;
+
+    const isDebit = tx.amount < 0;
+    const dateStr = tx.date || '--';
+    const typeStr = isDebit ? t('transfer_sent') : t('transfer_received');
+    const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
+    
+    // Nom de la partie prenante (bénéficiaire ou émetteur)
+    const partyLabel = isDebit ? t('beneficiary') : t('receipt_sender');
+    const partyName = tx.title || '--';
+    const bankName = tx.bankName || 'APP PAY';
+
+    document.getElementById('rcpt-date').textContent = dateStr;
+    document.getElementById('rcpt-type').textContent = typeStr;
+    document.getElementById('rcpt-ref').textContent = refStr;
+    document.getElementById('rcpt-party-label').textContent = partyLabel;
+    document.getElementById('rcpt-party').textContent = partyName;
+    document.getElementById('rcpt-bank').textContent = bankName;
+    
+    const amountEl = document.getElementById('rcpt-amount');
+    amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount));
+    amountEl.style.color = isDebit ? '#e02424' : '#00a04a';
+    
+    document.getElementById('rcpt-status').textContent = t('completed');
+    document.getElementById('rcpt-title').textContent = t('receipt_title');
+    
+    // Traduire le bouton fermer
+    const closeBtn = document.querySelector('.receipt-close-btn span');
+    if(closeBtn) closeBtn.textContent = t('close');
+
+    document.getElementById('receipt-modal').classList.add('show');
+};
+
+window.closeReceipt = function() {
+    document.getElementById('receipt-modal').classList.remove('show');
+};
+
+// Fermer le reçu si on clique en dehors de la carte
+document.getElementById('receipt-modal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'receipt-modal') {
+        closeReceipt();
+    }
+});
 
 // ============================================================
 // EXPOSITION GLOBALE
