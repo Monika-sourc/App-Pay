@@ -509,7 +509,7 @@ body {
 }
 
 /* ============================================================
-   Corps du dashboard
+   Corps du dashboard (TEXTES AGRANDIS)
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -519,7 +519,7 @@ body {
 }
 
 .welcome-title {
-    font-size: 18px;
+    font-size: 20px; /* Augmenté */
     font-weight: 700;
     color: #222;
     margin-bottom: 20px;
@@ -541,7 +541,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     color: #666;
     margin-bottom: 10px;
     gap: 6px;
@@ -550,12 +550,12 @@ body {
 
 .balance-header i {
     color: var(--primary-color);
-    font-size: 13px;
+    font-size: 14px;
     transition: color 0.3s;
 }
 
 .balance-amount {
-    font-size: 30px;
+    font-size: 34px; /* Augmenté */
     font-weight: 800;
     color: #111;
     margin-bottom: 22px; 
@@ -563,7 +563,7 @@ body {
 }
 
 .balance-subtitle {
-    font-size: 13px;
+    font-size: 14px; /* Augmenté */
     color: #777;
     margin-bottom: 25px; 
     text-align: center;
@@ -611,7 +611,7 @@ body {
 }
 
 .round-action-wrapper span {
-    font-size: 13px;
+    font-size: 14px; /* Augmenté */
     font-weight: 700;
     color: #333;
     text-align: center;
@@ -669,7 +669,7 @@ body {
 }
 
 .stat-value {
-    font-size: 15px;
+    font-size: 17px; /* Augmenté */
     font-weight: 800;
     color: #111;
     margin-bottom: 2px;
@@ -679,7 +679,7 @@ body {
 }
 
 .stat-label {
-    font-size: 10px;
+    font-size: 11px; /* Augmenté */
     color: #888;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -727,7 +727,7 @@ body {
 }
 
 .history-card-header-left span {
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 800;
     color: #111;
     white-space: nowrap;
@@ -745,7 +745,7 @@ body {
 .history-count-badge {
     background-color: #f0f0f3;
     color: #555;
-    font-size: 12px;
+    font-size: 13px; /* Augmenté */
     font-weight: 800;
     padding: 4px 10px;
     border-radius: 10px;
@@ -761,7 +761,7 @@ body {
 
 .history-date-separator {
     padding: 12px 15px 8px 15px;
-    font-size: 13px;
+    font-size: 14px; /* Augmenté */
     color: #888;
     font-weight: 600;
     background-color: transparent;
@@ -778,7 +778,7 @@ body {
     gap: 10px;
     transition: background 0.15s, transform 0.1s;
     border-bottom: 1px solid #f5f5f5;
-    cursor: pointer;
+    cursor: pointer; /* Ajouté pour indiquer que c'est cliquable */
 }
 .transaction-item:active {
     transform: scale(0.98);
@@ -804,6 +804,7 @@ body {
     flex: 1;
 }
 
+/* Modification de l'icône pour le profil utilisateur */
 .tx-icon {
     width: 40px;
     height: 40px;
@@ -859,7 +860,7 @@ body {
 }
 
 .tx-details h4 {
-    font-size: 13px;
+    font-size: 15px; /* Augmenté */
     font-weight: 800;
     color: #111;
     margin: 0;
@@ -869,7 +870,7 @@ body {
 }
 
 .tx-details p {
-    font-size: 11px;
+    font-size: 13px; /* Augmenté */
     color: #666;
     margin: 0;
     white-space: nowrap;
@@ -879,7 +880,7 @@ body {
 }
 
 .tx-details .tx-time {
-    font-size: 10px;
+    font-size: 12px; /* Augmenté */
     color: #999;
     font-weight: 500;
 }
@@ -894,7 +895,7 @@ body {
 }
 
 .tx-amount {
-    font-size: 14px;
+    font-size: 16px; /* Augmenté */
     font-weight: 800;
     white-space: nowrap;
 }
@@ -903,7 +904,7 @@ body {
 .tx-amount.green { color: #00a04a; }
 
 .tx-status {
-    font-size: 10px;
+    font-size: 12px; /* Augmenté */
     font-weight: 600;
     white-space: nowrap;
 }
@@ -914,7 +915,7 @@ body {
 .tx-empty {
     text-align: center;
     color: #999;
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     padding: 30px 15px;
     font-weight: 500;
 }
@@ -942,7 +943,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     color: #333;
     margin-bottom: 15px;
     font-weight: 600;
@@ -950,7 +951,7 @@ body {
 
 .transfer-info-top i {
     color: #1a73e8;
-    font-size: 16px;
+    font-size: 17px;
 }
 
 .transfer-info-top strong {
@@ -961,7 +962,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 13px;
+    font-size: 14px; /* Augmenté */
     font-weight: 500;
     color: #666;
     margin-bottom: 25px;
@@ -984,7 +985,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 12px;
+    font-size: 13px; /* Augmenté */
     color: #333;
     margin-bottom: 8px;
     font-weight: 700;
@@ -1010,7 +1011,7 @@ body {
     border: none;
     outline: none;
     padding: 14px 15px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: #333;
     background: transparent;
@@ -1027,7 +1028,7 @@ body {
     font-weight: 800;
     color: #333;
     background-color: #f8f9fa;
-    font-size: 13px;
+    font-size: 14px;
     flex-shrink: 0;
     border-left: 1px solid #dcdfe6;
 }
@@ -1037,7 +1038,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 4px;
     padding: 14px 15px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: #333;
     outline: none;
@@ -1056,7 +1057,7 @@ body {
     color: #b45309;
     padding: 12px 15px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 13px; /* Augmenté */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1078,7 +1079,7 @@ body {
     border: none;
     border-radius: 4px;
     padding: 16px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
@@ -1111,7 +1112,7 @@ body {
 .card-header-title {
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
     color: #222;
     margin-bottom: 18px;
@@ -1120,7 +1121,7 @@ body {
 
 .card-header-title i {
     color: var(--primary-color);
-    font-size: 16px;
+    font-size: 17px;
 }
 
 .verification-details-grey-box {
@@ -1139,13 +1140,13 @@ body {
 }
 
 .verification-details-grey-box .detail-label {
-    font-size: 13px;
+    font-size: 14px;
     color: #555555 !important; 
     font-weight: 500;
 }
 
 .verification-details-grey-box .detail-value {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 800;
     color: #000000 !important; 
     word-break: break-all;
@@ -1158,7 +1159,7 @@ body {
     border: none;
     border-radius: 4px;
     padding: 10px 18px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
@@ -1173,7 +1174,7 @@ body {
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 800;
     color: #333;
     margin-bottom: 15px;
@@ -1182,7 +1183,7 @@ body {
 
 .activation-section-title i {
     color: #333;
-    font-size: 16px;
+    font-size: 17px;
 }
 
 /* ============ PROGRESSION ============ */
@@ -1197,7 +1198,7 @@ body {
 .success-message-title {
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
     color: #222;
     margin-bottom: 8px;
@@ -1206,11 +1207,11 @@ body {
 
 .success-message-title i {
     color: #444;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .progress-desc {
-    font-size: 13px;
+    font-size: 14px;
     color: #666;
     margin-bottom: 15px;
     line-height: 1.4;
@@ -1237,14 +1238,14 @@ body {
     justify-content: center;
     color: white;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 15px;
     transition: width 0.4s ease, background-color 0.3s;
 }
 
 .details-section-title {
     display: flex;
     align-items: center;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
     color: #222;
     margin-bottom: 15px;
@@ -1253,7 +1254,7 @@ body {
 
 .details-section-title i {
     color: var(--primary-color);
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .inner-details-box {
@@ -1301,14 +1302,14 @@ body {
 }
 
 .success-title, .failed-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
     color: #111;
     margin-bottom: 10px;
 }
 
 .success-subtitle, .failed-subtitle {
-    font-size: 14px;
+    font-size: 15px;
     color: #666;
     margin-bottom: 20px;
     line-height: 1.5;
@@ -1330,7 +1331,7 @@ body {
 }
 
 /* ============================================================
-   CARTE VIRTUELLE PREMIUM (NOUVEAU DESIGN BLEU NUIT)
+   CARTE VIRTUELLE PREMIUM
    ============================================================ */
 .card-page-wrapper {
     display: flex;
@@ -1360,7 +1361,6 @@ body {
     transform: rotateY(180deg);
 }
 
-/* Fond Bleu Nuit / Bleu Royal */
 .flip-card-front, .flip-card-back {
     position: absolute !important; 
     top: 0;
@@ -1381,7 +1381,6 @@ body {
     overflow: hidden;
 }
 
-/* Reflet lumineux */
 .flip-card-front::before, .flip-card-back::before {
     content: '';
     position: absolute;
@@ -1417,7 +1416,6 @@ body {
     color: #ffffff; 
 }
 
-/* --- LA PUCE (SIM) ET LE SANS CONTACT --- */
 .vc-top-right {
     display: flex;
     align-items: center;
@@ -1427,7 +1425,6 @@ body {
 .vc-chip-svg {
     width: 44px;
     height: 32px;
-    /* On s'assure que le SVG ne dépasse pas */
     display: block; 
 }
 
@@ -1438,7 +1435,6 @@ body {
     stroke-width: 2;
 }
 
-/* --- LOGO MASTERCARD --- */
 .mastercard-logo {
     width: 42px;
     height: 26px;
@@ -1465,7 +1461,7 @@ body {
     background-color: #f79e1b;
     right: 0;
     z-index: 2;
-    mix-blend-mode: multiply; /* Crée la couleur orange au centre */
+    mix-blend-mode: multiply; 
 }
 
 .vc-number {
@@ -1528,7 +1524,6 @@ body {
     justify-content: center;
 }
 
-/* Verso */
 .flip-card-back {
     transform: rotateY(180deg);
     justify-content: flex-start;
@@ -1592,7 +1587,6 @@ body {
     z-index: 1;
 }
 
-/* BOUTON POUR RETOURNER LA CARTE (Pleine largeur) */
 .btn-flip-custom {
     display: flex;
     align-items: center;
@@ -1603,7 +1597,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 12px;
     padding: 14px 20px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -1629,7 +1623,7 @@ body {
     border: 1px solid #e8eaee;
     padding: 15px;
     border-radius: 12px;
-    font-size: 12px;
+    font-size: 13px;
     color: #555;
     display: flex;
     align-items: center;
@@ -1641,7 +1635,7 @@ body {
 }
 .card-security-note i {
     color: var(--primary-color);
-    font-size: 16px;
+    font-size: 17px;
 }
 
 .vc-actions-premium {
@@ -1697,18 +1691,17 @@ body {
 }
 
 .btn-premium-text strong {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     color: #111;
 }
 
 .btn-premium-text small {
-    font-size: 12px;
+    font-size: 13px;
     color: #777;
     font-weight: 500;
 }
 
-/* Grille d'infos (Pleine largeur) */
 .premium-grid {
     width: 100%;
     display: grid;
@@ -1744,14 +1737,14 @@ body {
 .icon-cyan { background: #e0f2fe; color: #0284c7; }
 
 .vc-info-label {
-    font-size: 11px;
+    font-size: 12px;
     color: #666;
     margin-bottom: 2px;
     font-weight: 600;
 }
 
 .vc-info-value {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 800;
     color: #111;
 }
@@ -1783,14 +1776,14 @@ body {
 }
 
 .account-name {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 800;
     color: #111;
     margin-bottom: 3px;
 }
 
 .account-role {
-    font-size: 12px;
+    font-size: 13px;
     color: #777;
     font-weight: 500;
 }
@@ -1799,7 +1792,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 10px;
+    font-size: 11px;
     background-color: #def7ec;
     color: #00a04a;
     padding: 2px 6px;
@@ -1813,7 +1806,7 @@ body {
     background-color: #eef0f3;
     border: 2px solid transparent;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: #333;
     display: inline-flex;
@@ -1834,7 +1827,7 @@ body {
 
 .action-chip i {
     color: #444;
-    font-size: 14px;
+    font-size: 15px;
     flex-shrink: 0;
 }
 
@@ -1852,7 +1845,7 @@ body {
     border: 2px solid #fde8e8;
     border-radius: 8px;
     padding: 14px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -1866,6 +1859,167 @@ body {
 }
 .btn-logout-profile:active {
     transform: scale(0.98);
+}
+
+/* ============================================================
+   🆕 FENÊTRE MODALE : REÇU PDF
+   ============================================================ */
+.receipt-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.receipt-modal-overlay.show {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.receipt-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 360px;
+    border-radius: 12px;
+    padding: 25px 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    font-family: 'Courier New', Courier, monospace; /* Police de reçu */
+    animation: slideUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Effet de papier déchiré en haut et en bas (optionnel mais stylé) */
+.receipt-card::before, .receipt-card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-size: 16px 16px;
+    background-repeat: repeat-x;
+}
+.receipt-card::before {
+    top: -8px;
+    background-image: radial-gradient(circle, transparent 70%, #ffffff 72%);
+    background-position: bottom;
+}
+.receipt-card::after {
+    bottom: -8px;
+    background-image: radial-gradient(circle, transparent 70%, #ffffff 72%);
+    background-position: top;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.receipt-logo {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: #111;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.receipt-title {
+    font-size: 11px;
+    color: #666;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.receipt-divider {
+    height: 1px;
+    border-bottom: 2px dashed #ccc;
+    margin: 15px 0;
+}
+
+.receipt-body {
+    font-size: 13px;
+    color: #333;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.receipt-row span:first-child {
+    color: #666;
+}
+
+.receipt-row span:last-child {
+    font-weight: 700;
+    text-align: right;
+    word-break: break-all;
+}
+
+.receipt-total {
+    font-size: 16px;
+    font-weight: 900;
+    color: #111;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.receipt-total span:last-child {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.receipt-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    margin-top: 20px;
+    line-height: 1.4;
+}
+
+.receipt-close-btn {
+    width: 100%;
+    background-color: #111;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    cursor: pointer;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.1s;
+}
+.receipt-close-btn:hover {
+    background-color: #333;
+}
+.receipt-close-btn:active {
+    transform: scale(0.98);
+}
+
+@keyframes slideUpPop {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ============ ANIMATIONS ============ */
@@ -1969,17 +2123,17 @@ body {
     }
     .stat-card { padding: 12px 6px; }
     .stat-icon { width: 30px; height: 30px; font-size: 13px; margin-bottom: 6px; }
-    .stat-value { font-size: 12px; }
-    .stat-label { font-size: 8px; }
+    .stat-value { font-size: 13px; }
+    .stat-label { font-size: 9px; }
     .history-card-header { padding: 14px 16px; }
     .transaction-item { padding: 14px 16px; gap: 10px; }
     .tx-icon, .tx-icon-bank { width: 40px; height: 40px; }
-    .tx-details h4 { font-size: 13px; }
-    .tx-amount { font-size: 13px; }
+    .tx-details h4 { font-size: 14px; }
+    .tx-amount { font-size: 14px; }
     
     .balance-actions { gap: 30px; }
     .round-action-btn { width: 50px; height: 50px; font-size: 18px; }
-    .round-action-wrapper span { font-size: 11px; }
+    .round-action-wrapper span { font-size: 12px; }
 }
 
 /* ============================================================
