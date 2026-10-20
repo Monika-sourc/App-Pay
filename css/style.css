@@ -1330,7 +1330,7 @@ body {
 }
 
 /* ============================================================
-   CARTE VIRTUELLE PREMIUM (CORRIGÉE 3D)
+   CARTE VIRTUELLE PREMIUM (NOUVEAU DESIGN)
    ============================================================ */
 .card-page-wrapper {
     display: flex;
@@ -1361,7 +1361,6 @@ body {
     transform: rotateY(180deg);
 }
 
-/* CORRECTION ICI : Forcer position absolute pour superposer les faces */
 .flip-card-front, .flip-card-back {
     position: absolute !important; 
     top: 0;
@@ -1371,29 +1370,27 @@ body {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(170, 119, 28, 0.25);
-    border: 1px solid #e5c687;
-    overflow: hidden;
-}
-
-.gold-card {
-    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
-    color: #1a1a1a;
+    /* NOUVELLE COULEUR : Bleu Nuit / Bleu Royal */
+    background: linear-gradient(135deg, #0a1128 0%, #1c3b70 50%, #3060a8 100%);
+    color: #ffffff;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative; /* Reste relative pour le contenu interne, mais sera écrasé par absolute !important */
+    box-shadow: 0 15px 35px rgba(10, 17, 40, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
 }
 
-.gold-card::before {
+/* Le reflet lumineux en diagonale */
+.flip-card-front::before, .flip-card-back::before {
     content: '';
     position: absolute;
     top: -50%;
     right: -30%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
     border-radius: 50%;
     transform: rotate(-30deg);
     z-index: 0;
@@ -1424,6 +1421,7 @@ body {
 .vc-chip {
     width: 35px;
     height: 26px;
+    /* On garde la puce dorée pour le contraste premium */
     background: linear-gradient(135deg, #e5c687 0%, #b88a2c 100%);
     border-radius: 6px;
     position: relative;
@@ -1442,11 +1440,11 @@ body {
     font-size: 16px;
     letter-spacing: 2px;
     font-weight: 800;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.3);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     position: relative;
     z-index: 1;
     margin: 10px 0;
-    color: #1a1a1a;
+    color: #ffffff; /* Texte en blanc */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1456,7 +1454,7 @@ body {
 .vc-copy-btn {
     background: transparent;
     border: none;
-    color: #1a1a1a;
+    color: #ffffff; /* Icône blanche */
     cursor: pointer;
     font-size: 15px;
     padding: 5px;
@@ -1476,19 +1474,19 @@ body {
 
 .vc-label {
     font-size: 7px;
-    opacity: 0.8;
+    opacity: 0.7;
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 2px;
     font-weight: 700;
-    color: #1a1a1a;
+    color: #ffffff; /* Blanc */
 }
 
 .vc-value {
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1px;
-    color: #1a1a1a;
+    color: #ffffff; /* Blanc */
 }
 
 .vc-brand {
@@ -1507,7 +1505,7 @@ body {
 .vc-magnetic-strip {
     width: 100%;
     height: 40px;
-    background-color: #0044cc; 
+    background-color: #111111; /* Bande noire pour aller avec le bleu nuit */
     margin-bottom: 15px;
     position: relative;
     z-index: 1;
@@ -1516,7 +1514,7 @@ body {
 .vc-signature-box {
     width: 85%;
     height: 35px;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     margin: 0 20px 15px 20px;
     border-radius: 4px;
     display: flex;
@@ -1539,13 +1537,12 @@ body {
     font-size: 15px;
     font-weight: 800;
     letter-spacing: 2px;
-    color: #1a1a1a;
+    color: #111111;
 }
 
 .vc-back-text {
     font-size: 7px;
-    color: #1a1a1a;
-    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.7); /* Blanc transparent */
     line-height: 1.4;
     padding: 0 20px;
     margin-bottom: 10px;
