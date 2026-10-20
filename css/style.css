@@ -433,10 +433,10 @@ body {
     background-color: #e8e9ec;
     min-width: 0;
     width: 100%;
-    padding-bottom: 100px; /* Laisse de la place pour la barre flottante */
+    padding-bottom: 100px; 
 }
 
-/* --- NOUVELLE BARRE DE NAVIGATION FLOTTANTE --- */
+/* --- BARRE DE NAVIGATION FLOTTANTE --- */
 .bottom-nav {
     position: fixed;
     bottom: 15px;
@@ -487,7 +487,6 @@ body {
     transition: transform 0.2s;
 }
 
-/* Effet de pilule pour le bouton actif (comme sur l'image 2) */
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
@@ -552,14 +551,14 @@ body {
     font-size: 30px;
     font-weight: 800;
     color: #111;
-    margin-bottom: 15px;
+    margin-bottom: 22px; /* Augmenté : espace entre solde et sous-titre */
     text-align: center;
 }
 
 .balance-subtitle {
     font-size: 13px;
     color: #777;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Augmenté : espace entre sous-titre et boutons */
     text-align: center;
     font-weight: 500;
 }
@@ -568,7 +567,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-top: 25px;
+    margin-top: 30px; /* Augmenté : espace supplémentaire au dessus des boutons */
     width: 100%;
 }
 
@@ -1325,14 +1324,14 @@ body {
 
 /* ============ CARTE VIRTUELLE (TAILLE RÉDUITE) ============ */
 .virtual-card-wrapper {
-    max-width: 340px; /* Taille réduite pour ressembler à une vraie carte */
-    margin: 0 auto 20px auto; /* Centré */
+    max-width: 340px; 
+    margin: 0 auto 20px auto; 
     perspective: 1000px;
 }
 
 .gold-card {
     width: 100%;
-    aspect-ratio: 1.586 / 1; /* Ratio standard d'une carte bancaire */
+    aspect-ratio: 1.586 / 1; 
     border-radius: 12px;
     background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
     color: #1a1a1a;
