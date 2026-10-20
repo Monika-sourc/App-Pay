@@ -82,7 +82,7 @@ body {
 
 .invalid-title {
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
     margin-bottom: 15px;
 }
@@ -159,14 +159,14 @@ body {
 
 .logo-text {
     font-size: 26px;
-    font-weight: 700; /* Ajusté pour le logo */
+    font-weight: 800; 
     color: #111;
     letter-spacing: 2px;
 }
 
 .login-title {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     color: #555;
     margin-bottom: 20px;
     text-align: center;
@@ -178,7 +178,7 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -265,7 +265,7 @@ body {
     border-radius: 10px;
     padding: 16px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s, transform 0.1s;
@@ -316,7 +316,7 @@ body {
 
 .header-logo {
     font-size: 18px; 
-    font-weight: 700; /* Ajusté */
+    font-weight: 700; 
     color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -398,7 +398,7 @@ body {
 .notif-dropdown-header {
     padding: 12px 16px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     color: #222;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -427,7 +427,7 @@ body {
 .notif-item-text strong {
     display: block;
     color: #111;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 13px;
     margin-bottom: 2px;
 }
@@ -479,7 +479,7 @@ body {
     justify-content: center;
     gap: 4px;
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 600;
     color: #444;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -507,7 +507,7 @@ body {
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .nav-links li.active i {
@@ -532,7 +532,7 @@ body {
 
 .welcome-title {
     font-size: 22px; 
-    font-weight: 600; /* Juste milieu */
+    font-weight: 600; 
     color: #222;
     margin-bottom: 20px;
 }
@@ -559,7 +559,7 @@ body {
     opacity: 0.8;
     margin-bottom: 10px;
     gap: 6px;
-    font-weight: 500; /* Ajusté */
+    font-weight: 600; 
 }
 
 .balance-header i {
@@ -570,7 +570,7 @@ body {
 
 .balance-amount {
     font-size: 36px; 
-    font-weight: 700; /* Ajusté pour le solde */
+    font-weight: 700; 
     margin-bottom: 22px; 
     text-align: center;
     letter-spacing: 0px; 
@@ -626,7 +626,7 @@ body {
 
 .round-action-wrapper span {
     font-size: 14px; 
-    font-weight: 600; /* Ajusté */
+    font-weight: 600; 
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -683,7 +683,7 @@ body {
 
 .stat-value {
     font-size: 18px; 
-    font-weight: 700; /* Ajusté */
+    font-weight: 700; 
     color: #111;
     margin-bottom: 4px; 
     white-space: nowrap;
@@ -695,7 +695,7 @@ body {
     font-size: 13px; 
     color: #888;
     letter-spacing: 0.2px;
-    font-weight: 500; /* Ajusté */
+    font-weight: 500; 
 }
 
 /* ============================================================
@@ -740,7 +740,7 @@ body {
 
 .history-card-header-left span {
     font-size: 16px; 
-    font-weight: 700; /* Ajusté */
+    font-weight: 700; 
     color: #111;
     white-space: nowrap;
     overflow: hidden;
@@ -758,7 +758,7 @@ body {
     background-color: #f0f0f3;
     color: #555;
     font-size: 13px; 
-    font-weight: 500;
+    font-weight: 600;
     padding: 4px 10px;
     border-radius: 10px;
     min-width: 24px;
@@ -873,7 +873,7 @@ body {
 
 .tx-details h4 {
     font-size: 16px; 
-    font-weight: 600; /* Ajusté pour la lisibilité */
+    font-weight: 700; 
     color: #111;
     margin: 0;
     line-height: 1.2;
@@ -890,13 +890,13 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 500; /* Ajusté */
+    font-weight: 500; 
 }
 
 .tx-details .tx-time {
     font-size: 13px; 
     color: #999;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.2;
 }
 
@@ -911,7 +911,7 @@ body {
 
 .tx-amount {
     font-size: 17px; 
-    font-weight: 700; /* Ajusté */
+    font-weight: 700; 
     white-space: nowrap;
 }
 
@@ -920,7 +920,7 @@ body {
 
 .tx-status {
     font-size: 13px; 
-    font-weight: 500; /* Ajusté */
+    font-weight: 500; 
     white-space: nowrap;
 }
 
@@ -970,7 +970,7 @@ body {
 }
 
 .transfer-info-top strong {
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .international-link {
@@ -1003,7 +1003,7 @@ body {
     font-size: 13px; 
     color: #333;
     margin-bottom: 8px;
-    font-weight: 500; 
+    font-weight: 600; 
 }
 
 .input-with-addon {
@@ -1040,7 +1040,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 700;
     color: #333;
     background-color: #f8f9fa;
     font-size: 14px;
@@ -1095,7 +1095,7 @@ body {
     border-radius: 4px;
     padding: 16px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s, transform 0.1s;
@@ -1128,7 +1128,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700; 
     color: #222;
     margin-bottom: 18px;
     gap: 8px;
@@ -1162,7 +1162,7 @@ body {
 
 .verification-details-grey-box .detail-value {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700; 
     color: #000000 !important; 
     word-break: break-all;
     padding-left: 15px; 
@@ -1175,7 +1175,7 @@ body {
     border-radius: 4px;
     padding: 10px 18px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -1190,7 +1190,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700; 
     color: #333;
     margin-bottom: 15px;
     gap: 8px;
@@ -1214,7 +1214,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700; 
     color: #222;
     margin-bottom: 8px;
     gap: 8px;
@@ -1252,7 +1252,7 @@ body {
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 15px;
     transition: width 0.4s ease, background-color 0.3s;
 }
@@ -1261,7 +1261,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700; 
     color: #222;
     margin-bottom: 15px;
     gap: 8px;
@@ -1318,7 +1318,7 @@ body {
 
 .success-title, .failed-title {
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 700; 
     color: #111;
     margin-bottom: 10px;
 }
@@ -1423,7 +1423,7 @@ body {
 
 .vc-logo {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 1px;
     display: flex;
     align-items: center;
@@ -1483,7 +1483,7 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 20px;
     letter-spacing: 2px;
-    font-weight: 600;
+    font-weight: 700;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     position: relative;
     z-index: 1;
@@ -1521,13 +1521,13 @@ body {
     opacity: 0.7;
     letter-spacing: 1px;
     margin-bottom: 4px;
-    font-weight: 500;
+    font-weight: 600;
     color: #ffffff;
 }
 
 .vc-value {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 1px;
     color: #ffffff;
 }
@@ -1571,14 +1571,14 @@ body {
 
 .vc-cvv-label {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     color: #666;
 }
 
 .vc-cvv {
     font-family: 'Courier New', monospace;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 2px;
     color: #111111;
 }
@@ -1612,7 +1612,7 @@ body {
     border-radius: 12px;
     padding: 14px 20px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     transition: all 0.2s;
@@ -1760,7 +1760,7 @@ body {
 
 .vc-info-value {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
 }
 
@@ -1785,14 +1785,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 20px;
     flex-shrink: 0;
 }
 
 .account-name {
     font-size: 17px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
     margin-bottom: 3px;
 }
@@ -1822,7 +1822,7 @@ body {
     border: 2px solid transparent;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: #333;
     display: inline-flex;
     align-items: center;
@@ -1939,7 +1939,7 @@ body {
 .receipt-logo {
     font-family: 'Titillium Web', sans-serif;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
     margin-bottom: 5px;
     display: flex;
@@ -1952,7 +1952,7 @@ body {
     font-size: 11px;
     color: #666;
     letter-spacing: 2px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .receipt-divider {
@@ -1980,14 +1980,14 @@ body {
 }
 
 .receipt-row span:last-child {
-    font-weight: 500;
+    font-weight: 600;
     text-align: right;
     word-break: break-all;
 }
 
 .receipt-total {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
     margin-top: 20px; 
     margin-bottom: 20px; 
@@ -2014,7 +2014,7 @@ body {
     border-radius: 6px;
     padding: 14px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     font-family: 'Titillium Web', sans-serif;
     cursor: pointer;
     margin-top: 30px; 
@@ -2087,7 +2087,7 @@ body {
 
 .confirm-title {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
     margin-bottom: 12px;
 }
@@ -2111,7 +2111,7 @@ body {
     padding: 12px;
     border-radius: 6px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     border: none;
     transition: all 0.2s;
@@ -2166,7 +2166,7 @@ body {
     padding: 20px 30px;
     border-radius: 12px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     z-index: 99999;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -2264,7 +2264,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 28px;
     flex-shrink: 0;
     border: 3px solid rgba(255, 255, 255, 0.15);
@@ -2283,7 +2283,7 @@ body {
 
 .profile-header-text h2 {
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 700;
     color: #ffffff;
     margin: 0;
     letter-spacing: 0.5px;
@@ -2301,7 +2301,7 @@ body {
     color: #34d399;
     padding: 5px 12px;
     border-radius: 20px;
-    font-weight: 500;
+    font-weight: 600;
     border: 1px solid rgba(52, 211, 153, 0.3);
     width: fit-content;
     letter-spacing: 0.5px;
@@ -2319,7 +2319,7 @@ body {
 .profile-section-title {
     font-size: 15px;
     color: #334155;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.3px;
     padding: 20px 20px 12px 20px;
     display: flex;
@@ -2386,7 +2386,7 @@ body {
 .profile-list-value {
     font-size: 16px;
     color: #0f172a;
-    font-weight: 600;
+    font-weight: 700;
     word-break: break-word;
 }
 
@@ -2431,7 +2431,7 @@ body {
 
 .profile-action-btn span {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     color: #1e293b;
 }
 
@@ -2478,7 +2478,7 @@ body {
     white-space: nowrap !important;
     word-break: normal !important;
     font-size: 15px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     letter-spacing: 0.5px !important;
     overflow: hidden;
     text-overflow: ellipsis;
