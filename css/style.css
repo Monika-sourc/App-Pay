@@ -157,7 +157,7 @@ body {
 
 .logo-text {
     font-size: 26px;
-    font-weight: 900;
+    font-weight: 800; /* Ajusté de 900 à 800 */
     color: #111;
     letter-spacing: 2px;
 }
@@ -176,7 +176,7 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 à 600 */
     display: flex;
     align-items: center;
     gap: 8px;
@@ -252,7 +252,7 @@ body {
 
 .input-group input::placeholder {
     color: #aaa;
-    font-weight: 500;
+    font-weight: 400; /* Ajusté de 500 à 400 */
 }
 
 .btn-login {
@@ -314,7 +314,7 @@ body {
 
 .header-logo {
     font-size: 18px; 
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 à 700 */
     color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -369,7 +369,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 700; /* Ajusté */
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
@@ -476,7 +476,7 @@ body {
     justify-content: center;
     gap: 4px;
     font-size: 10px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #444;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -504,7 +504,7 @@ body {
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
-    font-weight: 900;
+    font-weight: 800; /* Ajusté de 900 */
 }
 
 .nav-links li.active i {
@@ -529,7 +529,7 @@ body {
 
 .welcome-title {
     font-size: 22px; 
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     color: #222;
     margin-bottom: 20px;
 }
@@ -556,7 +556,7 @@ body {
     opacity: 0.8;
     margin-bottom: 10px;
     gap: 6px;
-    font-weight: 600;
+    font-weight: 500; /* Ajusté de 600 */
 }
 
 .balance-header i {
@@ -567,9 +567,10 @@ body {
 
 .balance-amount {
     font-size: 36px; 
-    font-weight: 900;
+    font-weight: 700; /* Ajusté de 900 à 700 pour plus d'élégance */
     margin-bottom: 22px; 
     text-align: center;
+    letter-spacing: -0.5px; /* Ajouté pour resserrer légèrement les chiffres */
 }
 
 .balance-subtitle {
@@ -577,7 +578,7 @@ body {
     opacity: 0.7;
     margin-bottom: 25px; 
     text-align: center;
-    font-weight: 500;
+    font-weight: 400; /* Ajusté de 500 */
 }
 
 .balance-actions {
@@ -622,7 +623,7 @@ body {
 
 .round-action-wrapper span {
     font-size: 14px; 
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -679,7 +680,7 @@ body {
 
 .stat-value {
     font-size: 18px; 
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #111;
     margin-bottom: 4px; 
     white-space: nowrap;
@@ -691,7 +692,7 @@ body {
     font-size: 13px; 
     color: #888;
     letter-spacing: 0.2px;
-    font-weight: 600; 
+    font-weight: 500; /* Ajusté de 600 */
 }
 
 /* ============================================================
@@ -736,7 +737,7 @@ body {
 
 .history-card-header-left span {
     font-size: 16px; 
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #111;
     white-space: nowrap;
     overflow: hidden;
@@ -754,7 +755,7 @@ body {
     background-color: #f0f0f3;
     color: #555;
     font-size: 13px; 
-    font-weight: 800;
+    font-weight: 600; /* Ajusté */
     padding: 4px 10px;
     border-radius: 10px;
     min-width: 24px;
@@ -869,7 +870,7 @@ body {
 
 .tx-details h4 {
     font-size: 16px; 
-    font-weight: 800;
+    font-weight: 600; /* Ajusté de 800 à 600 pour une meilleure lisibilité */
     color: #111;
     margin: 0;
     line-height: 1.2;
@@ -886,13 +887,13 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 600;
+    font-weight: 500; /* Ajusté de 600 à 500 */
 }
 
 .tx-details .tx-time {
     font-size: 13px; 
     color: #999;
-    font-weight: 500;
+    font-weight: 400; /* Ajusté de 500 à 400 */
     line-height: 1.2;
 }
 
@@ -907,7 +908,7 @@ body {
 
 .tx-amount {
     font-size: 17px; 
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     white-space: nowrap;
 }
 
@@ -916,7 +917,7 @@ body {
 
 .tx-status {
     font-size: 13px; 
-    font-weight: 600;
+    font-weight: 500; /* Ajusté de 600 */
     white-space: nowrap;
 }
 
@@ -957,7 +958,7 @@ body {
     font-size: 15px; 
     color: #333;
     margin-bottom: 15px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .transfer-info-top i {
@@ -966,7 +967,7 @@ body {
 }
 
 .transfer-info-top strong {
-    font-weight: 800;
+    font-weight: 700;
 }
 
 .international-link {
@@ -999,7 +1000,7 @@ body {
     font-size: 13px; 
     color: #333;
     margin-bottom: 8px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté */
 }
 
 .input-with-addon {
@@ -1036,7 +1037,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté */
     color: #333;
     background-color: #f8f9fa;
     font-size: 14px;
@@ -1124,7 +1125,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #222;
     margin-bottom: 18px;
     gap: 8px;
@@ -1158,7 +1159,7 @@ body {
 
 .verification-details-grey-box .detail-value {
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #000000 !important; 
     word-break: break-all;
     padding-left: 15px; 
@@ -1186,7 +1187,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #333;
     margin-bottom: 15px;
     gap: 8px;
@@ -1210,7 +1211,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #222;
     margin-bottom: 8px;
     gap: 8px;
@@ -1248,7 +1249,7 @@ body {
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     font-size: 15px;
     transition: width 0.4s ease, background-color 0.3s;
 }
@@ -1257,7 +1258,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #222;
     margin-bottom: 15px;
     gap: 8px;
@@ -1314,7 +1315,7 @@ body {
 
 .success-title, .failed-title {
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #111;
     margin-bottom: 10px;
 }
@@ -1419,7 +1420,7 @@ body {
 
 .vc-logo {
     font-size: 18px;
-    font-weight: 900;
+    font-weight: 800; /* Ajusté de 900 */
     letter-spacing: 1px;
     display: flex;
     align-items: center;
@@ -1479,7 +1480,7 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 20px;
     letter-spacing: 2px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     position: relative;
     z-index: 1;
@@ -1523,7 +1524,7 @@ body {
 
 .vc-value {
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     letter-spacing: 1px;
     color: #ffffff;
 }
@@ -1574,7 +1575,7 @@ body {
 .vc-cvv {
     font-family: 'Courier New', monospace;
     font-size: 18px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     letter-spacing: 2px;
     color: #111111;
 }
@@ -1585,7 +1586,7 @@ body {
     line-height: 1.4;
     padding: 0 25px;
     margin-bottom: 15px;
-    font-weight: 600;
+    font-weight: 500; /* Ajusté de 600 */
     position: relative;
     z-index: 1;
 }
@@ -1608,7 +1609,7 @@ body {
     border-radius: 12px;
     padding: 14px 20px;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     transition: all 0.2s;
@@ -1702,14 +1703,14 @@ body {
 
 .btn-premium-text strong {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     color: #111;
 }
 
 .btn-premium-text small {
     font-size: 13px;
     color: #777;
-    font-weight: 500;
+    font-weight: 400; /* Ajusté de 500 */
 }
 
 .premium-grid {
@@ -1750,12 +1751,12 @@ body {
     font-size: 12px;
     color: #666;
     margin-bottom: 2px;
-    font-weight: 600;
+    font-weight: 500; /* Ajusté de 600 */
 }
 
 .vc-info-value {
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #111;
 }
 
@@ -1780,14 +1781,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 20px;
     flex-shrink: 0;
 }
 
 .account-name {
     font-size: 17px;
-    font-weight: 800;
+    font-weight: 700;
     color: #111;
     margin-bottom: 3px;
 }
@@ -1808,7 +1809,7 @@ body {
     padding: 2px 6px;
     border-radius: 10px;
     margin-left: 6px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 /* ============ BOUTONS D'ACTION GÉNÉRIQUES ============ */
@@ -1817,7 +1818,7 @@ body {
     border: 2px solid transparent;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     color: #333;
     display: inline-flex;
     align-items: center;
@@ -1856,7 +1857,7 @@ body {
     border-radius: 8px;
     padding: 14px;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -1934,7 +1935,7 @@ body {
 .receipt-logo {
     font-family: 'Titillium Web', sans-serif;
     font-size: 20px;
-    font-weight: 900;
+    font-weight: 700; /* Ajusté de 900 */
     color: #111;
     margin-bottom: 5px;
     display: flex;
@@ -1947,7 +1948,7 @@ body {
     font-size: 11px;
     color: #666;
     letter-spacing: 2px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
 }
 
 .receipt-divider {
@@ -1975,14 +1976,14 @@ body {
 }
 
 .receipt-row span:last-child {
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     text-align: right;
     word-break: break-all;
 }
 
 .receipt-total {
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 700; /* Ajusté de 900 */
     color: #111;
     margin-top: 20px; 
     margin-bottom: 20px; 
@@ -2009,7 +2010,7 @@ body {
     border-radius: 6px;
     padding: 14px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     font-family: 'Titillium Web', sans-serif;
     cursor: pointer;
     margin-top: 30px; 
@@ -2082,7 +2083,7 @@ body {
 
 .confirm-title {
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     color: #111;
     margin-bottom: 12px;
 }
@@ -2160,7 +2161,7 @@ body {
     padding: 20px 30px;
     border-radius: 12px;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     z-index: 99999;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -2258,7 +2259,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700; /* Ajusté de 800 */
     font-size: 28px;
     flex-shrink: 0;
     border: 3px solid rgba(255, 255, 255, 0.15);
@@ -2277,7 +2278,7 @@ body {
 
 .profile-header-text h2 {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     color: #ffffff;
     margin: 0;
     letter-spacing: 0.5px;
@@ -2313,7 +2314,7 @@ body {
 .profile-section-title {
     font-size: 15px;
     color: #334155;
-    font-weight: 700;
+    font-weight: 600; /* Ajusté de 700 */
     letter-spacing: 0.3px;
     padding: 20px 20px 12px 20px;
     display: flex;
@@ -2374,13 +2375,13 @@ body {
 .profile-list-label {
     font-size: 13px;
     color: #64748b;
-    font-weight: 600;
+    font-weight: 500; /* Ajusté de 600 */
 }
 
 .profile-list-value {
     font-size: 16px;
     color: #0f172a;
-    font-weight: 600;
+    font-weight: 600; /* Ajusté de 700 */
     word-break: break-word;
 }
 
@@ -2472,7 +2473,7 @@ body {
     white-space: nowrap !important;
     word-break: normal !important;
     font-size: 15px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important; /* Ajusté de 700 */
     letter-spacing: 0.5px !important;
     overflow: hidden;
     text-overflow: ellipsis;
