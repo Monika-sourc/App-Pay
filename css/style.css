@@ -9,6 +9,10 @@
     --primary-color-soft: rgba(255, 122, 0, 0.1);
     --card-bg: #ffffff;
     --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    
+    /* 🆕 Variable pour la couleur de la grande carte (modifiable via l'admin) */
+    --big-card-color: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    --big-card-text-color: #111111;
 }
 
 * {
@@ -109,7 +113,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ============ ÉCRAN DE CONNEXION ============ */
+/* ============ ÉCRAN DE CONNEXION (REDESIGNÉ) ============ */
 #login-screen {
     background-color: #f4f5f7;
     align-items: center;
@@ -118,11 +122,11 @@ body {
 
 .login-card {
     background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 400px;
-    padding: 35px 25px;
+    padding: 40px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -133,58 +137,53 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-.logo-graphic {
-    display: grid;
-    grid-template-columns: repeat(5, 8px);
-    gap: 4px;
-    margin-bottom: 12px;
-    transform: scale(1.1);
+.logo-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    background-color: var(--primary-color-soft);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.2);
 }
-
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-.dot.blue-dark { background-color: #0d47a1; }
-.dot.blue-mid { background-color: #1976d2; }
-.dot.blue-light { background-color: #2196f3; }
-.dot.green { background-color: #00c853; }
-.dot.green-light { background-color: #69f0ae; }
 
 .logo-text {
-    font-size: 24px;
-    font-weight: 700;
-    font-style: italic;
-    color: #1976d2;
-    letter-spacing: 0.5px;
+    font-size: 26px;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: 2px;
 }
 
 .login-title {
     font-size: 18px;
     font-weight: 600;
-    color: #222;
+    color: #555;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .user-badge {
-    background-color: #e4e6eb;
+    background-color: #eef0f3;
     color: #333;
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 20px;
-    letter-spacing: 0.3px;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
     max-width: 100%;
     overflow: hidden;
+    border: 1px solid #dcdfe6;
 }
 
 .user-badge i {
@@ -209,56 +208,60 @@ body {
 .input-group {
     display: flex;
     align-items: center;
-    border: 2px solid #dcdfe6;
-    border-radius: 8px;
-    background-color: var(--card-bg);
+    border: 2px solid #e8eaee;
+    border-radius: 10px;
+    background-color: #f8f9fa;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: all 0.2s;
 }
 
 .input-group:focus-within {
-    border-color: #1976d2;
-    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+    border-color: var(--primary-color);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px var(--primary-color-soft);
 }
 
 .input-icon-box {
-    width: 45px;
-    height: 45px;
-    background-color: #f0f2f5;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #606266;
-    border-right: 2px solid #dcdfe6;
-    font-size: 15px;
+    color: #888;
+    font-size: 16px;
     flex-shrink: 0;
+}
+
+.input-group:focus-within .input-icon-box {
+    color: var(--primary-color);
 }
 
 .input-group input {
     flex: 1;
     border: none;
     outline: none;
-    padding: 12px 15px;
-    font-size: 14px;
+    padding: 14px 15px 14px 0;
+    font-size: 15px;
     font-weight: 600;
-    color: #333;
+    color: #111;
     background: transparent;
     min-width: 0;
 }
 
 .input-group input::placeholder {
-    color: #909399;
-    font-weight: 400;
+    color: #aaa;
+    font-weight: 500;
 }
 
 .btn-login {
     width: 100%;
-    background-color: #1a73e8;
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 8px;
-    padding: 14px;
-    font-size: 15px;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
@@ -266,12 +269,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
+    box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3);
 }
 
-.btn-login:hover { background-color: #1557b0; }
-.btn-login:active { transform: scale(0.96); }
-.btn-login:disabled { background-color: #a0c3ee; cursor: not-allowed; }
+.btn-login:hover { background-color: var(--primary-color-dark); }
+.btn-login:active { transform: scale(0.98); }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .login-error {
     color: #e02424;
@@ -436,7 +440,7 @@ body {
     padding-bottom: 100px; 
 }
 
-/* --- BARRE DE NAVIGATION FLOTTANTE --- */
+/* --- BARRE DE NAVIGATION FLOTTANTE (VISIBILITÉ AMÉLIORÉE) --- */
 .bottom-nav {
     position: fixed;
     bottom: 15px;
@@ -445,8 +449,8 @@ body {
     height: 70px;
     background-color: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f0f0f0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e8eaee;
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -470,9 +474,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 4px;
-    font-size: 9px;
-    font-weight: 600;
-    color: #888;
+    font-size: 10px;
+    font-weight: 800; /* Plus gras sans changer la taille */
+    color: #444; /* Couleur plus foncée */
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 6px 4px;
@@ -485,6 +489,8 @@ body {
     font-size: 18px;
     margin: 0;
     transition: transform 0.2s;
+    color: #333; /* Icône plus foncée */
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1)); /* Légère ombre */
 }
 
 .nav-links li span {
@@ -497,11 +503,13 @@ body {
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
-    font-weight: 800;
+    font-weight: 900;
 }
 
 .nav-links li.active i {
     transform: scale(1.1);
+    color: var(--primary-color);
+    filter: drop-shadow(0 2px 4px rgba(255, 122, 0, 0.3));
 }
 
 .nav-links li:active {
@@ -525,9 +533,10 @@ body {
     margin-bottom: 20px;
 }
 
-/* ============ CARTE DE SOLDE ============ */
+/* ============ CARTE DE SOLDE (COULEUR DYNAMIQUE) ============ */
 .balance-card {
-    background: var(--card-bg);
+    background: var(--big-card-color); /* Utilise la variable dynamique */
+    color: var(--big-card-text-color);
     border-radius: 10px;
     padding: 20px 15px;
     box-shadow: var(--card-shadow);
@@ -535,6 +544,7 @@ body {
     position: relative;
     overflow: hidden;
     text-align: center;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .balance-header {
@@ -542,7 +552,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 15px; 
-    color: #666;
+    opacity: 0.8; /* Plus discret sur le texte */
     margin-bottom: 10px;
     gap: 6px;
     font-weight: 600;
@@ -556,15 +566,14 @@ body {
 
 .balance-amount {
     font-size: 34px; 
-    font-weight: 800;
-    color: #111;
+    font-weight: 900;
     margin-bottom: 22px; 
     text-align: center;
 }
 
 .balance-subtitle {
     font-size: 14px; 
-    color: #777;
+    opacity: 0.7;
     margin-bottom: 25px; 
     text-align: center;
     font-weight: 500;
@@ -613,7 +622,6 @@ body {
 .round-action-wrapper span {
     font-size: 14px; 
     font-weight: 700;
-    color: #333;
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -625,7 +633,7 @@ body {
     right: 15px;
     top: 15px;
     font-size: 40px;
-    color: #f0f2f5;
+    opacity: 0.1; /* Plus subtil */
 }
 
 /* ============ 3 MINI CARTES ============ */
