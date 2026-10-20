@@ -1,1088 +1,2090 @@
-// ============================================================
-// APP PAY ADMIN - Gestion des clients (Firebase + Auth + Banques + Emails)
-// ============================================================
+/* ============================================================
+   APP PAY ADMIN - Styles
+   ============================================================ */
 
-import {
-    db,
-    auth,
-    persistenceReady,
-    collection,
-    doc,
-    setDoc,
-    getDoc,
-    getDocs,
-    updateDoc,
-    deleteDoc,
-    query,
-    where,
-    serverTimestamp,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    updateProfile,
-    onAuthStateChanged
-} from './firebase-config.js';
-
-import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
-
-import {
-    sendLoginCredentials,
-    sendActivationCode
-} from './emails.js';
-
-const COLLECTION_NAME = 'clients';
-const ADMINS_COLLECTION = 'admins';
-
-let currentAdmin = null;
-let lastGeneratedLink = '';
-let selectedColor = '#ff7a00';
-let allClients = [];
-let selectedClientId = null;
-let selectedOption = null;
-let currentDetailClient = null;
-let isCardDetailsVisible = false;
-let isIbanVisible = false;
-
-// ============================================================
-// DONNÉES PAYS
-// ============================================================
-const COUNTRY_LIST = [
-    { name: "Afghanistan", flag: "🇦🇫" }, { name: "Afrique du Sud", flag: "🇿🇦" },
-    { name: "Albanie", flag: "🇦🇱" }, { name: "Algérie", flag: "🇩🇿" },
-    { name: "Allemagne", flag: "🇩🇪" }, { name: "Andorre", flag: "🇦🇩" },
-    { name: "Angola", flag: "🇦🇴" }, { name: "Arabie Saoudite", flag: "🇸🇦" },
-    { name: "Argentine", flag: "🇦🇷" }, { name: "Arménie", flag: "🇦🇲" },
-    { name: "Australie", flag: "🇦🇺" }, { name: "Autriche", flag: "🇦🇹" },
-    { name: "Azerbaïdjan", flag: "🇦🇿" }, { name: "Bahamas", flag: "🇧🇸" },
-    { name: "Bahreïn", flag: "🇧🇭" }, { name: "Bangladesh", flag: "🇧🇩" },
-    { name: "Barbade", flag: "🇧🇧" }, { name: "Belgique", flag: "🇧🇪" },
-    { name: "Belize", flag: "🇧🇿" }, { name: "Bénin", flag: "🇧🇯" },
-    { name: "Bhoutan", flag: "🇧🇹" }, { name: "Biélorussie", flag: "🇧🇾" },
-    { name: "Birmanie", flag: "🇲🇲" }, { name: "Bolivie", flag: "🇧🇴" },
-    { name: "Bosnie-Herzégovine", flag: "🇧🇦" }, { name: "Botswana", flag: "🇧🇼" },
-    { name: "Brésil", flag: "🇧🇷" }, { name: "Brunei", flag: "🇧🇳" },
-    { name: "Bulgarie", flag: "🇧🇬" }, { name: "Burkina Faso", flag: "🇧🇫" },
-    { name: "Burundi", flag: "🇧🇮" }, { name: "Cambodge", flag: "🇰🇭" },
-    { name: "Cameroun", flag: "🇨🇲" }, { name: "Canada", flag: "🇨🇦" },
-    { name: "Cap-Vert", flag: "🇨🇻" }, { name: "Chili", flag: "🇨🇱" },
-    { name: "Chine", flag: "🇨🇳" }, { name: "Chypre", flag: "🇨🇾" },
-    { name: "Colombie", flag: "🇨🇴" }, { name: "Comores", flag: "🇰🇲" },
-    { name: "Congo", flag: "🇨🇬" }, { name: "Corée du Sud", flag: "🇰🇷" },
-    { name: "Costa Rica", flag: "🇨🇷" }, { name: "Côte d'Ivoire", flag: "🇨🇮" },
-    { name: "Croatie", flag: "🇭🇷" }, { name: "Cuba", flag: "🇨🇺" },
-    { name: "Danemark", flag: "🇩🇰" }, { name: "Djibouti", flag: "🇩🇯" },
-    { name: "Égypte", flag: "🇪🇬" }, { name: "Émirats Arabes Unis", flag: "🇦🇪" },
-    { name: "Équateur", flag: "🇪🇨" }, { name: "Espagne", flag: "🇪🇸" },
-    { name: "Estonie", flag: "🇪🇪" }, { name: "États-Unis", flag: "🇺🇸" },
-    { name: "Éthiopie", flag: "🇪🇹" }, { name: "Finlande", flag: "🇫🇮" },
-    { name: "France", flag: "🇫🇷" }, { name: "Gabon", flag: "🇬🇦" },
-    { name: "Gambie", flag: "🇬🇲" }, { name: "Géorgie", flag: "🇬🇪" },
-    { name: "Ghana", flag: "🇬🇭" }, { name: "Grèce", flag: "🇬🇷" },
-    { name: "Guatemala", flag: "🇬🇹" }, { name: "Guinée", flag: "🇬🇳" },
-    { name: "Guinée-Bissau", flag: "🇬🇼" }, { name: "Haïti", flag: "🇭🇹" },
-    { name: "Honduras", flag: "🇭🇳" }, { name: "Hongrie", flag: "🇭🇺" },
-    { name: "Inde", flag: "🇮🇳" }, { name: "Indonésie", flag: "🇮🇩" },
-    { name: "Irak", flag: "🇮🇶" }, { name: "Iran", flag: "🇮🇷" },
-    { name: "Irlande", flag: "🇮🇪" }, { name: "Islande", flag: "🇮🇸" },
-    { name: "Israël", flag: "🇮🇱" }, { name: "Italie", flag: "🇮🇹" },
-    { name: "Jamaïque", flag: "🇯🇲" }, { name: "Japon", flag: "🇯🇵" },
-    { name: "Jordanie", flag: "🇯🇴" }, { name: "Kazakhstan", flag: "🇰🇿" },
-    { name: "Kenya", flag: "🇰🇪" }, { name: "Koweït", flag: "🇰🇼" },
-    { name: "Laos", flag: "🇱🇦" }, { name: "Lesotho", flag: "🇱🇸" },
-    { name: "Lettonie", flag: "🇱🇻" }, { name: "Liban", flag: "🇱🇧" },
-    { name: "Libéria", flag: "🇱🇷" }, { name: "Libye", flag: "🇱🇾" },
-    { name: "Liechtenstein", flag: "🇱🇮" }, { name: "Lituanie", flag: "🇱🇹" },
-    { name: "Luxembourg", flag: "🇱🇺" }, { name: "Macédoine du Nord", flag: "🇲🇰" },
-    { name: "Madagascar", flag: "🇲🇬" }, { name: "Malaisie", flag: "🇲🇾" },
-    { name: "Malawi", flag: "🇲🇼" }, { name: "Mali", flag: "🇲🇱" },
-    { name: "Malte", flag: "🇲🇹" }, { name: "Maroc", flag: "🇲🇦" },
-    { name: "Maurice", flag: "🇲🇺" }, { name: "Mauritanie", flag: "🇲🇷" },
-    { name: "Mexique", flag: "🇲🇽" }, { name: "Moldavie", flag: "🇲🇩" },
-    { name: "Monaco", flag: "🇲🇨" }, { name: "Mongolie", flag: "🇲🇳" },
-    { name: "Monténégro", flag: "🇲🇪" }, { name: "Mozambique", flag: "🇲🇿" },
-    { name: "Namibie", flag: "🇳🇦" }, { name: "Népal", flag: "🇳🇵" },
-    { name: "Nicaragua", flag: "🇳🇮" }, { name: "Niger", flag: "🇳🇪" },
-    { name: "Nigéria", flag: "🇳🇬" }, { name: "Norvège", flag: "🇳🇴" },
-    { name: "Nouvelle-Zélande", flag: "🇳🇿" }, { name: "Oman", flag: "🇴🇲" },
-    { name: "Ouganda", flag: "🇺🇬" }, { name: "Ouzbékistan", flag: "🇺🇿" },
-    { name: "Pakistan", flag: "🇵🇰" }, { name: "Palestine", flag: "🇵🇸" },
-    { name: "Panama", flag: "🇵🇦" }, { name: "Paraguay", flag: "🇵🇾" },
-    { name: "Pays-Bas", flag: "🇳🇱" }, { name: "Pérou", flag: "🇵🇪" },
-    { name: "Philippines", flag: "🇵🇭" }, { name: "Pologne", flag: "🇵🇱" },
-    { name: "Portugal", flag: "🇵🇹" }, { name: "Qatar", flag: "🇶🇦" },
-    { name: "République Démocratique du Congo", flag: "🇨🇩" }, { name: "République Dominicaine", flag: "🇩🇴" },
-    { name: "République Tchèque", flag: "🇨🇿" }, { name: "Roumanie", flag: "🇷🇴" },
-    { name: "Royaume-Uni", flag: "🇬🇧" }, { name: "Russie", flag: "🇷🇺" },
-    { name: "Rwanda", flag: "🇷🇼" }, { name: "Sénégal", flag: "🇸🇳" },
-    { name: "Serbie", flag: "🇷🇸" }, { name: "Seychelles", flag: "🇸🇨" },
-    { name: "Sierra Leone", flag: "🇸🇱" }, { name: "Singapour", flag: "🇸🇬" },
-    { name: "Slovaquie", flag: "🇸🇰" }, { name: "Slovénie", flag: "🇸🇮" },
-    { name: "Somalie", flag: "🇸🇴" }, { name: "Soudan", flag: "🇸🇩" },
-    { name: "Sri Lanka", flag: "🇱🇰" }, { name: "Suède", flag: "🇸🇪" },
-    { name: "Suisse", flag: "🇨🇭" }, { name: "Suriname", flag: "🇸🇷" },
-    { name: "Syrie", flag: "🇸🇾" }, { name: "Tanzanie", flag: "🇹🇿" },
-    { name: "Tchad", flag: "🇹🇩" }, { name: "Thaïlande", flag: "🇹🇭" },
-    { name: "Togo", flag: "🇹🇬" }, { name: "Tunisie", flag: "🇹🇳" },
-    { name: "Turquie", flag: "🇹🇷" }, { name: "Ukraine", flag: "🇺🇦" },
-    { name: "Uruguay", flag: "🇺🇾" }, { name: "Venezuela", flag: "🇻🇪" },
-    { name: "Vietnam", flag: "🇻🇳" }, { name: "Yémen", flag: "🇾🇪" },
-    { name: "Zambie", flag: "🇿🇲" }, { name: "Zimbabwe", flag: "🇿🇼" }
-];
-
-const CURRENCY_LIST = [
-    { value: "zł", label: "zł - Zloty polonais" },
-    { value: "€", label: "€ - Euro" },
-    { value: "$", label: "$ - Dollar américain" },
-    { value: "£", label: "£ - Livre sterling" },
-    { value: "CHF", label: "CHF - Franc suisse" },
-    { value: "¥", label: "¥ - Yen japonais" },
-    { value: "FCFA", label: "FCFA - Franc CFA" },
-    { value: "NGN", label: "NGN - Naira nigérian" },
-    { value: "GHS", label: "GHS - Cedi ghanéen" },
-    { value: "KES", label: "KES - Shilling kényan" },
-    { value: "ZAR", label: "ZAR - Rand sud-africain" },
-    { value: "MAD", label: "MAD - Dirham marocain" },
-    { value: "CAD", label: "CAD - Dollar canadien" },
-    { value: "AUD", label: "AUD - Dollar australien" }
-];
-
-const LANGUAGE_LIST = [
-    { value: "fr", label: "Français" },
-    { value: "en", label: "English" },
-    { value: "es", label: "Español" },
-    { value: "de", label: "Deutsch" },
-    { value: "it", label: "Italiano" },
-    { value: "pt", label: "Português" },
-    { value: "pl", label: "Polski" },
-    { value: "nl", label: "Nederlands" },
-    { value: "ru", label: "Русский" },
-    { value: "ar", label: "العربية" },
-    { value: "zh", label: "中文" },
-    { value: "ja", label: "日本語" }
-];
-
-// ============================================================
-// UTILITAIRES
-// ============================================================
-function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = 'toast ' + type;
-    const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
-    toast.style.cssText = `
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        background: #111; color: white; padding: 20px 30px; border-radius: 12px; 
-        font-size: 16px; font-weight: 700; z-index: 99999;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: flex; align-items: center;
-        gap: 15px; animation: toastPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        max-width: 90%; text-align: center; justify-content: center;
-    `;
-    const iconColor = type === 'error' ? '#e02424' : (type === 'success' ? '#00c853' : '#ff7a00');
-    toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}" style="color:${iconColor}; font-size: 20px;"></i> <span>${message}</span>`;
-    document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.3s';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-// 🆕 NOUVELLE FONCTION : MODALE DE CONFIRMATION PERSONNALISÉE
-function showConfirmModal({ title = 'Attention', message = '', confirmText = 'Confirmer', cancelText = 'Annuler', type = 'danger' }) {
-    return new Promise((resolve) => {
-        const modal = document.getElementById('confirm-modal');
-        const titleEl = document.getElementById('confirm-title');
-        const msgEl = document.getElementById('confirm-message');
-        const btnOk = document.getElementById('confirm-btn-ok');
-        const btnCancel = document.getElementById('confirm-btn-cancel');
-
-        titleEl.textContent = title;
-        // On remplace les \n par des <br> pour garder les sauts de ligne
-        msgEl.innerHTML = message.replace(/\n/g, '<br>'); 
-        btnOk.textContent = confirmText;
-        btnCancel.textContent = cancelText;
-
-        // On clone les boutons pour supprimer les anciens écouteurs d'événements
-        const newBtnOk = btnOk.cloneNode(true);
-        const newBtnCancel = btnCancel.cloneNode(true);
-        btnOk.parentNode.replaceChild(newBtnOk, btnOk);
-        btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
-
-        // Style du bouton de confirmation (rouge ou bleu)
-        if (type === 'danger') {
-            newBtnOk.className = 'btn-danger';
-        } else {
-            newBtnOk.className = 'btn-primary';
-        }
-
-        const close = (result) => {
-            modal.classList.remove('show');
-            resolve(result);
-        };
-
-        newBtnOk.addEventListener('click', () => close(true));
-        newBtnCancel.addEventListener('click', () => close(false));
-
-        modal.classList.add('show');
-    });
+body {
+    background-color: #f0f2f5;
+    color: #333;
+    min-height: 100vh;
+    zoom: 0.6;
 }
 
-function generateId() {
-    return 'ap' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+/* ============================================================
+   ÉCRANS D'AUTHENTIFICATION
+   ============================================================ */
+.auth-screen {
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-function getInitials(firstName, lastName) {
-    const f = (firstName || 'X')[0] || 'X';
-    const l = (lastName || 'X')[0] || 'X';
-    return (f + l).toUpperCase();
+.auth-screen.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-function getClientLink(clientId) {
-    return `${window.location.origin}/?id=${clientId}`;
+/* ============================================================
+   ÉCRAN DE CHARGEMENT
+   ============================================================ */
+#admin-loading-screen {
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
 }
 
-function buildCountryOptions(selectedCountry) {
-    return COUNTRY_LIST.map(c =>
-        `<option value="${c.name}" data-flag="${c.flag}" ${selectedCountry === c.name ? 'selected' : ''}>${c.flag} ${c.name}</option>`
-    ).join('');
+.auth-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    animation: authFadeIn 0.4s ease;
 }
 
-function buildCurrencyOptions(selectedCurrency) {
-    return CURRENCY_LIST.map(c =>
-        `<option value="${c.value}" ${selectedCurrency === c.value ? 'selected' : ''}>${c.label}</option>`
-    ).join('');
+.auth-loading-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 42px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    animation: loadingPulse 1.8s ease-in-out infinite;
 }
 
-function buildLanguageOptions(selectedLang) {
-    return LANGUAGE_LIST.map(l =>
-        `<option value="${l.value}" ${selectedLang === l.value ? 'selected' : ''}>${l.label}</option>`
-    ).join('');
+.auth-loading-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-function escapeHtml(str) {
-    if (str == null) return '';
-    return String(str).replace(/[&<>"']/g, (m) => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[m]));
+.auth-loading-spinner {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-function generateCardDetails() {
-    const prefix = "4823"; 
-    const randomDigits = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
-    const cardNumber = prefix + randomDigits;
-    const cvv = Math.floor(Math.random() * 900 + 100).toString();
-    const now = new Date();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const year = (now.getFullYear() + 3).toString().slice(-2);
-    const expiry = `${month}/${year}`;
-    return { cardNumber, cvv, expiry };
+.spinner-circle {
+    width: 44px;
+    height: 44px;
+    border: 4px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spinnerRotate 0.9s linear infinite;
 }
 
-function generateIbanDetails() {
-    const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
-    const iban = `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
-    const swift = `WBKPPLPP${rand(3)}`;
-    return { iban, swift };
+.auth-loading-text {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    animation: loadingBlink 1.5s ease-in-out infinite;
 }
 
-// ============================================================
-// GESTION DES ÉCRANS
-// ============================================================
-function showScreen(screenId) {
-    document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
-    const screen = document.getElementById(screenId);
-    if (screen) screen.classList.add('active');
+@keyframes spinnerRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-function showLoginScreen() {
-    showScreen('admin-login-screen');
-    const err = document.getElementById('login-admin-error');
-    if (err) err.textContent = '';
+@keyframes loadingPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
-function showRegisterScreen() {
-    showScreen('admin-register-screen');
-    const err = document.getElementById('register-admin-error');
-    if (err) err.textContent = '';
+@keyframes loadingBlink {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
 
-function showAdminPanel() {
-    showScreen('admin-panel-screen');
+@keyframes authFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-// ============================================================
-// AUTHENTIFICATION - INSCRIPTION
-// ============================================================
-async function handleAdminRegister(event) {
-    event.preventDefault();
+/* ============================================================
+   CARTES D'AUTHENTIFICATION
+   ============================================================ */
+.auth-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 460px;
+    padding: 40px 35px;
+    animation: authFadeInUp 0.4s ease;
+}
 
-    const name = document.getElementById('register-admin-name').value.trim();
-    const email = document.getElementById('register-admin-email').value.trim().toLowerCase();
-    const password = document.getElementById('register-admin-password').value;
-    const confirm = document.getElementById('register-admin-confirm').value;
-    const errorEl = document.getElementById('register-admin-error');
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
 
-    if (!name) return errorEl.textContent = 'Veuillez saisir votre nom complet.';
-    if (!email.includes('@') || !email.includes('.')) return errorEl.textContent = 'Adresse e-mail invalide.';
-    if (password.length < 6) return errorEl.textContent = 'Le mot de passe doit contenir au moins 6 caractères.';
-    if (password !== confirm) return errorEl.textContent = 'Les mots de passe ne correspondent pas.';
+.auth-logo i {
+    font-size: 38px;
+    color: #ff7a00;
+}
 
-    errorEl.textContent = '';
+.auth-logo h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: 1px;
+}
 
-    const submitBtn = document.querySelector('#admin-register-form .auth-btn-primary');
-    const originalHTML = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
+.auth-logo p {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
 
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+.auth-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fff5eb;
+    color: #ff7a00;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin: 0 auto 25px auto;
+    border: 1px solid #ffe4cc;
+    width: fit-content;
+}
 
-        await updateProfile(user, { displayName: name });
+.auth-badge.register {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    border-color: #c5d8f5;
+}
 
-        await setDoc(doc(db, ADMINS_COLLECTION, user.uid), {
-            uid: user.uid,
-            name: name,
-            email: email,
-            createdAt: new Date().toISOString(),
-            createdAtServer: serverTimestamp()
-        });
+.auth-badge i {
+    font-size: 12px;
+}
 
-        showToast('Compte créé avec succès ! Bienvenue ' + name, 'success');
-        document.getElementById('admin-register-form').reset();
+.auth-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+    margin-bottom: 8px;
+}
 
-    } catch (err) {
-        console.error('Erreur inscription :', err);
-        let msg = 'Erreur lors de la création du compte.';
-        if (err.code === 'auth/email-already-in-use') msg = 'Cet email est déjà utilisé.';
-        else if (err.code === 'auth/invalid-email') msg = 'Adresse e-mail invalide.';
-        else if (err.code === 'auth/weak-password') msg = 'Mot de passe trop faible.';
-        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau, vérifiez votre connexion.';
-        errorEl.textContent = msg;
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalHTML;
+.auth-subtitle {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.auth-input-group {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 2px solid #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.auth-input-group:focus-within {
+    background-color: #ffffff;
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
+}
+
+.auth-input-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 15px;
+    flex-shrink: 0;
+    border-right: 1px solid #f0f0f0;
+    transition: color 0.2s;
+}
+
+.auth-input-group:focus-within .auth-input-icon {
+    color: #ff7a00;
+}
+
+.auth-input-group input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 15px 18px;
+    font-size: 14px;
+    color: #111;
+    background: transparent;
+    min-width: 0;
+    font-weight: 500;
+}
+
+.auth-input-group input::placeholder {
+    color: #aaa;
+    font-weight: 400;
+}
+
+.auth-error {
+    color: #e02424;
+    font-size: 12px;
+    text-align: center;
+    min-height: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 10px;
+}
+
+.auth-btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(255, 122, 0, 0.25);
+    letter-spacing: 0.3px;
+}
+
+.auth-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(255, 122, 0, 0.35);
+}
+
+.auth-btn-primary:active {
+    transform: translateY(0);
+}
+
+.auth-btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.auth-btn-secondary {
+    width: 100%;
+    background-color: #ffffff;
+    color: #333;
+    border: 2px solid #e8eaee;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.auth-btn-secondary:hover {
+    border-color: #ff7a00;
+    color: #ff7a00;
+    background-color: #fff8f2;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e8eaee;
+}
+
+.auth-divider span {
+    position: relative;
+    background-color: white;
+    padding: 0 15px;
+    color: #999;
+    font-size: 12px;
+}
+
+@keyframes authFadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   PANNEAU ADMIN - PLEIN ÉCRAN
+   ============================================================ */
+#admin-panel-screen {
+    padding: 0;
+    align-items: flex-start;
+}
+
+#admin-panel-screen.active {
+    align-items: flex-start;
+}
+
+.admin-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* En-tête admin */
+.admin-header {
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
+    color: white;
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 24px rgba(255, 122, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.admin-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-logo i {
+    font-size: 32px;
+}
+
+.admin-logo h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-logo p {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.badge-admin {
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}
+
+.admin-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 14px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.admin-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.admin-user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.admin-user-email {
+    font-size: 10px;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.admin-logout-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.admin-logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Sections */
+.form-section, .clients-section {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+}
+
+.modify-section {
+    border-top: 3px solid #1a73e8;
+}
+
+.modify-section .section-badge {
+    background-color: #e8f0fe;
+    border-color: #c5d8f5;
+}
+
+.modify-section .section-badge i {
+    color: #1a73e8;
+}
+
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f1f2f5;
+    color: #333;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 25px;
+    border: 1px solid #e4e6eb;
+}
+
+.section-badge i {
+    color: #ff7a00;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 18px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title:first-of-type {
+    margin-top: 0;
+}
+
+.section-title i {
+    color: #ff7a00;
+    font-size: 15px;
+}
+
+/* Formulaire */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.required {
+    color: #e02424;
+    font-weight: 600;
+}
+
+.optional {
+    color: #909399;
+    font-weight: 400;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.4;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+.modify-section .form-group input:focus,
+.modify-section .form-group select:focus,
+.modify-section .form-group textarea:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.form-group small {
+    display: block;
+    font-size: 11px;
+    color: #909399;
+    margin-top: 5px;
+    line-height: 1.4;
+}
+
+/* Champ pourcentage */
+.percentage-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    padding: 8px 14px;
+}
+
+.percentage-row:focus-within {
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+.percentage-label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.percentage-row input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ff7a00;
+    background: transparent;
+    text-align: center;
+    max-width: 80px;
+}
+
+/* Input avec addon */
+.input-with-addon {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    background-color: #fff;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.input-with-addon:focus-within {
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+.input-with-addon input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #333;
+    background: transparent;
+    min-width: 0;
+}
+
+.input-addon {
+    padding: 0 15px;
+    font-weight: 600;
+    color: #444;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Sélecteur de couleurs */
+.color-picker {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+}
+
+.color-option {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+}
+
+.color-option:hover {
+    transform: scale(1.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.color-option.selected {
+    border-color: #111;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.color-option.selected::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Boutons */
+.btn-create,
+.btn-save-changes {
+    width: 100%;
+    background-color: #ff7a00;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-create:hover {
+    background-color: #e66d00;
+}
+.btn-create:active {
+    transform: scale(0.99);
+}
+.btn-create:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Boutons d'accès */
+.access-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.btn-access {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    background-color: #fff;
+}
+
+.btn-block {
+    border-color: #f5c6cb;
+    color: #e02424;
+}
+
+.btn-block:hover {
+    background-color: #fff5f5;
+}
+
+.btn-unblock {
+    border-color: #c3e6cb;
+    color: #03543f;
+}
+
+.btn-unblock:hover {
+    background-color: #f0fdf4;
+}
+
+/* Historique modifier */
+.m-tx-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 60px;
+}
+
+.m-tx-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 3px solid #ff7a00;
+    font-size: 13px;
+    gap: 10px;
+}
+
+.m-tx-item.credit {
+    border-left-color: #00c853;
+}
+
+.m-tx-item.debit {
+    border-left-color: #e02424;
+}
+
+.m-tx-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.m-tx-item-title {
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.m-tx-item-date {
+    font-size: 11px;
+    color: #888;
+}
+
+.m-tx-item-amount {
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.m-tx-item-amount.credit {
+    color: #03543f;
+}
+
+.m-tx-item-amount.debit {
+    color: #e02424;
+}
+
+.m-tx-item-delete {
+    background: transparent;
+    border: none;
+    color: #e02424;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: background 0.15s;
+}
+
+.m-tx-item-delete:hover {
+    background-color: #fff5f5;
+}
+
+.m-tx-logo-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #e8eaee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.m-tx-logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.m-tx-logo-box.fallback {
+    background: #fff5eb;
+    color: #ff7a00;
+    font-size: 14px;
+    padding: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ============================================================
+   MENU DÉROULANT PERSONNALISÉ (custom-select)
+   ============================================================ */
+.custom-select {
+    position: relative;
+    width: 100%;
+    user-select: none;
+}
+
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: left;
+    gap: 12px;
+    font-family: inherit;
+    outline: none;
+}
+
+.custom-select-trigger:hover {
+    border-color: #b0b5be;
+}
+
+.custom-select.open .custom-select-trigger {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.custom-select-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.custom-select-text {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.custom-select-text.placeholder {
+    color: #909399;
+    font-weight: 400;
+}
+
+.custom-select-arrow {
+    color: #909399;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.custom-select.open .custom-select-arrow {
+    transform: rotate(180deg);
+}
+
+.custom-select-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #e8eaee;
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    max-height: 340px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    animation: dropdownFadeIn 0.15s ease;
+    padding: 6px;
+}
+
+.custom-select.open .custom-select-dropdown {
+    display: block;
+}
+
+.custom-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    font-size: 14px;
+    color: #333;
+}
+
+.custom-option:hover {
+    background-color: #f5f7fb;
+}
+
+.custom-option.selected {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    font-weight: 600;
+}
+
+.custom-option i {
+    width: 20px;
+    text-align: center;
+    color: #1a73e8;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.custom-option.selected i {
+    color: #1a73e8;
+}
+
+.custom-option span {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   CARTE D'OPTION DYNAMIQUE
+   ============================================================ */
+#option-card-container {
+    margin-top: 25px;
+}
+
+.option-card {
+    background-color: #f8f9fc;
+    border: 1px solid #e8eaee;
+    border-left: 4px solid #1a73e8;
+    border-radius: 10px;
+    padding: 25px;
+    animation: fadeInUp 0.3s ease;
+}
+
+.option-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e8eaee;
+}
+
+.option-card-header-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.option-card-header-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+.option-card-header-subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.option-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-card-body .form-group {
+    margin-bottom: 0;
+}
+
+.option-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #e8eaee;
+}
+
+.option-card-actions button {
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.option-card-actions .btn-option-save {
+    background-color: #1a73e8;
+    color: white;
+}
+
+.option-card-actions .btn-option-save:hover {
+    background-color: #1557b0;
+}
+
+.option-card-actions .btn-option-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.option-card-actions .btn-option-cancel {
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.option-card-actions .btn-option-cancel:hover {
+    background-color: #e4e6eb;
+}
+
+.option-info-box {
+    background-color: #f0f7ff;
+    border: 1px solid #c5d8f5;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #1a73e8;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.option-status-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.option-status-box-label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+.option-status-box-value {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.option-status-box-value.active {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.option-status-box-value.blocked {
+    background-color: #fde8e8;
+    color: #e02424;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   LISTE DES CLIENTS
+   ============================================================ */
+.section-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.count-badge {
+    display: inline-block;
+    background-color: #ff7a00;
+    color: white;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-left: 6px;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
+}
+
+.btn-clear {
+    background: #fff;
+    border: 1px solid #f5c6cb;
+    color: #e02424;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+.btn-clear:hover {
+    background-color: #fff5f5;
+}
+
+.clients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.empty-state {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #dcdfe6;
+}
+
+.client-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 16px 18px;
+    border: 1px solid #e8eaee;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.client-row:hover {
+    border-color: #ff7a00;
+    box-shadow: 0 6px 18px rgba(255, 122, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.client-row.blocked {
+    border-left: 4px solid #e02424;
+}
+
+.client-row-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+}
+
+.client-row-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7a00 0%, #ffaa5c 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+}
+
+.client-row-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.client-row-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-row-email {
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.client-row-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.client-row-status.active {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.client-row-status.blocked {
+    background-color: #fde8e8;
+    color: #e02424;
+}
+
+.client-row-status i {
+    font-size: 10px;
+}
+
+.client-row-delete {
+    background-color: #fff;
+    border: 1px solid #f5c6cb;
+    color: #e02424;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.client-row-delete:hover {
+    background-color: #e02424;
+    color: white;
+    border-color: #e02424;
+    transform: scale(1.05);
+}
+
+.client-row-delete:active {
+    transform: scale(0.95);
+}
+
+.client-row-arrow {
+    color: #c0c4cc;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.client-row:hover .client-row-arrow {
+    color: #ff7a00;
+    transform: translateX(3px);
+}
+
+/* ============================================================
+   MODAL DÉTAILS CLIENT
+   ============================================================ */
+.modal-client-card {
+    max-width: 600px;
+    padding: 0;
+    text-align: left;
+    position: relative;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 10;
+    transition: background 0.2s, color 0.2s;
+}
+
+.modal-close-btn:hover {
+    background-color: #fff;
+    color: #e02424;
+}
+
+.client-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 25px 30px;
+    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
+    color: white;
+    position: relative;
+    flex-shrink: 0;
+    padding-right: 60px;
+}
+
+.client-detail-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.client-detail-header > div:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+}
+
+.client-detail-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-detail-meta {
+    font-size: 12px;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-detail-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.client-detail-status.active {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #03543f;
+}
+
+.client-detail-status.blocked {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #e02424;
+}
+
+.client-detail-body {
+    padding: 25px 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.cd-section {
+    margin-bottom: 22px;
+}
+
+.cd-section:last-child {
+    margin-bottom: 0;
+}
+
+.cd-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ff7a00;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cd-section-title i {
+    font-size: 12px;
+}
+
+.cd-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 9px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.cd-row:last-child {
+    border-bottom: none;
+}
+
+.cd-label {
+    color: #888;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.cd-value {
+    color: #111;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.cd-value-copy {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #111;
+    font-weight: 600;
+    text-align: right;
+    min-width: 0;
+}
+
+.cd-value-copy span {
+    word-break: break-all;
+    text-align: right;
+}
+
+.cd-code {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    background-color: #f8f9fa;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #111;
+    font-weight: 700;
+}
+
+.copy-btn {
+    background-color: #f0f2f5;
+    border: none;
+    color: #555;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    background-color: #ff7a00;
+    color: white;
+}
+
+.copy-btn.copied {
+    background-color: #00c853;
+    color: white;
+}
+
+.copy-btn-primary {
+    width: auto;
+    padding: 0 16px;
+    height: 38px;
+    gap: 6px;
+    background-color: #ff7a00;
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.copy-btn-primary:hover {
+    background-color: #e66d00;
+}
+
+.cd-link-box {
+    display: flex;
+    gap: 8px;
+    background-color: #f8f9fa;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #e8eaee;
+    align-items: center;
+}
+
+.cd-link-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    min-width: 0;
+}
+
+.cd-hint {
+    display: block;
+    font-size: 11px;
+    color: #909399;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.client-detail-footer {
+    display: flex;
+    gap: 10px;
+    padding: 18px 30px;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fafbfc;
+    flex-shrink: 0;
+}
+
+.client-detail-footer button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* ============================================================
+   BOUTONS D'ENVOI D'EMAIL
+   ============================================================ */
+.email-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.email-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.email-action-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.email-action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.email-action-blue {
+    border-color: #c5d8f5;
+    color: #1a73e8;
+}
+
+.email-action-blue:hover:not(:disabled) {
+    background-color: #e8f0fe;
+}
+
+.email-action-green {
+    border-color: #c3e6cb;
+    color: #03543f;
+}
+
+.email-action-green:hover:not(:disabled) {
+    background-color: #def7ec;
+}
+
+.email-action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.email-action-blue .email-action-icon {
+    background-color: #e8f0fe;
+}
+
+.email-action-green .email-action-icon {
+    background-color: #def7ec;
+}
+
+.email-action-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.email-action-text strong {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.email-action-text small {
+    font-size: 11px;
+    opacity: 0.75;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================================
+   MODAL GÉNÉRIQUE
+   ============================================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-card {
+    background: white;
+    border-radius: 12px;
+    padding: 35px 30px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.modal-icon-success {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #def7ec;
+    color: #03543f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px auto;
+    font-size: 32px;
+}
+
+.modal-card h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+}
+
+.modal-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.link-box {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.link-box input {
+    flex: 1;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #333;
+    background: #f8f9fa;
+    font-family: 'Courier New', monospace;
+    outline: none;
+    min-width: 0;
+}
+
+.link-box button {
+    background-color: #ff7a00;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.link-box button:hover {
+    background-color: #e66d00;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary {
+    background-color: #ff7a00;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #e66d00;
+}
+
+.btn-secondary {
+    background-color: #f1f2f5;
+    color: #333;
+}
+.btn-secondary:hover {
+    background-color: #e4e6eb;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   NOUVELLE MODALE DE CONFIRMATION
+   ============================================================ */
+.confirm-card {
+    max-width: 400px;
+    padding: 35px 25px;
+    text-align: center;
+}
+
+.confirm-icon-wrapper {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: #fef2f2;
+    color: #e02424;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px auto;
+    border: 4px solid #fee2e2;
+}
+
+.confirm-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 12px;
+}
+
+.confirm-message {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    white-space: pre-line;
+}
+
+.btn-danger {
+    background-color: #e02424;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-danger:hover {
+    background-color: #c81e1e;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    .color-picker {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    .percentage-row {
+        flex-wrap: wrap;
+    }
+    .percentage-row input {
+        max-width: 100%;
+    }
+    .access-buttons {
+        grid-template-columns: 1fr;
+    }
+    .client-detail-header {
+        padding: 20px;
+        padding-right: 55px;
+    }
+    .client-detail-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 17px;
+    }
+    .client-detail-name {
+        font-size: 16px;
+    }
+    .client-detail-body {
+        padding: 20px;
+    }
+    .client-detail-footer {
+        padding: 15px 20px;
+        flex-direction: column;
+    }
+    .cd-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .cd-value, .cd-value-copy {
+        text-align: left;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .cd-value-copy span {
+        text-align: left;
+    }
+    .option-card {
+        padding: 18px;
+    }
+    .option-card-actions {
+        flex-direction: column;
+    }
+    .option-card-actions button {
+        width: 100%;
+        justify-content: center;
+    }
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .admin-header-right {
+        justify-content: space-between;
+    }
+    .admin-user-name,
+    .admin-user-email {
+        max-width: 100px;
+    }
+    .email-actions-grid {
+        grid-template-columns: 1fr;
     }
 }
-
-// ============================================================
-// AUTHENTIFICATION - CONNEXION
-// ============================================================
-async function handleAdminLogin(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('login-admin-email').value.trim().toLowerCase();
-    const password = document.getElementById('login-admin-password').value;
-    const errorEl = document.getElementById('login-admin-error');
-
-    if (!email || !password) return errorEl.textContent = 'Veuillez remplir tous les champs.';
-
-    errorEl.textContent = '';
-
-    const submitBtn = document.querySelector('#admin-login-form .auth-btn-primary');
-    const originalHTML = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
-
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-        console.error('Erreur connexion :', err);
-        let msg = 'Erreur de connexion.';
-        if (err.code === 'auth/user-not-found') msg = 'Aucun compte trouvé avec cet email.';
-        else if (err.code === 'auth/wrong-password') msg = 'Mot de passe incorrect.';
-        else if (err.code === 'auth/invalid-credential') msg = 'Email ou mot de passe incorrect.';
-        else if (err.code === 'auth/invalid-email') msg = 'Adresse e-mail invalide.';
-        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau, vérifiez votre connexion.';
-        else if (err.code === 'auth/too-many-requests') msg = 'Trop de tentatives. Veuillez réessayer plus tard.';
-        errorEl.textContent = msg;
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalHTML;
-    }
-}
-
-// ============================================================
-// DÉCONNEXION
-// ============================================================
-async function handleAdminLogout() {
-    // MODIFICATION ICI : Utilisation de la nouvelle modale
-    const isConfirmed = await showConfirmModal({
-        title: 'Déconnexion',
-        message: 'Voulez-vous vraiment vous déconnecter ?',
-        confirmText: 'Se déconnecter',
-        type: 'primary'
-    });
-
-    if (!isConfirmed) return;
-
-    try {
-        await signOut(auth);
-        showToast('Déconnexion réussie.', 'info');
-    } catch (err) {
-        console.error('Erreur déconnexion :', err);
-        showToast('Erreur lors de la déconnexion.', 'error');
-    }
-}
-
-// ============================================================
-// CHARGEMENT DU PROFIL ADMIN
-// ============================================================
-async function loadAdminProfile(user) {
-    try {
-        const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
-        if (adminDoc.exists()) {
-            currentAdmin = adminDoc.data();
-        } else {
-            currentAdmin = {
-                uid: user.uid,
-                name: user.displayName || 'Admin',
-                email: user.email
-            };
-        }
-
-        const initials = (currentAdmin.name || 'A').split(' ')
-            .map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'A';
-        document.getElementById('admin-avatar').textContent = initials;
-        document.getElementById('admin-user-name').textContent = currentAdmin.name || 'Admin';
-        document.getElementById('admin-user-email').textContent = currentAdmin.email || '';
-        document.getElementById('admin-header-subtitle').textContent = `Bienvenue, ${currentAdmin.name}`;
-    } catch (err) {
-        console.error('Erreur chargement profil admin :', err);
-    }
-}
-
-// ============================================================
-// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
-// ============================================================
-function initAuthListener() {
-    showScreen('admin-loading-screen');
-
-    onAuthStateChanged(auth, async (user) => {
-        if (user && !user.isAnonymous) {
-            console.log('👤 Admin connecté :', user.email);
-            await loadAdminProfile(user);
-            showAdminPanel();
-            await loadClients();
-        } else {
-            console.log('🔒 Aucune session active');
-            currentAdmin = null;
-            allClients = [];
-            showLoginScreen();
-        }
-    });
-}
-
-// ============================================================
-// GESTION DU MENU DÉROULANT PERSONNALISÉ
-// ============================================================
-function initCustomSelect() {
-    const selectWrapper = document.getElementById('custom-option-select');
-    const trigger = document.getElementById('custom-option-trigger');
-    const dropdown = document.getElementById('custom-option-dropdown');
-    const hiddenInput = document.getElementById('m-select-option');
-    const triggerText = document.getElementById('custom-option-text');
-    const triggerIcon = document.querySelector('.custom-select-icon i');
-
-    if (!selectWrapper || !trigger || !dropdown) return;
-
-    trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        selectWrapper.classList.toggle('open');
-    });
-
-    dropdown.querySelectorAll('.custom-option').forEach(option => {
-        option.addEventListener('click', (e) => {
-            e.stopPropagation();
-
-            const value = option.dataset.value;
-            const label = option.querySelector('span').textContent.trim();
-            const iconClass = option.querySelector('i').className;
-
-            triggerText.textContent = label;
-            triggerText.classList.remove('placeholder');
-            if (triggerIcon) {
-                triggerIcon.className = iconClass;
-            }
-
-            hiddenInput.value = value;
-
-            dropdown.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
-            option.classList.add('selected');
-
-            selectWrapper.classList.remove('open');
-
-            handleOptionChange();
-        });
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!selectWrapper.contains(e.target)) {
-            selectWrapper.classList.remove('open');
-        }
-    });
-}
-
-function resetCustomSelect() {
-    const selectWrapper = document.getElementById('custom-option-select');
-    const triggerText = document.getElementById('custom-option-text');
-    const triggerIcon = document.querySelector('.custom-select-icon i');
-    const hiddenInput = document.getElementById('m-select-option');
-
-    if (triggerText) {
-        triggerText.textContent = '-- Choisir une option --';
-        triggerText.classList.add('placeholder');
-    }
-    if (triggerIcon) {
-        triggerIcon.className = 'fa-solid fa-list';
-    }
-    if (hiddenInput) hiddenInput.value = '';
-    if (selectWrapper) {
-        selectWrapper.classList.remove('open');
-        selectWrapper.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
-    }
-}
-
-// ============================================================
-// BANQUES
-// ============================================================
-function populateBankSelect(selectId, clientCountry, selectedDomain) {
-    const select = document.getElementById(selectId);
-    if (!select) return;
-
-    select.innerHTML = '<option value="">-- Sélectionner une banque --</option>';
-
-    const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
-    if (countryBanks.length > 0) {
-        const group = document.createElement('optgroup');
-        group.label = `Banques du pays (${clientCountry})`;
-        countryBanks.forEach(bank => {
-            const opt = document.createElement('option');
-            opt.value = bank.domain;
-            opt.dataset.bankName = bank.name;
-            opt.dataset.bankDomain = bank.domain;
-            opt.textContent = bank.name;
-            if (selectedDomain === bank.domain) opt.selected = true;
-            group.appendChild(opt);
-        });
-        select.appendChild(group);
-    }
-
-    Object.entries(BANKS_BY_COUNTRY).forEach(([country, banks]) => {
-        if (country === clientCountry) return;
-        const group = document.createElement('optgroup');
-        group.label = country;
-        banks.forEach(bank => {
-            const opt = document.createElement('option');
-            opt.value = bank.domain;
-            opt.dataset.bankName = bank.name;
-            opt.dataset.bankDomain = bank.domain;
-            opt.textContent = bank.name;
-            if (selectedDomain === bank.domain) opt.selected = true;
-            group.appendChild(opt);
-        });
-        select.appendChild(group);
-    });
-}
-
-// ============================================================
-// CRÉATION D'UN CLIENT
-// ============================================================
-async function handleCreateClient(event) {
-    event.preventDefault();
-
-    if (!currentAdmin) {
-        showToast('Vous devez être connecté pour créer un client.', 'error');
-        return;
-    }
-
-    const lastName = document.getElementById('c-lastname').value.trim();
-    const firstName = document.getElementById('c-firstname').value.trim();
-    const country = document.getElementById('c-country').value;
-    const countryFlag = document.querySelector('#c-country option:checked')?.dataset.flag || '';
-    const address = document.getElementById('c-address').value.trim();
-    const email = document.getElementById('c-email').value.trim().toLowerCase();
-    const phone = document.getElementById('c-phone').value.trim();
-    const language = document.getElementById('c-language').value;
-    const balance = parseFloat(document.getElementById('c-balance').value) || 0;
-    const currency = document.getElementById('c-currency').value;
-    const bankSelect = document.getElementById('c-bank');
-    const bankDomain = bankSelect.value;
-    const bankOption = bankSelect.options[bankSelect.selectedIndex];
-    const bankName = bankOption?.dataset.bankName || '';
-    const bankLogo = bankDomain ? getBankLogoUrl(bankDomain) : '';
-    const pin = document.getElementById('c-pin').value.trim();
-    const activationCode = document.getElementById('c-activation').value.trim();
-    const percentValue = parseInt(document.getElementById('c-percent-value').value, 10);
-    const messageAfterTransfer = document.getElementById('c-message').value.trim();
-    const color = document.getElementById('c-color').value;
-
-    if (!lastName || !firstName) return showToast('Nom et prénom obligatoires.', 'error');
-    if (!country) return showToast('Pays obligatoire.', 'error');
-    if (!email.includes('@') || !email.includes('.')) return showToast('Adresse e-mail invalide.', 'error');
-    if (!language) return showToast('Langue obligatoire.', 'error');
-    if (!bankDomain || !bankName) return showToast('Veuillez sélectionner une banque.', 'error');
-    if (!/^\d{4,8}$/.test(pin)) return showToast('Le code PIN doit contenir 4 à 8 chiffres.', 'error');
-    if (activationCode.length < 4) return showToast("Le code d'activation doit contenir au moins 4 caractères.", 'error');
-    if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
-        return showToast('Le pourcentage doit être entre 0 et 100.', 'error');
-    }
-    if (!messageAfterTransfer) return showToast('Le message après virement est obligatoire.', 'error');
-    if (!color) return showToast('Veuillez choisir une couleur.', 'error');
-
-    const submitBtn = document.querySelector('.btn-create');
-    const originalHTML = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Création...';
-
-    try {
-        const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
-        const existing = await getDocs(emailCheck);
-        if (!existing.empty) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalHTML;
-            return showToast('Un client avec cet e-mail existe déjà.', 'error');
-        }
-
-        const clientId = generateId();
-        const newCard = generateCardDetails();
-        const newIban = generateIbanDetails();
-
-        const initialTransactions = [];
-        if (balance > 0) {
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
-                now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            initialTransactions.push({
-                type: 'credit',
-                title: 'Solde initial',
-                date: dateStr,
-                amount: balance,
-                bankName: bankName,
-                bankDomain: bankDomain,
-                bankLogo: bankLogo
-            });
-        }
-
-        const clientData = {
-            id: clientId,
-            lastName, firstName, country, countryFlag,
-            address, email, phone, language,
-            balance, currency, pin, activationCode,
-            percentValue, messageAfterTransfer, color,
-            bankName, bankDomain, bankLogo,
-            cardNumber: newCard.cardNumber, 
-            cardCVV: newCard.cvv,
-            cardExpiry: newCard.expiry,
-            canViewCardDetails: false,
-            iban: newIban.iban,
-            swift: newIban.swift,
-            canViewIban: false,
-            transactions: initialTransactions,
-            blocked: false,
-            createdBy: currentAdmin.uid,
-            createdByName: currentAdmin.name,
-            createdByEmail: currentAdmin.email,
-            createdAt: new Date().toISOString(),
-            createdAtServer: serverTimestamp()
-        };
-
-        await setDoc(doc(db, COLLECTION_NAME, clientId), clientData);
-
-        const link = getClientLink(clientId);
-        lastGeneratedLink = link;
-        document.getElementById('generated-link').value = link;
-        document.getElementById('link-modal').classList.add('show');
-
-        event.target.reset();
-        document.getElementById('c-balance').value = '0.00';
-        document.getElementById('c-currency').value = 'zł';
-        document.getElementById('c-country').value = 'France';
-        document.getElementById('c-language').value = 'fr';
-        document.getElementById('c-percent-value').value = '100';
-        populateBankSelect('c-bank', 'France', '');
-
-        await loadClients();
-        showToast('Client créé avec succès !', 'success');
-    } catch (err) {
-        console.error('Erreur création client :', err);
-        showToast('Erreur : ' + (err.message || 'inconnue'), 'error');
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalHTML;
-    }
-}
-
-// ============================================================
-// CHARGEMENT DES CLIENTS
-// ============================================================
-async function loadClients() {
-    const list = document.getElementById('clients-list');
-    const countBadge = document.getElementById('client-count');
-
-    if (!currentAdmin) {
-        list.innerHTML = '<p class="empty-state">Veuillez vous connecter.</p>';
-        return;
-    }
-
-    try {
-        const q = query(
-            collection(db, COLLECTION_NAME),
-            where('createdBy', '==', currentAdmin.uid)
-        );
-        const snapshot = await getDocs(q);
-        allClients = snapshot.docs.map(d => d.data());
-        allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-        countBadge.textContent = allClients.length;
-        populateModifySelect();
-
-        if (allClients.length === 0) {
-            list.innerHTML = '<p class="empty-state">Vous n\'avez créé aucun client pour le moment.</p>';
-            return;
-        }
-
-        list.innerHTML = '';
-        allClients.forEach(client => {
-            const row = document.createElement('div');
-            row.className = 'client-row' + (client.blocked ? ' blocked' : '');
-            row.dataset.clientId = client.id;
-
-            const initials = getInitials(client.firstName, client.lastName);
-            const fullName = `${(client.lastName || '').toUpperCase()} ${client.firstName || ''}`;
-
-            row.innerHTML = `
-                <div class="client-row-left">
-                    <div class="client-row-avatar">${initials}</div>
-                    <div class="client-row-info">
-                        <div class="client-row-name">${fullName}</div>
-                        <div class="client-row-email">${client.email || '--'}</div>
-                    </div>
-                </div>
-                <div class="client-row-actions">
-                    <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
-                        <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
-                        ${client.blocked ? 'Bloqué' : 'Actif'}
-                    </div>
-                    <button class="client-row-delete" title="Supprimer ce client" data-delete-id="${client.id}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-                <i class="fa-solid fa-chevron-right client-row-arrow"></i>
-            `;
-
-            row.addEventListener('click', () => openClientDetail(client.id));
-            row.querySelector('.client-row-delete').addEventListener('click', (e) => {
-                e.stopPropagation();
-                deleteClient(client.id);
-            });
-
-            list.appendChild(row);
-        });
-
-    } catch (err) {
-        console.error('Erreur chargement clients :', err);
-        list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement.</p>';
-    }
-}
-
-// ============================================================
-// MODAL DÉTAILS CLIENT
-// ============================================================
-function openClientDetail(clientId) {
-    const client = allClients.find(c => c.id === clientId);
-    if (!client) return;
-
-    currentDetailClient = client;
-    isCardDetailsVisible = false;
-    isIbanVisible = false;
-
-    const initials = getInitials(client.firstName, client.lastName);
-    document.getElementById('cd-avatar').textContent = initials;
-
-    const fullName = `${client.lastName} ${client.firstName}`.toUpperCase();
-    document.getElementById('cd-name').textContent = fullName;
-    document.getElementById('cd-meta').textContent = client.email || '--';
-
-    const statusEl = document.getElementById('cd-status');
-    if (client.blocked) {
-        statusEl.textContent = 'Bloqué';
-        statusEl.className = 'client-detail-status blocked';
-    } else {
-        statusEl.textContent = 'Actif';
-        statusEl.className = 'client-detail-status active';
-    }
-
-    document.getElementById('cd-fullname').textContent = fullName;
-    document.getElementById('cd-country').textContent = (client.country || '--') + ' ' + (client.countryFlag || '');
-    document.getElementById('cd-address').textContent = client.address || '—';
-    document.getElementById('cd-email').textContent = client.email || '--';
-    document.getElementById('cd-phone').textContent = client.phone || '—';
-    document.getElementById('cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
-    document.getElementById('cd-currency').textContent = client.currency || 'zł';
-    document.getElementById('cd-language').textContent = client.language || 'fr';
-    document.getElementById('cd-bank').textContent = client.bankName || '—';
-    document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
-    document.getElementById('cd-pin').textContent = client.pin || '----';
-    document.getElementById('cd-activation').textContent = client.activationCode || '----';
-    document.getElementById('cd-link').value = getClientLink(client.id);
-
-    // IBAN masqué
-    const clientIban = client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
-    const ibanParts = clientIban.split(' ');
-    const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
-    document.getElementById('cd-iban').textContent = maskedIban;
-    document.getElementById('cd-swift').textContent = client.swift || '--';
-    
-    const ibanEyeIcon = document.getElementById('admin-iban-eye-icon');
-    if(ibanEyeIcon) ibanEyeIcon.className = 'fa-regular fa-eye';
-
-    // Carte masquée
-    const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
-    const cardCvv = client.cardCVV ? '•••' : '--';
-    document.getElementById('cd-card-number').textContent = cardNum;
-    document.getElementById('cd-card-expiry').textContent = client.cardExpiry || '--';
-    document.getElementById('cd-card-cvv').textContent = cardCvv;
-    
-    const eyeIcon = document.getElementById('admin-eye-icon');
-    if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-
-    document.getElementById('client-detail-modal').classList.add('show');
-}
-
-// ============================================================
-// FERMETURE DU MODAL CLIENT
-// ============================================================
-function closeClientDetail() {
-    document.getElementById('client-detail-modal').classList.remove('show');
-    currentDetailClient = null;
-    isCardDetailsVisible = false;
-    isIbanVisible = false;
-}
-
-// 🆕 MASQUER / AFFICHER L'IBAN DANS LE MODAL DÉTAILS
-window.toggleAdminIbanVisibility = function() {
-    if (!currentDetailClient) return;
-    isIbanVisible = !isIbanVisible;
-    
-    const ibanEl = document.getElementById('cd-iban');
-    const eyeIcon = document.getElementById('admin-iban-eye-icon');
-    
-    if (isIbanVisible) {
-        ibanEl.textContent = currentDetailClient.iban || '--';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        const ibanParts = (currentDetailClient.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
-        const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
-        ibanEl.textContent = maskedIban;
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-// 🆕 MASQUER / AFFICHER LA CARTE DANS LE MODAL DÉTAILS
-window.toggleAdminCardVisibility = function() {
-    if (!currentDetailClient) return;
-    isCardDetailsVisible = !isCardDetailsVisible;
-    
-    const cardNumEl = document.getElementById('cd-card-number');
-    const cardCvvEl = document.getElementById('cd-card-cvv');
-    const eyeIcon = document.getElementById('admin-eye-icon');
-    
-    if (isCardDetailsVisible) {
-        cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
-        cardCvvEl.textContent = currentDetailClient.cardCVV || '--';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        cardNumEl.textContent = currentDetailClient.cardNumber ? '•••• •••• •••• ' + currentDetailClient.cardNumber.slice(-4) : '--';
-        cardCvvEl.textContent = currentDetailClient.cardCVV ? '•••' : '--';
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-window.toggleEditCardVisibility = function() {
-    const cardNumInput = document.getElementById('opt-card-number');
-    const cardCvvInput = document.getElementById('opt-card-cvv');
-    const eyeIcon = document.getElementById('edit-eye-icon');
-    
-    if (!cardNumInput || !cardCvvInput) return;
-
-    if (cardNumInput.type === 'password') {
-        cardNumInput.type = 'text';
-        cardCvvInput.type = 'text';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        cardNumInput.type = 'password';
-        cardCvvInput.type = 'password';
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-function editClientFromDetail() {
-    if (!currentDetailClient) return;
-    const clientId = currentDetailClient.id;
-    closeClientDetail();
-    selectClientForModify(clientId);
-}
-
-// ============================================================
-// 📧 ENVOI DES EMAILS (ADMIN)
-// ============================================================
-async function handleSendLoginCredentials() {
-    if (!currentDetailClient) return;
-    const client = currentDetailClient;
-
-    if (!client.email) {
-        return showToast('Ce client n\'a pas d\'adresse e-mail.', 'error');
-    }
-
-    const btn = document.getElementById('btn-send-credentials');
-    const originalHTML = btn ? btn.innerHTML : '';
-
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-    }
-
-    try {
-        const result = await sendLoginCredentials(client);
-        if (result.success) {
-            showToast('Identifiants envoyés à ' + client.email, 'success');
-        } else {
-            showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
-        }
-    } catch (err) {
-        console.error('Erreur envoi identifiants :', err);
-        showToast('Erreur d\'envoi. Réessayez.', 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalHTML;
-        }
-    }
-}
-
-async function handleSendActivationCode() {
-    if (!currentDetailClient) return;
-    const client = currentDetailClient;
-
-    if (!client.email) {
-        return showToast('Ce client n\'a pas d\'adresse e-mail.', 'error');
-    }
-
-    const btn = document.getElementById('btn-send-activation');
-    const originalHTML = btn ? btn.innerHTML : '';
-
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-    }
-
-    try {
-        const result = await sendActivationCode(client);
-        if (result.success) {
-            showToast('Code d\'activation envoyé à ' + client.email, 'success');
-        } else {
-            showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
-        }
-    } catch (err) {
-        console.error('Erreur envoi code d\'activation :', err);
-        showToast('Erreur d\'envoi. Réessayez.', 'error');
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalHTML;
-        }
-    }
-}
-
-// ============================================================
-// COPIER UN CHAMP
-// ============================================================
-window.copyField = function (elementId, isInput = false) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    const value = isInput ? el.value : el.textContent;
-
-    const doCopy = () => {
-        const btn = el.closest('.cd-value-copy, .cd-link-box')?.querySelector('.copy-btn');
-        if (btn) {
-            const original = btn.innerHTML;
-            btn.classList.add('copied');
-            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                btn.innerHTML = original;
-            }, 1500);
-        }
-        showToast('Copié !', 'success');
-    };
-
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(value).then(doCopy).catch(() => prompt('Copiez :', value));
-    } else {
-        prompt('Copiez :', value);
-    }
-};
-
-// ============================================================
-// SÉLECTEUR DE MODIFICATION
-// ============================================================
-function populateModifySelect() {
-    const select = document.getElementById('m-select-client');
-    const current = select.value;
-    select.innerHTML = '<option value="">-- Choisir un client --</option>';
-    allClients.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.id;
-        opt.textContent = `${(c.lastName || '').toUpperCase()} ${c.firstName || ''} — ${c.email}`;
-        select.appendChild(opt);
-    });
-    if (current) select.value = current;
-}
-
-function selectClientForModify(clientId) {
-    const select = document.getElementById('m-select-client');
-    select.value = clientId;
-    handleModifyClientChange();
-    document.querySelector('.modify-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function handleModifyClientChange() {
-    const clientId = document.getElementById('m-select-client').value;
-    const optionWrapper = document.getElementById('option-select-wrapper');
-    const optionContainer = document.getElementById('option-card-container');
-
-    resetCustomSelect();
-    optionContainer.innerHTML = '';
-
-    if (!clientId) {
-        selectedClientId = null;
-        selectedOption = null;
-        optionWrapper.style.display = 'none';
-        return;
-    }
-
-    selectedClientId = clientId;
-    optionWrapper.style.display = 'block';
-}
-
-// ============================================================
-// GESTION DE L'OPTION SÉLECTIONNÉE
-// ============================================================
-function handleOptionChange() {
-    const optionValue = document.getElementById('m-select-option').value;
-    selectedOption = optionValue;
-
-    const container = document.getElementById('option-card-container');
-    container.innerHTML = '';
-
-    if (!optionValue || !selectedClientId) return;
-
-    const client = allClients.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    renderOptionCard(optionValue, client);
-}
-
 // ============================================================
 // GÉNÉRATION DES CARTES D'OPTIONS
 // ============================================================
@@ -1315,6 +2317,29 @@ function renderOptionCard(option, client) {
             `;
             break;
 
+        // 🆕 NOUVELLE OPTION : COULEUR DE LA GRANDE CARTE
+        case 'big_card_color':
+            headerIcon = 'fa-credit-card';
+            headerTitle = 'Couleur de la grande carte';
+            headerSubtitle = 'Changer la couleur de la carte de solde';
+            const currentBigColor = client.bigCardColor || '#ffffff';
+            bodyHtml = `
+                <div class="option-info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Choisissez une couleur pour la carte de solde. Le texte s'adaptera automatiquement (noir ou blanc) pour rester lisible.</span>
+                </div>
+                <div class="form-group">
+                    <label>Couleur de la carte</label>
+                    <div class="color-picker" id="opt-big-card-color-picker">
+                        ${['#ffffff', '#1a1a1a', '#1a73e8', '#0d47a1', '#00c853', '#03543f', '#e02424', '#8e24aa', '#f9a825', '#37474f']
+                            .map(c => `<div class="color-option ${c === currentBigColor ? 'selected' : ''}" data-color="${c}" style="background-color:${c}; border: 1px solid #ccc;"></div>`)
+                            .join('')}
+                    </div>
+                    <input type="hidden" id="opt-big-card-color" value="${currentBigColor}">
+                </div>
+            `;
+            break;
+
         case 'reset':
             headerIcon = 'fa-eraser';
             headerTitle = 'Réinitialiser le compte';
@@ -1447,6 +2472,18 @@ function renderOptionCard(option, client) {
                 picker.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
                 opt.classList.add('selected');
                 document.getElementById('opt-color').value = opt.dataset.color;
+            });
+        });
+    }
+
+    // 🆕 ÉCOUTEURS POUR LE PICKER DE COULEUR DE LA GRANDE CARTE
+    if (option === 'big_card_color') {
+        const picker = document.getElementById('opt-big-card-color-picker');
+        picker.querySelectorAll('.color-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                picker.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                document.getElementById('opt-big-card-color').value = opt.dataset.color;
             });
         });
     }
@@ -1644,8 +2681,15 @@ async function saveOption(option, client) {
                 break;
             }
 
+            // 🆕 SAUVEGARDE DE LA COULEUR DE LA GRANDE CARTE
+            case 'big_card_color': {
+                const bigCardColor = document.getElementById('opt-big-card-color').value;
+                if (!bigCardColor) throw new Error('Veuillez choisir une couleur.');
+                updatedData = { ...updatedData, bigCardColor };
+                break;
+            }
+
             case 'reset': {
-                // MODIFICATION ICI : Utilisation de la nouvelle modale
                 const isConfirmed = await showConfirmModal({
                     title: 'Réinitialiser le compte',
                     message: `Êtes-vous sûr de vouloir réinitialiser le compte de ${client.firstName} ${client.lastName} ?\n\nLe solde sera mis à 0 et l'historique des transactions sera définitivement supprimé.`,
@@ -1733,7 +2777,6 @@ async function handleToggleAccess() {
         ? `Bloquer l'accès de ${client.firstName} ${client.lastName} ?`
         : `Débloquer l'accès de ${client.firstName} ${client.lastName} ?`;
 
-    // MODIFICATION ICI : Utilisation de la nouvelle modale
     const isConfirmed = await showConfirmModal({
         title: willBlock ? 'Bloquer le client' : 'Débloquer le client',
         message: confirmMsg,
@@ -1773,7 +2816,6 @@ async function deleteClient(id) {
     const client = allClients.find(c => c.id === id);
     if (!client) return;
     
-    // MODIFICATION ICI : Utilisation de la nouvelle modale
     const isConfirmed = await showConfirmModal({
         title: 'Supprimer le client',
         message: `Supprimer définitivement ${client.firstName} ${client.lastName} ?`,
@@ -1803,7 +2845,6 @@ async function deleteClient(id) {
 async function clearAllClients() {
     if (allClients.length === 0) return;
     
-    // MODIFICATION ICI : Utilisation de la nouvelle modale
     const isConfirmed = await showConfirmModal({
         title: 'Tout effacer',
         message: `Supprimer TOUS vos ${allClients.length} clients ? Cette action est irréversible.`,
