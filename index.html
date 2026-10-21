@@ -371,9 +371,6 @@
     </div>
 </template>
 
-<!-- ============================================= -->
-<!-- 🆕 NOUVEAU TEMPLATE : REÇU DE SUCCÈS DÉTAILLÉ -->
-<!-- ============================================= -->
 <template id="tpl-success">
     <div class="dashboard-body success-page">
         
@@ -402,44 +399,36 @@
                 <div class="sd-value" id="sf-beneficiary">-</div>
             </div>
             <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-solid fa-building-columns"></i></div>
                 <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
                 <div class="sd-value" id="sf-bank">-</div>
             </div>
             <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-solid fa-barcode"></i></div>
                 <div class="sd-label" data-i18n="iban">IBAN / Numéro de compte</div>
                 <div class="sd-value" id="sf-iban">-</div>
             </div>
             <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-solid fa-hashtag"></i></div>
                 <div class="sd-label" data-i18n="bic">Code Banque (BIC / SWIFT)</div>
                 <div class="sd-value" id="sf-bic">-</div>
             </div>
             <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-regular fa-file-lines"></i></div>
                 <div class="sd-label" data-i18n="reason">Motif du virement</div>
                 <div class="sd-value" id="sf-reason">-</div>
             </div>
             <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-regular fa-calendar"></i></div>
                 <div class="sd-label" data-i18n="date">Date et heure</div>
                 <div class="sd-value" id="sf-date">-</div>
             </div>
             <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-solid fa-fingerprint"></i></div>
                 <div class="sd-label" data-i18n="reference">Référence</div>
                 <div class="sd-value" id="sf-ref">-</div>
             </div>
         </div>
 
         <div class="success-status-card">
-            <div class="ss-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="ss-text">
                 <strong data-i18n="validated_status">Virement confirmé</strong>
                 <small>Votre opération est sécurisée et enregistrée.</small>
             </div>
-            <i class="fa-solid fa-chevron-right ss-arrow"></i>
         </div>
 
         <div class="success-actions">
@@ -454,39 +443,72 @@
     </div>
 </template>
 <template id="tpl-failed">
-    <div class="dashboard-body">
-        <div class="failed-card">
-            <div class="failed-icon-circle">
-                <i class="fa-solid fa-circle-xmark"></i>
+    <div class="dashboard-body success-page">
+        
+        <div class="success-header-icon">
+            <div class="success-icon-circle" style="background-color: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);">
+                <i class="fa-solid fa-xmark"></i>
             </div>
-            <div class="failed-title" data-i18n="transfer_failed">Virement échoué</div>
-            <div class="failed-subtitle" data-i18n="transfer_failed_subtitle">
+            <h1 class="success-main-title" data-i18n="transfer_failed">Virement échoué</h1>
+            <p class="success-subtitle" data-i18n="transfer_failed_subtitle">
                 Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.
-            </div>
+            </p>
+        </div>
 
-            <div class="failed-summary">
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="attempted_amount">Montant tenté :</div>
-                    <div class="detail-value" id="ff-amount">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="allowed_limit">Limite autorisée :</div>
-                    <div class="detail-value" id="ff-limit">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="limit_percentage">Pourcentage limite :</div>
-                    <div class="detail-value" id="ff-percent">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="current_balance">Solde actuel :</div>
-                    <div class="detail-value" id="ff-balance">-</div>
-                </div>
+        <div class="success-amount-card" style="background-color: #fef2f2;">
+            <div class="success-amount-icon" style="background-color: #fee2e2; color: #dc2626;">
+                <i class="fa-solid fa-ban"></i>
             </div>
+            <div class="success-amount-info">
+                <span class="success-amount-label" style="color: #991b1b;" data-i18n="attempted_amount">MONTANT TENTÉ</span>
+                <span class="success-amount-value" style="color: #7f1d1d;" id="ff-amount">-</span>
+            </div>
+        </div>
 
-            <button class="btn-continue" onclick="navigateTo('dashboard')">
-                <span data-i18n="back_to_dashboard">Retour au tableau de bord</span> &rarr;
+        <div class="success-details-card">
+            <div class="success-detail-row">
+                <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
+                <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
+                <div class="sd-value" id="ff-beneficiary">-</div>
+            </div>
+            <div class="success-detail-row">
+                <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
+                <div class="sd-value" id="ff-bank">-</div>
+            </div>
+            <div class="success-detail-row">
+                <div class="sd-label" data-i18n="iban">IBAN / Numéro de compte</div>
+                <div class="sd-value" id="ff-iban">-</div>
+            </div>
+            <div class="success-detail-row">
+                <div class="sd-label" data-i18n="bic">Code Banque (BIC / SWIFT)</div>
+                <div class="sd-value" id="ff-bic">-</div>
+            </div>
+            <div class="success-detail-row">
+                <div class="sd-label" data-i18n="reason">Motif du virement</div>
+                <div class="sd-value" id="ff-reason">-</div>
+            </div>
+            <div class="success-detail-row">
+                <div class="sd-label" data-i18n="date">Date et heure</div>
+                <div class="sd-value" id="ff-date">-</div>
+            </div>
+        </div>
+
+        <div class="success-status-card" style="background-color: #fef2f2; border: 1px solid #fecaca;">
+            <div class="ss-text">
+                <strong style="color: #991b1b;" data-i18n="transfer_failed">Virement bloqué</strong>
+                <small style="color: #b91c1c;">Aucun montant n'a été débité de votre compte.</small>
+            </div>
+        </div>
+
+        <div class="success-actions">
+            <button class="btn-download-receipt" onclick="window.print()" style="color: #dc2626; border-color: #dc2626;">
+                <i class="fa-solid fa-download"></i> Télécharger le reçu
+            </button>
+            <button class="btn-back-dashboard" onclick="navigateTo('dashboard')" style="background-color: #dc2626; border-color: #dc2626;">
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_to_dashboard">Retour au tableau de bord</span>
             </button>
         </div>
+
     </div>
 </template>
 
