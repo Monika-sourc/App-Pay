@@ -343,7 +343,6 @@
             </div>
 
             <div class="details-section-title" style="margin-top: 25px;">
-                <!-- 🆕 Icône modifiée pour être identique à la page de vérification -->
                 <i class="fa-regular fa-file-lines" style="color: #ff7a00; font-size: 20px;"></i> 
                 <span>Détails du virement en cours</span>
             </div>
@@ -370,37 +369,66 @@
     </div>
 </template>
 
+<!-- ============================================= -->
+<!-- 🆕 NOUVEAU TEMPLATE : REÇU DE SUCCÈS           -->
+<!-- ============================================= -->
 <template id="tpl-success">
-    <div class="dashboard-body">
-        <div class="success-card">
-            <div class="success-icon-circle">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <div class="success-title" data-i18n="transfer_success">Virement effectué avec succès</div>
-            <div class="success-subtitle" id="sf-custom-message" data-i18n="success_subtitle">
-                Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.
+    <div class="dashboard-body success-page">
+        <div class="receipt-wrapper">
+            <div class="receipt-paper">
+                
+                <!-- En-tête du reçu -->
+                <div class="receipt-header-section">
+                    <div class="receipt-logo">
+                        <i class="fa-solid fa-landmark"></i> APP PAY
+                    </div>
+                    <div class="receipt-subtitle">REÇU DE VIREMENT</div>
+                    <div class="receipt-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="receipt-title" data-i18n="transfer_success">Virement effectué avec succès</div>
+                    <div class="receipt-custom-msg" id="sf-custom-message">Bien</div>
+                </div>
+
+                <div class="receipt-dashed-divider"></div>
+
+                <!-- Montant -->
+                <div class="receipt-amount-section">
+                    <div class="receipt-label">Montant envoyé</div>
+                    <div class="receipt-amount" id="sf-amount">-</div>
+                </div>
+
+                <div class="receipt-dashed-divider"></div>
+
+                <!-- Détails -->
+                <div class="receipt-details-section">
+                    <div class="receipt-row">
+                        <span class="receipt-row-label">Bénéficiaire</span>
+                        <span class="receipt-row-value" id="sf-beneficiary">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-row-label">Date</span>
+                        <span class="receipt-row-value" id="sf-date">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-row-label">Référence</span>
+                        <span class="receipt-row-value" id="sf-ref">-</span>
+                    </div>
+                </div>
+
+                <div class="receipt-dashed-divider"></div>
+
+                <!-- Statut -->
+                <div class="receipt-status-section">
+                    <div class="receipt-status-badge">
+                        <i class="fa-solid fa-circle-check"></i> Validé
+                    </div>
+                </div>
+
             </div>
 
-            <div class="success-summary">
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="amount_sent">Montant envoyé :</div>
-                    <div class="detail-value" id="sf-amount">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="beneficiary">Bénéficiaire :</div>
-                    <div class="detail-value" id="sf-beneficiary">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="date">Date :</div>
-                    <div class="detail-value" id="sf-date">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="reference">Référence :</div>
-                    <div class="detail-value" id="sf-ref">-</div>
-                </div>
-            </div>
-
-            <button class="btn-continue" onclick="navigateTo('dashboard')">
+            <!-- Bouton Retour (en dehors du reçu) -->
+            <button class="btn-continue btn-receipt-back" onclick="navigateTo('dashboard')">
                 <span data-i18n="back_to_dashboard">Retour au tableau de bord</span> &rarr;
             </button>
         </div>
