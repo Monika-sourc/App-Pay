@@ -535,7 +535,7 @@ body {
 /* 🆕 Page de progression : flex none pour éviter l'étirement */
 .dashboard-body.progress-page {
     flex: none; 
-    padding-top: 25px; 
+    padding-top: 20px; 
     padding-bottom: 10px;
 }
 
@@ -1213,7 +1213,7 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 60px 25px 40px; /* 🆕 Gros espace en haut et en bas */
+    padding: 50px 25px 35px; /* Espace en haut et en bas */
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
@@ -1226,8 +1226,8 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 60px; 
-    height: 60px; 
+    font-size: 60px; 
+    color: #e0e0e0;
     opacity: 0.4;
     pointer-events: none;
     z-index: 0;
@@ -1237,7 +1237,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 600; 
+    font-weight: 600; /* Un peu plus épais */
     color: #222;
     margin-bottom: 15px; 
     gap: 8px;
@@ -1252,26 +1252,25 @@ body {
 
 .progress-desc {
     font-size: 15px; 
-    color: #666;
+    color: #555; /* Un peu plus foncé */
     margin-bottom: 30px; 
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: 500; /* Un peu plus épais */
     position: relative;
     z-index: 1;
 }
 
-/* 🆕 Correction de la barre pour atteindre 100% */
 .progress-container {
     width: 100%;
     border: 2px solid #00c853; 
     border-radius: 50px;
     height: 55px; 
-    padding: 0; /* 🆕 Supprimé le padding intérieur qui bloquait le vert */
+    padding: 0; 
     margin-bottom: 40px; 
     background-color: #fff;
     position: relative;
     z-index: 1;
-    overflow: hidden; /* 🆕 Empêche le vert de déborder de la bordure arrondie */
+    overflow: hidden; 
 }
 
 .progress-bar-fill {
@@ -1285,7 +1284,7 @@ body {
     color: white;
     font-weight: 700;
     font-size: 18px; 
-    transition: width 0.1s linear; /* 🆕 Animation fluide */
+    transition: width 0.1s linear; 
 }
 
 .details-section-title {
@@ -1300,9 +1299,9 @@ body {
     z-index: 1;
 }
 
-/* 🆕 Ajustement de l'icône SVG du titre */
-.details-section-title svg {
-    flex-shrink: 0;
+.details-section-title i {
+    color: #ff7a00;
+    font-size: 20px;
 }
 
 .inner-details-box {
@@ -1323,7 +1322,7 @@ body {
 .detail-label-new {
     font-size: 15px; 
     color: #666;
-    font-weight: 500;
+    font-weight: 600; /* Un peu plus épais */
 }
 
 .detail-value-new {
@@ -1331,7 +1330,7 @@ body {
     font-weight: 700;
     color: #111;
     word-break: break-all;
-    padding-left: 20px; /* 🆕 Espace au début des valeurs */
+    padding-left: 12px; /* 🆕 Ramené un peu vers la gauche */
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
