@@ -170,7 +170,7 @@ body {
 
 .login-title {
     font-size: 19px;
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; /* Gras */
     color: #000;
     margin-bottom: 20px;
     text-align: center;
@@ -250,7 +250,7 @@ body {
     outline: none;
     padding: 14px 15px 14px 0;
     font-size: 16px; 
-    font-weight: 500; /* 🆕 Medium */
+    font-weight: 500; 
     color: #000;
     background: transparent;
     min-width: 0;
@@ -269,7 +269,7 @@ body {
     border-radius: 10px;
     padding: 16px;
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; /* Gras */
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s, transform 0.1s;
@@ -402,7 +402,7 @@ body {
 .notif-dropdown-header {
     padding: 12px 16px;
     font-size: 14px;
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     color: #000;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -545,11 +545,9 @@ body {
 
 .welcome-title {
     font-size: 21px; 
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 20px;
-    transform: scaleY(1.1);
-    transform-origin: left bottom;
 }
 
 /* ============ CARTE DE SOLDE ============ */
@@ -584,11 +582,9 @@ body {
 
 .balance-amount {
     font-size: 36px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     margin-bottom: 22px; 
     text-align: center;
-    transform: scaleY(1.15);
-    transform-origin: center;
     letter-spacing: 0.5px;
 }
 
@@ -700,7 +696,7 @@ body {
 
 .stat-value {
     font-size: 18px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 4px; 
     white-space: nowrap;
@@ -757,13 +753,11 @@ body {
 
 .history-card-header-left span {
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transform: scaleY(1.1);
-    transform-origin: left center;
 }
 
 .history-card-header-right {
@@ -889,19 +883,19 @@ body {
     gap: 6px; 
 }
 
+/* 🆕 TEXTE EN GRAS DANS L'HISTORIQUE */
 .tx-details h4 {
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; /* Gras */
     color: #000;
     margin: 0;
     line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transform: scaleY(1.1);
-    transform-origin: left bottom;
 }
 
+/* 🆕 TEXTE NORMAL DANS L'HISTORIQUE */
 .tx-details p {
     font-size: 14px; 
     color: #000; 
@@ -913,6 +907,7 @@ body {
     font-weight: 500; 
 }
 
+/* 🆕 HEURE NORMALE */
 .tx-details .tx-time {
     font-size: 13px; 
     color: #000; 
@@ -929,12 +924,11 @@ body {
     margin-left: 5px;
 }
 
+/* 🆕 MONTANT EN GRAS */
 .tx-amount {
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     white-space: nowrap;
-    transform: scaleY(1.1);
-    transform-origin: right bottom;
 }
 
 .tx-amount.red { color: #e02424; }
@@ -942,7 +936,7 @@ body {
 
 .tx-status {
     font-size: 14px; 
-    font-weight: 500; 
+    font-weight: 600; 
     white-space: nowrap;
 }
 
@@ -1020,12 +1014,13 @@ body {
     margin-bottom: 18px;
 }
 
+/* 🆕 LABEL EN GRAS */
 .form-group label {
     display: block;
     font-size: 14px; 
     color: #000;
     margin-bottom: 8px;
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
 }
 
 .input-with-addon {
@@ -1062,7 +1057,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     color: #000;
     background-color: #f8f9fa;
     font-size: 15px; 
@@ -1117,7 +1112,7 @@ body {
     border-radius: 4px;
     padding: 16px;
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s, transform 0.1s;
@@ -1146,16 +1141,15 @@ body {
     pointer-events: none;
 }
 
+/* 🆕 TITRE EN GRAS */
 .card-header-title {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 18px;
     gap: 8px;
-    transform: scaleY(1.1);
-    transform-origin: left center;
 }
 
 .card-header-title i {
@@ -1178,15 +1172,17 @@ body {
     gap: 4px;
 }
 
+/* 🆕 LABEL NORMAL */
 .verification-details-grey-box .detail-label {
     font-size: 15px; 
     color: #000 !important; 
-    font-weight: 500; /* Normal */
+    font-weight: 500; 
 }
 
+/* 🆕 VALEUR EN GRAS */
 .verification-details-grey-box .detail-value {
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000 !important; 
     word-break: break-all;
     padding-left: 15px; 
@@ -1210,11 +1206,12 @@ body {
 .btn-cancel-solid:hover { background-color: #dc2626; }
 .btn-cancel-solid:active { transform: scale(0.95); }
 
+/* 🆕 TITRE EN GRAS */
 .activation-section-title {
     display: flex;
     align-items: center;
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 15px;
     gap: 8px;
@@ -1249,11 +1246,12 @@ body {
     z-index: 0;
 }
 
+/* 🆕 TITRE EN GRAS */
 .success-message-title {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 12px; 
     gap: 8px;
@@ -1298,23 +1296,22 @@ body {
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     font-size: 16px; 
     transition: width 0.1s linear; 
 }
 
+/* 🆕 TITRE EN GRAS */
 .details-section-title {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 15px;
     gap: 10px;
     position: relative;
     z-index: 1;
-    transform: scaleY(1.1);
-    transform-origin: left center;
 }
 
 .details-section-title i {
@@ -1337,15 +1334,17 @@ body {
     margin-bottom: 15px;
 }
 
+/* 🆕 LABEL NORMAL */
 .detail-label-new {
     font-size: 15px; 
     color: #000;
-    font-weight: 500; /* Normal */
+    font-weight: 500; 
 }
 
+/* 🆕 VALEUR EN GRAS */
 .detail-value-new {
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     word-break: break-all;
     padding-left: 12px; 
@@ -1428,9 +1427,10 @@ body {
     animation: popIn 0.5s ease;
 }
 
+/* 🆕 TITRE EN GRAS */
 .receipt-title {
     font-size: 19px;
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     color: #000;
     margin-bottom: 8px;
 }
@@ -1464,13 +1464,12 @@ body {
     margin-bottom: 5px;
 }
 
+/* 🆕 MONTANT EN GRAS */
 .receipt-amount {
     font-size: 34px;
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     color: #000;
     letter-spacing: -0.5px;
-    transform: scaleY(1.15);
-    transform-origin: center;
 }
 
 .receipt-details-section {
@@ -1487,15 +1486,17 @@ body {
     font-size: 14px;
 }
 
+/* 🆕 LABEL NORMAL */
 .receipt-row-label {
     color: #000;
     flex-shrink: 0;
     font-weight: 500;
 }
 
+/* 🆕 VALEUR EN GRAS */
 .receipt-row-value {
     color: #000;
-    font-weight: 700; /* 🆕 Gras bien visible */
+    font-weight: 700; 
     text-align: right;
     word-break: break-all;
     padding-left: 10px;
@@ -1554,6 +1555,7 @@ body {
     animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
+/* 🆕 TITRE EN GRAS */
 .failed-title {
     font-size: 23px; 
     font-weight: 700; 
@@ -2553,7 +2555,7 @@ body {
 .profile-section-title {
     font-size: 16px;
     color: #000;
-    font-weight: 700; /* 🆕 Gras */
+    font-weight: 700; 
     letter-spacing: 0.3px;
     padding: 20px 20px 12px 20px;
     display: flex;
@@ -2695,9 +2697,9 @@ body {
     .history-card-header { padding: 14px 16px; }
     .transaction-item { padding: 18px 16px; gap: 12px; } 
     .tx-icon, .tx-icon-bank { width: 42px; height: 42px; }
-    .tx-details h4 { font-size: 15px; }
+    .tx-details h4 { font-size: 15px; font-weight: 700; }
     .tx-details p { font-size: 13px; }
-    .tx-amount { font-size: 16px; }
+    .tx-amount { font-size: 16px; font-weight: 700; }
     
     .balance-actions { gap: 30px; }
     .round-action-btn { width: 50px; height: 50px; font-size: 18px; }
@@ -2712,7 +2714,7 @@ body {
     white-space: nowrap !important;
     word-break: normal !important;
     font-size: 16px !important;
-    font-weight: 700 !important; /* 🆕 Gras */
+    font-weight: 700 !important; 
     letter-spacing: 0.5px !important;
     overflow: hidden;
     text-overflow: ellipsis;
