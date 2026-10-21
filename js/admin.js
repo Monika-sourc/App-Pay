@@ -27,7 +27,9 @@ import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 
 import {
     sendLoginCredentials,
-    sendActivationCode
+    sendActivationCode,
+    sendTransferAdminCancelled, // 🆕 Nouvel import
+    sendTransferAdminValidated  // 🆕 Nouvel import
 } from './emails.js';
 
 const COLLECTION_NAME = 'clients';
@@ -42,6 +44,7 @@ let selectedOption = null;
 let currentDetailClient = null;
 let isCardDetailsVisible = false;
 let isIbanVisible = false;
+let currentTransferTab = 'completed'; // 🆕 Onglet actif par défaut
 
 // ============================================================
 // DONNÉES PAYS
@@ -608,13 +611,11 @@ async function handleCreateClient(event) {
     const pin = document.getElementById('c-pin').value.trim();
     const activationCode = document.getElementById('c-activation').value.trim();
     const percentValue = parseInt(document.getElementById('c-percent-value').value, 10);
-    
-    // 🆕 Récupération du choix du virement en attente
-    const pendingTransferRadio = document.querySelector('input[name="c-pending-transfer"]:checked');
-    const pendingTransferEnabled = pendingTransferRadio ? pendingTransferRadio.value === 'true' : false;
-
     const messageAfterTransfer = document.getElementById('c-message').value.trim();
     const color = document.getElementById('c-color').value;
+
+    const pendingTransferRadio = document.querySelector('input[name="c-pending-transfer"]:checked');
+    const pendingTransferEnabled = pendingTransferRadio ? pendingTransferRadio.value === 'true' : false;
 
     if (!lastName || !firstName) return showToast('Nom et prénom obligatoires.', 'error');
     if (!country) return showToast('Pays obligatoire.', 'error');
@@ -824,12 +825,11 @@ function openClientDetail(clientId) {
     document.getElementById('cd-bank').textContent = client.bankName || '—';
     document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
     
-    // 🆕 Affichage du statut du virement en attente
     const pendingEl = document.getElementById('cd-pending-transfer');
     if (pendingEl) {
         const isEnabled = client.pendingTransferEnabled === true;
         pendingEl.textContent = isEnabled ? 'Activé' : 'Désactivé';
-        pendingEl.style.color = isEnabled ? '#03543f' : '#e02424'; // Vert ou Rouge
+        pendingEl.style.color = isEnabled ? '#03543f' : '#e02424';
         pendingEl.style.fontWeight = '700';
     }
 
@@ -856,6 +856,13 @@ function openClientDetail(clientId) {
     
     const eyeIcon = document.getElementById('admin-eye-icon');
     if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+
+    // 🆕 Réinitialisation de l'onglet des virements
+    currentTransferTab = 'completed';
+    document.getElementById('btn-tab-completed').classList.add('active');
+    document.getElementById('btn-tab-pending').classList.remove('active');
+    document.getElementById('btn-tab-cancelled').classList.remove('active');
+    renderAdminTransfers();
 
     document.getElementById('client-detail-modal').classList.add('show');
 }
@@ -930,6 +937,180 @@ function editClientFromDetail() {
     closeClientDetail();
     selectClientForModify(clientId);
 }
+
+// ============================================================
+// 🆕 GESTION DES VIREMENTS (ONGLETS ET ACTIONS)
+// ============================================================
+window.filterAdminTransfers = function(tab) {
+    currentTransferTab = tab;
+    document.getElementById('btn-tab-completed').classList.toggle('active', tab === 'completed');
+    document.getElementById('btn-tab-pending').classList.toggle('active', tab === 'pending');
+    document.getElementById('btn-tab-cancelled').classList.toggle('active', tab === 'cancelled');
+    
+    renderAdminTransfers();
+};
+
+function renderAdminTransfers() {
+    const listEl = document.getElementById('admin-transfer-list');
+    if (!listEl || !currentDetailClient) return;
+
+    const transactions = currentDetailClient.transactions || [];
+    let filtered = [];
+
+    if (currentTransferTab === 'completed') {
+        filtered = transactions.filter(tx => tx.type === 'debit' && (!tx.status || tx.status === 'completed'));
+    } else if (currentTransferTab === 'pending') {
+        filtered = transactions.filter(tx => tx.status === 'pending');
+    } else if (currentTransferTab === 'cancelled') {
+        filtered = transactions.filter(tx => tx.status === 'cancelled' || tx.status === 'failed');
+    }
+
+    if (filtered.length === 0) {
+        listEl.innerHTML = '<p class="admin-transfer-empty">Aucun virement pour le moment.</p>';
+        return;
+    }
+
+    listEl.innerHTML = filtered.map(tx => {
+        const originalIndex = transactions.indexOf(tx);
+        const isCompleted = !tx.status || tx.status === 'completed';
+        const isPending = tx.status === 'pending';
+        const isCancelled = tx.status === 'cancelled' || tx.status === 'failed';
+
+        let statusClass = 'completed';
+        if (isPending) statusClass = 'pending';
+        if (isCancelled) statusClass = 'cancelled';
+
+        let actionsHTML = '';
+        if (isCompleted) {
+            actionsHTML = `<button class="admin-btn-action admin-btn-cancel" onclick="handleAdminCancelTransfer(${originalIndex})"><i class="fa-solid fa-xmark"></i> Annuler le virement</button>`;
+        } else if (isPending) {
+            actionsHTML = `
+                <button class="admin-btn-action admin-btn-validate" onclick="handleAdminValidateTransfer(${originalIndex})"><i class="fa-solid fa-check"></i> Valider</button>
+                <button class="admin-btn-action admin-btn-cancel" onclick="handleAdminCancelTransfer(${originalIndex})"><i class="fa-solid fa-xmark"></i> Annuler</button>
+            `;
+        }
+
+        const currency = currentDetailClient.currency || 'zł';
+        const amountStr = Math.abs(tx.amount).toFixed(2).replace('.', ',') + ' ' + currency;
+
+        return `
+            <div class="admin-transfer-item ${statusClass}">
+                <div class="admin-transfer-header">
+                    <div>
+                        <div class="admin-transfer-name">${tx.title || tx.beneficiary || '—'}</div>
+                        <div class="admin-transfer-date">${tx.date || '—'}</div>
+                    </div>
+                    <div class="admin-transfer-amount ${tx.amount < 0 ? 'debit' : 'credit'}">
+                        ${tx.amount < 0 ? '−' : '+'}${amountStr}
+                    </div>
+                </div>
+                <div class="admin-transfer-details">
+                    <strong>IBAN:</strong> ${tx.iban || '—'}<br>
+                    <strong>Motif:</strong> ${tx.reason || '—'}
+                </div>
+                <div class="admin-transfer-actions">
+                    ${actionsHTML}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.handleAdminCancelTransfer = async function(index) {
+    if (!currentDetailClient) return;
+    const tx = currentDetailClient.transactions[index];
+    if (!tx) return;
+
+    const isConfirmed = await showConfirmModal({
+        title: 'Annuler le virement',
+        message: `Voulez-vous vraiment annuler ce virement de ${Math.abs(tx.amount).toFixed(2)} ${currentDetailClient.currency} ?\n\nLe montant sera re-crédité sur le compte du client.`,
+        confirmText: 'Oui, annuler',
+        type: 'danger'
+    });
+
+    if (!isConfirmed) return;
+
+    // Mise à jour locale
+    currentDetailClient.transactions[index].status = 'cancelled';
+    const newBalance = (Number(currentDetailClient.balance) || 0) + Math.abs(tx.amount);
+    currentDetailClient.balance = newBalance;
+
+    try {
+        // Mise à jour Firebase
+        await updateDoc(doc(db, COLLECTION_NAME, currentDetailClient.id), {
+            transactions: currentDetailClient.transactions,
+            balance: newBalance
+        });
+
+        // Mise à jour liste globale
+        const idx = allClients.findIndex(c => c.id === currentDetailClient.id);
+        if (idx !== -1) allClients[idx] = currentDetailClient;
+
+        // Email d'annulation
+        sendTransferAdminCancelled(currentDetailClient, {
+            amount: Math.abs(tx.amount),
+            beneficiary: tx.title || tx.beneficiary,
+            reference: tx.reference || '—',
+            date: tx.date
+        }).catch(e => console.warn('Email annulation non envoyé', e));
+
+        showToast('Virement annulé et montant re-crédité.', 'success');
+        
+        // Mise à jour UI
+        document.getElementById('cd-balance').textContent = newBalance.toFixed(2).replace('.', ',') + ' ' + (currentDetailClient.currency || 'zł');
+        renderAdminTransfers();
+        await loadClients(); // Recharge la liste en arrière-plan
+    } catch (err) {
+        console.error('Erreur annulation virement:', err);
+        showToast('Erreur lors de l\'annulation.', 'error');
+    }
+};
+
+window.handleAdminValidateTransfer = async function(index) {
+    if (!currentDetailClient) return;
+    const tx = currentDetailClient.transactions[index];
+    if (!tx) return;
+
+    const isConfirmed = await showConfirmModal({
+        title: 'Valider le virement',
+        message: `Voulez-vous valider ce virement en attente de ${Math.abs(tx.amount).toFixed(2)} ${currentDetailClient.currency} ?`,
+        confirmText: 'Oui, valider',
+        type: 'primary'
+    });
+
+    if (!isConfirmed) return;
+
+    // Mise à jour locale
+    currentDetailClient.transactions[index].status = 'completed';
+
+    try {
+        // Mise à jour Firebase
+        await updateDoc(doc(db, COLLECTION_NAME, currentDetailClient.id), {
+            transactions: currentDetailClient.transactions
+        });
+
+        // Mise à jour liste globale
+        const idx = allClients.findIndex(c => c.id === currentDetailClient.id);
+        if (idx !== -1) allClients[idx] = currentDetailClient;
+
+        // Email de validation
+        sendTransferAdminValidated(currentDetailClient, {
+            amount: Math.abs(tx.amount),
+            beneficiary: tx.title || tx.beneficiary,
+            reference: tx.reference || '—',
+            date: tx.date
+        }).catch(e => console.warn('Email validation non envoyé', e));
+
+        showToast('Virement validé avec succès.', 'success');
+        
+        // Mise à jour UI
+        renderAdminTransfers();
+        await loadClients(); // Recharge la liste en arrière-plan
+    } catch (err) {
+        console.error('Erreur validation virement:', err);
+        showToast('Erreur lors de la validation.', 'error');
+    }
+};
 
 // ============================================================
 // 📧 ENVOI DES EMAILS (ADMIN)
@@ -1304,7 +1485,6 @@ function renderOptionCard(option, client) {
             `;
             break;
 
-        // 🆕 NOUVELLE OPTION : VIREMENT EN ATTENTE
         case 'pending_transfer':
             headerIcon = 'fa-clock';
             headerTitle = 'Virement en attente';
@@ -1574,7 +1754,6 @@ function renderOptionCard(option, client) {
         });
     }
 
-    // 🆕 Gestion des styles des radios pour le virement en attente
     if (option === 'pending_transfer') {
         const radios = container.querySelectorAll('input[name="pending-transfer-visibility"]');
         radios.forEach(radio => {
@@ -1722,7 +1901,6 @@ async function saveOption(option, client) {
                 break;
             }
 
-            // 🆕 SAUVEGARDE DU VIREMENT EN ATTENTE
             case 'pending_transfer': {
                 const pendingRadio = document.querySelector('input[name="pending-transfer-visibility"]:checked');
                 const pendingTransferEnabled = pendingRadio ? pendingRadio.value === 'true' : false;
