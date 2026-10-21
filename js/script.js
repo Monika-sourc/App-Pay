@@ -1184,9 +1184,8 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
         container.innerHTML = '';
         container.appendChild(template.content.cloneNode(true));
 
-        // 🆕 Modification de la logique pour garder le bouton "Virement" actif
+        // 🆕 Garde le bouton "Virement" actif jusqu'à la fin du parcours
         document.querySelectorAll('#nav-links li').forEach(li => {
-            // Si on est dans le parcours de virement, on force l'onglet "transfer" à être actif
             const isTransferFlow = ['transfer', 'verification', 'progress', 'success', 'failed'].includes(viewName);
             
             if (isTransferFlow) {
@@ -1439,7 +1438,7 @@ async function cancelTransfer() {
 }
 
 // ============================================================
-// VUE : PROGRESSION (Modifiée pour 100%)
+// VUE : PROGRESSION (Vitesse ralentie)
 // ============================================================
 function renderProgressView(data) {
     const tr = appState.pendingTransfer || data;
@@ -1455,6 +1454,7 @@ function renderProgressView(data) {
     fill.style.width = '0%';
     fill.textContent = '0%';
 
+    // 🆕 Vitesse ralentie : 60ms par incrément (au lieu de 25ms) = ~6 secondes
     const interval = setInterval(() => {
         progress += 1;
         
@@ -1463,12 +1463,12 @@ function renderProgressView(data) {
             fill.style.width = '100%';
             fill.textContent = '100%';
             clearInterval(interval);
-            setTimeout(finalizeTransfer, 1000); 
+            setTimeout(finalizeTransfer, 1500); 
         } else {
             fill.style.width = progress + '%';
             fill.textContent = progress + '%';
         }
-    }, 25); 
+    }, 60); 
 }
 
 // ============================================================
