@@ -89,6 +89,12 @@ const TRANSLATIONS = {
         
         transfer_failed: "Virement bloqué",
         transfer_failed_subtitle: "Votre virement a été bloqué par le système. Le compte bancaire du bénéficiaire n'a pas été reconnu. Veuillez contacter le service client pour plus d'informations.",
+        failed_status: "Bloqué",
+
+        // 🆕 Nouvelles traductions
+        transfer_cancelled: "Virement annulé",
+        cancelled_status: "Annulé",
+        refunded_amount: "Montant recrédité",
         
         amount_sent: "Montant envoyé",
         beneficiary: "Bénéficiaire",
@@ -130,7 +136,7 @@ const TRANSLATIONS = {
         err_no_link: "Aucun lien fourni. Accès refusé.",
         welcome: "Bienvenue",
         login_success: "Connexion réussie. Bienvenue !",
-        transfer_cancelled: "Virement annulé.",
+        transfer_cancelled_toast: "Virement annulé.",
         transfer_finalized: "Virement finalisé avec succès !",
         err_card_locked: "L'affichage des détails de la carte n'est pas autorisé par l'administrateur.",
         err_iban_locked: "L'affichage de l'IBAN complet n'est pas autorisé par l'administrateur.",
@@ -222,6 +228,11 @@ const TRANSLATIONS = {
         
         transfer_failed: "Transfer blocked",
         transfer_failed_subtitle: "Your transfer was blocked by the system. The beneficiary's bank account was not recognized. Please contact customer service for more information.",
+        failed_status: "Blocked",
+
+        transfer_cancelled: "Transfer cancelled",
+        cancelled_status: "Cancelled",
+        refunded_amount: "Refunded amount",
         
         amount_sent: "Amount sent",
         beneficiary: "Beneficiary",
@@ -263,7 +274,7 @@ const TRANSLATIONS = {
         err_no_link: "No link provided. Access denied.",
         welcome: "Welcome",
         login_success: "Login successful. Welcome!",
-        transfer_cancelled: "Transfer cancelled.",
+        transfer_cancelled_toast: "Transfer cancelled.",
         transfer_finalized: "Transfer completed successfully!",
         err_card_locked: "Card details display is not authorized by the administrator.",
         err_iban_locked: "IBAN display is not authorized by the administrator.",
@@ -355,6 +366,11 @@ const TRANSLATIONS = {
         
         transfer_failed: "Transferencia bloqueada",
         transfer_failed_subtitle: "Su transferencia fue bloqueada por el sistema. La cuenta bancaria del beneficiario no fue reconocida. Por favor, contacte con el servicio al cliente para más información.",
+        failed_status: "Bloqueado",
+
+        transfer_cancelled: "Transferencia cancelada",
+        cancelled_status: "Cancelado",
+        refunded_amount: "Importe reembolsado",
         
         amount_sent: "Importe enviado",
         beneficiary: "Beneficiario",
@@ -396,7 +412,7 @@ const TRANSLATIONS = {
         err_no_link: "Sin enlace. Acceso denegado.",
         welcome: "Bienvenido",
         login_success: "¡Inicio de sesión exitoso!",
-        transfer_cancelled: "Transferencia cancelada.",
+        transfer_cancelled_toast: "Transferencia cancelada.",
         transfer_finalized: "¡Transferencia completada!",
         err_card_locked: "La visualización de los detalles de la tarjeta no está autorizada por el administrador.",
         err_iban_locked: "La visualización del IBAN no está autorizada por el administrador.",
@@ -488,6 +504,11 @@ const TRANSLATIONS = {
         
         transfer_failed: "Überweisung blockiert",
         transfer_failed_subtitle: "Ihre Überweisung wurde vom System blockiert. Das Bankkonto des Begünstigten wurde nicht erkannt. Bitte kontaktieren Sie den Kundendienst für weitere Informationen.",
+        failed_status: "Blockiert",
+
+        transfer_cancelled: "Überweisung storniert",
+        cancelled_status: "Storniert",
+        refunded_amount: "Erstatteter Betrag",
         
         amount_sent: "Gesendeter Betrag",
         beneficiary: "Begünstigter",
@@ -529,7 +550,7 @@ const TRANSLATIONS = {
         err_no_link: "Kein Link. Zugriff verweigert.",
         welcome: "Willkommen",
         login_success: "Anmeldung erfolgreich. Willkommen!",
-        transfer_cancelled: "Überweisung abgebrochen.",
+        transfer_cancelled_toast: "Überweisung storniert.",
         transfer_finalized: "Überweisung erfolgreich abgeschlossen!",
         err_card_locked: "Die Anzeige der Kartendetails ist vom Administrator nicht autorisiert.",
         err_iban_locked: "Die Anzeige der IBAN ist vom Administrator nicht autorisiert.",
@@ -621,6 +642,11 @@ const TRANSLATIONS = {
         
         transfer_failed: "Przelew zablokowany",
         transfer_failed_subtitle: "Twój przelew został zablokowany przez system. Konto bankowe odbiorcy nie zostało rozpoznane. Skontaktuj się z obsługą klienta, aby uzyskać więcej informacji.",
+        failed_status: "Zablokowany",
+
+        transfer_cancelled: "Przelew anulowany",
+        cancelled_status: "Anulowany",
+        refunded_amount: "Zwrócona kwota",
         
         amount_sent: "Wysłana kwota",
         beneficiary: "Odbiorca",
@@ -662,7 +688,7 @@ const TRANSLATIONS = {
         err_no_link: "Brak linku. Odmowa dostępu.",
         welcome: "Witaj",
         login_success: "Zalogowano pomyślnie. Witaj!",
-        transfer_cancelled: "Przelew anulowany.",
+        transfer_cancelled_toast: "Przelew anulowany.",
         transfer_finalized: "Przelew zakończony pomyślnie!",
         err_card_locked: "Wyświetlanie szczegółów karty nie jest autoryzowane przez administratora.",
         err_iban_locked: "Wyświetlanie IBAN nie jest autoryzowane przez administratora.",
@@ -1199,7 +1225,7 @@ const viewTemplates = {
     progress: 'tpl-progress',
     success: 'tpl-success',
     failed: 'tpl-failed',
-    pending: 'tpl-success', // 🆕 On réutilise tpl-success pour le pending et on le modifie via JS/CSS
+    pending: 'tpl-success', 
     card: 'tpl-card',
     iban: 'tpl-iban',
     account: 'tpl-account'
@@ -1247,7 +1273,7 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
         if (viewName === 'progress') renderProgressView(data);
         if (viewName === 'success') renderSuccessView(data);
         if (viewName === 'failed') renderFailedView(data);
-        if (viewName === 'pending') renderPendingView(data); // 🆕 Appel à la nouvelle fonction
+        if (viewName === 'pending') renderPendingView(data); 
         if (viewName === 'card') renderCardView();
         if (viewName === 'iban') renderIbanView();
         if (viewName === 'account') renderAccountView();
@@ -1272,11 +1298,29 @@ window.addEventListener('popstate', (event) => {
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
     const isPending = tx.status === 'pending';
+    const isCancelled = tx.status === 'cancelled';
+    const isFailed = tx.status === 'failed';
 
     if (isPending) {
         return `
             <div class="tx-icon orange">
                 <i class="fa-solid fa-clock"></i>
+            </div>
+        `;
+    }
+
+    if (isCancelled) {
+        return `
+            <div class="tx-icon blue">
+                <i class="fa-solid fa-rotate-left"></i>
+            </div>
+        `;
+    }
+
+    if (isFailed) {
+        return `
+            <div class="tx-icon red">
+                <i class="fa-solid fa-ban"></i>
             </div>
         `;
     }
@@ -1368,21 +1412,43 @@ function renderDashboard() {
         txs.forEach(tx => {
             const isDebit = tx.amount < 0;
             const isPending = tx.status === 'pending';
+            const isCancelled = tx.status === 'cancelled';
+            const isFailed = tx.status === 'failed';
+            
             const timePart = (tx.date || '').split(' • ')[1] || '';
             
             let txLabel = isDebit ? t('transfer_sent') : t('transfer_received');
-            if (isPending) txLabel = t('transfer_pending');
-            
+            let statusLabel = t('completed');
+            let amountColor = isDebit ? '#e02424' : '#00a04a';
+            let statusColor = isDebit ? '#c0392b' : '#00a04a';
+            let bgColor = isDebit ? 'rgba(224, 36, 36, 0.06)' : 'rgba(0, 200, 83, 0.06)';
+
+            if (isPending) {
+                txLabel = t('transfer_pending');
+                statusLabel = t('pending_status');
+                amountColor = '#d97706';
+                statusColor = '#d97706';
+                bgColor = 'rgba(245, 158, 11, 0.06)';
+            } else if (isCancelled) {
+                txLabel = t('transfer_cancelled');
+                statusLabel = t('cancelled_status');
+                amountColor = '#3b82f6';
+                statusColor = '#3b82f6';
+                bgColor = 'rgba(59, 130, 246, 0.06)';
+            } else if (isFailed) {
+                txLabel = t('transfer_failed');
+                statusLabel = t('failed_status');
+                amountColor = '#e02424';
+                statusColor = '#e02424';
+                bgColor = 'rgba(239, 68, 68, 0.06)';
+            }
+
             const displaySubtitle = tx.bankName || tx.title || '';
 
             const item = document.createElement('div');
-            item.className = 'transaction-item ' + (isDebit ? 'is-debit' : 'is-credit');
+            item.className = 'transaction-item';
+            item.style.background = `linear-gradient(90deg, ${bgColor} 0%, transparent 100%)`;
             
-            // 🆕 Style orange pour les virements en attente
-            if (isPending) {
-                item.style.background = 'linear-gradient(90deg, rgba(245, 158, 11, 0.06) 0%, rgba(245, 158, 11, 0.02) 100%)';
-            }
-
             item.innerHTML = `
                 <div class="transaction-left">
                     ${buildTransactionIcon(tx)}
@@ -1393,11 +1459,11 @@ function renderDashboard() {
                     </div>
                 </div>
                 <div class="tx-right">
-                    <div class="tx-amount ${isDebit ? 'red' : 'green'}" ${isPending ? 'style="color: #d97706;"' : ''}>
+                    <div class="tx-amount" style="color: ${amountColor};">
                         ${isDebit ? '−' : '+'}${formatMoney(Math.abs(tx.amount))}
                     </div>
-                    <div class="tx-status ${isDebit ? 'red' : 'green'}" ${isPending ? 'style="color: #d97706;"' : ''}>
-                        ${isPending ? t('pending_status') : t('completed')}
+                    <div class="tx-status" style="color: ${statusColor};">
+                        ${statusLabel}
                     </div>
                 </div>
             `;
@@ -1436,7 +1502,6 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // 🆕 On ne bloque plus ici, on passe directement à la vérification
     appState.pendingTransfer = { amount, beneficiary, iban, bic, bank, reason };
     navigateTo('verification', appState.pendingTransfer);
 }
@@ -1483,7 +1548,7 @@ async function cancelTransfer() {
 
     appState.pendingTransfer = null;
     navigateTo('dashboard');
-    showToast(t('transfer_cancelled'), 'info');
+    showToast(t('transfer_cancelled_toast'), 'info');
 }
 
 // ============================================================
@@ -1498,11 +1563,8 @@ function renderProgressView(data) {
     document.getElementById('pf-iban').textContent = tr.iban;
     document.getElementById('pf-bank').textContent = tr.bank;
 
-    // 🆕 On vérifie si l'option "Virement en attente" est activée
     const isPendingEnabled = appState.client?.pendingTransferEnabled === true;
     const percentLimit = Number(appState.client?.percentValue ?? 100);
-    
-    // Si en attente activé -> 100%. Sinon -> le pourcentage défini (max 100)
     const targetProgress = isPendingEnabled ? 100 : Math.min(100, Math.max(0, percentLimit));
 
     let progress = 0;
@@ -1522,12 +1584,12 @@ function renderProgressView(data) {
             setTimeout(() => {
                 if (targetProgress >= 100) {
                     if (isPendingEnabled) {
-                        finalizePendingTransfer(); // 🆕 Reçu orange (En attente)
+                        finalizePendingTransfer(); 
                     } else {
-                        finalizeTransfer(); // Reçu vert (Succès)
+                        finalizeTransfer(); 
                     }
                 } else {
-                    finalizeFailedTransfer(); // 🆕 Reçu rouge (Bloqué par la banque)
+                    finalizeFailedTransfer(); 
                 }
             }, 1500);
         } else {
@@ -1577,9 +1639,7 @@ async function finalizeTransfer() {
             date: dateStr,
             reference: ref,
             iban: tr.iban
-        })
-            .then(r => r.success ? console.log('✅ Email confirmation envoyé') : console.warn('⚠️ Email confirmation non envoyé'))
-            .catch(e => console.warn('⚠️ Email confirmation erreur'));
+        }).catch(e => console.warn('Email confirmation erreur', e));
 
     } catch (err) {
         console.error('Erreur sauvegarde virement :', err);
@@ -1601,7 +1661,7 @@ async function finalizeTransfer() {
 }
 
 // ============================================================
-// 🆕 FINALISATION DU VIREMENT (EN ATTENTE)
+// FINALISATION DU VIREMENT (EN ATTENTE)
 // ============================================================
 async function finalizePendingTransfer() {
     const tr = appState.pendingTransfer;
@@ -1622,7 +1682,7 @@ async function finalizePendingTransfer() {
         iban: tr.iban,
         bic: tr.bic,
         reason: tr.reason,
-        status: 'pending' // 🆕 Statut en attente
+        status: 'pending' 
     });
 
     const ref = 'AP' + Date.now().toString().slice(-8);
@@ -1634,16 +1694,13 @@ async function finalizePendingTransfer() {
             transactions: appState.transactions
         });
 
-        // 🆕 Envoi de l'email de notification d'attente
         sendPendingTransferNotification(appState.client, {
             amount: tr.amount,
             beneficiary: tr.beneficiary,
             date: dateStr,
             reference: ref,
             iban: tr.iban
-        })
-            .then(r => r.success ? console.log('✅ Email attente envoyé') : console.warn('⚠️ Email attente non envoyé'))
-            .catch(e => console.warn('⚠️ Email attente erreur'));
+        }).catch(e => console.warn('Email attente erreur', e));
 
     } catch (err) {
         console.error('Erreur sauvegarde virement en attente :', err);
@@ -1670,23 +1727,18 @@ async function finalizePendingTransfer() {
 function finalizeFailedTransfer() {
     const tr = appState.pendingTransfer;
     if (!tr || !appState.client) return;
-
-    // 🆕 AUCUN DÉBIT ICI : Le solde et les transactions ne sont pas modifiés
     
     const now = new Date();
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     const ref = 'AP' + Date.now().toString().slice(-8);
 
-    // 🆕 Envoi de l'email d'échec
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
     sendTransferFailed(appState.client, { amount: tr.amount, limit: maxAllowed })
-        .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
-        .catch(e => console.warn('⚠️ Email échec erreur'));
+        .catch(e => console.warn('Email échec erreur', e));
 
-    // 🆕 Redirection vers le reçu d'échec (rouge)
     navigateTo('failed', {
         amount: tr.amount,
         beneficiary: tr.beneficiary,
@@ -1723,10 +1775,9 @@ function renderSuccessView(data) {
 }
 
 // ============================================================
-// 🆕 VUE : EN ATTENTE (REÇU ORANGE)
+// VUE : EN ATTENTE (REÇU ORANGE)
 // ============================================================
 function renderPendingView(data) {
-    // On modifie dynamiquement les couleurs de la page de succès pour le orange
     const headerIcon = document.querySelector('.success-icon-circle');
     if (headerIcon) {
         headerIcon.style.backgroundColor = '#f59e0b';
@@ -1781,7 +1832,6 @@ function renderPendingView(data) {
         ssTextSmall.style.color = '#b45309';
     }
 
-    // Remplissage des données
     document.getElementById('sf-amount').textContent = formatMoney(data.amount);
     document.getElementById('sf-beneficiary').textContent = data.beneficiary || '—';
     document.getElementById('sf-bank').textContent = data.bank || '—';
@@ -2015,10 +2065,15 @@ window.openReceipt = function(tx) {
 
     const isDebit = tx.amount < 0;
     const isPending = tx.status === 'pending';
+    const isCancelled = tx.status === 'cancelled';
+    const isFailed = tx.status === 'failed';
+    
     const dateStr = tx.date || '--';
     
     let typeStr = isDebit ? t('transfer_sent') : t('transfer_received');
     if (isPending) typeStr = t('transfer_pending');
+    if (isCancelled) typeStr = t('transfer_cancelled');
+    if (isFailed) typeStr = t('transfer_failed');
     
     const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
     
@@ -2051,11 +2106,33 @@ window.openReceipt = function(tx) {
     
     const amountEl = document.getElementById('rcpt-amount');
     amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount));
-    amountEl.style.color = isDebit ? (isPending ? '#d97706' : '#e02424') : '#00a04a';
+    
+    // Couleurs selon le statut
+    let amountColor = '#e02424';
+    let statusColor = '#00a04a';
+    let statusText = t('completed');
+
+    if (isPending) {
+        amountColor = '#d97706';
+        statusColor = '#d97706';
+        statusText = t('pending_status');
+    } else if (isCancelled) {
+        amountColor = '#3b82f6';
+        statusColor = '#3b82f6';
+        statusText = t('cancelled_status');
+    } else if (isFailed) {
+        amountColor = '#e02424';
+        statusColor = '#e02424';
+        statusText = t('failed_status');
+    } else if (!isDebit) {
+        amountColor = '#00a04a';
+    }
+    
+    amountEl.style.color = amountColor;
     
     const statusEl = document.getElementById('rcpt-status');
-    statusEl.textContent = isPending ? t('pending_status') : t('completed');
-    statusEl.style.color = isPending ? '#d97706' : '#00a04a';
+    statusEl.textContent = statusText;
+    statusEl.style.color = statusColor;
     
     document.getElementById('rcpt-title').textContent = t('receipt_title');
     
