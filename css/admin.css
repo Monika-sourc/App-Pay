@@ -13,7 +13,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.68; /* 🆕 Augmentation de la taille de tous les textes */
+    zoom: 0.75; /* 🆕 Taille des textes augmentée */
 }
 
 /* ============================================================
@@ -1709,7 +1709,7 @@ body {
 }
 
 /* ============================================================
-   🆕 NOUVEAUX STYLES : BOUTONS ET MODALE DE VIREMENTS
+   🆕 BOUTONS ET MODALE DE GESTION DES VIREMENTS
    ============================================================ */
 .admin-transfer-buttons-grid {
     display: flex;
