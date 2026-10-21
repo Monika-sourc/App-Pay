@@ -1210,14 +1210,27 @@ body {
     position: relative;
 }
 
+.progress-watermark {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 55px;
+    color: #e0e0e0;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .success-message-title {
     display: flex;
     align-items: center;
     font-size: 16px;
-    font-weight: 700; 
+    font-weight: 600; 
     color: #222;
     margin-bottom: 8px;
     gap: 8px;
+    position: relative;
+    z-index: 1;
 }
 
 .success-message-title i {
@@ -1228,32 +1241,36 @@ body {
 .progress-desc {
     font-size: 14px;
     color: #666;
-    margin-bottom: 15px;
-    line-height: 1.4;
+    margin-bottom: 20px;
+    line-height: 1.5;
     font-weight: 500;
+    position: relative;
+    z-index: 1;
 }
 
 .progress-container {
     width: 100%;
-    border: 2px solid var(--primary-color-light);
-    border-radius: 8px;
-    height: 40px;
-    padding: 3px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50px;
+    height: 38px;
+    padding: 2px;
     margin-bottom: 20px;
     background-color: #fff;
+    position: relative;
+    z-index: 1;
 }
 
 .progress-bar-fill {
     width: 0%;
-    background-color: var(--primary-color-light);
+    background-color: var(--primary-color);
     height: 100%;
-    border-radius: 6px;
+    border-radius: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
     transition: width 0.4s ease, background-color 0.3s;
 }
 
@@ -1262,20 +1279,45 @@ body {
     align-items: center;
     font-size: 16px;
     font-weight: 700; 
-    color: #222;
+    color: #333;
     margin-bottom: 15px;
     gap: 8px;
+    position: relative;
+    z-index: 1;
 }
 
 .details-section-title i {
-    color: var(--primary-color);
-    font-size: 16px;
+    color: #333;
+    font-size: 18px;
 }
 
+/* Nouvelle structure pour les détails empilés */
 .inner-details-box {
     background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.detail-row-new {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 18px;
+}
+
+.detail-label-new {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.detail-value-new {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    word-break: break-all;
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
