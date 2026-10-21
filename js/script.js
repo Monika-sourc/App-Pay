@@ -91,7 +91,6 @@ const TRANSLATIONS = {
         transfer_failed_subtitle: "Votre virement a été bloqué par le système. Le compte bancaire du bénéficiaire n'a pas été reconnu. Veuillez contacter le service client pour plus d'informations.",
         failed_status: "Bloqué",
 
-        // 🆕 Nouvelles traductions
         transfer_cancelled: "Virement annulé",
         cancelled_status: "Annulé",
         refunded_amount: "Montant recrédité",
@@ -2107,7 +2106,6 @@ window.openReceipt = function(tx) {
     const amountEl = document.getElementById('rcpt-amount');
     amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount));
     
-    // Couleurs selon le statut
     let amountColor = '#e02424';
     let statusColor = '#00a04a';
     let statusText = t('completed');
