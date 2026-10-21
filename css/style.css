@@ -550,8 +550,9 @@ body {
     margin-bottom: 20px;
 }
 
-/* 🆕 MODIFICATION : Enlever le gras du titre sur la page virement */
-#views-container .welcome-title[data-i18n="make_transfer"] {
+/* 🆕 MODIFICATION : Enlever le gras du titre sur la page virement et vérification */
+#views-container .welcome-title[data-i18n="make_transfer"],
+#views-container .welcome-title[data-i18n="identity_verification"] {
     font-weight: 500 !important;
 }
 
@@ -1028,8 +1029,9 @@ body {
     font-weight: 700; 
 }
 
-/* 🆕 MODIFICATION : Enlever le gras des labels sur la page virement */
-#transfer-form .form-group label {
+/* 🆕 MODIFICATION : Enlever le gras des labels sur la page virement et vérification */
+#transfer-form .form-group label,
+#verify-form .form-group label {
     font-weight: 500 !important;
 }
 
@@ -1140,15 +1142,17 @@ body {
     margin-bottom: 20px;
     position: relative;
     border: 1px solid #f0f0f0;
+    overflow: hidden; /* 🆕 Assure que l'icône ne sorte pas de la carte */
 }
 
 .verification-icon-top-right {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 45px;
+    top: 15px; /* 🆕 Ajusté de 20px à 15px */
+    right: 15px; /* 🆕 Ajusté de 20px à 15px */
+    font-size: 40px; /* 🆕 Ajusté de 45px à 40px */
     color: #f0f2f5; 
     pointer-events: none;
+    z-index: 0; /* 🆕 Bien placé derrière le texte */
 }
 
 /* 🆕 TITRE EN GRAS */
@@ -1160,6 +1164,13 @@ body {
     color: #000;
     margin-bottom: 18px;
     gap: 8px;
+    position: relative; /* 🆕 Assure que le titre passe au-dessus de l'icône */
+    z-index: 1; /* 🆕 Assure que le titre passe au-dessus de l'icône */
+}
+
+/* 🆕 MODIFICATION : Enlever le gras du titre de la carte sur la page vérification */
+.verification-card .card-header-title {
+    font-weight: 500 !important;
 }
 
 .card-header-title i {
@@ -1173,6 +1184,8 @@ body {
     padding: 20px;
     margin-top: 15px;
     margin-bottom: 20px;
+    position: relative; /* 🆕 */
+    z-index: 1; /* 🆕 */
 }
 
 .verification-details-grey-box .detail-row {
@@ -1221,10 +1234,12 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px; 
-    font-weight: 700; 
+    font-weight: 500 !important; /* 🆕 Changé de 700 à 500 */
     color: #000;
     margin-bottom: 15px;
     gap: 8px;
+    position: relative; /* 🆕 */
+    z-index: 1; /* 🆕 */
 }
 
 .activation-section-title i {
