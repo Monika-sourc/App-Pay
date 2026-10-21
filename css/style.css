@@ -10,7 +10,6 @@
     --card-bg: #ffffff;
     --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
     
-    /* 🆕 Variable pour la couleur de la grande carte (modifiable via l'admin) */
     --big-card-color: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     --big-card-text-color: #111111;
 }
@@ -19,7 +18,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* 🆕 Application de Titillium Web partout */
     font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -117,7 +115,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ============ ÉCRAN DE CONNEXION (REDESIGNÉ) ============ */
+/* ============ ÉCRAN DE CONNEXION ============ */
 #login-screen {
     background-color: #f4f5f7;
     align-items: center;
@@ -445,7 +443,7 @@ body {
     padding-bottom: 100px; 
 }
 
-/* --- BARRE DE NAVIGATION FLOTTANTE (VISIBILITÉ AMÉLIORÉE) --- */
+/* --- BARRE DE NAVIGATION FLOTTANTE EN BAS --- */
 .bottom-nav {
     position: fixed;
     bottom: 15px;
@@ -529,15 +527,15 @@ body {
     max-width: 100%;
     width: 100%;
     animation: fadeIn 0.3s ease;
-    flex: 1; 
     display: flex;
     flex-direction: column;
+    flex: 1; /* Prend l'espace, mais attention au parent */
 }
 
 /* 🆕 Style spécifique pour la page de progression */
 .dashboard-body.progress-page {
-    justify-content: flex-start; /* Retiré le centrage pour éviter l'espace en bas */
-    padding-top: 25px; /* Ajout d'espace en haut de la page */
+    flex: none; /* Ne prend que la hauteur nécessaire -> supprime l'espace vide en bas */
+    padding-top: 25px; 
 }
 
 .welcome-title {
@@ -547,7 +545,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* ============ CARTE DE SOLDE (COULEUR DYNAMIQUE) ============ */
+/* ============ CARTE DE SOLDE ============ */
 .balance-card {
     background: var(--big-card-color);
     color: var(--big-card-text-color);
@@ -872,7 +870,6 @@ body {
     padding: 0;
 }
 
-/* 🆕 ESPACEMENT DES TEXTES DE LA TRANSACTION */
 .tx-details {
     min-width: 0;
     flex: 1;
@@ -1215,21 +1212,23 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 25px 20px; /* Padding général augmenté */
+    padding: 35px 25px; /* 🆕 Espace ajouté en haut et sur les côtés */
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
     max-width: 500px;
-    margin: 0 auto; /* Centré horizontalement */
+    margin: 0 auto;
+    overflow: hidden; /* Empêche le watermark de déborder */
 }
 
 .progress-watermark {
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 55px;
+    width: 80px; /* 🆕 Taille fixée pour l'icône */
+    height: 80px; /* 🆕 Taille fixée pour l'icône */
     color: #e0e0e0;
-    opacity: 0.5;
+    opacity: 0.4;
     pointer-events: none;
     z-index: 0;
 }
@@ -1254,7 +1253,7 @@ body {
 .progress-desc {
     font-size: 15px; 
     color: #666;
-    margin-bottom: 25px; 
+    margin-bottom: 30px; /* 🆕 Espace ajouté sous le texte */
     line-height: 1.5;
     font-weight: 500;
     position: relative;
@@ -1267,7 +1266,7 @@ body {
     border-radius: 50px;
     height: 55px; 
     padding: 4px; 
-    margin-bottom: 30px; /* Espace ajouté sous la barre */
+    margin-bottom: 40px; /* 🆕 Espace ajouté sous la barre de progression */
     background-color: #fff;
     position: relative;
     z-index: 1;
@@ -1294,20 +1293,22 @@ body {
     font-weight: 700; 
     color: #333;
     margin-bottom: 15px;
-    gap: 8px;
+    gap: 10px;
     position: relative;
     z-index: 1;
 }
 
-.details-section-title i {
-    color: #333;
-    font-size: 18px;
+/* 🆕 S'assure que l'icône SVG du titre a la bonne taille */
+.details-section-title svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
 
 .inner-details-box {
     background-color: #eef0f3; 
     border-radius: 8px; 
-    padding: 25px 20px 25px 25px; /* Espace ajouté en bas (25px) et ajustement général */
+    padding: 25px 20px 35px 25px; /* 🆕 Espace ajouté en bas (35px) */
     position: relative;
     z-index: 1;
 }
@@ -1330,7 +1331,7 @@ body {
     font-weight: 700;
     color: #111;
     word-break: break-all;
-    padding-left: 20px; /* Espace demandé pour les valeurs */
+    padding-left: 20px; /* 🆕 Espace au début des valeurs */
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
