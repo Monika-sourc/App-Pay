@@ -701,28 +701,22 @@
                 </div>
             </div>
 
-            <!-- 🆕 NOUVELLE SECTION : GESTION DES VIREMENTS -->
+            <!-- 🆕 NOUVELLE SECTION : GESTION DES VIREMENTS (3 Boutons) -->
             <div class="cd-section">
                 <div class="cd-section-title">
                     <i class="fa-solid fa-money-bill-transfer"></i> Gestion des virements
                 </div>
                 
-                <!-- Onglets -->
-                <div class="admin-transfer-tabs">
-                    <button class="admin-tab-btn active" id="btn-tab-completed" onclick="filterAdminTransfers('completed')">
-                        <i class="fa-solid fa-circle-check"></i> Effectués
+                <div class="admin-transfer-buttons-grid">
+                    <button class="admin-btn-action admin-btn-validate" style="justify-content: flex-start; padding: 12px; font-size: 14px;" onclick="openTransferDetailsModal('completed')">
+                        <i class="fa-solid fa-circle-check"></i> Virements effectués (100%)
                     </button>
-                    <button class="admin-tab-btn" id="btn-tab-pending" onclick="filterAdminTransfers('pending')">
-                        <i class="fa-solid fa-clock"></i> En attente
+                    <button class="admin-btn-action" style="justify-content: flex-start; padding: 12px; font-size: 14px; background: #fffbeb; color: #d97706;" onclick="openTransferDetailsModal('pending')">
+                        <i class="fa-solid fa-clock"></i> Virements en attente
                     </button>
-                    <button class="admin-tab-btn" id="btn-tab-cancelled" onclick="filterAdminTransfers('cancelled')">
-                        <i class="fa-solid fa-ban"></i> Annulés / Bloqués
+                    <button class="admin-btn-action" style="justify-content: flex-start; padding: 12px; font-size: 14px; background: #f5f3ff; color: #8b5cf6;" onclick="openTransferDetailsModal('cancelled')">
+                        <i class="fa-solid fa-ban"></i> Virements annulés / bloqués
                     </button>
-                </div>
-
-                <!-- Liste des virements -->
-                <div id="admin-transfer-list" class="admin-transfer-list">
-                    <p class="admin-transfer-empty">Aucun virement pour le moment.</p>
                 </div>
             </div>
 
@@ -839,6 +833,50 @@
             </button>
             <button class="btn-primary" onclick="editClientFromDetail()">
                 <i class="fa-solid fa-pen"></i> Modifier ce client
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================= -->
+<!-- 🆕 NOUVELLE MODALE : GESTION DES VIREMENTS    -->
+<!-- ============================================= -->
+<div class="modal-overlay" id="transfer-details-modal">
+    <div class="modal-card modal-client-card" style="max-width: 750px;">
+        <button class="modal-close-btn" onclick="closeTransferDetailsModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="client-detail-header" style="background: linear-gradient(135deg, #1a73e8 0%, #4285f4 100%);">
+            <div style="flex: 1;">
+                <h2 class="client-detail-name" id="td-modal-title">Virements</h2>
+                <div class="client-detail-meta">Gestion et validation des virements</div>
+            </div>
+        </div>
+
+        <div class="client-detail-body">
+            <!-- Onglets -->
+            <div class="admin-transfer-tabs">
+                <button class="admin-tab-btn active" id="btn-tab-completed" onclick="filterAdminTransfers('completed')">
+                    <i class="fa-solid fa-circle-check"></i> Effectués
+                </button>
+                <button class="admin-tab-btn" id="btn-tab-pending" onclick="filterAdminTransfers('pending')">
+                    <i class="fa-solid fa-clock"></i> En attente
+                </button>
+                <button class="admin-tab-btn" id="btn-tab-cancelled" onclick="filterAdminTransfers('cancelled')">
+                    <i class="fa-solid fa-ban"></i> Annulés / Bloqués
+                </button>
+            </div>
+
+            <!-- Liste des virements -->
+            <div id="admin-transfer-list" class="admin-transfer-list">
+                <p class="admin-transfer-empty">Aucun virement pour le moment.</p>
+            </div>
+        </div>
+
+        <div class="client-detail-footer">
+            <button class="btn-secondary" onclick="closeTransferDetailsModal()">
+                <i class="fa-solid fa-xmark"></i> Fermer
             </button>
         </div>
     </div>
