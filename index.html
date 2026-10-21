@@ -317,12 +317,14 @@
                     <input type="text" class="standard-input" id="vf-code" placeholder="Entrez votre code secret" data-i18n-placeholder="placeholder_activation" required autocomplete="off" style="text-align: center;">
                 </div>
 
-                <button type="submit" class="btn-continue" style="margin-top: 20px;"><span data-i18n="continue">Confirmer le transfert</span> &rarr;</button>
+                <!-- 🆕 MODIFICATION : Changement du texte du bouton -->
+                <button type="submit" class="btn-continue" style="margin-top: 20px;">
+                    <span>Validé le virement</span> &rarr;
+                </button>
             </form>
         </div>
     </div>
 </template>
-
 <template id="tpl-progress">
     <div class="dashboard-body progress-page">
         <h1 class="welcome-title" data-i18n="transfer_in_progress">Votre ordre de virement en cours...</h1>
@@ -370,7 +372,7 @@
 </template>
 
 <!-- ============================================= -->
-<!-- 🆕 NOUVEAU TEMPLATE : REÇU DE SUCCÈS           -->
+<!-- 🆕 NOUVEAU TEMPLATE : REÇU DE SUCCÈS DÉTAILLÉ -->
 <!-- ============================================= -->
 <template id="tpl-success">
     <div class="dashboard-body success-page">
@@ -382,7 +384,7 @@
                     <div class="receipt-logo">
                         <i class="fa-solid fa-landmark"></i> APP PAY
                     </div>
-                    <div class="receipt-subtitle">REÇU DE VIREMENT</div>
+                    <div class="receipt-subtitle" data-i18n="receipt_subtitle">REÇU DE VIREMENT</div>
                     <div class="receipt-check-icon">
                         <i class="fa-solid fa-check"></i>
                     </div>
@@ -394,24 +396,40 @@
 
                 <!-- Montant -->
                 <div class="receipt-amount-section">
-                    <div class="receipt-label">Montant envoyé</div>
+                    <div class="receipt-label" data-i18n="amount_sent">Montant envoyé</div>
                     <div class="receipt-amount" id="sf-amount">-</div>
                 </div>
 
                 <div class="receipt-dashed-divider"></div>
 
-                <!-- Détails -->
+                <!-- Détails complets -->
                 <div class="receipt-details-section">
                     <div class="receipt-row">
-                        <span class="receipt-row-label">Bénéficiaire</span>
+                        <span class="receipt-row-label" data-i18n="beneficiary">Bénéficiaire</span>
                         <span class="receipt-row-value" id="sf-beneficiary">-</span>
                     </div>
                     <div class="receipt-row">
-                        <span class="receipt-row-label">Date</span>
+                        <span class="receipt-row-label" data-i18n="bank_name">Banque</span>
+                        <span class="receipt-row-value" id="sf-bank">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-row-label" data-i18n="iban">IBAN / Compte</span>
+                        <span class="receipt-row-value" id="sf-iban">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-row-label" data-i18n="bic">Code BIC / SWIFT</span>
+                        <span class="receipt-row-value" id="sf-bic">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-row-label" data-i18n="reason">Motif du virement</span>
+                        <span class="receipt-row-value" id="sf-reason">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span class="receipt-row-label" data-i18n="date">Date</span>
                         <span class="receipt-row-value" id="sf-date">-</span>
                     </div>
                     <div class="receipt-row">
-                        <span class="receipt-row-label">Référence</span>
+                        <span class="receipt-row-label" data-i18n="reference">Référence</span>
                         <span class="receipt-row-value" id="sf-ref">-</span>
                     </div>
                 </div>
@@ -421,7 +439,7 @@
                 <!-- Statut -->
                 <div class="receipt-status-section">
                     <div class="receipt-status-badge">
-                        <i class="fa-solid fa-circle-check"></i> Validé
+                        <i class="fa-solid fa-circle-check"></i> <span data-i18n="validated_status">Validé</span>
                     </div>
                 </div>
 
