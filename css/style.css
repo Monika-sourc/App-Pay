@@ -532,10 +532,11 @@ body {
     flex: 1;
 }
 
-/* 🆕 Style spécifique pour la page de progression */
+/* 🆕 Page de progression : flex none pour éviter l'étirement */
 .dashboard-body.progress-page {
-    flex: none; /* Supprime l'étirement -> enlève l'espace vide en bas */
-    padding-top: 20px; 
+    flex: none; 
+    padding-top: 25px; 
+    padding-bottom: 10px;
 }
 
 .welcome-title {
@@ -1212,7 +1213,7 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 40px 25px 30px; /* 🆕 Gros espace en haut, espace en bas */
+    padding: 60px 25px 40px; /* 🆕 Gros espace en haut et en bas */
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
@@ -1225,8 +1226,8 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 60px; /* 🆕 Taille de l'icône filigrane */
-    color: #e0e0e0;
+    width: 60px; 
+    height: 60px; 
     opacity: 0.4;
     pointer-events: none;
     z-index: 0;
@@ -1238,7 +1239,7 @@ body {
     font-size: 17px; 
     font-weight: 600; 
     color: #222;
-    margin-bottom: 15px; /* 🆕 Espace entre le titre et le sous-titre */
+    margin-bottom: 15px; 
     gap: 8px;
     position: relative;
     z-index: 1;
@@ -1252,23 +1253,25 @@ body {
 .progress-desc {
     font-size: 15px; 
     color: #666;
-    margin-bottom: 30px; /* 🆕 Espace sous le texte */
+    margin-bottom: 30px; 
     line-height: 1.5;
     font-weight: 500;
     position: relative;
     z-index: 1;
 }
 
+/* 🆕 Correction de la barre pour atteindre 100% */
 .progress-container {
     width: 100%;
     border: 2px solid #00c853; 
     border-radius: 50px;
     height: 55px; 
-    padding: 4px; 
-    margin-bottom: 40px; /* 🆕 Espace sous la barre de progression */
+    padding: 0; /* 🆕 Supprimé le padding intérieur qui bloquait le vert */
+    margin-bottom: 40px; 
     background-color: #fff;
     position: relative;
     z-index: 1;
+    overflow: hidden; /* 🆕 Empêche le vert de déborder de la bordure arrondie */
 }
 
 .progress-bar-fill {
@@ -1282,7 +1285,7 @@ body {
     color: white;
     font-weight: 700;
     font-size: 18px; 
-    transition: width 0.4s ease, background-color 0.3s;
+    transition: width 0.1s linear; /* 🆕 Animation fluide */
 }
 
 .details-section-title {
@@ -1297,15 +1300,15 @@ body {
     z-index: 1;
 }
 
-.details-section-title i {
-    color: #ff7a00; /* L'icône sera orange */
-    font-size: 20px; /* L'icône sera un peu plus grande */
+/* 🆕 Ajustement de l'icône SVG du titre */
+.details-section-title svg {
+    flex-shrink: 0;
 }
 
 .inner-details-box {
     background-color: #eef0f3; 
     border-radius: 8px; 
-    padding: 25px 20px 30px 25px; /* Padding ajusté */
+    padding: 25px 20px 30px 25px; 
     position: relative;
     z-index: 1;
 }
@@ -1328,7 +1331,7 @@ body {
     font-weight: 700;
     color: #111;
     word-break: break-all;
-    padding-left: 20px; /* 🆕 Espace au début des valeurs pour les décaler */
+    padding-left: 20px; /* 🆕 Espace au début des valeurs */
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
