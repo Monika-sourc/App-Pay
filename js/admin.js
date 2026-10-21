@@ -839,7 +839,6 @@ function openClientDetail(clientId) {
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
 
-    // IBAN masqué
     const clientIban = client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
     const ibanParts = clientIban.split(' ');
     const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
@@ -849,7 +848,6 @@ function openClientDetail(clientId) {
     const ibanEyeIcon = document.getElementById('admin-iban-eye-icon');
     if(ibanEyeIcon) ibanEyeIcon.className = 'fa-regular fa-eye';
 
-    // Carte masquée
     const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
     const cardCvv = client.cardCVV ? '•••' : '--';
     document.getElementById('cd-card-number').textContent = cardNum;
@@ -869,6 +867,68 @@ function closeClientDetail() {
     currentDetailClient = null;
     isCardDetailsVisible = false;
     isIbanVisible = false;
+}
+
+window.toggleAdminIbanVisibility = function() {
+    if (!currentDetailClient) return;
+    isIbanVisible = !isIbanVisible;
+    
+    const ibanEl = document.getElementById('cd-iban');
+    const eyeIcon = document.getElementById('admin-iban-eye-icon');
+    
+    if (isIbanVisible) {
+        ibanEl.textContent = currentDetailClient.iban || '--';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        const ibanParts = (currentDetailClient.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
+        const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
+        ibanEl.textContent = maskedIban;
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+window.toggleAdminCardVisibility = function() {
+    if (!currentDetailClient) return;
+    isCardDetailsVisible = !isCardDetailsVisible;
+    
+    const cardNumEl = document.getElementById('cd-card-number');
+    const cardCvvEl = document.getElementById('cd-card-cvv');
+    const eyeIcon = document.getElementById('admin-eye-icon');
+    
+    if (isCardDetailsVisible) {
+        cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
+        cardCvvEl.textContent = currentDetailClient.cardCVV || '--';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        cardNumEl.textContent = currentDetailClient.cardNumber ? '•••• •••• •••• ' + currentDetailClient.cardNumber.slice(-4) : '--';
+        cardCvvEl.textContent = currentDetailClient.cardCVV ? '•••' : '--';
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+window.toggleEditCardVisibility = function() {
+    const cardNumInput = document.getElementById('opt-card-number');
+    const cardCvvInput = document.getElementById('opt-card-cvv');
+    const eyeIcon = document.getElementById('edit-eye-icon');
+    
+    if (!cardNumInput || !cardCvvInput) return;
+
+    if (cardNumInput.type === 'password') {
+        cardNumInput.type = 'text';
+        cardCvvInput.type = 'text';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        cardNumInput.type = 'password';
+        cardCvvInput.type = 'password';
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+function editClientFromDetail() {
+    if (!currentDetailClient) return;
+    const clientId = currentDetailClient.id;
+    closeClientDetail();
+    selectClientForModify(clientId);
 }
 
 // ============================================================
@@ -1075,78 +1135,6 @@ window.handleAdminValidateTransfer = async function(index) {
         showToast('Erreur lors de la validation.', 'error');
     }
 };
-
-// ============================================================
-// FERMETURE DU MODAL CLIENT
-// ============================================================
-function closeClientDetail() {
-    document.getElementById('client-detail-modal').classList.remove('show');
-    currentDetailClient = null;
-    isCardDetailsVisible = false;
-    isIbanVisible = false;
-}
-
-window.toggleAdminIbanVisibility = function() {
-    if (!currentDetailClient) return;
-    isIbanVisible = !isIbanVisible;
-    
-    const ibanEl = document.getElementById('cd-iban');
-    const eyeIcon = document.getElementById('admin-iban-eye-icon');
-    
-    if (isIbanVisible) {
-        ibanEl.textContent = currentDetailClient.iban || '--';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        const ibanParts = (currentDetailClient.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
-        const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
-        ibanEl.textContent = maskedIban;
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-window.toggleAdminCardVisibility = function() {
-    if (!currentDetailClient) return;
-    isCardDetailsVisible = !isCardDetailsVisible;
-    
-    const cardNumEl = document.getElementById('cd-card-number');
-    const cardCvvEl = document.getElementById('cd-card-cvv');
-    const eyeIcon = document.getElementById('admin-eye-icon');
-    
-    if (isCardDetailsVisible) {
-        cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
-        cardCvvEl.textContent = currentDetailClient.cardCVV || '--';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        cardNumEl.textContent = currentDetailClient.cardNumber ? '•••• •••• •••• ' + currentDetailClient.cardNumber.slice(-4) : '--';
-        cardCvvEl.textContent = currentDetailClient.cardCVV ? '•••' : '--';
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-window.toggleEditCardVisibility = function() {
-    const cardNumInput = document.getElementById('opt-card-number');
-    const cardCvvInput = document.getElementById('opt-card-cvv');
-    const eyeIcon = document.getElementById('edit-eye-icon');
-    
-    if (!cardNumInput || !cardCvvInput) return;
-
-    if (cardNumInput.type === 'password') {
-        cardNumInput.type = 'text';
-        cardCvvInput.type = 'text';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        cardNumInput.type = 'password';
-        cardCvvInput.type = 'password';
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-function editClientFromDetail() {
-    if (!currentDetailClient) return;
-    const clientId = currentDetailClient.id;
-    closeClientDetail();
-    selectClientForModify(clientId);
-}
 
 // ============================================================
 // 📧 ENVOI DES EMAILS (ADMIN)
@@ -2207,9 +2195,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('client-detail-modal').addEventListener('click', (e) => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
-    document.getElementById('transfer-details-modal').addEventListener('click', (e) => {
-        if (e.target.id === 'transfer-details-modal') closeTransferDetailsModal();
-    });
+    
+    // 🆕 Écouteur pour la modale des virements
+    const transferModal = document.getElementById('transfer-details-modal');
+    if (transferModal) {
+        transferModal.addEventListener('click', (e) => {
+            if (e.target.id === 'transfer-details-modal') closeTransferDetailsModal();
+        });
+    }
 
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
 
