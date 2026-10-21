@@ -144,7 +144,7 @@ const TRANSLATIONS = {
         allowed_limit: "Limite autorisée :",
         limit_percentage: "Pourcentage limite :",
         current_balance: "Solde actuel :",
-        attempted_amount: "Montant tenté :",
+        attempted_amount: "MONTANT TENTÉ",
         new_transaction_received: "Nouvelle transaction reçue !",
         copied: "Copié !",
         
@@ -270,7 +270,7 @@ const TRANSLATIONS = {
         allowed_limit: "Allowed limit:",
         limit_percentage: "Limit percentage:",
         current_balance: "Current balance:",
-        attempted_amount: "Attempted amount:",
+        attempted_amount: "ATTEMPTED AMOUNT",
         new_transaction_received: "New transaction received!",
         copied: "Copied!",
         
@@ -396,7 +396,7 @@ const TRANSLATIONS = {
         allowed_limit: "Límite permitido:",
         limit_percentage: "Porcentaje límite:",
         current_balance: "Saldo actual:",
-        attempted_amount: "Importe intentado:",
+        attempted_amount: "IMPORTE INTENTADO",
         new_transaction_received: "¡Nueva transacción recibida!",
         copied: "¡Copiado!",
         
@@ -522,7 +522,7 @@ const TRANSLATIONS = {
         allowed_limit: "Zulässiges Limit:",
         limit_percentage: "Limit-Prozentsatz:",
         current_balance: "Aktuelles Guthaben:",
-        attempted_amount: "Versuchter Betrag:",
+        attempted_amount: "VERSUCHTER BETRAG",
         new_transaction_received: "Neue Transaktion erhalten!",
         copied: "Kopiert!",
         
@@ -648,7 +648,7 @@ const TRANSLATIONS = {
         allowed_limit: "Dozwolony limit:",
         limit_percentage: "Procent limitu:",
         current_balance: "Obecne saldo:",
-        attempted_amount: "Próbowana kwota:",
+        attempted_amount: "PRÓBOWANA KWOTA",
         new_transaction_received: "Otrzymano nową transakcję!",
         copied: "Skopiowano!",
         
@@ -687,6 +687,7 @@ function applyLanguage() {
         el.placeholder = t(key);
     });
 }
+
 // 🆕 CONVERSION SYMBOLE -> CODE DEVISE
 function getCurrencyCode(symbol) {
     const map = {
@@ -1378,23 +1379,7 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    const percentLimit = Number(appState.client?.percentValue ?? 100);
-    const maxAllowed = appState.balance * (percentLimit / 100);
-
-    if (amount > maxAllowed) {
-        sendTransferFailed(appState.client, { amount, limit: maxAllowed })
-            .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
-            .catch(e => console.warn('⚠️ Email échec erreur'));
-
-        navigateTo('failed', {
-            amount,
-            limit: maxAllowed,
-            percent: percentLimit,
-            beneficiary
-        });
-        return;
-    }
-
+    // 🆕 MODIFICATION : On retire le blocage immédiat ici pour laisser la progression se faire
     appState.pendingTransfer = { amount, beneficiary, iban, bic, bank, reason };
     navigateTo('verification', appState.pendingTransfer);
 }
@@ -1443,7 +1428,6 @@ async function cancelTransfer() {
     navigateTo('dashboard');
     showToast(t('transfer_cancelled'), 'info');
 }
-
 // ============================================================
 // VUE : PROGRESSION
 // ============================================================
@@ -1456,6 +1440,10 @@ function renderProgressView(data) {
     document.getElementById('pf-iban').textContent = tr.iban;
     document.getElementById('pf-bank').textContent = tr.bank;
 
+    // 🆕 Récupération du pourcentage limite défini par l'admin (100 par défaut)
+    const percentLimit = Number(appState.client?.percentValue ?? 100);
+    const targetProgress = Math.min(100, Math.max(0, percentLimit));
+
     let progress = 0;
     const fill = document.getElementById('progress-fill');
     fill.style.width = '0%';
@@ -1464,12 +1452,21 @@ function renderProgressView(data) {
     const interval = setInterval(() => {
         progress += 1;
         
-        if (progress >= 100) {
-            progress = 100;
-            fill.style.width = '100%';
-            fill.textContent = '100%';
+        // 🆕 On s'arrête au pourcentage cible
+        if (progress >= targetProgress) {
+            progress = targetProgress;
+            fill.style.width = progress + '%';
+            fill.textContent = progress + '%';
             clearInterval(interval);
-            setTimeout(finalizeTransfer, 1500); 
+            
+            // 🆕 Attente avant de finaliser (1.5s)
+            setTimeout(() => {
+                if (targetProgress >= 100) {
+                    finalizeTransfer(); // Virement réussi
+                } else {
+                    finalizeFailedTransfer(); // Virement échoué (bloqué)
+                }
+            }, 1500);
         } else {
             fill.style.width = progress + '%';
             fill.textContent = progress + '%';
@@ -1478,7 +1475,7 @@ function renderProgressView(data) {
 }
 
 // ============================================================
-// FINALISATION DU VIREMENT
+// FINALISATION DU VIREMENT (SUCCÈS 100%)
 // ============================================================
 async function finalizeTransfer() {
     const tr = appState.pendingTransfer;
@@ -1524,7 +1521,6 @@ async function finalizeTransfer() {
         console.error('Erreur sauvegarde virement :', err);
     }
 
-    // 🆕 MODIFICATION : Transmission de TOUTES les données pour le reçu détaillé
     navigateTo('success', {
         amount: tr.amount,
         beneficiary: tr.beneficiary,
@@ -1541,10 +1537,47 @@ async function finalizeTransfer() {
 }
 
 // ============================================================
-// VUE : SUCCÈS (REÇU DÉTAILLÉ)
+// FINALISATION DU VIREMENT (ÉCHEC < 100%)
+// ============================================================
+function finalizeFailedTransfer() {
+    const tr = appState.pendingTransfer;
+    if (!tr || !appState.client) return;
+
+    // 🆕 AUCUN DÉBIT ICI : Le solde et les transactions ne sont pas modifiés
+    
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
+        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    const ref = 'AP' + Date.now().toString().slice(-8);
+
+    // 🆕 Envoi de l'email d'échec au client
+    const percentLimit = Number(appState.client?.percentValue ?? 100);
+    const maxAllowed = appState.balance * (percentLimit / 100);
+
+    sendTransferFailed(appState.client, { amount: tr.amount, limit: maxAllowed })
+        .then(r => r.success ? console.log('✅ Email échec envoyé') : console.warn('⚠️ Email échec non envoyé'))
+        .catch(e => console.warn('⚠️ Email échec erreur'));
+
+    // 🆕 Redirection vers le reçu d'échec (rouge)
+    navigateTo('failed', {
+        amount: tr.amount,
+        beneficiary: tr.beneficiary,
+        bank: tr.bank,
+        iban: tr.iban,
+        bic: tr.bic,
+        reason: tr.reason,
+        date: dateStr,
+        reference: ref
+    });
+
+    showToast(t('transfer_failed'), 'error');
+    appState.pendingTransfer = null;
+}
+
+// ============================================================
+// VUE : SUCCÈS (REÇU VERT)
 // ============================================================
 function renderSuccessView(data) {
-    // 🆕 MODIFICATION : Remplissage de tous les nouveaux champs du reçu
     document.getElementById('sf-amount').textContent = formatMoney(data.amount);
     document.getElementById('sf-beneficiary').textContent = data.beneficiary || '—';
     document.getElementById('sf-bank').textContent = data.bank || '—';
@@ -1562,19 +1595,17 @@ function renderSuccessView(data) {
 }
 
 // ============================================================
-// VUE : VIREMENT ÉCHOUÉ
+// VUE : ÉCHEC (REÇU ROUGE)
 // ============================================================
 function renderFailedView(data) {
     const d = data || {};
-    const amountEl = document.getElementById('ff-amount');
-    const limitEl = document.getElementById('ff-limit');
-    const percentEl = document.getElementById('ff-percent');
-    const balanceEl = document.getElementById('ff-balance');
-
-    if (amountEl) amountEl.textContent = formatMoney(d.amount || 0);
-    if (limitEl) limitEl.textContent = formatMoney(d.limit || 0);
-    if (percentEl) percentEl.textContent = (d.percent || 0) + '%';
-    if (balanceEl) balanceEl.textContent = formatMoney(appState.balance);
+    document.getElementById('ff-amount').textContent = formatMoney(d.amount || 0);
+    document.getElementById('ff-beneficiary').textContent = d.beneficiary || '—';
+    document.getElementById('ff-bank').textContent = d.bank || '—';
+    document.getElementById('ff-iban').textContent = d.iban || '—';
+    document.getElementById('ff-bic').textContent = d.bic || '—';
+    document.getElementById('ff-reason').textContent = d.reason || '—';
+    document.getElementById('ff-date').textContent = d.date || '—';
 }
 
 // ============================================================
@@ -1878,7 +1909,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target.id === 'transfer-form') {
             handleTransferSubmit(e);
         } else if (e.target.id === 'verify-form') {
-            // 🆕 CORRECTION : Appel de la bonne fonction
             handleVerifySubmit(e);
         }
     });
