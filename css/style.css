@@ -529,14 +529,15 @@ body {
     max-width: 100%;
     width: 100%;
     animation: fadeIn 0.3s ease;
-    flex: 1; /* Pour prendre l'espace disponible */
+    flex: 1; 
     display: flex;
     flex-direction: column;
 }
 
-/* 🆕 Style spécifique pour centrer la page de progression */
+/* 🆕 Style spécifique pour la page de progression */
 .dashboard-body.progress-page {
-    justify-content: center;
+    justify-content: flex-start; /* Retiré le centrage pour éviter l'espace en bas */
+    padding-top: 25px; /* Ajout d'espace en haut de la page */
 }
 
 .welcome-title {
@@ -1214,7 +1215,7 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 20px 15px;
+    padding: 25px 20px; /* Padding général augmenté */
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
@@ -1239,7 +1240,7 @@ body {
     font-size: 17px; 
     font-weight: 600; 
     color: #222;
-    margin-bottom: 14px; /* Espacement ajouté */
+    margin-bottom: 14px; 
     gap: 8px;
     position: relative;
     z-index: 1;
@@ -1253,7 +1254,7 @@ body {
 .progress-desc {
     font-size: 15px; 
     color: #666;
-    margin-bottom: 25px; /* Espacement ajouté */
+    margin-bottom: 25px; 
     line-height: 1.5;
     font-weight: 500;
     position: relative;
@@ -1262,11 +1263,11 @@ body {
 
 .progress-container {
     width: 100%;
-    border: 2px solid #00c853; /* Vert vif */
+    border: 2px solid #00c853; 
     border-radius: 50px;
-    height: 55px; /* Hauteur augmentée */
-    padding: 4px; /* Ajusté */
-    margin-bottom: 25px;
+    height: 55px; 
+    padding: 4px; 
+    margin-bottom: 30px; /* Espace ajouté sous la barre */
     background-color: #fff;
     position: relative;
     z-index: 1;
@@ -1274,7 +1275,7 @@ body {
 
 .progress-bar-fill {
     width: 0%;
-    background-color: #00c853; /* Vert vif */
+    background-color: #00c853; 
     height: 100%;
     border-radius: 50px;
     display: flex;
@@ -1282,7 +1283,7 @@ body {
     justify-content: center;
     color: white;
     font-weight: 700;
-    font-size: 18px; /* Texte agrandi */
+    font-size: 18px; 
     transition: width 0.4s ease, background-color 0.3s;
 }
 
@@ -1303,11 +1304,10 @@ body {
     font-size: 18px;
 }
 
-/* Nouvelle structure pour les détails empilés */
 .inner-details-box {
-    background-color: #eef0f3; /* Gris légèrement plus foncé */
-    border-radius: 8px; /* Un peu plus rectangulaire */
-    padding: 20px 20px 20px 30px; /* Indentation ajoutée à gauche */
+    background-color: #eef0f3; 
+    border-radius: 8px; 
+    padding: 25px 20px 25px 25px; /* Espace ajouté en bas (25px) et ajustement général */
     position: relative;
     z-index: 1;
 }
@@ -1330,6 +1330,7 @@ body {
     font-weight: 700;
     color: #111;
     word-break: break-all;
+    padding-left: 20px; /* Espace demandé pour les valeurs */
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
