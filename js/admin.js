@@ -28,8 +28,8 @@ import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 import {
     sendLoginCredentials,
     sendActivationCode,
-    sendTransferAdminCancelled, // 🆕 Nouvel import
-    sendTransferAdminValidated  // 🆕 Nouvel import
+    sendTransferAdminCancelled,
+    sendTransferAdminValidated
 } from './emails.js';
 
 const COLLECTION_NAME = 'clients';
@@ -44,7 +44,7 @@ let selectedOption = null;
 let currentDetailClient = null;
 let isCardDetailsVisible = false;
 let isIbanVisible = false;
-let currentTransferTab = 'completed'; // 🆕 Onglet actif par défaut
+let currentTransferTab = 'completed';
 
 // ============================================================
 // DONNÉES PAYS
@@ -82,54 +82,55 @@ const COUNTRY_LIST = [
     { name: "Gambie", flag: "🇬🇲" }, { name: "Géorgie", flag: "🇬🇪" },
     { name: "Ghana", flag: "🇬🇭" }, { name: "Grèce", flag: "🇬🇷" },
     { name: "Guatemala", flag: "🇬🇹" }, { name: "Guinée", flag: "🇬🇳" },
-    { name: "Guinée-Bissau", flag: "🇬🇼" }, { name: "Haïti", flag: "🇭🇹" },
-    { name: "Honduras", flag: "🇭🇳" }, { name: "Hongrie", flag: "🇭🇺" },
-    { name: "Inde", flag: "🇮🇳" }, { name: "Indonésie", flag: "🇮🇩" },
-    { name: "Irak", flag: "🇮🇶" }, { name: "Iran", flag: "🇮🇷" },
-    { name: "Irlande", flag: "🇮🇪" }, { name: "Islande", flag: "🇮🇸" },
-    { name: "Israël", flag: "🇮🇱" }, { name: "Italie", flag: "🇮🇹" },
-    { name: "Jamaïque", flag: "🇯🇲" }, { name: "Japon", flag: "🇯🇵" },
-    { name: "Jordanie", flag: "🇯🇴" }, { name: "Kazakhstan", flag: "🇰🇿" },
-    { name: "Kenya", flag: "🇰🇪" }, { name: "Koweït", flag: "🇰🇼" },
-    { name: "Laos", flag: "🇱🇦" }, { name: "Lesotho", flag: "🇱🇸" },
-    { name: "Lettonie", flag: "🇱🇻" }, { name: "Liban", flag: "🇱🇧" },
-    { name: "Libéria", flag: "🇱🇷" }, { name: "Libye", flag: "🇱🇾" },
-    { name: "Liechtenstein", flag: "🇱🇮" }, { name: "Lituanie", flag: "🇱🇹" },
-    { name: "Luxembourg", flag: "🇱🇺" }, { name: "Macédoine du Nord", flag: "🇲🇰" },
-    { name: "Madagascar", flag: "🇲🇬" }, { name: "Malaisie", flag: "🇲🇾" },
-    { name: "Malawi", flag: "🇲🇼" }, { name: "Mali", flag: "🇲🇱" },
-    { name: "Malte", flag: "🇲🇹" }, { name: "Maroc", flag: "🇲🇦" },
-    { name: "Maurice", flag: "🇲🇺" }, { name: "Mauritanie", flag: "🇲🇷" },
-    { name: "Mexique", flag: "🇲🇽" }, { name: "Moldavie", flag: "🇲🇩" },
-    { name: "Monaco", flag: "🇲🇨" }, { name: "Mongolie", flag: "🇲🇳" },
-    { name: "Monténégro", flag: "🇲🇪" }, { name: "Mozambique", flag: "🇲🇿" },
-    { name: "Namibie", flag: "🇳🇦" }, { name: "Népal", flag: "🇳🇵" },
-    { name: "Nicaragua", flag: "🇳🇮" }, { name: "Niger", flag: "🇳🇪" },
-    { name: "Nigéria", flag: "🇳🇬" }, { name: "Norvège", flag: "🇳🇴" },
-    { name: "Nouvelle-Zélande", flag: "🇳🇿" }, { name: "Oman", flag: "🇴🇲" },
-    { name: "Ouganda", flag: "🇺🇬" }, { name: "Ouzbékistan", flag: "🇺🇿" },
-    { name: "Pakistan", flag: "🇵🇰" }, { name: "Palestine", flag: "🇵🇸" },
-    { name: "Panama", flag: "🇵🇦" }, { name: "Paraguay", flag: "🇵🇾" },
-    { name: "Pays-Bas", flag: "🇳🇱" }, { name: "Pérou", flag: "🇵🇪" },
-    { name: "Philippines", flag: "🇵🇭" }, { name: "Pologne", flag: "🇵🇱" },
-    { name: "Portugal", flag: "🇵🇹" }, { name: "Qatar", flag: "🇶🇦" },
-    { name: "République Démocratique du Congo", flag: "🇨🇩" }, { name: "République Dominicaine", flag: "🇩🇴" },
-    { name: "République Tchèque", flag: "🇨🇿" }, { name: "Roumanie", flag: "🇷🇴" },
-    { name: "Royaume-Uni", flag: "🇬🇧" }, { name: "Russie", flag: "🇷🇺" },
-    { name: "Rwanda", flag: "🇷🇼" }, { name: "Sénégal", flag: "🇸🇳" },
-    { name: "Serbie", flag: "🇷🇸" }, { name: "Seychelles", flag: "🇸🇨" },
-    { name: "Sierra Leone", flag: "🇸🇱" }, { name: "Singapour", flag: "🇸🇬" },
-    { name: "Slovaquie", flag: "🇸🇰" }, { name: "Slovénie", flag: "🇸🇮" },
-    { name: "Somalie", flag: "🇸🇴" }, { name: "Soudan", flag: "🇸🇩" },
-    { name: "Sri Lanka", flag: "🇱🇰" }, { name: "Suède", flag: "🇸🇪" },
-    { name: "Suisse", flag: "🇨🇭" }, { name: "Suriname", flag: "🇸🇷" },
-    { name: "Syrie", flag: "🇸🇾" }, { name: "Tanzanie", flag: "🇹🇿" },
-    { name: "Tchad", flag: "🇹🇩" }, { name: "Thaïlande", flag: "🇹🇭" },
-    { name: "Togo", flag: "🇹🇬" }, { name: "Tunisie", flag: "🇹🇳" },
-    { name: "Turquie", flag: "🇹🇷" }, { name: "Ukraine", flag: "🇺🇦" },
-    { name: "Uruguay", flag: "🇺🇾" }, { name: "Venezuela", flag: "🇻🇪" },
-    { name: "Vietnam", flag: "🇻🇳" }, { name: "Yémen", flag: "🇾🇪" },
-    { name: "Zambie", flag: "🇿🇲" }, { name: "Zimbabwe", flag: "🇿🇼" }
+    { name: "Guinée-Bissau", flag: "🇬🇼" }, { name: "Guyana", flag: "🇬🇾" },
+    { name: "Haïti", flag: "🇭🇹" }, { name: "Honduras", flag: "🇭🇳" },
+    { name: "Hongrie", flag: "🇭🇺" }, { name: "Inde", flag: "🇮🇳" },
+    { name: "Indonésie", flag: "🇮🇩" }, { name: "Irak", flag: "🇮🇶" },
+    { name: "Iran", flag: "🇮🇷" }, { name: "Irlande", flag: "🇮🇪" },
+    { name: "Islande", flag: "🇮🇸" }, { name: "Israël", flag: "🇮🇱" },
+    { name: "Italie", flag: "🇮🇹" }, { name: "Jamaïque", flag: "🇯🇲" },
+    { name: "Japon", flag: "🇯🇵" }, { name: "Jordanie", flag: "🇯🇴" },
+    { name: "Kazakhstan", flag: "🇰🇿" }, { name: "Kenya", flag: "🇰🇪" },
+    { name: "Koweït", flag: "🇰🇼" }, { name: "Laos", flag: "🇱🇦" },
+    { name: "Lesotho", flag: "🇱🇸" }, { name: "Lettonie", flag: "🇱🇻" },
+    { name: "Liban", flag: "🇱🇧" }, { name: "Libéria", flag: "🇱🇷" },
+    { name: "Libye", flag: "🇱🇾" }, { name: "Liechtenstein", flag: "🇱🇮" },
+    { name: "Lituanie", flag: "🇱🇹" }, { name: "Luxembourg", flag: "🇱🇺" },
+    { name: "Macédoine du Nord", flag: "🇲🇰" }, { name: "Madagascar", flag: "🇲🇬" },
+    { name: "Malaisie", flag: "🇲🇾" }, { name: "Malawi", flag: "🇲🇼" },
+    { name: "Mali", flag: "🇲🇱" }, { name: "Malte", flag: "🇲🇹" },
+    { name: "Maroc", flag: "🇲🇦" }, { name: "Maurice", flag: "🇲🇺" },
+    { name: "Mauritanie", flag: "🇲🇷" }, { name: "Mexique", flag: "🇲🇽" },
+    { name: "Moldavie", flag: "🇲🇩" }, { name: "Monaco", flag: "🇲🇨" },
+    { name: "Mongolie", flag: "🇲🇳" }, { name: "Monténégro", flag: "🇲🇪" },
+    { name: "Mozambique", flag: "🇲🇿" }, { name: "Namibie", flag: "🇳🇦" },
+    { name: "Népal", flag: "🇳🇵" }, { name: "Nicaragua", flag: "🇳🇮" },
+    { name: "Niger", flag: "🇳🇪" }, { name: "Nigéria", flag: "🇳🇬" },
+    { name: "Norvège", flag: "🇳🇴" }, { name: "Nouvelle-Zélande", flag: "🇳🇿" },
+    { name: "Oman", flag: "🇴🇲" }, { name: "Ouganda", flag: "🇺🇬" },
+    { name: "Ouzbékistan", flag: "🇺🇿" }, { name: "Pakistan", flag: "🇵🇰" },
+    { name: "Palestine", flag: "🇵🇸" }, { name: "Panama", flag: "🇵🇦" },
+    { name: "Paraguay", flag: "🇵🇾" }, { name: "Pays-Bas", flag: "🇳🇱" },
+    { name: "Pérou", flag: "🇵🇪" }, { name: "Philippines", flag: "🇵🇭" },
+    { name: "Pologne", flag: "🇵🇱" }, { name: "Portugal", flag: "🇵🇹" },
+    { name: "Qatar", flag: "🇶🇦" }, { name: "République Démocratique du Congo", flag: "🇨🇩" },
+    { name: "République Dominicaine", flag: "🇩🇴" }, { name: "République Tchèque", flag: "🇨🇿" },
+    { name: "Roumanie", flag: "🇷🇴" }, { name: "Royaume-Uni", flag: "🇬🇧" },
+    { name: "Russie", flag: "🇷🇺" }, { name: "Rwanda", flag: "🇷🇼" },
+    { name: "Sénégal", flag: "🇸🇳" }, { name: "Serbie", flag: "🇷🇸" },
+    { name: "Seychelles", flag: "🇸🇨" }, { name: "Sierra Leone", flag: "🇸🇱" },
+    { name: "Singapour", flag: "🇸🇬" }, { name: "Slovaquie", flag: "🇸🇰" },
+    { name: "Slovénie", flag: "🇸🇮" }, { name: "Somalie", flag: "🇸🇴" },
+    { name: "Soudan", flag: "🇸🇩" }, { name: "Sri Lanka", flag: "🇱🇰" },
+    { name: "Suède", flag: "🇸🇪" }, { name: "Suisse", flag: "🇨🇭" },
+    { name: "Suriname", flag: "🇸🇷" }, { name: "Syrie", flag: "🇸🇾" },
+    { name: "Tanzanie", flag: "🇹🇿" }, { name: "Tchad", flag: "🇹🇩" },
+    { name: "Thaïlande", flag: "🇹🇭" }, { name: "Togo", flag: "🇹🇬" },
+    { name: "Tunisie", flag: "🇹🇳" }, { name: "Turquie", flag: "🇹🇷" },
+    { name: "Ukraine", flag: "🇺🇦" }, { name: "Uruguay", flag: "🇺🇾" },
+    { name: "Venezuela", flag: "🇻🇪" }, { name: "Vietnam", flag: "🇻🇳" },
+    { name: "Yémen", flag: "🇾🇪" }, { name: "Zambie", flag: "🇿🇲" },
+    { name: "Zimbabwe", flag: "🇿🇼" }
 ];
 
 const CURRENCY_LIST = [
@@ -611,11 +612,12 @@ async function handleCreateClient(event) {
     const pin = document.getElementById('c-pin').value.trim();
     const activationCode = document.getElementById('c-activation').value.trim();
     const percentValue = parseInt(document.getElementById('c-percent-value').value, 10);
-    const messageAfterTransfer = document.getElementById('c-message').value.trim();
-    const color = document.getElementById('c-color').value;
-
+    
     const pendingTransferRadio = document.querySelector('input[name="c-pending-transfer"]:checked');
     const pendingTransferEnabled = pendingTransferRadio ? pendingTransferRadio.value === 'true' : false;
+
+    const messageAfterTransfer = document.getElementById('c-message').value.trim();
+    const color = document.getElementById('c-color').value;
 
     if (!lastName || !firstName) return showToast('Nom et prénom obligatoires.', 'error');
     if (!country) return showToast('Pays obligatoire.', 'error');
@@ -857,13 +859,6 @@ function openClientDetail(clientId) {
     const eyeIcon = document.getElementById('admin-eye-icon');
     if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
 
-    // 🆕 Réinitialisation de l'onglet des virements
-    currentTransferTab = 'completed';
-    document.getElementById('btn-tab-completed').classList.add('active');
-    document.getElementById('btn-tab-pending').classList.remove('active');
-    document.getElementById('btn-tab-cancelled').classList.remove('active');
-    renderAdminTransfers();
-
     document.getElementById('client-detail-modal').classList.add('show');
 }
 // ============================================================
@@ -876,77 +871,44 @@ function closeClientDetail() {
     isIbanVisible = false;
 }
 
-window.toggleAdminIbanVisibility = function() {
-    if (!currentDetailClient) return;
-    isIbanVisible = !isIbanVisible;
-    
-    const ibanEl = document.getElementById('cd-iban');
-    const eyeIcon = document.getElementById('admin-iban-eye-icon');
-    
-    if (isIbanVisible) {
-        ibanEl.textContent = currentDetailClient.iban || '--';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        const ibanParts = (currentDetailClient.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
-        const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
-        ibanEl.textContent = maskedIban;
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-window.toggleAdminCardVisibility = function() {
-    if (!currentDetailClient) return;
-    isCardDetailsVisible = !isCardDetailsVisible;
-    
-    const cardNumEl = document.getElementById('cd-card-number');
-    const cardCvvEl = document.getElementById('cd-card-cvv');
-    const eyeIcon = document.getElementById('admin-eye-icon');
-    
-    if (isCardDetailsVisible) {
-        cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
-        cardCvvEl.textContent = currentDetailClient.cardCVV || '--';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        cardNumEl.textContent = currentDetailClient.cardNumber ? '•••• •••• •••• ' + currentDetailClient.cardNumber.slice(-4) : '--';
-        cardCvvEl.textContent = currentDetailClient.cardCVV ? '•••' : '--';
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-window.toggleEditCardVisibility = function() {
-    const cardNumInput = document.getElementById('opt-card-number');
-    const cardCvvInput = document.getElementById('opt-card-cvv');
-    const eyeIcon = document.getElementById('edit-eye-icon');
-    
-    if (!cardNumInput || !cardCvvInput) return;
-
-    if (cardNumInput.type === 'password') {
-        cardNumInput.type = 'text';
-        cardCvvInput.type = 'text';
-        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
-    } else {
-        cardNumInput.type = 'password';
-        cardCvvInput.type = 'password';
-        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
-    }
-};
-
-function editClientFromDetail() {
-    if (!currentDetailClient) return;
-    const clientId = currentDetailClient.id;
-    closeClientDetail();
-    selectClientForModify(clientId);
-}
-
 // ============================================================
-// 🆕 GESTION DES VIREMENTS (ONGLETS ET ACTIONS)
+// 🆕 GESTION DES VIREMENTS (MODALE ET ACTIONS)
 // ============================================================
+window.openTransferDetailsModal = function(tab) {
+    if (!currentDetailClient) return;
+    currentTransferTab = tab;
+    
+    // Mise à jour de l'UI des onglets dans la modale
+    document.getElementById('btn-tab-completed').classList.toggle('active', tab === 'completed');
+    document.getElementById('btn-tab-pending').classList.toggle('active', tab === 'pending');
+    document.getElementById('btn-tab-cancelled').classList.toggle('active', tab === 'cancelled');
+
+    // Titre dynamique
+    const titleEl = document.getElementById('td-modal-title');
+    if (tab === 'completed') titleEl.textContent = 'Virements effectués (100%)';
+    else if (tab === 'pending') titleEl.textContent = 'Virements en attente';
+    else if (tab === 'cancelled') titleEl.textContent = 'Virements annulés / bloqués';
+
+    renderAdminTransfers();
+    document.getElementById('transfer-details-modal').classList.add('show');
+};
+
+window.closeTransferDetailsModal = function() {
+    document.getElementById('transfer-details-modal').classList.remove('show');
+};
+
 window.filterAdminTransfers = function(tab) {
     currentTransferTab = tab;
     document.getElementById('btn-tab-completed').classList.toggle('active', tab === 'completed');
     document.getElementById('btn-tab-pending').classList.toggle('active', tab === 'pending');
     document.getElementById('btn-tab-cancelled').classList.toggle('active', tab === 'cancelled');
     
+    // Mise à jour du titre
+    const titleEl = document.getElementById('td-modal-title');
+    if (tab === 'completed') titleEl.textContent = 'Virements effectués (100%)';
+    else if (tab === 'pending') titleEl.textContent = 'Virements en attente';
+    else if (tab === 'cancelled') titleEl.textContent = 'Virements annulés / bloqués';
+
     renderAdminTransfers();
 };
 
@@ -958,11 +920,14 @@ function renderAdminTransfers() {
     let filtered = [];
 
     if (currentTransferTab === 'completed') {
-        filtered = transactions.filter(tx => tx.type === 'debit' && (!tx.status || tx.status === 'completed'));
+        filtered = transactions.map((tx, index) => ({...tx, originalIndex: index}))
+            .filter(tx => tx.type === 'debit' && (!tx.status || tx.status === 'completed'));
     } else if (currentTransferTab === 'pending') {
-        filtered = transactions.filter(tx => tx.status === 'pending');
+        filtered = transactions.map((tx, index) => ({...tx, originalIndex: index}))
+            .filter(tx => tx.status === 'pending');
     } else if (currentTransferTab === 'cancelled') {
-        filtered = transactions.filter(tx => tx.status === 'cancelled' || tx.status === 'failed');
+        filtered = transactions.map((tx, index) => ({...tx, originalIndex: index}))
+            .filter(tx => tx.status === 'cancelled' || tx.status === 'failed');
     }
 
     if (filtered.length === 0) {
@@ -971,7 +936,6 @@ function renderAdminTransfers() {
     }
 
     listEl.innerHTML = filtered.map(tx => {
-        const originalIndex = transactions.indexOf(tx);
         const isCompleted = !tx.status || tx.status === 'completed';
         const isPending = tx.status === 'pending';
         const isCancelled = tx.status === 'cancelled' || tx.status === 'failed';
@@ -982,11 +946,11 @@ function renderAdminTransfers() {
 
         let actionsHTML = '';
         if (isCompleted) {
-            actionsHTML = `<button class="admin-btn-action admin-btn-cancel" onclick="handleAdminCancelTransfer(${originalIndex})"><i class="fa-solid fa-xmark"></i> Annuler le virement</button>`;
+            actionsHTML = `<button class="admin-btn-action admin-btn-cancel" onclick="handleAdminCancelTransfer(${tx.originalIndex})"><i class="fa-solid fa-xmark"></i> Annuler le virement</button>`;
         } else if (isPending) {
             actionsHTML = `
-                <button class="admin-btn-action admin-btn-validate" onclick="handleAdminValidateTransfer(${originalIndex})"><i class="fa-solid fa-check"></i> Valider</button>
-                <button class="admin-btn-action admin-btn-cancel" onclick="handleAdminCancelTransfer(${originalIndex})"><i class="fa-solid fa-xmark"></i> Annuler</button>
+                <button class="admin-btn-action admin-btn-validate" onclick="handleAdminValidateTransfer(${tx.originalIndex})"><i class="fa-solid fa-check"></i> Valider</button>
+                <button class="admin-btn-action admin-btn-cancel" onclick="handleAdminCancelTransfer(${tx.originalIndex})"><i class="fa-solid fa-xmark"></i> Annuler</button>
             `;
         }
 
@@ -1111,6 +1075,78 @@ window.handleAdminValidateTransfer = async function(index) {
         showToast('Erreur lors de la validation.', 'error');
     }
 };
+
+// ============================================================
+// FERMETURE DU MODAL CLIENT
+// ============================================================
+function closeClientDetail() {
+    document.getElementById('client-detail-modal').classList.remove('show');
+    currentDetailClient = null;
+    isCardDetailsVisible = false;
+    isIbanVisible = false;
+}
+
+window.toggleAdminIbanVisibility = function() {
+    if (!currentDetailClient) return;
+    isIbanVisible = !isIbanVisible;
+    
+    const ibanEl = document.getElementById('cd-iban');
+    const eyeIcon = document.getElementById('admin-iban-eye-icon');
+    
+    if (isIbanVisible) {
+        ibanEl.textContent = currentDetailClient.iban || '--';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        const ibanParts = (currentDetailClient.iban || 'PL00 0000 0000 0000 0000 0000 0000').split(' ');
+        const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
+        ibanEl.textContent = maskedIban;
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+window.toggleAdminCardVisibility = function() {
+    if (!currentDetailClient) return;
+    isCardDetailsVisible = !isCardDetailsVisible;
+    
+    const cardNumEl = document.getElementById('cd-card-number');
+    const cardCvvEl = document.getElementById('cd-card-cvv');
+    const eyeIcon = document.getElementById('admin-eye-icon');
+    
+    if (isCardDetailsVisible) {
+        cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
+        cardCvvEl.textContent = currentDetailClient.cardCVV || '--';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        cardNumEl.textContent = currentDetailClient.cardNumber ? '•••• •••• •••• ' + currentDetailClient.cardNumber.slice(-4) : '--';
+        cardCvvEl.textContent = currentDetailClient.cardCVV ? '•••' : '--';
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+window.toggleEditCardVisibility = function() {
+    const cardNumInput = document.getElementById('opt-card-number');
+    const cardCvvInput = document.getElementById('opt-card-cvv');
+    const eyeIcon = document.getElementById('edit-eye-icon');
+    
+    if (!cardNumInput || !cardCvvInput) return;
+
+    if (cardNumInput.type === 'password') {
+        cardNumInput.type = 'text';
+        cardCvvInput.type = 'text';
+        if(eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+    } else {
+        cardNumInput.type = 'password';
+        cardCvvInput.type = 'password';
+        if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    }
+};
+
+function editClientFromDetail() {
+    if (!currentDetailClient) return;
+    const clientId = currentDetailClient.id;
+    closeClientDetail();
+    selectClientForModify(clientId);
+}
 
 // ============================================================
 // 📧 ENVOI DES EMAILS (ADMIN)
@@ -2171,6 +2207,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('client-detail-modal').addEventListener('click', (e) => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
+    document.getElementById('transfer-details-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'transfer-details-modal') closeTransferDetailsModal();
+    });
 
     document.getElementById('m-select-client').addEventListener('change', handleModifyClientChange);
 
@@ -2191,6 +2230,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
         closeClientDetail();
+        closeTransferDetailsModal();
         const selectWrapper = document.getElementById('custom-option-select');
         if (selectWrapper) selectWrapper.classList.remove('open');
     }
