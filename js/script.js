@@ -1025,7 +1025,6 @@ async function loadClientFromFirestore() {
         applyClientColor(client.color);
 
         const badgeText = document.getElementById('badge-text');
-        // 🆕 Enlever les majuscules du badge
         if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`;
 
         const emailInput = document.getElementById('login-email');
@@ -1264,7 +1263,6 @@ function renderDashboard() {
 
     const welcomeName = document.getElementById('welcome-name');
     if (welcomeName && appState.client) {
-        // 🆕 Affichage Prénom NOM sans majuscules forcées
         welcomeName.textContent = `${appState.client.firstName} ${appState.client.lastName}`;
     }
 
@@ -1273,7 +1271,6 @@ function renderDashboard() {
     const statCurr = document.getElementById('stat-currency');
     if (statBalance) statBalance.textContent = formatMoney(appState.balance);
     if (statTx) statTx.textContent = (appState.transactions || []).length;
-    // 🆕 Affichage du code devise (PLN) au lieu du symbole (zł)
     if (statCurr) statCurr.textContent = getCurrencyCode(appState.currency);
 
     const historyCount = document.getElementById('history-count');
@@ -1434,7 +1431,7 @@ async function cancelTransfer() {
 }
 
 // ============================================================
-// VUE : PROGRESSION
+// VUE : PROGRESSION (Modifiée pour 100%)
 // ============================================================
 function renderProgressView(data) {
     const tr = appState.pendingTransfer || data;
@@ -1450,16 +1447,21 @@ function renderProgressView(data) {
     fill.style.width = '0%';
     fill.textContent = '0%';
 
+    // 🆕 Barre qui monte jusqu'à 100%
     const interval = setInterval(() => {
         progress += 1;
-        if (progress >= 90) {
-            progress = 90;
+        
+        if (progress >= 100) {
+            progress = 100;
+            fill.style.width = '100%';
+            fill.textContent = '100%';
             clearInterval(interval);
-            setTimeout(finalizeTransfer, 1500);
+            setTimeout(finalizeTransfer, 1000); // Délai avant la fin
+        } else {
+            fill.style.width = progress + '%';
+            fill.textContent = progress + '%';
         }
-        fill.style.width = progress + '%';
-        fill.textContent = progress + '%';
-    }, 30);
+    }, 25); // Vitesse un peu plus rapide
 }
 
 // ============================================================
@@ -1732,7 +1734,6 @@ function renderAccountView() {
     const c = appState.client;
     const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
-    // 🆕 Prénom Nom sans majuscules
     const fullName = `${c.firstName} ${c.lastName}`;
     const initials = ((c.firstName || 'X')[0] + (c.lastName || 'X')[0]).toUpperCase();
 
