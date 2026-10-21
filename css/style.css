@@ -1213,7 +1213,7 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 50px 25px 35px; /* Espace en haut et en bas */
+    padding: 50px 25px 35px; 
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
@@ -1237,7 +1237,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 600; /* Un peu plus épais */
+    font-weight: 600; 
     color: #222;
     margin-bottom: 15px; 
     gap: 8px;
@@ -1252,10 +1252,10 @@ body {
 
 .progress-desc {
     font-size: 15px; 
-    color: #555; /* Un peu plus foncé */
+    color: #555; 
     margin-bottom: 30px; 
     line-height: 1.5;
-    font-weight: 500; /* Un peu plus épais */
+    font-weight: 500; 
     position: relative;
     z-index: 1;
 }
@@ -1322,7 +1322,7 @@ body {
 .detail-label-new {
     font-size: 15px; 
     color: #666;
-    font-weight: 600; /* Un peu plus épais */
+    font-weight: 600; 
 }
 
 .detail-value-new {
@@ -1330,31 +1330,193 @@ body {
     font-weight: 700;
     color: #111;
     word-break: break-all;
-    padding-left: 12px; /* 🆕 Ramené un peu vers la gauche */
+    padding-left: 12px; 
 }
 
-/* ============ SUCCÈS / ÉCHEC ============ */
-.success-card, .failed-card {
+/* ============================================================
+   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS
+   ============================================================ */
+.success-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+    flex: none;
+}
+
+.receipt-wrapper {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.receipt-paper {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 30px 25px;
+    position: relative;
+    border-top: 6px solid var(--primary-color);
+}
+
+/* Effet de ticket déchiré en bas */
+.receipt-paper::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: radial-gradient(circle at 10px -5px, transparent 10px, #ffffff 11px) repeat-x;
+    background-size: 20px 20px;
+}
+
+.receipt-header-section {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.receipt-logo {
+    font-size: 20px;
+    font-weight: 900;
+    color: #111;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+.receipt-logo i {
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.receipt-subtitle {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.receipt-check-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #def7ec;
+    color: #00a04a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 15px auto;
+    animation: popIn 0.5s ease;
+}
+
+.receipt-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+.receipt-custom-msg {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    word-break: break-word;
+}
+
+.receipt-dashed-divider {
+    height: 1px;
+    border-bottom: 2px dashed #e0e0e0;
+    margin: 20px 0;
+}
+
+.receipt-amount-section {
+    text-align: center;
+}
+
+.receipt-label {
+    font-size: 13px;
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.receipt-amount {
+    font-size: 34px;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: -0.5px;
+}
+
+.receipt-details-section {
+    font-family: 'Courier New', Courier, monospace; /* Effet imprimé */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 13px;
+}
+
+.receipt-row-label {
+    color: #888;
+    flex-shrink: 0;
+}
+
+.receipt-row-value {
+    color: #111;
+    font-weight: 700;
+    text-align: right;
+    word-break: break-all;
+    padding-left: 10px;
+}
+
+.receipt-status-section {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.receipt-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #def7ec;
+    color: #00a04a;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-receipt-back {
+    background-color: #111; /* Bouton sombre pour trancher avec le reçu blanc */
+    border-radius: 12px;
+    margin-top: 35px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.btn-receipt-back:hover {
+    background-color: #333;
+}
+
+/* ============ SUCCÈS / ÉCHEC (Anciens styles conservés pour l'échec) ============ */
+.failed-card {
     background: var(--card-bg);
     border-radius: 10px;
     padding: 25px 15px;
     box-shadow: var(--card-shadow);
     text-align: center;
     max-width: 600px;
-}
-
-.success-icon-circle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #def7ec;
-    color: #00a04a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px auto;
-    font-size: 32px;
-    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .failed-icon-circle {
@@ -1371,14 +1533,14 @@ body {
     animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-.success-title, .failed-title {
+.failed-title {
     font-size: 24px; 
     font-weight: 700; 
     color: #111;
     margin-bottom: 10px;
 }
 
-.success-subtitle, .failed-subtitle {
+.failed-subtitle {
     font-size: 16px; 
     color: #666;
     margin-bottom: 20px;
@@ -1387,17 +1549,13 @@ body {
     font-weight: 500;
 }
 
-.success-summary, .failed-summary {
-    background-color: #f8f9fa;
+.failed-summary {
+    background-color: #fef2f2;
+    border: 2px solid #fecaca;
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 20px;
     text-align: left;
-}
-
-.failed-summary {
-    background-color: #fef2f2;
-    border: 2px solid #fecaca;
 }
 
 /* ============================================================
