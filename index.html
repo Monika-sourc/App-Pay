@@ -328,12 +328,8 @@
         <h1 class="welcome-title" data-i18n="transfer_in_progress">Votre ordre de virement en cours...</h1>
 
         <div class="progress-card">
-            <!-- 4. Symbole portefeuille en filigrane (SVG pour être sûr à 100%) -->
-            <svg class="progress-watermark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-            </svg>
+            <!-- 4. Symbole portefeuille en filigrane -->
+            <i class="fa-solid fa-wallet progress-watermark"></i>
 
             <div class="success-message-title">
                 <i class="fa-regular fa-user"></i> <span data-i18n="identity_verified">Vérification d'identité effectuée avec succès.</span>
@@ -348,13 +344,8 @@
             </div>
 
             <div class="details-section-title" style="margin-top: 25px;">
-                <!-- 2. Icône portefeuille exacte (SVG pour garantir l'affichage) -->
-                <svg class="icon-wallet-title" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ff7a00; width: 22px; height: 22px;">
-                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-                </svg>
-                <!-- Titre modifié en "en cours" -->
+                <!-- 🆕 Icône portefeuille exacte pour le titre -->
+                <i class="fa-solid fa-wallet" style="color: #ff7a00; font-size: 20px;"></i> 
                 <span>Détails du virement en cours</span>
             </div>
 
