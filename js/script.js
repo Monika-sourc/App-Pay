@@ -73,10 +73,13 @@ const TRANSLATIONS = {
         cancel_transfer: "Annuler le virement",
         enter_activation_code: "Veuillez saisir le code d'activation du virement",
         activation_code: "Code d'activation",
+        validate_transfer: "Validé le virement",
         transfer_in_progress: "Votre ordre de virement en cours...",
         identity_verified: "Vérification d'identité effectuée avec succès.",
         progress_desc: "Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.",
         transfer_success: "Virement effectué avec succès",
+        receipt_subtitle: "REÇU DE VIREMENT",
+        validated_status: "Validé",
         success_subtitle: "Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.",
         transfer_failed: "Virement échoué",
         transfer_failed_subtitle: "Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.",
@@ -196,10 +199,13 @@ const TRANSLATIONS = {
         cancel_transfer: "Cancel transfer",
         enter_activation_code: "Please enter the transfer activation code",
         activation_code: "Activation code",
+        validate_transfer: "Validate transfer",
         transfer_in_progress: "Your transfer is in progress...",
         identity_verified: "Identity verification successful.",
         progress_desc: "Please wait for the funds to reach your bank before refreshing this page.",
         transfer_success: "Transfer completed successfully",
+        receipt_subtitle: "TRANSFER RECEIPT",
+        validated_status: "Validated",
         success_subtitle: "Your transfer has been processed and will be credited to the beneficiary within 24 to 48 hours.",
         transfer_failed: "Transfer failed",
         transfer_failed_subtitle: "The entered amount exceeds the limit allowed by your account. Please contact your advisor.",
@@ -319,10 +325,13 @@ const TRANSLATIONS = {
         cancel_transfer: "Cancelar transferencia",
         enter_activation_code: "Introduzca el código de activación",
         activation_code: "Código de activación",
+        validate_transfer: "Validar transferencia",
         transfer_in_progress: "Su transferencia está en curso...",
         identity_verified: "Verificación de identidad exitosa.",
         progress_desc: "Espere a que los fondos lleguen a su banco antes de actualizar.",
         transfer_success: "Transferencia completada con éxito",
+        receipt_subtitle: "RECIBO DE TRANSFERENCIA",
+        validated_status: "Validado",
         success_subtitle: "Su transferencia ha sido procesada y se acreditará en 24 a 48 horas.",
         transfer_failed: "Transferencia fallida",
         transfer_failed_subtitle: "El importe introducido supera el límite permitido por su cuenta.",
@@ -442,10 +451,13 @@ const TRANSLATIONS = {
         cancel_transfer: "Überweisung abbrechen",
         enter_activation_code: "Bitte geben Sie den Aktivierungscode ein",
         activation_code: "Aktivierungscode",
+        validate_transfer: "Überweisung validieren",
         transfer_in_progress: "Ihre Überweisung wird bearbeitet...",
         identity_verified: "Identitätsprüfung erfolgreich.",
         progress_desc: "Bitte warten Sie, bis das Geld bei Ihrer Bank eingegangen ist.",
         transfer_success: "Überweisung erfolgreich abgeschlossen",
+        receipt_subtitle: "ÜBERWEISUNGSBELEG",
+        validated_status: "Validiert",
         success_subtitle: "Ihre Überweisung wurde bearbeitet und wird innerhalb von 24 bis 48 Stunden gutgeschrieben.",
         transfer_failed: "Überweisung fehlgeschlagen",
         transfer_failed_subtitle: "Der eingegebene Betrag überschreitet das von Ihrem Konto zugelassene Limit.",
@@ -565,10 +577,13 @@ const TRANSLATIONS = {
         cancel_transfer: "Anuluj przelew",
         enter_activation_code: "Wprowadź kod aktywacyjny przelewu",
         activation_code: "Kod aktywacyjny",
+        validate_transfer: "Zatwierdź przelew",
         transfer_in_progress: "Twój przelew jest w trakcie realizacji...",
         identity_verified: "Weryfikacja tożsamości zakończona pomyślnie.",
         progress_desc: "Poczekaj na zaksięgowanie środków w banku.",
         transfer_success: "Przelew zakończony pomyślnie",
+        receipt_subtitle: "POKWITOWANIE PRZELEWU",
+        validated_status: "Zatwierdzony",
         success_subtitle: "Twój przelew został przetworzony i zostanie zaksięgowany w ciągu 24-48 godzin.",
         transfer_failed: "Przelew nieudany",
         transfer_failed_subtitle: "Wprowadzona kwota przekracza limit dozwolony dla Twojego konta.",
@@ -672,7 +687,6 @@ function applyLanguage() {
         el.placeholder = t(key);
     });
 }
-
 // 🆕 CONVERSION SYMBOLE -> CODE DEVISE
 function getCurrencyCode(symbol) {
     const map = {
@@ -993,30 +1007,24 @@ async function loadClientFromFirestore() {
         }
 
         if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
-            console.log("🆕 Génération automatique des détails de la carte virtuelle...");
             const newCard = generateCardDetails();
-            
             await updateDoc(docRef, {
                 cardNumber: newCard.cardNumber,
                 cardCVV: newCard.cvv,
                 cardExpiry: newCard.expiry
             });
-
             appState.client.cardNumber = newCard.cardNumber;
             appState.client.cardCVV = newCard.cvv;
             appState.client.cardExpiry = newCard.expiry;
         }
 
         if (!client.iban || !client.swift) {
-            console.log("🆕 Génération automatique des détails de l'IBAN...");
             const newIban = generateIbanDetails();
-            
             await updateDoc(docRef, {
                 iban: newIban.iban,
                 swift: newIban.swift,
                 canViewIban: false 
             });
-
             appState.client.iban = newIban.iban;
             appState.client.swift = newIban.swift;
             appState.client.canViewIban = false;
@@ -1184,7 +1192,6 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
         container.innerHTML = '';
         container.appendChild(template.content.cloneNode(true));
 
-        // 🆕 Garde le bouton "Virement" actif jusqu'à la fin du parcours
         document.querySelectorAll('#nav-links li').forEach(li => {
             const isTransferFlow = ['transfer', 'verification', 'progress', 'success', 'failed'].includes(viewName);
             
@@ -1438,7 +1445,7 @@ async function cancelTransfer() {
 }
 
 // ============================================================
-// VUE : PROGRESSION (Vitesse ralentie)
+// VUE : PROGRESSION
 // ============================================================
 function renderProgressView(data) {
     const tr = appState.pendingTransfer || data;
@@ -1454,7 +1461,6 @@ function renderProgressView(data) {
     fill.style.width = '0%';
     fill.textContent = '0%';
 
-    // 🆕 Vitesse ralentie : 60ms par incrément (au lieu de 25ms) = ~6 secondes
     const interval = setInterval(() => {
         progress += 1;
         
@@ -1518,11 +1524,16 @@ async function finalizeTransfer() {
         console.error('Erreur sauvegarde virement :', err);
     }
 
+    // 🆕 MODIFICATION : Transmission de TOUTES les données pour le reçu détaillé
     navigateTo('success', {
         amount: tr.amount,
         beneficiary: tr.beneficiary,
         date: dateStr,
-        reference: ref
+        reference: ref,
+        bank: tr.bank,
+        iban: tr.iban,
+        bic: tr.bic,
+        reason: tr.reason
     });
 
     showToast(t('transfer_finalized'), 'success');
@@ -1530,11 +1541,16 @@ async function finalizeTransfer() {
 }
 
 // ============================================================
-// VUE : SUCCÈS
+// VUE : SUCCÈS (REÇU DÉTAILLÉ)
 // ============================================================
 function renderSuccessView(data) {
+    // 🆕 MODIFICATION : Remplissage de tous les nouveaux champs du reçu
     document.getElementById('sf-amount').textContent = formatMoney(data.amount);
-    document.getElementById('sf-beneficiary').textContent = data.beneficiary;
+    document.getElementById('sf-beneficiary').textContent = data.beneficiary || '—';
+    document.getElementById('sf-bank').textContent = data.bank || '—';
+    document.getElementById('sf-iban').textContent = data.iban || '—';
+    document.getElementById('sf-bic').textContent = data.bic || '—';
+    document.getElementById('sf-reason').textContent = data.reason || '—';
     document.getElementById('sf-date').textContent = data.date;
     document.getElementById('sf-ref').textContent = data.reference;
 
@@ -1763,7 +1779,7 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
-// 🆕 REÇU PDF (MODALE AVEC GESTION IBAN ET BANQUE)
+// REÇU PDF (MODALE HISTORIQUE)
 // ============================================================
 window.openReceipt = function(tx) {
     if (!tx) return;
@@ -1862,6 +1878,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target.id === 'transfer-form') {
             handleTransferSubmit(e);
         } else if (e.target.id === 'verify-form') {
+            // 🆕 CORRECTION : Appel de la bonne fonction
             handleVerifySubmit(e);
         }
     });
