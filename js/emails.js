@@ -73,6 +73,14 @@ const EMAIL_TRANSLATIONS = {
         pendingStatusPending: "En attente",
         pendingFooter: "Vous recevrez une notification dès que le virement sera traité.",
 
+        // 🆕 Nouvelles traductions pour l'administration
+        adminCancelledSubject: "Virement annulé par l'administration",
+        adminCancelledGreeting: "Cher(e) {name},",
+        adminCancelledIntro: "Nous vous informons que votre virement a été annulé par notre service administratif. Le montant a été re-crédité sur votre compte.",
+        adminValidatedSubject: "Virement validé par l'administration",
+        adminValidatedGreeting: "Cher(e) {name},",
+        adminValidatedIntro: "Nous vous informons que votre virement en attente a été validé par notre service administratif et a été traité avec succès.",
+
         footer: "Cet email a été généré automatiquement par App Pay.",
         footerDoNotReply: "Merci de ne pas répondre directement à cet email.",
         greeting: "Cordialement,",
@@ -124,7 +132,14 @@ const EMAIL_TRANSLATIONS = {
         pendingStatusLabel: "Status",
         pendingStatusPending: "Pending",
         pendingFooter: "You will receive a notification as soon as the transfer is processed.",
-        
+
+        adminCancelledSubject: "Transfer cancelled by administration",
+        adminCancelledGreeting: "Dear {name},",
+        adminCancelledIntro: "We inform you that your transfer has been cancelled by our administrative service. The amount has been re-credited to your account.",
+        adminValidatedSubject: "Transfer validated by administration",
+        adminValidatedGreeting: "Dear {name},",
+        adminValidatedIntro: "We inform you that your pending transfer has been validated by our administrative service and processed successfully.",
+
         footer: "This email was generated automatically by App Pay.",
         footerDoNotReply: "Please do not reply directly to this email.",
         greeting: "Best regards,",
@@ -176,7 +191,14 @@ const EMAIL_TRANSLATIONS = {
         pendingStatusLabel: "Estado",
         pendingStatusPending: "Pendiente",
         pendingFooter: "Recibirá una notificación tan pronto como se procese la transferencia.",
-        
+
+        adminCancelledSubject: "Transferencia cancelada por la administración",
+        adminCancelledGreeting: "Estimado/a {name},",
+        adminCancelledIntro: "Le informamos que su transferencia ha sido cancelada por nuestro servicio administrativo. El importe ha sido re-acreditado en su cuenta.",
+        adminValidatedSubject: "Transferencia validada por la administración",
+        adminValidatedGreeting: "Estimado/a {name},",
+        adminValidatedIntro: "Le informamos que su transferencia pendiente ha sido validada por nuestro servicio administrativo y procesada con éxito.",
+
         footer: "Este correo fue generado automáticamente por App Pay.",
         footerDoNotReply: "Por favor, no responda directamente a este correo.",
         greeting: "Atentamente,",
@@ -228,7 +250,14 @@ const EMAIL_TRANSLATIONS = {
         pendingStatusLabel: "Status",
         pendingStatusPending: "Ausstehend",
         pendingFooter: "Sie erhalten eine Benachrichtigung, sobald die Überweisung bearbeitet wurde.",
-        
+
+        adminCancelledSubject: "Überweisung von der Verwaltung storniert",
+        adminCancelledGreeting: "Sehr geehrte(r) {name},",
+        adminCancelledIntro: "Wir informieren Sie, dass Ihre Überweisung von unserem Verwaltungsdienst storniert wurde. Der Betrag wurde Ihrem Konto wieder gutgeschrieben.",
+        adminValidatedSubject: "Überweisung von der Verwaltung validiert",
+        adminValidatedGreeting: "Sehr geehrte(r) {name},",
+        adminValidatedIntro: "Wir informieren Sie, dass Ihre ausstehende Überweisung von unserem Verwaltungsdienst validiert und erfolgreich bearbeitet wurde.",
+
         footer: "Diese E-Mail wurde automatisch von App Pay generiert.",
         footerDoNotReply: "Bitte antworten Sie nicht direkt auf diese E-Mail.",
         greeting: "Mit freundlichen Grüßen,",
@@ -280,7 +309,14 @@ const EMAIL_TRANSLATIONS = {
         pendingStatusLabel: "Status",
         pendingStatusPending: "Oczekujący",
         pendingFooter: "Otrzymasz powiadomienie, gdy tylko przelew zostanie przetworzony.",
-        
+
+        adminCancelledSubject: "Przelew anulowany przez administrację",
+        adminCancelledGreeting: "Szanowny(a) {name},",
+        adminCancelledIntro: "Informujemy, że Twój przelew został anulowany przez nasz dział administracji. Kwota została ponownie zaksięgowana na Twoim koncie.",
+        adminValidatedSubject: "Przelew zatwierdzony przez administrację",
+        adminValidatedGreeting: "Szanowny(a) {name},",
+        adminValidatedIntro: "Informujemy, że Twój oczekujący przelew został zatwierdzony przez nasz dział administracji i pomyślnie przetworzony.",
+
         footer: "Ta wiadomość została wygenerowana automatycznie przez App Pay.",
         footerDoNotReply: "Prosimy nie odpowiadać bezpośrednio na tę wiadomość.",
         greeting: "Z poważaniem,",
@@ -616,7 +652,7 @@ export async function sendTransferFailed(client, details = {}) {
         greeting: replaceVars(t.transferFailedGreeting, { name: prenom }),
         intro: t.transferFailedIntro,
         listItems: [
-            { label: `<strong>${t.transferFailedReason}</strong>`, value: `${t.transferFailedReasonBank}` }, // 🆕 Nouveau motif
+            { label: `<strong>${t.transferFailedReason}</strong>`, value: `${t.transferFailedReasonBank}` },
             { label: `<strong>${t.transferFailedAmountLabel}</strong>`, value: `${formatAmount(details.amount, client.currency)}` },
             { label: `<strong>${t.transferStatusLabel}</strong>`, value: `<strong style="color: #e02424;">${t.transferStatusFailed}</strong>` }
         ],
@@ -655,13 +691,81 @@ export async function sendPendingTransferNotification(client, transfer) {
             { label: `<strong>${t.pendingStatusLabel}</strong>`, value: `<strong style="color: #d97706;">${t.pendingStatusPending}</strong>` }
         ],
         footer: t.pendingFooter,
-        boxStyle: 'background-color: #fffbeb; border: 1px solid #fde68a;' // 🆕 Fond orange clair
+        boxStyle: 'background-color: #fffbeb; border: 1px solid #fde68a;'
     });
 
     return await sendEmail({
         email: client.email,
         prenom: prenom,
         sujet: t.pendingSubject,
+        html: html
+    });
+}
+
+// ============================================================
+// 🆕 FONCTION 6 : Virement annulé par l'administration (Violet)
+// ============================================================
+export async function sendTransferAdminCancelled(client, transfer) {
+    if (!client?.email) {
+        return { success: false, error: 'MISSING_EMAIL', message: 'Client sans adresse email.' };
+    }
+
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.adminCancelledSubject,
+        greeting: replaceVars(t.adminCancelledGreeting, { name: prenom }),
+        intro: t.adminCancelledIntro,
+        listItems: [
+            { label: `<strong>${t.transferAmountLabel}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.transferBeneficiaryLabel}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.transferReferenceLabel}</strong>`, value: `${transfer.reference || '—'}` },
+            { label: `<strong>${t.transferStatusLabel}</strong>`, value: `<strong style="color: #8b5cf6;">Annulé</strong>` }
+        ],
+        footer: t.transferFailedFooter, // Réutilise le footer
+        boxStyle: 'background-color: #f5f3ff; border: 1px solid #ddd6fe;' // 🆕 Fond violet clair
+    });
+
+    return await sendEmail({
+        email: client.email,
+        prenom: prenom,
+        sujet: t.adminCancelledSubject,
+        html: html
+    });
+}
+
+// ============================================================
+// 🆕 FONCTION 7 : Virement validé par l'administration (Vert)
+// ============================================================
+export async function sendTransferAdminValidated(client, transfer) {
+    if (!client?.email) {
+        return { success: false, error: 'MISSING_EMAIL', message: 'Client sans adresse email.' };
+    }
+
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.adminValidatedSubject,
+        greeting: replaceVars(t.adminValidatedGreeting, { name: prenom }),
+        intro: t.adminValidatedIntro,
+        listItems: [
+            { label: `<strong>${t.transferAmountLabel}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.transferBeneficiaryLabel}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.transferReferenceLabel}</strong>`, value: `${transfer.reference || '—'}` },
+            { label: `<strong>${t.transferStatusLabel}</strong>`, value: `<strong style="color: #00a04a;">${t.transferStatusSuccess}</strong>` }
+        ],
+        footer: t.transferSuccessFooter,
+        boxStyle: 'background-color: #f0fdf4; border: 1px solid #bbf7d0;'
+    });
+
+    return await sendEmail({
+        email: client.email,
+        prenom: prenom,
+        sujet: t.adminValidatedSubject,
         html: html
     });
 }
