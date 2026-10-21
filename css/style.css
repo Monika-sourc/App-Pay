@@ -1278,7 +1278,7 @@ body {
     font-size: 17px; 
     font-weight: 700; 
     color: #000;
-    margin-bottom: 18px; /* 🆕 MODIFICATION 1 : Espace entre le texte succès et la description */
+    margin-bottom: 18px; 
     gap: 8px;
     position: relative;
     z-index: 1;
@@ -1292,7 +1292,7 @@ body {
 .progress-desc {
     font-size: 15px; 
     color: #000; 
-    margin-bottom: 35px; /* 🆕 MODIFICATION 2 : Espace entre la description et la barre */
+    margin-bottom: 35px; 
     line-height: 1.5;
     font-weight: 500; 
     position: relative;
@@ -1305,7 +1305,7 @@ body {
     border-radius: 50px;
     height: 55px; 
     padding: 0; 
-    margin-bottom: 40px; /* 🆕 MODIFICATION 2 : Espace entre la barre et le titre des détails */
+    margin-bottom: 40px; 
     background-color: #fff;
     position: relative;
     z-index: 1;
@@ -1379,40 +1379,35 @@ body {
     padding-left: 12px; 
 }
 /* ============================================================
-   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS
+   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS (PLEIN ÉCRAN)
    ============================================================ */
 .success-page {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 20px;
+    padding-top: 0;
     flex: none;
+    background-color: #ffffff; /* 🆕 Fond blanc pour toute la page */
 }
 
 .receipt-wrapper {
     width: 100%;
-    max-width: 380px;
+    max-width: 100%; /* 🆕 Plein écran au lieu de 380px */
     margin: 0 auto;
+    padding-bottom: 110px; /* 🆕 Espace pour ne pas cacher le bouton sous la nav */
 }
 
 .receipt-paper {
     background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 0; /* 🆕 Suppression des coins arrondis */
+    box-shadow: none; /* 🆕 Suppression de l'ombre flottante */
     padding: 30px 25px;
     position: relative;
-    border-top: 6px solid var(--primary-color);
+    border-top: none; /* 🆕 Suppression de la bordure foncée en haut */
 }
 
 .receipt-paper::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    right: 0;
-    height: 10px;
-    background: radial-gradient(circle at 10px -5px, transparent 10px, #ffffff 11px) repeat-x;
-    background-size: 20px 20px;
+    display: none; /* 🆕 Suppression de l'effet dentelé en bas */
 }
 
 .receipt-header-section {
@@ -1552,8 +1547,10 @@ body {
 .btn-receipt-back {
     background-color: #000; 
     border-radius: 12px;
-    margin-top: 35px;
+    margin: 30px auto; /* 🆕 Centré avec de l'espace */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 90%; /* 🆕 Largeur ajustée pour ne pas toucher les bords */
+    display: block;
 }
 .btn-receipt-back:hover {
     background-color: #333;
@@ -1620,8 +1617,8 @@ body {
 }
 
 .flip-card-container {
-    width: 90%; /* 🆕 MODIFICATION 3 : Réduction de la largeur de la carte */
-    margin: 10px auto 20px auto; /* 🆕 MODIFICATION 3 : Centrage avec 'auto' */
+    width: 90%; 
+    margin: 10px auto 20px auto; 
     height: 240px; 
     perspective: 1200px;
     cursor: pointer;
