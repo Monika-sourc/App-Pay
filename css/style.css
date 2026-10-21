@@ -1379,7 +1379,7 @@ body {
     padding-left: 12px; 
 }
 /* ============================================================
-   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS (COMPACT ET EXACT)
+   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS (CENTRÉ ET NET)
    ============================================================ */
 .success-page {
     display: flex;
@@ -1413,7 +1413,7 @@ body {
 
 .success-main-title {
     font-size: 18px;
-    font-weight: 700; /* Épaisseur normale, pas trop gras */
+    font-weight: 700;
     color: #1e293b;
     margin-bottom: 6px;
 }
@@ -1426,7 +1426,7 @@ body {
     margin: 0 auto;
 }
 
-/* --- Carte Montant --- */
+/* --- Carte Montant (Centré avec l'icône) --- */
 .success-amount-card {
     background-color: #f0fdf4;
     border-radius: 12px;
@@ -1434,13 +1434,29 @@ body {
     width: 100%;
     margin-bottom: 15px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    align-items: center;
+    justify-content: center; /* 🆕 Centre le contenu (icône + texte) au milieu */
+    gap: 12px;
 }
 
 .success-amount-icon {
-    display: none; /* 🆕 Caché pour ne garder qu'une seule icône au total */
+    display: flex; /* 🆕 Réaffiche l'icône */
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.success-amount-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
 }
 
 .success-amount-label {
@@ -1454,7 +1470,7 @@ body {
 .success-amount-value {
     font-size: 22px;
     font-weight: 800;
-    color: #0f172a;
+    color: #000000; /* 🆕 Noir pour le montant */
 }
 
 /* --- Carte Détails (Fond gris léger) --- */
@@ -1478,21 +1494,21 @@ body {
 }
 
 .sd-icon {
-    display: none; /* 🆕 Caché pour ne garder qu'une seule icône au total */
+    display: none; /* Toujours caché */
 }
 
 .sd-label {
-    flex: 0 0 50%; /* 🆕 Prend exactement la moitié (milieu) */
+    flex: 0 0 50%; /* Prend la moitié de la largeur */
     font-size: 13px;
-    color: #64748b;
+    color: #000000; /* 🆕 Libellé en NOIR */
     font-weight: 500;
 }
 
 .sd-value {
-    flex: 1; /* 🆕 Prend le reste de l'espace et commence au milieu */
+    flex: 1;
     font-size: 13px;
-    color: #0f172a;
-    font-weight: 700;
+    color: #000000; /* 🆕 Valeur en NOIR */
+    font-weight: 700; /* 🆕 Valeur en GRAS */
     text-align: left;
     word-break: break-word;
 }
@@ -1510,7 +1526,7 @@ body {
 }
 
 .ss-icon, .ss-arrow {
-    display: none; /* 🆕 Caché pour ne garder qu'une seule icône au total */
+    display: none;
 }
 
 .ss-text {
@@ -1596,7 +1612,6 @@ body {
     animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-/* 🆕 TITRE EN GRAS */
 .failed-title {
     font-size: 23px; 
     font-weight: 700; 
