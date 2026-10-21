@@ -18,8 +18,8 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* 🆕 CHANGEMENT MAJEUR : Police système (comme sur l'image 1) */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* 🆕 Retour de la police Titillium Web */
+    font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 html, body {
@@ -27,14 +27,15 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 16px; 
+    /* 🆕 Lissage de police pour éviter l'effet "flou" ou "baveux" sur mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
     background-color: #e8e9ec;
-    color: #333;
+    color: #111; /* Texte principal bien noir */
     overflow-x: hidden;
-    /* 🆕 On enlève le zoom qui peut rendre le texte flou sur mobile */
-    /* zoom: 0.7; */ 
 }
 
 .screen {
@@ -90,7 +91,7 @@ body {
 
 .invalid-message {
     font-size: 15px;
-    color: #666;
+    color: #333; /* Plus foncé */
     line-height: 1.6;
     margin-bottom: 25px;
     font-weight: 500;
@@ -106,7 +107,7 @@ body {
     gap: 12px;
     text-align: left;
     font-size: 13px;
-    color: #555;
+    color: #333;
     line-height: 1.5;
     font-weight: 500;
 }
@@ -168,14 +169,14 @@ body {
 .login-title {
     font-size: 18px;
     font-weight: 600;
-    color: #555;
+    color: #333;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .user-badge {
     background-color: #eef0f3;
-    color: #333;
+    color: #111;
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 14px;
@@ -192,7 +193,7 @@ body {
 
 .user-badge i {
     font-size: 14px;
-    color: #555;
+    color: #333;
     flex-shrink: 0;
 }
 
@@ -232,7 +233,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #888;
+    color: #666;
     font-size: 16px;
     flex-shrink: 0;
 }
@@ -247,15 +248,15 @@ body {
     outline: none;
     padding: 14px 15px 14px 0;
     font-size: 16px; 
-    font-weight: 500;
+    font-weight: 600; /* Plus gras pour la saisie */
     color: #111;
     background: transparent;
     min-width: 0;
 }
 
 .input-group input::placeholder {
-    color: #aaa;
-    font-weight: 400;
+    color: #999;
+    font-weight: 500;
 }
 
 .btn-login {
@@ -287,7 +288,7 @@ body {
     text-align: center;
     margin-top: 5px;
     min-height: 18px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 /* ============ ÉCRAN APPLICATION ============ */
@@ -342,7 +343,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #555;
+    color: #333;
     cursor: pointer;
     border: none;
     font-size: 15px;
@@ -372,7 +373,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 15px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
@@ -400,7 +401,7 @@ body {
     padding: 12px 16px;
     font-size: 14px;
     font-weight: 700;
-    color: #222;
+    color: #111;
     border-bottom: 1px solid #f0f0f0;
 }
 .notif-item {
@@ -421,7 +422,7 @@ body {
 }
 .notif-item-text {
     font-size: 13px;
-    color: #555;
+    color: #333;
     line-height: 1.4;
     font-weight: 500;
 }
@@ -480,7 +481,7 @@ body {
     justify-content: center;
     gap: 4px;
     font-size: 12px; 
-    font-weight: 600;
+    font-weight: 700; /* Plus gras */
     color: #444;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -494,7 +495,7 @@ body {
     font-size: 18px;
     margin: 0;
     transition: transform 0.2s;
-    color: #333;
+    color: #222;
     filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
 }
 
@@ -508,7 +509,7 @@ body {
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .nav-links li.active i {
@@ -543,8 +544,8 @@ body {
 
 .welcome-title {
     font-size: 24px; 
-    font-weight: 600; 
-    color: #222;
+    font-weight: 700; /* Plus gras */
+    color: #111;
     margin-bottom: 20px;
 }
 
@@ -567,7 +568,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 17px; 
-    opacity: 0.8;
+    opacity: 0.9;
     margin-bottom: 10px;
     gap: 6px;
     font-weight: 600; 
@@ -581,7 +582,7 @@ body {
 
 .balance-amount {
     font-size: 38px; 
-    font-weight: 700; 
+    font-weight: 800; /* Très gras pour le solde */
     margin-bottom: 22px; 
     text-align: center;
     letter-spacing: 0px; 
@@ -589,10 +590,10 @@ body {
 
 .balance-subtitle {
     font-size: 16px; 
-    opacity: 0.7;
+    opacity: 0.8;
     margin-bottom: 25px; 
     text-align: center;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .balance-actions {
@@ -637,7 +638,7 @@ body {
 
 .round-action-wrapper span {
     font-size: 15px; 
-    font-weight: 600; 
+    font-weight: 700; 
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -704,9 +705,9 @@ body {
 
 .stat-label {
     font-size: 14px; 
-    color: #888;
+    color: #444; /* Plus foncé */
     letter-spacing: 0.2px;
-    font-weight: 500; 
+    font-weight: 600; 
 }
 
 /* ============================================================
@@ -767,9 +768,9 @@ body {
 
 .history-count-badge {
     background-color: #f0f0f3;
-    color: #555;
+    color: #333;
     font-size: 14px; 
-    font-weight: 600;
+    font-weight: 700;
     padding: 4px 10px;
     border-radius: 10px;
     min-width: 24px;
@@ -785,8 +786,8 @@ body {
 .history-date-separator {
     padding: 12px 15px 8px 15px;
     font-size: 15px; 
-    color: #888;
-    font-weight: 500;
+    color: #444;
+    font-weight: 600;
     background-color: transparent;
 }
 
@@ -878,12 +879,12 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px; 
+    gap: 6px; 
 }
 
 .tx-details h4 {
     font-size: 17px; 
-    font-weight: 600; /* 🆕 Poids adouci */
+    font-weight: 700; 
     color: #111;
     margin: 0;
     line-height: 1.2;
@@ -894,19 +895,19 @@ body {
 
 .tx-details p {
     font-size: 15px; 
-    color: #666;
+    color: #444; /* Plus foncé */
     margin: 0;
     line-height: 1.3;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 500; 
+    font-weight: 600; 
 }
 
 .tx-details .tx-time {
     font-size: 14px; 
-    color: #999;
-    font-weight: 400;
+    color: #666; /* Plus foncé */
+    font-weight: 500;
     line-height: 1.2;
 }
 
@@ -921,7 +922,7 @@ body {
 
 .tx-amount {
     font-size: 18px; 
-    font-weight: 600; /* 🆕 Poids adouci */
+    font-weight: 800; /* Très gras */
     white-space: nowrap;
 }
 
@@ -930,7 +931,7 @@ body {
 
 .tx-status {
     font-size: 14px; 
-    font-weight: 500; 
+    font-weight: 600; 
     white-space: nowrap;
 }
 
@@ -939,7 +940,7 @@ body {
 
 .tx-empty {
     text-align: center;
-    color: #999;
+    color: #666;
     font-size: 16px; 
     padding: 30px 15px;
     font-weight: 500;
@@ -971,7 +972,7 @@ body {
     font-size: 16px; 
     color: #333;
     margin-bottom: 15px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .transfer-info-top i {
@@ -988,8 +989,8 @@ body {
     align-items: center;
     gap: 10px;
     font-size: 15px; 
-    font-weight: 500;
-    color: #666;
+    font-weight: 600;
+    color: #444;
     margin-bottom: 25px;
     cursor: pointer;
 }
@@ -1000,7 +1001,7 @@ body {
 .transfer-custom-icon {
     width: 24px;
     height: 24px;
-    color: #888;
+    color: #666;
     flex-shrink: 0;
 }
 
@@ -1011,9 +1012,9 @@ body {
 .form-group label {
     display: block;
     font-size: 14px; 
-    color: #333;
+    color: #222;
     margin-bottom: 8px;
-    font-weight: 600; 
+    font-weight: 700; 
 }
 
 .input-with-addon {
@@ -1037,8 +1038,8 @@ body {
     outline: none;
     padding: 14px 15px;
     font-size: 16px; 
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
+    color: #111;
     background: transparent;
     min-width: 0;
 }
@@ -1051,7 +1052,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    color: #333;
+    color: #111;
     background-color: #f8f9fa;
     font-size: 15px; 
     flex-shrink: 0;
@@ -1064,8 +1065,8 @@ body {
     border-radius: 4px;
     padding: 14px 15px;
     font-size: 16px; 
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
+    color: #111;
     outline: none;
     background-color: #fff;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -1088,7 +1089,7 @@ body {
     gap: 10px;
     margin-bottom: 20px;
     margin-top: 25px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .transfer-warning i {
@@ -1138,15 +1139,15 @@ body {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 600; 
-    color: #222;
+    font-weight: 700; 
+    color: #111;
     margin-bottom: 18px;
     gap: 8px;
 }
 
 .card-header-title i {
     color: var(--primary-color);
-    font-size: 17px;
+    font-size: 18px;
 }
 
 .verification-details-grey-box {
@@ -1158,7 +1159,7 @@ body {
 }
 
 .verification-details-grey-box .detail-row {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -1166,14 +1167,14 @@ body {
 
 .verification-details-grey-box .detail-label {
     font-size: 15px; 
-    color: #555555 !important; 
-    font-weight: 500;
+    color: #444 !important; 
+    font-weight: 600;
 }
 
 .verification-details-grey-box .detail-value {
     font-size: 16px; 
-    font-weight: 600; /* 🆕 Poids adouci */
-    color: #000000 !important; 
+    font-weight: 700; 
+    color: #111 !important; 
     word-break: break-all;
     padding-left: 15px; 
 }
@@ -1185,7 +1186,7 @@ body {
     border-radius: 4px;
     padding: 10px 18px;
     font-size: 15px; 
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -1200,15 +1201,15 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px; 
-    font-weight: 600; 
-    color: #333;
+    font-weight: 700; 
+    color: #111;
     margin-bottom: 15px;
     gap: 8px;
 }
 
 .activation-section-title i {
-    color: #333;
-    font-size: 17px;
+    color: #111;
+    font-size: 18px;
 }
 
 /* ============ PROGRESSION ============ */
@@ -1239,8 +1240,8 @@ body {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 600; 
-    color: #222;
+    font-weight: 700; 
+    color: #111;
     margin-bottom: 15px; 
     gap: 8px;
     position: relative;
@@ -1248,16 +1249,16 @@ body {
 }
 
 .success-message-title i {
-    color: #444;
+    color: #333;
     font-size: 16px;
 }
 
 .progress-desc {
     font-size: 15px; 
-    color: #555; 
+    color: #333; 
     margin-bottom: 30px; 
     line-height: 1.5;
-    font-weight: 500; 
+    font-weight: 600; 
     position: relative;
     z-index: 1;
 }
@@ -1293,8 +1294,8 @@ body {
     display: flex;
     align-items: center;
     font-size: 17px; 
-    font-weight: 600; 
-    color: #333;
+    font-weight: 700; 
+    color: #111;
     margin-bottom: 15px;
     gap: 10px;
     position: relative;
@@ -1323,13 +1324,13 @@ body {
 
 .detail-label-new {
     font-size: 15px; 
-    color: #666;
-    font-weight: 500; 
+    color: #444;
+    font-weight: 600; 
 }
 
 .detail-value-new {
     font-size: 16px; 
-    font-weight: 600; /* 🆕 Poids adouci */
+    font-weight: 700; 
     color: #111;
     word-break: break-all;
     padding-left: 12px; 
@@ -1392,7 +1393,7 @@ body {
 
 .receipt-subtitle {
     font-size: 11px;
-    color: #888;
+    color: #666;
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: 700;
@@ -1422,7 +1423,7 @@ body {
 
 .receipt-custom-msg {
     font-size: 14px;
-    color: #666;
+    color: #555;
     font-style: italic;
     line-height: 1.4;
     margin-bottom: 10px;
@@ -1441,8 +1442,8 @@ body {
 
 .receipt-label {
     font-size: 13px;
-    color: #888;
-    font-weight: 600;
+    color: #555;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 5px;
@@ -1470,13 +1471,13 @@ body {
 }
 
 .receipt-row-label {
-    color: #888;
+    color: #444;
     flex-shrink: 0;
 }
 
 .receipt-row-value {
     color: #111;
-    font-weight: 600;
+    font-weight: 700;
     text-align: right;
     word-break: break-all;
     padding-left: 10px;
@@ -1496,7 +1497,7 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -1544,11 +1545,11 @@ body {
 
 .failed-subtitle {
     font-size: 16px; 
-    color: #666;
+    color: #333;
     margin-bottom: 20px;
     line-height: 1.5;
     white-space: pre-line;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .failed-summary {
@@ -1853,7 +1854,7 @@ body {
     padding: 15px;
     border-radius: 12px;
     font-size: 14px;
-    color: #555;
+    color: #444;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1861,7 +1862,7 @@ body {
     width: 100%; 
     line-height: 1.4;
     justify-content: flex-start;
-    font-weight: 500;
+    font-weight: 600;
 }
 .card-security-note i {
     color: var(--primary-color);
@@ -1922,14 +1923,14 @@ body {
 
 .btn-premium-text strong {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
 }
 
 .btn-premium-text small {
     font-size: 14px;
-    color: #777;
-    font-weight: 500;
+    color: #555;
+    font-weight: 600;
 }
 
 .premium-grid {
@@ -1968,9 +1969,9 @@ body {
 
 .vc-info-label {
     font-size: 13px;
-    color: #666;
+    color: #555;
     margin-bottom: 2px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .vc-info-value {
@@ -2014,8 +2015,8 @@ body {
 
 .account-role {
     font-size: 14px;
-    color: #777;
-    font-weight: 500;
+    color: #555;
+    font-weight: 600;
 }
 
 .account-verified {
@@ -2038,7 +2039,7 @@ body {
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
-    color: #333;
+    color: #111;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -2056,7 +2057,7 @@ body {
 }
 
 .action-chip i {
-    color: #444;
+    color: #222;
     font-size: 15px;
     flex-shrink: 0;
 }
@@ -2152,7 +2153,7 @@ body {
 }
 
 .receipt-logo {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Titillium Web', sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: #111;
@@ -2165,7 +2166,7 @@ body {
 
 .receipt-title {
     font-size: 12px;
-    color: #666;
+    color: #555;
     letter-spacing: 2px;
     font-weight: 600;
 }
@@ -2178,7 +2179,7 @@ body {
 
 .receipt-body {
     font-size: 14px;
-    color: #333;
+    color: #111;
     line-height: 1.5; 
 }
 
@@ -2191,7 +2192,7 @@ body {
 }
 
 .receipt-row span:first-child {
-    color: #666;
+    color: #555;
 }
 
 .receipt-row span:last-child {
@@ -2216,7 +2217,7 @@ body {
 .receipt-footer {
     text-align: center;
     font-size: 12px;
-    color: #888;
+    color: #666;
     margin-top: 25px; 
     line-height: 1.5;
 }
@@ -2230,7 +2231,7 @@ body {
     padding: 14px;
     font-size: 15px;
     font-weight: 600;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Titillium Web', sans-serif;
     cursor: pointer;
     margin-top: 30px; 
     display: flex;
@@ -2309,7 +2310,7 @@ body {
 
 .confirm-message {
     font-size: 15px;
-    color: #555;
+    color: #333;
     line-height: 1.5;
     margin-bottom: 25px;
     white-space: pre-line;
@@ -2533,8 +2534,8 @@ body {
 
 .profile-section-title {
     font-size: 16px;
-    color: #334155;
-    font-weight: 600;
+    color: #111;
+    font-weight: 700;
     letter-spacing: 0.3px;
     padding: 20px 20px 12px 20px;
     display: flex;
@@ -2594,14 +2595,14 @@ body {
 
 .profile-list-label {
     font-size: 14px;
-    color: #64748b;
-    font-weight: 500;
+    color: #555;
+    font-weight: 600;
 }
 
 .profile-list-value {
     font-size: 17px;
-    color: #0f172a;
-    font-weight: 600;
+    color: #111;
+    font-weight: 700;
     word-break: break-word;
 }
 
@@ -2647,11 +2648,11 @@ body {
 .profile-action-btn span {
     font-size: 17px;
     font-weight: 600;
-    color: #1e293b;
+    color: #111;
 }
 
 .profile-action-btn .chevron {
-    color: #94a3b8;
+    color: #666;
     font-size: 14px;
     transition: transform 0.2s;
 }
@@ -2689,11 +2690,11 @@ body {
    🆕 CORRECTION AFFICHAGE IBAN (UNE SEULE LIGNE + POLICE PROPRE)
    ============================================================ */
 #client-iban-display, #client-swift-display {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-family: 'Titillium Web', sans-serif !important;
     white-space: nowrap !important;
     word-break: normal !important;
     font-size: 16px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     letter-spacing: 0.5px !important;
     overflow: hidden;
     text-overflow: ellipsis;
