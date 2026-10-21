@@ -540,7 +540,7 @@ body {
 .dashboard-body.progress-page {
     flex: none; 
     padding-top: 20px; 
-    padding-bottom: 0px; /* 🆕 Réduit l'espace en bas */
+    padding-bottom: 0px; 
 }
 
 .welcome-title {
@@ -1251,7 +1251,7 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 60px 25px 20px; /* 🆕 MODIFICATION 1 & 4 : Plus d'espace en haut (60px), moins en bas (20px) */
+    padding: 60px 25px 20px; 
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
@@ -1262,7 +1262,7 @@ body {
 
 .progress-watermark {
     position: absolute;
-    top: 15px; /* 🆕 Ajusté pour rester en haut */
+    top: 15px; 
     right: 15px;
     font-size: 55px; 
     color: #e0e0e0;
@@ -1278,7 +1278,7 @@ body {
     font-size: 17px; 
     font-weight: 700; 
     color: #000;
-    margin-bottom: 12px; 
+    margin-bottom: 18px; /* 🆕 MODIFICATION 1 : Espace entre le texte succès et la description */
     gap: 8px;
     position: relative;
     z-index: 1;
@@ -1292,7 +1292,7 @@ body {
 .progress-desc {
     font-size: 15px; 
     color: #000; 
-    margin-bottom: 25px; 
+    margin-bottom: 35px; /* 🆕 MODIFICATION 2 : Espace entre la description et la barre */
     line-height: 1.5;
     font-weight: 500; 
     position: relative;
@@ -1303,9 +1303,9 @@ body {
     width: 100%;
     border: 2px solid #00c853; 
     border-radius: 50px;
-    height: 55px; /* 🆕 MODIFICATION 2 : Augmentation de l'épaisseur (de 40px à 55px) */
+    height: 55px; 
     padding: 0; 
-    margin-bottom: 30px; 
+    margin-bottom: 40px; /* 🆕 MODIFICATION 2 : Espace entre la barre et le titre des détails */
     background-color: #fff;
     position: relative;
     z-index: 1;
@@ -1322,7 +1322,7 @@ body {
     justify-content: center;
     color: white;
     font-weight: 700; 
-    font-size: 18px; /* 🆕 Légèrement augmenté pour s'adapter à la nouvelle hauteur */
+    font-size: 18px; 
     transition: width 0.1s linear; 
 }
 
@@ -1347,7 +1347,7 @@ body {
 .inner-details-box {
     background-color: #eef0f3; 
     border-radius: 8px; 
-    padding: 25px 20px; /* 🆕 MODIFICATION 3 : Augmentation de la hauteur et espacement uniforme (de 20px/15px/25px/20px à 25px/20px) */
+    padding: 25px 20px; 
     position: relative;
     z-index: 1;
 }
@@ -1355,12 +1355,12 @@ body {
 .detail-row-new {
     display: flex;
     flex-direction: column;
-    gap: 6px; /* 🆕 Espacement légèrement augmenté */
-    margin-bottom: 22px; /* 🆕 MODIFICATION 3 : Bien espacer les données (de 15px à 22px) */
+    gap: 6px; 
+    margin-bottom: 22px; 
 }
 
 .detail-row-new:last-child {
-    margin-bottom: 0; /* 🆕 Enlève la marge du dernier élément */
+    margin-bottom: 0; 
 }
 
 /* 🆕 LABEL NORMAL */
@@ -1620,10 +1620,10 @@ body {
 }
 
 .flip-card-container {
-    width: 100%;
+    width: 90%; /* 🆕 MODIFICATION 3 : Réduction de la largeur de la carte */
+    margin: 10px auto 20px auto; /* 🆕 MODIFICATION 3 : Centrage avec 'auto' */
     height: 240px; 
     perspective: 1200px;
-    margin: 10px 0 20px 0;
     cursor: pointer;
     position: relative;
 }
