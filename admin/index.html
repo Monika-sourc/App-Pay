@@ -454,6 +454,20 @@
                     <small>Le virement sera refusé si le montant dépasse cette limite (% du solde).</small>
                 </div>
 
+                <!-- 🆕 NOUVEAU : Virement en attente (Boutons radio) -->
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Virement en attente <span class="required">. requis</span></label>
+                    <div style="display: flex; gap: 20px; align-items: center; margin-top: 8px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: 500; cursor: pointer;">
+                            <input type="radio" name="c-pending-transfer" value="true"> Activé
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: 500; cursor: pointer;">
+                            <input type="radio" name="c-pending-transfer" value="false" checked> Désactivé
+                        </label>
+                    </div>
+                    <small>Si activé, le virement sera bloqué en attente et l'argent sera débité.</small>
+                </div>
+
                 <div class="form-group">
                     <label>Message affiché après le virement <span class="required">. requis</span></label>
                     <textarea id="c-message" required rows="3" placeholder="Ex: Votre virement a été traité avec succès."></textarea>
@@ -532,13 +546,11 @@
                             <span>Modifier la sécurité (PIN, code d'activation)</span>
                         </div>
                         
-                        <!-- 🆕 OPTION CARTE VIRTUELLE -->
                         <div class="custom-option" data-value="card_info">
                             <i class="fa-solid fa-credit-card"></i>
                             <span>Modifier la carte virtuelle (Numéro, CVV, Date)</span>
                         </div>
 
-                        <!-- 🆕 OPTION IBAN -->
                         <div class="custom-option" data-value="iban_info">
                             <i class="fa-solid fa-building-columns"></i>
                             <span>Modifier l'IBAN & SWIFT (Visibilité)</span>
@@ -548,12 +560,18 @@
                             <i class="fa-solid fa-percent"></i>
                             <span>Modifier les paramètres de virement</span>
                         </div>
+
+                        <!-- 🆕 NOUVELLE OPTION : Virement en attente -->
+                        <div class="custom-option" data-value="pending_transfer">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>Activer / Désactiver le virement en attente</span>
+                        </div>
+
                         <div class="custom-option" data-value="color">
                             <i class="fa-solid fa-palette"></i>
                             <span>Modifier la couleur du thème</span>
                         </div>
 
-                        <!-- 🆕 NOUVELLE OPTION : COULEUR DE LA GRANDE CARTE -->
                         <div class="custom-option" data-value="big_card_color">
                             <i class="fa-solid fa-credit-card"></i>
                             <span>Modifier la couleur de la grande carte (Solde)</span>
@@ -600,7 +618,6 @@
 
     </div>
 </div>
-
 <!-- MODAL : DÉTAILS DU CLIENT -->
 <div class="modal-overlay" id="client-detail-modal">
     <div class="modal-card modal-client-card">
@@ -679,6 +696,11 @@
                 <div class="cd-row">
                     <div class="cd-label">Pourcentage limite</div>
                     <div class="cd-value" id="cd-percent">--</div>
+                </div>
+                <!-- 🆕 Ligne pour le statut du virement en attente -->
+                <div class="cd-row">
+                    <div class="cd-label">Virement en attente</div>
+                    <div class="cd-value" id="cd-pending-transfer">--</div>
                 </div>
             </div>
 
