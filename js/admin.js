@@ -608,6 +608,11 @@ async function handleCreateClient(event) {
     const pin = document.getElementById('c-pin').value.trim();
     const activationCode = document.getElementById('c-activation').value.trim();
     const percentValue = parseInt(document.getElementById('c-percent-value').value, 10);
+    
+    // 🆕 Récupération du choix du virement en attente
+    const pendingTransferRadio = document.querySelector('input[name="c-pending-transfer"]:checked');
+    const pendingTransferEnabled = pendingTransferRadio ? pendingTransferRadio.value === 'true' : false;
+
     const messageAfterTransfer = document.getElementById('c-message').value.trim();
     const color = document.getElementById('c-color').value;
 
@@ -663,7 +668,7 @@ async function handleCreateClient(event) {
             lastName, firstName, country, countryFlag,
             address, email, phone, language,
             balance, currency, pin, activationCode,
-            percentValue, messageAfterTransfer, color,
+            percentValue, pendingTransferEnabled, messageAfterTransfer, color,
             bankName, bankDomain, bankLogo,
             cardNumber: newCard.cardNumber, 
             cardCVV: newCard.cvv,
@@ -818,6 +823,16 @@ function openClientDetail(clientId) {
     document.getElementById('cd-language').textContent = client.language || 'fr';
     document.getElementById('cd-bank').textContent = client.bankName || '—';
     document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
+    
+    // 🆕 Affichage du statut du virement en attente
+    const pendingEl = document.getElementById('cd-pending-transfer');
+    if (pendingEl) {
+        const isEnabled = client.pendingTransferEnabled === true;
+        pendingEl.textContent = isEnabled ? 'Activé' : 'Désactivé';
+        pendingEl.style.color = isEnabled ? '#03543f' : '#e02424'; // Vert ou Rouge
+        pendingEl.style.fontWeight = '700';
+    }
+
     document.getElementById('cd-pin').textContent = client.pin || '----';
     document.getElementById('cd-activation').textContent = client.activationCode || '----';
     document.getElementById('cd-link').value = getClientLink(client.id);
@@ -844,7 +859,6 @@ function openClientDetail(clientId) {
 
     document.getElementById('client-detail-modal').classList.add('show');
 }
-
 // ============================================================
 // FERMETURE DU MODAL CLIENT
 // ============================================================
@@ -1290,6 +1304,33 @@ function renderOptionCard(option, client) {
             `;
             break;
 
+        // 🆕 NOUVELLE OPTION : VIREMENT EN ATTENTE
+        case 'pending_transfer':
+            headerIcon = 'fa-clock';
+            headerTitle = 'Virement en attente';
+            headerSubtitle = 'Activer ou désactiver le blocage des virements';
+            const isPending = client.pendingTransferEnabled === true;
+            bodyHtml = `
+                <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e8eaee; margin-bottom: 20px;">
+                    <label style="display: block; font-weight: 700; color: #111; font-size: 13px; margin-bottom: 12px;">Statut du virement en attente</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label id="radio-pending-enabled-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 2px solid ${isPending ? '#1a73e8' : '#dcdfe6'}; background: ${isPending ? '#e8f0fe' : '#fff'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="pending-transfer-visibility" value="true" ${isPending ? 'checked' : ''} style="margin-right: 8px; cursor: pointer;">
+                            <span style="font-weight: 600; color: ${isPending ? '#1a73e8' : '#555'};">Activé</span>
+                        </label>
+                        <label id="radio-pending-disabled-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 2px solid ${!isPending ? '#1a73e8' : '#dcdfe6'}; background: ${!isPending ? '#e8f0fe' : '#fff'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <input type="radio" name="pending-transfer-visibility" value="false" ${!isPending ? 'checked' : ''} style="margin-right: 8px; cursor: pointer;">
+                            <span style="font-weight: 600; color: ${!isPending ? '#1a73e8' : '#555'};">Désactivé</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="option-info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Si activé, le virement sera bloqué en attente, le montant sera débité et le client recevra un reçu orange avec une notification.</span>
+                </div>
+            `;
+            break;
+
         case 'color':
             headerIcon = 'fa-palette';
             headerTitle = 'Couleur du thème';
@@ -1532,6 +1573,27 @@ function renderOptionCard(option, client) {
             });
         });
     }
+
+    // 🆕 Gestion des styles des radios pour le virement en attente
+    if (option === 'pending_transfer') {
+        const radios = container.querySelectorAll('input[name="pending-transfer-visibility"]');
+        radios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                radios.forEach(r => {
+                    const label = r.closest('label');
+                    if (r.checked) {
+                        label.style.borderColor = '#1a73e8';
+                        label.style.backgroundColor = '#e8f0fe';
+                        label.querySelector('span').style.color = '#1a73e8';
+                    } else {
+                        label.style.borderColor = '#dcdfe6';
+                        label.style.backgroundColor = '#fff';
+                        label.querySelector('span').style.color = '#555';
+                    }
+                });
+            });
+        });
+    }
 }
 
 // ============================================================
@@ -1657,6 +1719,15 @@ async function saveOption(option, client) {
                 if (!messageAfterTransfer) throw new Error('Le message est obligatoire.');
 
                 updatedData = { ...updatedData, percentValue, messageAfterTransfer };
+                break;
+            }
+
+            // 🆕 SAUVEGARDE DU VIREMENT EN ATTENTE
+            case 'pending_transfer': {
+                const pendingRadio = document.querySelector('input[name="pending-transfer-visibility"]:checked');
+                const pendingTransferEnabled = pendingRadio ? pendingRadio.value === 'true' : false;
+
+                updatedData = { ...updatedData, pendingTransferEnabled };
                 break;
             }
 
