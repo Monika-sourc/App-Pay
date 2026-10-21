@@ -90,7 +90,7 @@ body {
 
 .invalid-message {
     font-size: 14px;
-    color: #333;
+    color: #111;
     line-height: 1.6;
     margin-bottom: 25px;
     font-weight: 500;
@@ -106,7 +106,7 @@ body {
     gap: 12px;
     text-align: left;
     font-size: 12px;
-    color: #333;
+    color: #111;
     line-height: 1.5;
     font-weight: 500;
 }
@@ -168,7 +168,7 @@ body {
 .login-title {
     font-size: 18px;
     font-weight: 600;
-    color: #333;
+    color: #111;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -192,7 +192,7 @@ body {
 
 .user-badge i {
     font-size: 14px;
-    color: #333;
+    color: #111;
     flex-shrink: 0;
 }
 
@@ -232,7 +232,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #666;
+    color: #111;
     font-size: 16px;
     flex-shrink: 0;
 }
@@ -254,7 +254,7 @@ body {
 }
 
 .input-group input::placeholder {
-    color: #999;
+    color: #888;
     font-weight: 500;
 }
 
@@ -342,7 +342,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #333;
+    color: #111;
     cursor: pointer;
     border: none;
     font-size: 15px;
@@ -421,7 +421,7 @@ body {
 }
 .notif-item-text {
     font-size: 12px;
-    color: #333;
+    color: #111;
     line-height: 1.4;
     font-weight: 500;
 }
@@ -445,17 +445,17 @@ body {
     padding-bottom: 100px; 
 }
 
-/* --- BARRE DE NAVIGATION FLOTTANTE EN BAS (PLUS VISIBLE) --- */
+/* --- BARRE DE NAVIGATION FLOTTANTE EN BAS --- */
 .bottom-nav {
     position: fixed;
     bottom: 15px;
     left: 15px;
     right: 15px;
-    height: 75px; /* 🆕 Un peu plus haute */
+    height: 75px; 
     background-color: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.15); /* 🆕 Ombre renforcée */
-    border: 1px solid #dcdfe6; /* 🆕 Bordure un peu plus foncée */
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.15); 
+    border: 1px solid #dcdfe6; 
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -479,9 +479,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 4px;
-    font-size: 11px; /* 🆕 Taille augmentée */
-    font-weight: 600; /* 🆕 Plus gras */
-    color: #222; /* 🆕 Plus foncé */
+    font-size: 11px; 
+    font-weight: 600; 
+    color: #111; 
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 6px 4px;
@@ -491,11 +491,11 @@ body {
 }
 
 .nav-links li i {
-    font-size: 20px; /* 🆕 Icônes plus grosses */
+    font-size: 20px; 
     margin: 0;
     transition: transform 0.2s;
-    color: #111; /* 🆕 Icônes noires */
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15)); /* 🆕 Ombre sur l'icône */
+    color: #111; 
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15)); 
 }
 
 .nav-links li span {
@@ -508,11 +508,11 @@ body {
 .nav-links li.active {
     color: var(--primary-color);
     background-color: var(--primary-color-soft);
-    font-weight: 700; /* 🆕 Très gras pour l'actif */
+    font-weight: 700; 
 }
 
 .nav-links li.active i {
-    transform: scale(1.15); /* 🆕 Effet zoom augmenté */
+    transform: scale(1.15); 
     color: var(--primary-color);
     filter: drop-shadow(0 2px 5px rgba(255, 122, 0, 0.4));
 }
@@ -542,7 +542,7 @@ body {
 
 .welcome-title {
     font-size: 20px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     margin-bottom: 20px;
 }
@@ -566,21 +566,20 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 15px; 
-    opacity: 0.9;
+    color: #111; /* Plus de transparence, noir pur */
     margin-bottom: 10px;
     gap: 6px;
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600; 
 }
 
 .balance-header i {
     color: var(--primary-color);
     font-size: 14px;
-    transition: color 0.3s;
 }
 
 .balance-amount {
     font-size: 34px; 
-    font-weight: 800; /* 🆕 Bump de 700 à 800 */
+    font-weight: 600; /* Réduit de 800 à 600 pour être plus fin */
     margin-bottom: 22px; 
     text-align: center;
     letter-spacing: 0px; 
@@ -588,10 +587,10 @@ body {
 
 .balance-subtitle {
     font-size: 14px; 
-    opacity: 0.8;
+    color: #111; /* Plus de transparence, noir pur */
     margin-bottom: 25px; 
     text-align: center;
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600;
 }
 
 .balance-actions {
@@ -636,7 +635,8 @@ body {
 
 .round-action-wrapper span {
     font-size: 14px; 
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600; 
+    color: #111;
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -693,7 +693,7 @@ body {
 
 .stat-value {
     font-size: 17px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     margin-bottom: 4px; 
     white-space: nowrap;
@@ -703,9 +703,9 @@ body {
 
 .stat-label {
     font-size: 11px; 
-    color: #555; 
+    color: #111; /* Plus de gris, noir pur */
     letter-spacing: 0.2px;
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600; 
 }
 
 /* ============================================================
@@ -750,7 +750,7 @@ body {
 
 .history-card-header-left span {
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     white-space: nowrap;
     overflow: hidden;
@@ -766,7 +766,7 @@ body {
 
 .history-count-badge {
     background-color: #f0f0f3;
-    color: #333;
+    color: #111;
     font-size: 13px; 
     font-weight: 600;
     padding: 4px 10px;
@@ -784,7 +784,7 @@ body {
 .history-date-separator {
     padding: 12px 15px 8px 15px;
     font-size: 14px; 
-    color: #444;
+    color: #111; /* Plus de gris, noir pur */
     font-weight: 600;
     background-color: transparent;
 }
@@ -882,7 +882,7 @@ body {
 
 .tx-details h4 {
     font-size: 15px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     margin: 0;
     line-height: 1.2;
@@ -893,19 +893,19 @@ body {
 
 .tx-details p {
     font-size: 13px; 
-    color: #444; 
+    color: #111; /* Plus de gris, noir pur */
     margin: 0;
     line-height: 1.3;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600; 
 }
 
 .tx-details .tx-time {
     font-size: 12px; 
-    color: #666; 
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    color: #333; /* Gris très foncé (plus lisible que #666) */
+    font-weight: 600; 
     line-height: 1.2;
 }
 
@@ -920,7 +920,7 @@ body {
 
 .tx-amount {
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 800; /* Bump de 700 à 800 */
     white-space: nowrap;
 }
 
@@ -929,7 +929,7 @@ body {
 
 .tx-status {
     font-size: 13px; 
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600; 
     white-space: nowrap;
 }
 
@@ -938,7 +938,7 @@ body {
 
 .tx-empty {
     text-align: center;
-    color: #666;
+    color: #111;
     font-size: 15px; 
     padding: 30px 15px;
     font-weight: 500;
@@ -968,7 +968,7 @@ body {
     align-items: center;
     gap: 8px;
     font-size: 15px; 
-    color: #333;
+    color: #111;
     margin-bottom: 15px;
     font-weight: 600;
 }
@@ -988,7 +988,7 @@ body {
     gap: 10px;
     font-size: 14px; 
     font-weight: 600;
-    color: #444;
+    color: #111;
     margin-bottom: 25px;
     cursor: pointer;
 }
@@ -999,7 +999,7 @@ body {
 .transfer-custom-icon {
     width: 24px;
     height: 24px;
-    color: #666;
+    color: #111;
     flex-shrink: 0;
 }
 
@@ -1010,9 +1010,9 @@ body {
 .form-group label {
     display: block;
     font-size: 13px; 
-    color: #222;
+    color: #111;
     margin-bottom: 8px;
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 700; 
 }
 
 .input-with-addon {
@@ -1137,7 +1137,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     margin-bottom: 18px;
     gap: 8px;
@@ -1165,7 +1165,7 @@ body {
 
 .verification-details-grey-box .detail-label {
     font-size: 14px; 
-    color: #444 !important; 
+    color: #111 !important; /* Plus de gris, noir pur */
     font-weight: 600;
 }
 
@@ -1238,7 +1238,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Bump de 600 à 700 */
+    font-weight: 700; 
     color: #111;
     margin-bottom: 12px; 
     gap: 8px;
@@ -1253,10 +1253,10 @@ body {
 
 .progress-desc {
     font-size: 14px; 
-    color: #333; 
+    color: #111; /* Plus de gris, noir pur */
     margin-bottom: 25px; 
     line-height: 1.5;
-    font-weight: 600; /* 🆕 Bump de 500 à 600 */
+    font-weight: 600; 
     position: relative;
     z-index: 1;
 }
@@ -1292,7 +1292,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 16px; 
-    font-weight: 700; 
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     margin-bottom: 15px;
     gap: 10px;
@@ -1322,13 +1322,13 @@ body {
 
 .detail-label-new {
     font-size: 14px; 
-    color: #444;
+    color: #111; /* Plus de gris, noir pur */
     font-weight: 600; 
 }
 
 .detail-value-new {
     font-size: 15px; 
-    font-weight: 700; 
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
     word-break: break-all;
     padding-left: 12px; 
@@ -1378,7 +1378,7 @@ body {
 
 .receipt-logo {
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 800;
     color: #111;
     margin-bottom: 5px;
     letter-spacing: 1px;
@@ -1413,14 +1413,14 @@ body {
 
 .receipt-title {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 800;
     color: #111;
     margin-bottom: 8px;
 }
 
 .receipt-custom-msg {
     font-size: 14px;
-    color: #555;
+    color: #111; /* Plus de gris, noir pur */
     font-style: italic;
     line-height: 1.4;
     margin-bottom: 10px;
@@ -1544,7 +1544,7 @@ body {
 
 .failed-subtitle {
     font-size: 15px; 
-    color: #333;
+    color: #111;
     margin-bottom: 20px;
     line-height: 1.5;
     white-space: pre-line;
@@ -1853,7 +1853,7 @@ body {
     padding: 15px;
     border-radius: 12px;
     font-size: 13px;
-    color: #444;
+    color: #111;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1975,7 +1975,7 @@ body {
 
 .vc-info-value {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 800; /* Bump de 700 à 800 */
     color: #111;
 }
 
@@ -2056,7 +2056,7 @@ body {
 }
 
 .action-chip i {
-    color: #222;
+    color: #111;
     font-size: 15px;
     flex-shrink: 0;
 }
@@ -2309,7 +2309,7 @@ body {
 
 .confirm-message {
     font-size: 14px;
-    color: #333;
+    color: #111;
     line-height: 1.5;
     margin-bottom: 25px;
     white-space: pre-line;
@@ -2338,7 +2338,7 @@ body {
 
 .confirm-btn-cancel {
     background-color: #f1f2f5;
-    color: #333;
+    color: #111;
 }
 .confirm-btn-cancel:hover {
     background-color: #e4e6eb;
@@ -2594,14 +2594,14 @@ body {
 
 .profile-list-label {
     font-size: 13px;
-    color: #555;
+    color: #111;
     font-weight: 600;
 }
 
 .profile-list-value {
     font-size: 16px;
     color: #111;
-    font-weight: 700;
+    font-weight: 800;
     word-break: break-word;
 }
 
@@ -2651,7 +2651,7 @@ body {
 }
 
 .profile-action-btn .chevron {
-    color: #666;
+    color: #111;
     font-size: 14px;
     transition: transform 0.2s;
 }
