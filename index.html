@@ -329,7 +329,8 @@
         <h1 class="welcome-title" data-i18n="transfer_in_progress">Votre ordre de virement en cours...</h1>
 
         <div class="progress-card">
-            <i class="fa-solid fa-money-bill-transfer progress-watermark"></i>
+            <!-- 4. Symbole portefeuille en filigrane -->
+            <i class="fa-solid fa-wallet progress-watermark"></i>
 
             <div class="success-message-title">
                 <i class="fa-regular fa-user"></i> <span data-i18n="identity_verified">Vérification d'identité effectuée avec succès.</span>
@@ -344,8 +345,10 @@
             </div>
 
             <div class="details-section-title" style="margin-top: 25px;">
-                <!-- 🆕 Icône modifiée ici -->
-                <i class="fa-solid fa-wallet" style="color: var(--primary-color);"></i> <span data-i18n="pending_transfer_details">Détails du virement en cours</span>
+                <!-- 2. Icône portefeuille exacte -->
+                <i class="fa-solid fa-wallet" style="color: #ff7a00;"></i> 
+                <!-- Titre modifié en "en cours" -->
+                <span>Détails du virement en cours</span>
             </div>
 
             <div class="inner-details-box">
