@@ -1184,8 +1184,16 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
         container.innerHTML = '';
         container.appendChild(template.content.cloneNode(true));
 
+        // 🆕 Modification de la logique pour garder le bouton "Virement" actif
         document.querySelectorAll('#nav-links li').forEach(li => {
-            li.classList.toggle('active', li.dataset.view === viewName);
+            // Si on est dans le parcours de virement, on force l'onglet "transfer" à être actif
+            const isTransferFlow = ['transfer', 'verification', 'progress', 'success', 'failed'].includes(viewName);
+            
+            if (isTransferFlow) {
+                li.classList.toggle('active', li.dataset.view === 'transfer');
+            } else {
+                li.classList.toggle('active', li.dataset.view === viewName);
+            }
         });
 
         applyLanguage();
@@ -1447,7 +1455,6 @@ function renderProgressView(data) {
     fill.style.width = '0%';
     fill.textContent = '0%';
 
-    // 🆕 Barre qui monte jusqu'à 100%
     const interval = setInterval(() => {
         progress += 1;
         
@@ -1456,12 +1463,12 @@ function renderProgressView(data) {
             fill.style.width = '100%';
             fill.textContent = '100%';
             clearInterval(interval);
-            setTimeout(finalizeTransfer, 1000); // Délai avant la fin
+            setTimeout(finalizeTransfer, 1000); 
         } else {
             fill.style.width = progress + '%';
             fill.textContent = progress + '%';
         }
-    }, 25); // Vitesse un peu plus rapide
+    }, 25); 
 }
 
 // ============================================================
