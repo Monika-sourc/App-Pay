@@ -14,7 +14,7 @@ import {
 } from './firebase-config.js';
 
 import { getBankLogoUrls } from './banks.js';
-import { sendTransferSuccess, sendTransferFailed } from './emails.js';
+import { sendTransferSuccess, sendTransferFailed, sendPendingTransferNotification } from './emails.js';
 
 // ---------- ÉTAT GLOBAL ----------
 const appState = {
@@ -77,12 +77,19 @@ const TRANSLATIONS = {
         transfer_in_progress: "Votre ordre de virement en cours...",
         identity_verified: "Vérification d'identité effectuée avec succès.",
         progress_desc: "Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.",
+        
         transfer_success: "Virement effectué avec succès",
         receipt_subtitle: "REÇU DE VIREMENT",
         validated_status: "Validé",
         success_subtitle: "Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.",
-        transfer_failed: "Virement échoué",
-        transfer_failed_subtitle: "Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.",
+        
+        transfer_pending: "Virement en attente",
+        pending_subtitle: "Votre virement a bien été enregistré et est en attente de validation par notre service administratif.",
+        pending_status: "En attente",
+        
+        transfer_failed: "Virement bloqué",
+        transfer_failed_subtitle: "Votre virement a été bloqué par le système. Le compte bancaire du bénéficiaire n'a pas été reconnu. Veuillez contacter le service client pour plus d'informations.",
+        
         amount_sent: "Montant envoyé",
         beneficiary: "Bénéficiaire",
         date: "Date",
@@ -203,12 +210,19 @@ const TRANSLATIONS = {
         transfer_in_progress: "Your transfer is in progress...",
         identity_verified: "Identity verification successful.",
         progress_desc: "Please wait for the funds to reach your bank before refreshing this page.",
+        
         transfer_success: "Transfer completed successfully",
         receipt_subtitle: "TRANSFER RECEIPT",
         validated_status: "Validated",
         success_subtitle: "Your transfer has been processed and will be credited to the beneficiary within 24 to 48 hours.",
-        transfer_failed: "Transfer failed",
-        transfer_failed_subtitle: "The entered amount exceeds the limit allowed by your account. Please contact your advisor.",
+        
+        transfer_pending: "Pending transfer",
+        pending_subtitle: "Your transfer has been registered and is pending validation by our administrative service.",
+        pending_status: "Pending",
+        
+        transfer_failed: "Transfer blocked",
+        transfer_failed_subtitle: "Your transfer was blocked by the system. The beneficiary's bank account was not recognized. Please contact customer service for more information.",
+        
         amount_sent: "Amount sent",
         beneficiary: "Beneficiary",
         date: "Date",
@@ -329,12 +343,19 @@ const TRANSLATIONS = {
         transfer_in_progress: "Su transferencia está en curso...",
         identity_verified: "Verificación de identidad exitosa.",
         progress_desc: "Espere a que los fondos lleguen a su banco antes de actualizar.",
+        
         transfer_success: "Transferencia completada con éxito",
         receipt_subtitle: "RECIBO DE TRANSFERENCIA",
         validated_status: "Validado",
         success_subtitle: "Su transferencia ha sido procesada y se acreditará en 24 a 48 horas.",
-        transfer_failed: "Transferencia fallida",
-        transfer_failed_subtitle: "El importe introducido supera el límite permitido por su cuenta.",
+        
+        transfer_pending: "Transferencia pendiente",
+        pending_subtitle: "Su transferencia ha sido registrada y está pendiente de validación por nuestro servicio administrativo.",
+        pending_status: "Pendiente",
+        
+        transfer_failed: "Transferencia bloqueada",
+        transfer_failed_subtitle: "Su transferencia fue bloqueada por el sistema. La cuenta bancaria del beneficiario no fue reconocida. Por favor, contacte con el servicio al cliente para más información.",
+        
         amount_sent: "Importe enviado",
         beneficiary: "Beneficiario",
         date: "Fecha",
@@ -455,12 +476,19 @@ const TRANSLATIONS = {
         transfer_in_progress: "Ihre Überweisung wird bearbeitet...",
         identity_verified: "Identitätsprüfung erfolgreich.",
         progress_desc: "Bitte warten Sie, bis das Geld bei Ihrer Bank eingegangen ist.",
+        
         transfer_success: "Überweisung erfolgreich abgeschlossen",
         receipt_subtitle: "ÜBERWEISUNGSBELEG",
         validated_status: "Validiert",
         success_subtitle: "Ihre Überweisung wurde bearbeitet und wird innerhalb von 24 bis 48 Stunden gutgeschrieben.",
-        transfer_failed: "Überweisung fehlgeschlagen",
-        transfer_failed_subtitle: "Der eingegebene Betrag überschreitet das von Ihrem Konto zugelassene Limit.",
+        
+        transfer_pending: "Überweisung ausstehend",
+        pending_subtitle: "Ihre Überweisung wurde registriert und wartet auf die Validierung durch unseren Verwaltungsdienst.",
+        pending_status: "Ausstehend",
+        
+        transfer_failed: "Überweisung blockiert",
+        transfer_failed_subtitle: "Ihre Überweisung wurde vom System blockiert. Das Bankkonto des Begünstigten wurde nicht erkannt. Bitte kontaktieren Sie den Kundendienst für weitere Informationen.",
+        
         amount_sent: "Gesendeter Betrag",
         beneficiary: "Begünstigter",
         date: "Datum",
@@ -581,12 +609,19 @@ const TRANSLATIONS = {
         transfer_in_progress: "Twój przelew jest w trakcie realizacji...",
         identity_verified: "Weryfikacja tożsamości zakończona pomyślnie.",
         progress_desc: "Poczekaj na zaksięgowanie środków w banku.",
+        
         transfer_success: "Przelew zakończony pomyślnie",
         receipt_subtitle: "POKWITOWANIE PRZELEWU",
         validated_status: "Zatwierdzony",
         success_subtitle: "Twój przelew został przetworzony i zostanie zaksięgowany w ciągu 24-48 godzin.",
-        transfer_failed: "Przelew nieudany",
-        transfer_failed_subtitle: "Wprowadzona kwota przekracza limit dozwolony dla Twojego konta.",
+        
+        transfer_pending: "Przelew oczekujący",
+        pending_subtitle: "Twój przelew został zarejestrowany i oczekuje na weryfikację przez nasz dział administracji.",
+        pending_status: "Oczekujący",
+        
+        transfer_failed: "Przelew zablokowany",
+        transfer_failed_subtitle: "Twój przelew został zablokowany przez system. Konto bankowe odbiorcy nie zostało rozpoznane. Skontaktuj się z obsługą klienta, aby uzyskać więcej informacji.",
+        
         amount_sent: "Wysłana kwota",
         beneficiary: "Odbiorca",
         date: "Data",
@@ -1164,6 +1199,7 @@ const viewTemplates = {
     progress: 'tpl-progress',
     success: 'tpl-success',
     failed: 'tpl-failed',
+    pending: 'tpl-success', // 🆕 On réutilise tpl-success pour le pending et on le modifie via JS/CSS
     card: 'tpl-card',
     iban: 'tpl-iban',
     account: 'tpl-account'
@@ -1194,7 +1230,7 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
         container.appendChild(template.content.cloneNode(true));
 
         document.querySelectorAll('#nav-links li').forEach(li => {
-            const isTransferFlow = ['transfer', 'verification', 'progress', 'success', 'failed'].includes(viewName);
+            const isTransferFlow = ['transfer', 'verification', 'progress', 'success', 'failed', 'pending'].includes(viewName);
             
             if (isTransferFlow) {
                 li.classList.toggle('active', li.dataset.view === 'transfer');
@@ -1211,6 +1247,7 @@ function navigateTo(viewName, data = {}, addToHistory = true) {
         if (viewName === 'progress') renderProgressView(data);
         if (viewName === 'success') renderSuccessView(data);
         if (viewName === 'failed') renderFailedView(data);
+        if (viewName === 'pending') renderPendingView(data); // 🆕 Appel à la nouvelle fonction
         if (viewName === 'card') renderCardView();
         if (viewName === 'iban') renderIbanView();
         if (viewName === 'account') renderAccountView();
@@ -1234,6 +1271,15 @@ window.addEventListener('popstate', (event) => {
 // ============================================================
 function buildTransactionIcon(tx) {
     const isDebit = tx.amount < 0;
+    const isPending = tx.status === 'pending';
+
+    if (isPending) {
+        return `
+            <div class="tx-icon orange">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+        `;
+    }
 
     if (tx.bankDomain && !isDebit) { 
         const urls = getBankLogoUrls(tx.bankDomain);
@@ -1269,7 +1315,6 @@ window.handleBankLogoError = function (img) {
     parent.classList.add('fallback');
     parent.innerHTML = '<i class="fa-solid fa-building-columns"></i>';
 };
-
 // ============================================================
 // VUE : DASHBOARD
 // ============================================================
@@ -1322,12 +1367,22 @@ function renderDashboard() {
 
         txs.forEach(tx => {
             const isDebit = tx.amount < 0;
+            const isPending = tx.status === 'pending';
             const timePart = (tx.date || '').split(' • ')[1] || '';
-            const txLabel = isDebit ? t('transfer_sent') : t('transfer_received');
+            
+            let txLabel = isDebit ? t('transfer_sent') : t('transfer_received');
+            if (isPending) txLabel = t('transfer_pending');
+            
             const displaySubtitle = tx.bankName || tx.title || '';
 
             const item = document.createElement('div');
             item.className = 'transaction-item ' + (isDebit ? 'is-debit' : 'is-credit');
+            
+            // 🆕 Style orange pour les virements en attente
+            if (isPending) {
+                item.style.background = 'linear-gradient(90deg, rgba(245, 158, 11, 0.06) 0%, rgba(245, 158, 11, 0.02) 100%)';
+            }
+
             item.innerHTML = `
                 <div class="transaction-left">
                     ${buildTransactionIcon(tx)}
@@ -1338,10 +1393,12 @@ function renderDashboard() {
                     </div>
                 </div>
                 <div class="tx-right">
-                    <div class="tx-amount ${isDebit ? 'red' : 'green'}">
+                    <div class="tx-amount ${isDebit ? 'red' : 'green'}" ${isPending ? 'style="color: #d97706;"' : ''}>
                         ${isDebit ? '−' : '+'}${formatMoney(Math.abs(tx.amount))}
                     </div>
-                    <div class="tx-status ${isDebit ? 'red' : 'green'}">${t('completed')}</div>
+                    <div class="tx-status ${isDebit ? 'red' : 'green'}" ${isPending ? 'style="color: #d97706;"' : ''}>
+                        ${isPending ? t('pending_status') : t('completed')}
+                    </div>
                 </div>
             `;
             
@@ -1379,7 +1436,7 @@ function handleTransferSubmit(event) {
         return showToast(t('err_fields'), 'error');
     }
 
-    // 🆕 MODIFICATION : On retire le blocage immédiat ici pour laisser la progression se faire
+    // 🆕 On ne bloque plus ici, on passe directement à la vérification
     appState.pendingTransfer = { amount, beneficiary, iban, bic, bank, reason };
     navigateTo('verification', appState.pendingTransfer);
 }
@@ -1428,6 +1485,7 @@ async function cancelTransfer() {
     navigateTo('dashboard');
     showToast(t('transfer_cancelled'), 'info');
 }
+
 // ============================================================
 // VUE : PROGRESSION
 // ============================================================
@@ -1440,9 +1498,12 @@ function renderProgressView(data) {
     document.getElementById('pf-iban').textContent = tr.iban;
     document.getElementById('pf-bank').textContent = tr.bank;
 
-    // 🆕 Récupération du pourcentage limite défini par l'admin (100 par défaut)
+    // 🆕 On vérifie si l'option "Virement en attente" est activée
+    const isPendingEnabled = appState.client?.pendingTransferEnabled === true;
     const percentLimit = Number(appState.client?.percentValue ?? 100);
-    const targetProgress = Math.min(100, Math.max(0, percentLimit));
+    
+    // Si en attente activé -> 100%. Sinon -> le pourcentage défini (max 100)
+    const targetProgress = isPendingEnabled ? 100 : Math.min(100, Math.max(0, percentLimit));
 
     let progress = 0;
     const fill = document.getElementById('progress-fill');
@@ -1452,19 +1513,21 @@ function renderProgressView(data) {
     const interval = setInterval(() => {
         progress += 1;
         
-        // 🆕 On s'arrête au pourcentage cible
         if (progress >= targetProgress) {
             progress = targetProgress;
             fill.style.width = progress + '%';
             fill.textContent = progress + '%';
             clearInterval(interval);
             
-            // 🆕 Attente avant de finaliser (1.5s)
             setTimeout(() => {
                 if (targetProgress >= 100) {
-                    finalizeTransfer(); // Virement réussi
+                    if (isPendingEnabled) {
+                        finalizePendingTransfer(); // 🆕 Reçu orange (En attente)
+                    } else {
+                        finalizeTransfer(); // Reçu vert (Succès)
+                    }
                 } else {
-                    finalizeFailedTransfer(); // Virement échoué (bloqué)
+                    finalizeFailedTransfer(); // 🆕 Reçu rouge (Bloqué par la banque)
                 }
             }, 1500);
         } else {
@@ -1495,7 +1558,8 @@ async function finalizeTransfer() {
         bankName: tr.bank,
         iban: tr.iban,
         bic: tr.bic,
-        reason: tr.reason
+        reason: tr.reason,
+        status: 'completed'
     });
 
     const ref = 'AP' + Date.now().toString().slice(-8);
@@ -1537,6 +1601,70 @@ async function finalizeTransfer() {
 }
 
 // ============================================================
+// 🆕 FINALISATION DU VIREMENT (EN ATTENTE)
+// ============================================================
+async function finalizePendingTransfer() {
+    const tr = appState.pendingTransfer;
+    if (!tr || !appState.client) return;
+
+    appState.balance -= tr.amount;
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
+        now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+    appState.transactions.unshift({
+        type: 'debit',
+        title: tr.beneficiary,
+        date: dateStr,
+        amount: -tr.amount,
+        bankName: tr.bank,
+        iban: tr.iban,
+        bic: tr.bic,
+        reason: tr.reason,
+        status: 'pending' // 🆕 Statut en attente
+    });
+
+    const ref = 'AP' + Date.now().toString().slice(-8);
+
+    try {
+        await authPromise;
+        await updateDoc(doc(db, 'clients', appState.clientId), {
+            balance: appState.balance,
+            transactions: appState.transactions
+        });
+
+        // 🆕 Envoi de l'email de notification d'attente
+        sendPendingTransferNotification(appState.client, {
+            amount: tr.amount,
+            beneficiary: tr.beneficiary,
+            date: dateStr,
+            reference: ref,
+            iban: tr.iban
+        })
+            .then(r => r.success ? console.log('✅ Email attente envoyé') : console.warn('⚠️ Email attente non envoyé'))
+            .catch(e => console.warn('⚠️ Email attente erreur'));
+
+    } catch (err) {
+        console.error('Erreur sauvegarde virement en attente :', err);
+    }
+
+    navigateTo('pending', {
+        amount: tr.amount,
+        beneficiary: tr.beneficiary,
+        date: dateStr,
+        reference: ref,
+        bank: tr.bank,
+        iban: tr.iban,
+        bic: tr.bic,
+        reason: tr.reason
+    });
+
+    showToast(t('transfer_pending'), 'info');
+    appState.pendingTransfer = null;
+}
+
+// ============================================================
 // FINALISATION DU VIREMENT (ÉCHEC < 100%)
 // ============================================================
 function finalizeFailedTransfer() {
@@ -1550,7 +1678,7 @@ function finalizeFailedTransfer() {
         now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     const ref = 'AP' + Date.now().toString().slice(-8);
 
-    // 🆕 Envoi de l'email d'échec au client
+    // 🆕 Envoi de l'email d'échec
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
 
@@ -1592,6 +1720,76 @@ function renderSuccessView(data) {
     if (msgEl && customMsg) {
         msgEl.textContent = customMsg;
     }
+}
+
+// ============================================================
+// 🆕 VUE : EN ATTENTE (REÇU ORANGE)
+// ============================================================
+function renderPendingView(data) {
+    // On modifie dynamiquement les couleurs de la page de succès pour le orange
+    const headerIcon = document.querySelector('.success-icon-circle');
+    if (headerIcon) {
+        headerIcon.style.backgroundColor = '#f59e0b';
+        headerIcon.style.boxShadow = '0 4px 15px rgba(245, 158, 11, 0.3)';
+        headerIcon.innerHTML = '<i class="fa-solid fa-clock"></i>';
+    }
+
+    const mainTitle = document.querySelector('.success-main-title');
+    if (mainTitle) {
+        mainTitle.textContent = t('transfer_pending');
+        mainTitle.style.color = '#b45309';
+    }
+
+    const subtitle = document.querySelector('.success-subtitle');
+    if (subtitle) {
+        subtitle.textContent = t('pending_subtitle');
+    }
+
+    const amountCard = document.querySelector('.success-amount-card');
+    if (amountCard) {
+        amountCard.style.backgroundColor = '#fffbeb';
+    }
+    
+    const amountIcon = document.querySelector('.success-amount-icon');
+    if (amountIcon) {
+        amountIcon.style.backgroundColor = '#fef3c7';
+        amountIcon.style.color = '#d97706';
+        amountIcon.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
+    }
+
+    const amountLabel = document.querySelector('.success-amount-label');
+    if (amountLabel) amountLabel.style.color = '#92400e';
+
+    const amountValue = document.querySelector('.success-amount-value');
+    if (amountValue) amountValue.style.color = '#78350f';
+
+    const statusCard = document.querySelector('.success-status-card');
+    if (statusCard) {
+        statusCard.style.backgroundColor = '#fffbeb';
+        statusCard.style.border = '1px solid #fde68a';
+    }
+
+    const ssTextStrong = document.querySelector('.ss-text strong');
+    if (ssTextStrong) {
+        ssTextStrong.textContent = t('pending_status');
+        ssTextStrong.style.color = '#92400e';
+    }
+    
+    const ssTextSmall = document.querySelector('.ss-text small');
+    if (ssTextSmall) {
+        ssTextSmall.textContent = 'Votre virement est en cours de vérification.';
+        ssTextSmall.style.color = '#b45309';
+    }
+
+    // Remplissage des données
+    document.getElementById('sf-amount').textContent = formatMoney(data.amount);
+    document.getElementById('sf-beneficiary').textContent = data.beneficiary || '—';
+    document.getElementById('sf-bank').textContent = data.bank || '—';
+    document.getElementById('sf-iban').textContent = data.iban || '—';
+    document.getElementById('sf-bic').textContent = data.bic || '—';
+    document.getElementById('sf-reason').textContent = data.reason || '—';
+    document.getElementById('sf-date').textContent = data.date;
+    document.getElementById('sf-ref').textContent = data.reference;
 }
 
 // ============================================================
@@ -1816,8 +2014,12 @@ window.openReceipt = function(tx) {
     if (!tx) return;
 
     const isDebit = tx.amount < 0;
+    const isPending = tx.status === 'pending';
     const dateStr = tx.date || '--';
-    const typeStr = isDebit ? t('transfer_sent') : t('transfer_received');
+    
+    let typeStr = isDebit ? t('transfer_sent') : t('transfer_received');
+    if (isPending) typeStr = t('transfer_pending');
+    
     const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
     
     const partyLabel = isDebit ? t('beneficiary') : t('receipt_sender');
@@ -1849,9 +2051,12 @@ window.openReceipt = function(tx) {
     
     const amountEl = document.getElementById('rcpt-amount');
     amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount));
-    amountEl.style.color = isDebit ? '#e02424' : '#00a04a';
+    amountEl.style.color = isDebit ? (isPending ? '#d97706' : '#e02424') : '#00a04a';
     
-    document.getElementById('rcpt-status').textContent = t('completed');
+    const statusEl = document.getElementById('rcpt-status');
+    statusEl.textContent = isPending ? t('pending_status') : t('completed');
+    statusEl.style.color = isPending ? '#d97706' : '#00a04a';
+    
     document.getElementById('rcpt-title').textContent = t('receipt_title');
     
     const closeBtn = document.querySelector('.receipt-close-btn span');
