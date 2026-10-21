@@ -1391,7 +1391,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- En-tête (Unique icône) --- */
+/* --- En-tête (Unique icône de coche) --- */
 .success-header-icon {
     text-align: center;
     margin-bottom: 20px;
@@ -1435,12 +1435,12 @@ body {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
-    justify-content: center; /* 🆕 Centre le contenu (icône + texte) au milieu */
+    justify-content: center;
     gap: 12px;
 }
 
 .success-amount-icon {
-    display: flex; /* 🆕 Réaffiche l'icône */
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
@@ -1470,7 +1470,7 @@ body {
 .success-amount-value {
     font-size: 22px;
     font-weight: 800;
-    color: #000000; /* 🆕 Noir pour le montant */
+    color: #000000;
 }
 
 /* --- Carte Détails (Fond gris léger) --- */
@@ -1494,21 +1494,37 @@ body {
 }
 
 .sd-icon {
-    display: none; /* Toujours caché */
+    display: none; /* 🆕 Caché par défaut pour toutes les lignes */
 }
 
-.sd-label {
-    flex: 0 0 50%; /* Prend la moitié de la largeur */
+/* 🆕 Exception : On affiche l'icône UNIQUEMENT sur la première ligne (Bénéficiaire) */
+.success-detail-row:first-child .sd-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: #e2e8f0; /* Fond gris clair */
+    color: #64748b; /* Couleur de l'icône */
+    border-radius: 50%;
     font-size: 13px;
-    color: #000000; /* 🆕 Libellé en NOIR */
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+/* 🆕 Ajustement pour que le texte s'aligne bien même avec l'icône */
+.sd-label {
+    flex: 0 0 50%; 
+    font-size: 13px;
+    color: #000000;
     font-weight: 500;
 }
 
 .sd-value {
     flex: 1;
     font-size: 13px;
-    color: #000000; /* 🆕 Valeur en NOIR */
-    font-weight: 700; /* 🆕 Valeur en GRAS */
+    color: #000000;
+    font-weight: 700;
     text-align: left;
     word-break: break-word;
 }
