@@ -329,7 +329,7 @@
         <h1 class="welcome-title" data-i18n="transfer_in_progress">Votre ordre de virement en cours...</h1>
 
         <div class="progress-card">
-            <i class="fa-solid fa-wallet wallet-bg-icon"></i>
+            <i class="fa-solid fa-money-bill-transfer progress-watermark"></i>
 
             <div class="success-message-title">
                 <i class="fa-regular fa-user"></i> <span data-i18n="identity_verified">Vérification d'identité effectuée avec succès.</span>
@@ -343,26 +343,26 @@
                 <div class="progress-bar-fill" id="progress-fill">0%</div>
             </div>
 
-            <div class="details-section-title">
-                <i class="fa-regular fa-file-lines"></i> <span data-i18n="pending_transfer_details">Détails du virement en cours</span>
+            <div class="details-section-title" style="margin-top: 25px;">
+                <i class="fa-solid fa-wallet"></i> <span data-i18n="pending_transfer_details">Détails du virement en cours</span>
             </div>
 
             <div class="inner-details-box">
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="amount">Montant du virement :</div>
-                    <div class="detail-value" id="pf-amount">-</div>
+                <div class="detail-row-new">
+                    <div class="detail-label-new" data-i18n="amount">Montant du virement :</div>
+                    <div class="detail-value-new" id="pf-amount">-</div>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="beneficiary_name">Nom du bénéficiaire :</div>
-                    <div class="detail-value" id="pf-beneficiary">-</div>
+                <div class="detail-row-new">
+                    <div class="detail-label-new" data-i18n="beneficiary_name">Nom du bénéficiaire :</div>
+                    <div class="detail-value-new" id="pf-beneficiary">-</div>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="iban">IBAN / Numéro de Compte :</div>
-                    <div class="detail-value" id="pf-iban">-</div>
+                <div class="detail-row-new">
+                    <div class="detail-label-new" data-i18n="iban">IBAN / Numéro de Compte :</div>
+                    <div class="detail-value-new" id="pf-iban">-</div>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label" data-i18n="bank_name">Nom de la Banque :</div>
-                    <div class="detail-value" id="pf-bank">-</div>
+                <div class="detail-row-new" style="margin-bottom: 0;">
+                    <div class="detail-label-new" data-i18n="bank_name">Nom de la Banque :</div>
+                    <div class="detail-value-new" id="pf-bank">-</div>
                 </div>
             </div>
         </div>
