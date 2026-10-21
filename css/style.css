@@ -529,13 +529,13 @@ body {
     animation: fadeIn 0.3s ease;
     display: flex;
     flex-direction: column;
-    flex: 1; /* Prend l'espace, mais attention au parent */
+    flex: 1;
 }
 
 /* 🆕 Style spécifique pour la page de progression */
 .dashboard-body.progress-page {
-    flex: none; /* Ne prend que la hauteur nécessaire -> supprime l'espace vide en bas */
-    padding-top: 25px; 
+    flex: none; /* Supprime l'étirement -> enlève l'espace vide en bas */
+    padding-top: 20px; 
 }
 
 .welcome-title {
@@ -1212,21 +1212,20 @@ body {
 .progress-card {
     background: var(--card-bg);
     border-radius: 10px;
-    padding: 35px 25px; /* 🆕 Espace ajouté en haut et sur les côtés */
+    padding: 40px 25px 30px; /* 🆕 Gros espace en haut, espace en bas */
     box-shadow: var(--card-shadow);
     position: relative;
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
-    overflow: hidden; /* Empêche le watermark de déborder */
+    overflow: hidden; 
 }
 
 .progress-watermark {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 80px; /* 🆕 Taille fixée pour l'icône */
-    height: 80px; /* 🆕 Taille fixée pour l'icône */
+    font-size: 60px; /* 🆕 Taille de l'icône filigrane */
     color: #e0e0e0;
     opacity: 0.4;
     pointer-events: none;
@@ -1239,7 +1238,7 @@ body {
     font-size: 17px; 
     font-weight: 600; 
     color: #222;
-    margin-bottom: 14px; 
+    margin-bottom: 15px; /* 🆕 Espace entre le titre et le sous-titre */
     gap: 8px;
     position: relative;
     z-index: 1;
@@ -1253,7 +1252,7 @@ body {
 .progress-desc {
     font-size: 15px; 
     color: #666;
-    margin-bottom: 30px; /* 🆕 Espace ajouté sous le texte */
+    margin-bottom: 30px; /* 🆕 Espace sous le texte */
     line-height: 1.5;
     font-weight: 500;
     position: relative;
@@ -1266,7 +1265,7 @@ body {
     border-radius: 50px;
     height: 55px; 
     padding: 4px; 
-    margin-bottom: 40px; /* 🆕 Espace ajouté sous la barre de progression */
+    margin-bottom: 40px; /* 🆕 Espace sous la barre de progression */
     background-color: #fff;
     position: relative;
     z-index: 1;
@@ -1298,17 +1297,15 @@ body {
     z-index: 1;
 }
 
-/* 🆕 S'assure que l'icône SVG du titre a la bonne taille */
-.details-section-title svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
+.details-section-title i {
+    color: #ff7a00; /* L'icône sera orange */
+    font-size: 20px; /* L'icône sera un peu plus grande */
 }
 
 .inner-details-box {
     background-color: #eef0f3; 
     border-radius: 8px; 
-    padding: 25px 20px 35px 25px; /* 🆕 Espace ajouté en bas (35px) */
+    padding: 25px 20px 30px 25px; /* Padding ajusté */
     position: relative;
     z-index: 1;
 }
@@ -1331,7 +1328,7 @@ body {
     font-weight: 700;
     color: #111;
     word-break: break-all;
-    padding-left: 20px; /* 🆕 Espace au début des valeurs */
+    padding-left: 20px; /* 🆕 Espace au début des valeurs pour les décaler */
 }
 
 /* ============ SUCCÈS / ÉCHEC ============ */
