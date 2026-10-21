@@ -454,7 +454,6 @@
                     <small>Le virement sera refusé si le montant dépasse cette limite (% du solde).</small>
                 </div>
 
-                <!-- 🆕 NOUVEAU : Virement en attente (Boutons radio) -->
                 <div class="form-group" style="margin-top: 15px;">
                     <label>Virement en attente <span class="required">. requis</span></label>
                     <div style="display: flex; gap: 20px; align-items: center; margin-top: 8px;">
@@ -561,7 +560,6 @@
                             <span>Modifier les paramètres de virement</span>
                         </div>
 
-                        <!-- 🆕 NOUVELLE OPTION : Virement en attente -->
                         <div class="custom-option" data-value="pending_transfer">
                             <i class="fa-solid fa-clock"></i>
                             <span>Activer / Désactiver le virement en attente</span>
@@ -697,14 +695,37 @@
                     <div class="cd-label">Pourcentage limite</div>
                     <div class="cd-value" id="cd-percent">--</div>
                 </div>
-                <!-- 🆕 Ligne pour le statut du virement en attente -->
                 <div class="cd-row">
                     <div class="cd-label">Virement en attente</div>
                     <div class="cd-value" id="cd-pending-transfer">--</div>
                 </div>
             </div>
 
-            <!-- 🆕 SECTION IBAN & SWIFT AVEC BOUTON MASQUER/AFFICHER -->
+            <!-- 🆕 NOUVELLE SECTION : GESTION DES VIREMENTS -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-money-bill-transfer"></i> Gestion des virements
+                </div>
+                
+                <!-- Onglets -->
+                <div class="admin-transfer-tabs">
+                    <button class="admin-tab-btn active" id="btn-tab-completed" onclick="filterAdminTransfers('completed')">
+                        <i class="fa-solid fa-circle-check"></i> Effectués
+                    </button>
+                    <button class="admin-tab-btn" id="btn-tab-pending" onclick="filterAdminTransfers('pending')">
+                        <i class="fa-solid fa-clock"></i> En attente
+                    </button>
+                    <button class="admin-tab-btn" id="btn-tab-cancelled" onclick="filterAdminTransfers('cancelled')">
+                        <i class="fa-solid fa-ban"></i> Annulés / Bloqués
+                    </button>
+                </div>
+
+                <!-- Liste des virements -->
+                <div id="admin-transfer-list" class="admin-transfer-list">
+                    <p class="admin-transfer-empty">Aucun virement pour le moment.</p>
+                </div>
+            </div>
+
             <div class="cd-section">
                 <div class="cd-section-title">
                     <i class="fa-solid fa-building-columns"></i> IBAN & SWIFT
