@@ -2,8 +2,8 @@
    APP PAY - Styles client
    ============================================================ */
 
-/* 🆕 Importation de la police Inter (élancée et moderne) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* 🆕 Retour de la police Titillium Web */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap');
 
 :root {
     --primary-color: #ff7a00;
@@ -21,10 +21,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* 🆕 Application de la police Inter */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* 🆕 Espacement des lettres pour aérer */
+    letter-spacing: 0.3px;
 }
 
 html, body {
@@ -87,7 +88,7 @@ body {
 
 .invalid-title {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 600;
     color: #111;
     margin-bottom: 15px;
 }
@@ -321,7 +322,7 @@ body {
 
 .header-logo {
     font-size: 16px; 
-    font-weight: 700; 
+    font-weight: 600; 
     color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -546,9 +547,12 @@ body {
 
 .welcome-title {
     font-size: 20px; 
-    font-weight: 500; /* Adouci pour ressembler à l'image 1 */
+    font-weight: 600; 
     color: #111;
     margin-bottom: 20px;
+    /* 🆕 Étirement vertical */
+    transform: scaleY(1.1);
+    transform-origin: left bottom;
 }
 
 /* ============ CARTE DE SOLDE ============ */
@@ -583,10 +587,13 @@ body {
 
 .balance-amount {
     font-size: 34px; 
-    font-weight: 600; /* Rendu élancé */
+    font-weight: 600; 
     margin-bottom: 22px; 
     text-align: center;
-    letter-spacing: -0.5px; /* Rapproche les lettres pour un effet plus propre */
+    /* 🆕 Étirement vertical du solde */
+    transform: scaleY(1.15);
+    transform-origin: center;
+    letter-spacing: 0.5px;
 }
 
 .balance-subtitle {
@@ -759,6 +766,9 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* 🆕 Étirement vertical */
+    transform: scaleY(1.1);
+    transform-origin: left center;
 }
 
 .history-card-header-right {
@@ -886,13 +896,16 @@ body {
 
 .tx-details h4 {
     font-size: 15px; 
-    font-weight: 500; /* Normal */
+    font-weight: 500; 
     color: #111;
     margin: 0;
     line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* 🆕 Étirement vertical */
+    transform: scaleY(1.1);
+    transform-origin: left bottom;
 }
 
 .tx-details p {
@@ -924,8 +937,11 @@ body {
 
 .tx-amount {
     font-size: 16px; 
-    font-weight: 600; /* Gras fin */
+    font-weight: 600; 
     white-space: nowrap;
+    /* 🆕 Étirement vertical */
+    transform: scaleY(1.1);
+    transform-origin: right bottom;
 }
 
 .tx-amount.red { color: #e02424; }
@@ -1145,6 +1161,8 @@ body {
     color: #111;
     margin-bottom: 18px;
     gap: 8px;
+    transform: scaleY(1.1);
+    transform-origin: left center;
 }
 
 .card-header-title i {
@@ -1302,6 +1320,8 @@ body {
     gap: 10px;
     position: relative;
     z-index: 1;
+    transform: scaleY(1.1);
+    transform-origin: left center;
 }
 
 .details-section-title i {
@@ -1456,6 +1476,9 @@ body {
     font-weight: 700;
     color: #111;
     letter-spacing: -0.5px;
+    /* 🆕 Étirement vertical */
+    transform: scaleY(1.15);
+    transform-origin: center;
 }
 
 .receipt-details-section {
@@ -2156,7 +2179,7 @@ body {
 }
 
 .receipt-logo {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Titillium Web', sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: #111;
@@ -2234,7 +2257,7 @@ body {
     padding: 14px;
     font-size: 14px;
     font-weight: 500;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Titillium Web', sans-serif;
     cursor: pointer;
     margin-top: 30px; 
     display: flex;
@@ -2306,7 +2329,7 @@ body {
 
 .confirm-title {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     color: #111;
     margin-bottom: 12px;
 }
@@ -2330,7 +2353,7 @@ body {
     padding: 12px;
     border-radius: 6px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     border: none;
     transition: all 0.2s;
@@ -2385,7 +2408,7 @@ body {
     padding: 20px 30px;
     border-radius: 12px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     z-index: 99999;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -2443,8 +2466,8 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ============================================================
@@ -2693,7 +2716,7 @@ body {
    🆕 CORRECTION AFFICHAGE IBAN (UNE SEULE LIGNE + POLICE PROPRE)
    ============================================================ */
 #client-iban-display, #client-swift-display {
-    font-family: 'Inter', sans-serif !important;
+    font-family: 'Titillium Web', sans-serif !important;
     white-space: nowrap !important;
     word-break: normal !important;
     font-size: 15px !important;
