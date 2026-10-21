@@ -550,6 +550,11 @@ body {
     margin-bottom: 20px;
 }
 
+/* 🆕 MODIFICATION : Enlever le gras du titre sur la page virement */
+#views-container .welcome-title[data-i18n="make_transfer"] {
+    font-weight: 500 !important;
+}
+
 /* ============ CARTE DE SOLDE ============ */
 .balance-card {
     background: var(--big-card-color);
@@ -1023,6 +1028,11 @@ body {
     font-weight: 700; 
 }
 
+/* 🆕 MODIFICATION : Enlever le gras des labels sur la page virement */
+#transfer-form .form-group label {
+    font-weight: 500 !important;
+}
+
 .input-with-addon {
     display: flex;
     align-items: center;
@@ -1044,7 +1054,7 @@ body {
     outline: none;
     padding: 14px 15px;
     font-size: 16px; 
-    font-weight: 500;
+    font-weight: 700; /* 🆕 Changé de 500 à 700 */
     color: #000;
     background: transparent;
     min-width: 0;
@@ -1071,7 +1081,7 @@ body {
     border-radius: 4px;
     padding: 14px 15px;
     font-size: 16px; 
-    font-weight: 500;
+    font-weight: 700; /* 🆕 Changé de 500 à 700 */
     color: #000;
     outline: none;
     background-color: #fff;
@@ -1530,7 +1540,6 @@ body {
 .btn-receipt-back:hover {
     background-color: #333;
 }
-
 /* ============ SUCCÈS / ÉCHEC ============ */
 .failed-card {
     background: var(--card-bg);
