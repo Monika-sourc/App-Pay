@@ -13,6 +13,7 @@ body {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: #333;
     min-height: 100vh;
+    zoom: 0.5; /* 🆕 RÉDUCTION DE LA TAILLE DE 50% */
 }
 
 /* ============================================================
@@ -402,7 +403,6 @@ body {
     animation: spin 0.8s linear infinite;
     margin: 0 auto 15px auto;
 }
-
 /* ============================================================
    CARTE ADMIN
    ============================================================ */
