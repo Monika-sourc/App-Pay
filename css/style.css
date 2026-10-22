@@ -575,14 +575,14 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 16px; 
-    color: #000;
+    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : Utilise la couleur dynamique */
     margin-bottom: 10px;
     gap: 6px;
     font-weight: 500; 
 }
 
 .balance-header i {
-    color: var(--primary-color);
+    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : L'icône s'adapte aussi */
     font-size: 14px;
 }
 
@@ -596,7 +596,7 @@ body {
 
 .balance-subtitle {
     font-size: 15px; 
-    color: #000; 
+    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : Utilise la couleur dynamique */
     margin-bottom: 25px; 
     text-align: center;
     font-weight: 500;
@@ -645,7 +645,7 @@ body {
 .round-action-wrapper span {
     font-size: 15px; 
     font-weight: 500; 
-    color: #000;
+    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : Utilise la couleur dynamique */
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
@@ -657,6 +657,7 @@ body {
     right: 15px;
     top: 15px;
     font-size: 40px;
+    color: var(--big-card-text-color); /* 🆕 CORRIGÉ */
     opacity: 0.1;
 }
 
@@ -1379,7 +1380,7 @@ body {
     padding-left: 12px; 
 }
 /* ============================================================
-   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS (CENTRÉ ET NET)
+   🆕 NOUVEAU DESIGN : REÇU DE SUCCÈS (PLEIN ÉCRAN)
    ============================================================ */
 .success-page {
     display: flex;
@@ -1494,25 +1495,24 @@ body {
 }
 
 .sd-icon {
-    display: none; /* 🆕 Caché par défaut pour toutes les lignes */
+    display: none; /* Caché par défaut pour toutes les lignes */
 }
 
-/* 🆕 Exception : On affiche l'icône UNIQUEMENT sur la première ligne (Bénéficiaire) */
+/* Exception : On affiche l'icône UNIQUEMENT sur la première ligne (Bénéficiaire) */
 .success-detail-row:first-child .sd-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 30px;
     height: 30px;
-    background-color: #e2e8f0; /* Fond gris clair */
-    color: #64748b; /* Couleur de l'icône */
+    background-color: #e2e8f0;
+    color: #64748b;
     border-radius: 50%;
     font-size: 13px;
     margin-right: 10px;
     flex-shrink: 0;
 }
 
-/* 🆕 Ajustement pour que le texte s'aligne bien même avec l'icône */
 .sd-label {
     flex: 0 0 50%; 
     font-size: 13px;
