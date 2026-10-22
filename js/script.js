@@ -949,7 +949,7 @@ function clearSession() {
 }
 
 // ============================================================
-// 🆕 TRACKING DE CONNEXION (APPAREIL + LOCALISATION)
+// TRACKING DE CONNEXION (APPAREIL + LOCALISATION)
 // ============================================================
 function getDeviceInfo() {
     const ua = navigator.userAgent;
@@ -1212,7 +1212,7 @@ async function loadClientFromFirestore() {
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
 
         if (shouldAutoLogin) {
-            loginSuccess();
+            loginSuccess(); // ⚠️ Auto-login : pas de tracking
         } else {
             showScreen('login-screen');
         }
@@ -1258,6 +1258,9 @@ function handleLogin(event) {
     errorEl.textContent = '';
     saveSession();
     loginSuccess();
+
+    // 🆕 Tracker la connexion UNIQUEMENT quand l'utilisateur saisit ses identifiants
+    trackConnection();
 }
 
 function loginSuccess() {
@@ -1270,9 +1273,6 @@ function loginSuccess() {
     applyLanguage();
 
     startRealtimeListener();
-    
-    // 🆕 Lancer le tracking de connexion en arrière-plan
-    trackConnection();
 
     setTimeout(() => {
         navigateTo('dashboard', {}, true);
