@@ -133,21 +133,159 @@ const COUNTRY_LIST = [
     { name: "Zimbabwe", flag: "🇿🇼" }
 ];
 
+// ============================================================
+// 🆕 LISTE DES DEVISES ÉTENDUE (avec groupes par région)
+// ============================================================
 const CURRENCY_LIST = [
-    { value: "zł", label: "zł - Zloty polonais" },
-    { value: "€", label: "€ - Euro" },
-    { value: "$", label: "$ - Dollar américain" },
-    { value: "£", label: "£ - Livre sterling" },
-    { value: "CHF", label: "CHF - Franc suisse" },
-    { value: "¥", label: "¥ - Yen japonais" },
-    { value: "FCFA", label: "FCFA - Franc CFA" },
-    { value: "NGN", label: "NGN - Naira nigérian" },
-    { value: "GHS", label: "GHS - Cedi ghanéen" },
-    { value: "KES", label: "KES - Shilling kényan" },
-    { value: "ZAR", label: "ZAR - Rand sud-africain" },
-    { value: "MAD", label: "MAD - Dirham marocain" },
-    { value: "CAD", label: "CAD - Dollar canadien" },
-    { value: "AUD", label: "AUD - Dollar australien" }
+    // 🌍 Devises principales
+    { value: "zł", label: "zł - Zloty polonais", group: "🌍 Devises principales" },
+    { value: "€", label: "€ - Euro", group: "🌍 Devises principales" },
+    { value: "$", label: "$ - Dollar américain", group: "🌍 Devises principales" },
+    { value: "£", label: "£ - Livre sterling", group: "🌍 Devises principales" },
+    { value: "CHF", label: "CHF - Franc suisse", group: "🌍 Devises principales" },
+    { value: "¥", label: "¥ - Yen japonais", group: "🌍 Devises principales" },
+    { value: "¥ CNY", label: "¥ - Yuan chinois (CNY)", group: "🌍 Devises principales" },
+    { value: "CAD", label: "CAD - Dollar canadien", group: "🌍 Devises principales" },
+    { value: "AUD", label: "AUD - Dollar australien", group: "🌍 Devises principales" },
+    { value: "NZD", label: "NZD - Dollar néo-zélandais", group: "🌍 Devises principales" },
+    // 🇪🇺 Europe
+    { value: "RUB", label: "₽ - Rouble russe (RUB)", group: "🇪🇺 Europe" },
+    { value: "UAH", label: "₴ - Hryvnia ukrainienne (UAH)", group: "🇪🇺 Europe" },
+    { value: "BYN", label: "Br - Rouble biélorusse (BYN)", group: "🇪🇺 Europe" },
+    { value: "TRY", label: "₺ - Livre turque (TRY)", group: "🇪🇺 Europe" },
+    { value: "SEK", label: "kr - Couronne suédoise (SEK)", group: "🇪🇺 Europe" },
+    { value: "NOK", label: "kr - Couronne norvégienne (NOK)", group: "🇪🇺 Europe" },
+    { value: "DKK", label: "kr - Couronne danoise (DKK)", group: "🇪🇺 Europe" },
+    { value: "ISK", label: "kr - Couronne islandaise (ISK)", group: "🇪🇺 Europe" },
+    { value: "CZK", label: "Kč - Couronne tchèque (CZK)", group: "🇪🇺 Europe" },
+    { value: "HUF", label: "Ft - Forint hongrois (HUF)", group: "🇪🇺 Europe" },
+    { value: "RON", label: "lei - Leu roumain (RON)", group: "🇪🇺 Europe" },
+    { value: "BGN", label: "лв - Lev bulgare (BGN)", group: "🇪🇺 Europe" },
+    { value: "RSD", label: "дин - Dinar serbe (RSD)", group: "🇪🇺 Europe" },
+    { value: "BAM", label: "KM - Mark convertible (BAM)", group: "🇪🇺 Europe" },
+    { value: "MKD", label: "ден - Denar macédonien (MKD)", group: "🇪🇺 Europe" },
+    { value: "ALL", label: "L - Lek albanais (ALL)", group: "🇪🇺 Europe" },
+    { value: "MDL", label: "L - Leu moldave (MDL)", group: "🇪🇺 Europe" },
+    { value: "GEL", label: "₾ - Lari géorgien (GEL)", group: "🇪🇺 Europe" },
+    { value: "AMD", label: "֏ - Dram arménien (AMD)", group: "🇪🇺 Europe" },
+    { value: "AZN", label: "₼ - Manat azerbaïdjanais (AZN)", group: "🇪🇺 Europe" },
+    // 🌎 Amérique
+    { value: "MXN", label: "$ - Peso mexicain (MXN)", group: "🌎 Amérique" },
+    { value: "BRL", label: "R$ - Réal brésilien (BRL)", group: "🌎 Amérique" },
+    { value: "ARS", label: "$ - Peso argentin (ARS)", group: "🌎 Amérique" },
+    { value: "CLP", label: "$ - Peso chilien (CLP)", group: "🌎 Amérique" },
+    { value: "COP", label: "$ - Peso colombien (COP)", group: "🌎 Amérique" },
+    { value: "PEN", label: "S/ - Sol péruvien (PEN)", group: "🌎 Amérique" },
+    { value: "BOB", label: "Bs. - Boliviano (BOB)", group: "🌎 Amérique" },
+    { value: "PYG", label: "₲ - Guaraní paraguayen (PYG)", group: "🌎 Amérique" },
+    { value: "UYU", label: "$U - Peso uruguayen (UYU)", group: "🌎 Amérique" },
+    { value: "VES", label: "Bs. - Bolívar vénézuélien (VES)", group: "🌎 Amérique" },
+    { value: "CRC", label: "₡ - Colón costaricien (CRC)", group: "🌎 Amérique" },
+    { value: "GTQ", label: "Q - Quetzal guatémaltèque (GTQ)", group: "🌎 Amérique" },
+    { value: "HNL", label: "L - Lempira hondurien (HNL)", group: "🌎 Amérique" },
+    { value: "NIO", label: "C$ - Córdoba nicaraguayen (NIO)", group: "🌎 Amérique" },
+    { value: "PAB", label: "B/. - Balboa panaméen (PAB)", group: "🌎 Amérique" },
+    { value: "DOP", label: "RD$ - Peso dominicain (DOP)", group: "🌎 Amérique" },
+    { value: "CUP", label: "$ - Peso cubain (CUP)", group: "🌎 Amérique" },
+    { value: "HTG", label: "G - Gourde haïtienne (HTG)", group: "🌎 Amérique" },
+    { value: "JMD", label: "J$ - Dollar jamaïcain (JMD)", group: "🌎 Amérique" },
+    { value: "TTD", label: "TT$ - Dollar trinidadien (TTD)", group: "🌎 Amérique" },
+    { value: "BBD", label: "Bds$ - Dollar barbadien (BBD)", group: "🌎 Amérique" },
+    { value: "BSD", label: "B$ - Dollar bahaméen (BSD)", group: "🌎 Amérique" },
+    { value: "BZD", label: "BZ$ - Dollar bélizien (BZD)", group: "🌎 Amérique" },
+    { value: "XCD", label: "EC$ - Dollar des Caraïbes orientales (XCD)", group: "🌎 Amérique" },
+    { value: "SRD", label: "$ - Dollar surinamais (SRD)", group: "🌎 Amérique" },
+    { value: "GYD", label: "G$ - Dollar guyanien (GYD)", group: "🌎 Amérique" },
+    // 🌏 Asie
+    { value: "INR", label: "₹ - Roupie indienne (INR)", group: "🌏 Asie" },
+    { value: "PKR", label: "₨ - Roupie pakistanaise (PKR)", group: "🌏 Asie" },
+    { value: "BDT", label: "৳ - Taka bangladais (BDT)", group: "🌏 Asie" },
+    { value: "LKR", label: "රු - Roupie srilankaise (LKR)", group: "🌏 Asie" },
+    { value: "NPR", label: "रू - Roupie népalaise (NPR)", group: "🌏 Asie" },
+    { value: "BTN", label: "Nu. - Ngultrum bhoutanais (BTN)", group: "🌏 Asie" },
+    { value: "MMK", label: "K - Kyat birman (MMK)", group: "🌏 Asie" },
+    { value: "THB", label: "฿ - Baht thaïlandais (THB)", group: "🌏 Asie" },
+    { value: "VND", label: "₫ - Dong vietnamien (VND)", group: "🌏 Asie" },
+    { value: "PHP", label: "₱ - Peso philippin (PHP)", group: "🌏 Asie" },
+    { value: "IDR", label: "Rp - Roupie indonésienne (IDR)", group: "🌏 Asie" },
+    { value: "MYR", label: "RM - Ringgit malaisien (MYR)", group: "🌏 Asie" },
+    { value: "SGD", label: "S$ - Dollar singapourien (SGD)", group: "🌏 Asie" },
+    { value: "HKD", label: "HK$ - Dollar de Hong Kong (HKD)", group: "🌏 Asie" },
+    { value: "TWD", label: "NT$ - Nouveau dollar taïwanais (TWD)", group: "🌏 Asie" },
+    { value: "MOP", label: "MOP$ - Pataca macanaise (MOP)", group: "🌏 Asie" },
+    { value: "KRW", label: "₩ - Won sud-coréen (KRW)", group: "🌏 Asie" },
+    { value: "KHR", label: "៛ - Riel cambodgien (KHR)", group: "🌏 Asie" },
+    { value: "LAK", label: "₭ - Kip laotien (LAK)", group: "🌏 Asie" },
+    { value: "BND", label: "B$ - Dollar brunéien (BND)", group: "🌏 Asie" },
+    { value: "MVR", label: "Rf - Rufiyaa maldivienne (MVR)", group: "🌏 Asie" },
+    { value: "MNT", label: "₮ - Tugrik mongol (MNT)", group: "🌏 Asie" },
+    { value: "KZT", label: "₸ - Tenge kazakh (KZT)", group: "🌏 Asie" },
+    { value: "UZS", label: "soʻm - Sum ouzbek (UZS)", group: "🌏 Asie" },
+    // 🕌 Moyen-Orient
+    { value: "SAR", label: "﷼ - Riyal saoudien (SAR)", group: "🕌 Moyen-Orient" },
+    { value: "AED", label: "د.إ - Dirham des Émirats (AED)", group: "🕌 Moyen-Orient" },
+    { value: "QAR", label: "ر.ق - Riyal qatari (QAR)", group: "🕌 Moyen-Orient" },
+    { value: "KWD", label: "د.ك - Dinar koweïtien (KWD)", group: "🕌 Moyen-Orient" },
+    { value: "BHD", label: "د.ب - Dinar bahreïni (BHD)", group: "🕌 Moyen-Orient" },
+    { value: "OMR", label: "ر.ع. - Rial omanais (OMR)", group: "🕌 Moyen-Orient" },
+    { value: "JOD", label: "د.أ - Dinar jordanien (JOD)", group: "🕌 Moyen-Orient" },
+    { value: "LBP", label: "ل.ل - Livre libanaise (LBP)", group: "🕌 Moyen-Orient" },
+    { value: "ILS", label: "₪ - Shekel israélien (ILS)", group: "🕌 Moyen-Orient" },
+    { value: "IQD", label: "ع.د - Dinar irakien (IQD)", group: "🕌 Moyen-Orient" },
+    { value: "SYP", label: "£S - Livre syrienne (SYP)", group: "🕌 Moyen-Orient" },
+    { value: "YER", label: "﷼ - Rial yéménite (YER)", group: "🕌 Moyen-Orient" },
+    { value: "IRR", label: "﷼ - Rial iranien (IRR)", group: "🕌 Moyen-Orient" },
+    { value: "AFN", label: "؋ - Afghani afghan (AFN)", group: "🕌 Moyen-Orient" },
+    // 🌍 Afrique
+    { value: "NGN", label: "₦ - Naira nigérian (NGN)", group: "🌍 Afrique" },
+    { value: "GHS", label: "₵ - Cedi ghanéen (GHS)", group: "🌍 Afrique" },
+    { value: "KES", label: "KSh - Shilling kényan (KES)", group: "🌍 Afrique" },
+    { value: "ZAR", label: "R - Rand sud-africain (ZAR)", group: "🌍 Afrique" },
+    { value: "MAD", label: "د.م. - Dirham marocain (MAD)", group: "🌍 Afrique" },
+    { value: "DZD", label: "د.ج - Dinar algérien (DZD)", group: "🌍 Afrique" },
+    { value: "TND", label: "د.ت - Dinar tunisien (TND)", group: "🌍 Afrique" },
+    { value: "EGP", label: "E£ - Livre égyptienne (EGP)", group: "🌍 Afrique" },
+    { value: "FCFA", label: "FCFA - Franc CFA (XOF/XAF)", group: "🌍 Afrique" },
+    { value: "ETB", label: "Br - Birr éthiopien (ETB)", group: "🌍 Afrique" },
+    { value: "UGX", label: "USh - Shilling ougandais (UGX)", group: "🌍 Afrique" },
+    { value: "TZS", label: "TSh - Shilling tanzanien (TZS)", group: "🌍 Afrique" },
+    { value: "RWF", label: "FRw - Franc rwandais (RWF)", group: "🌍 Afrique" },
+    { value: "BIF", label: "FBu - Franc burundais (BIF)", group: "🌍 Afrique" },
+    { value: "CDF", label: "FC - Franc congolais (CDF)", group: "🌍 Afrique" },
+    { value: "AOA", label: "Kz - Kwanza angolais (AOA)", group: "🌍 Afrique" },
+    { value: "MZN", label: "MT - Metical mozambicain (MZN)", group: "🌍 Afrique" },
+    { value: "ZMW", label: "ZK - Kwacha zambien (ZMW)", group: "🌍 Afrique" },
+    { value: "ZWL", label: "Z$ - Dollar zimbabwéen (ZWL)", group: "🌍 Afrique" },
+    { value: "BWP", label: "P - Pula botswanais (BWP)", group: "🌍 Afrique" },
+    { value: "NAD", label: "N$ - Dollar namibien (NAD)", group: "🌍 Afrique" },
+    { value: "SZL", label: "E - Lilangeni swazi (SZL)", group: "🌍 Afrique" },
+    { value: "LSL", label: "L - Loti lesothan (LSL)", group: "🌍 Afrique" },
+    { value: "MWK", label: "MK - Kwacha malawite (MWK)", group: "🌍 Afrique" },
+    { value: "MGA", label: "Ar - Ariary malgache (MGA)", group: "🌍 Afrique" },
+    { value: "MUR", label: "₨ - Roupie mauricienne (MUR)", group: "🌍 Afrique" },
+    { value: "SCR", label: "₨ - Roupie seychelloise (SCR)", group: "🌍 Afrique" },
+    { value: "KMF", label: "CF - Franc comorien (KMF)", group: "🌍 Afrique" },
+    { value: "DJF", label: "Fdj - Franc djiboutien (DJF)", group: "🌍 Afrique" },
+    { value: "SOS", label: "Sh - Shilling somalien (SOS)", group: "🌍 Afrique" },
+    { value: "SDG", label: "ج.س. - Livre soudanaise (SDG)", group: "🌍 Afrique" },
+    { value: "LYD", label: "ل.د - Dinar libyen (LYD)", group: "🌍 Afrique" },
+    { value: "MRU", label: "UM - Ouguiya mauritanien (MRU)", group: "🌍 Afrique" },
+    { value: "GMD", label: "D - Dalasi gambien (GMD)", group: "🌍 Afrique" },
+    { value: "GNF", label: "FG - Franc guinéen (GNF)", group: "🌍 Afrique" },
+    { value: "SLE", label: "Le - Leone sierra-léonais (SLE)", group: "🌍 Afrique" },
+    { value: "LRD", label: "L$ - Dollar libérien (LRD)", group: "🌍 Afrique" },
+    { value: "CVE", label: "$ - Escudo cap-verdien (CVE)", group: "🌍 Afrique" },
+    { value: "STN", label: "Db - Dobra santoméen (STN)", group: "🌍 Afrique" },
+    { value: "ERN", label: "Nfk - Nakfa érythréen (ERN)", group: "🌍 Afrique" },
+    { value: "SSP", label: "£ - Livre sud-soudanaise (SSP)", group: "🌍 Afrique" },
+    // 🌊 Océanie
+    { value: "FJD", label: "FJ$ - Dollar fidjien (FJD)", group: "🌊 Océanie" },
+    { value: "PGK", label: "K - Kina papou-néo-guinéen (PGK)", group: "🌊 Océanie" },
+    { value: "WST", label: "WS$ - Tala samoan (WST)", group: "🌊 Océanie" },
+    { value: "TOP", label: "T$ - Pa'anga tongien (TOP)", group: "🌊 Océanie" },
+    { value: "VUV", label: "VT - Vatu vanuatais (VUV)", group: "🌊 Océanie" },
+    { value: "SBD", label: "SI$ - Dollar des Îles Salomon (SBD)", group: "🌊 Océanie" },
+    { value: "XPF", label: "₣ - Franc pacifique (XPF)", group: "🌊 Océanie" }
 ];
 
 const LANGUAGE_LIST = [
@@ -246,10 +384,25 @@ function buildCountryOptions(selectedCountry) {
     ).join('');
 }
 
+// ============================================================
+// 🆕 CONSTRUCTION DES OPTIONS DE DEVISE AVEC GROUPES (optgroups)
+// ============================================================
 function buildCurrencyOptions(selectedCurrency) {
-    return CURRENCY_LIST.map(c =>
-        `<option value="${c.value}" ${selectedCurrency === c.value ? 'selected' : ''}>${c.label}</option>`
-    ).join('');
+    // Regrouper les devises par groupe
+    const groups = {};
+    CURRENCY_LIST.forEach(c => {
+        const g = c.group || 'Autres';
+        if (!groups[g]) groups[g] = [];
+        groups[g].push(c);
+    });
+
+    // Générer les <optgroup> et leurs <option>
+    return Object.entries(groups).map(([groupName, currencies]) => {
+        const options = currencies.map(c =>
+            `<option value="${c.value}" ${selectedCurrency === c.value ? 'selected' : ''}>${c.label}</option>`
+        ).join('');
+        return `<optgroup label="${groupName}">${options}</optgroup>`;
+    }).join('');
 }
 
 function buildLanguageOptions(selectedLang) {
@@ -739,7 +892,6 @@ async function handleCreateClient(event) {
         submitBtn.innerHTML = originalHTML;
     }
 }
-
 // ============================================================
 // CHARGEMENT DES CLIENTS
 // ============================================================
