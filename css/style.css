@@ -560,14 +560,41 @@ body {
 .balance-card {
     background: var(--big-card-color);
     color: var(--big-card-text-color);
-    border-radius: 10px;
+    border-radius: 12px; /* 🆕 Coins légèrement plus arrondis */
     padding: 30px 20px; 
-    box-shadow: var(--card-shadow);
+    /* 🆕 NOUVELLE OMBRE : Plus prononcée pour un effet premium */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 6px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
     text-align: center;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+}
+
+/* 🆕 ANIMATION INTERNE : Halo lumineux flottant */
+.balance-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+    animation: floatLight 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 🆕 S'assure que le texte reste bien au-dessus de l'animation */
+.balance-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes floatLight {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(10%, 10%) scale(1.1); }
 }
 
 .balance-header {
@@ -575,14 +602,14 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 16px; 
-    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : Utilise la couleur dynamique */
+    color: var(--big-card-text-color); 
     margin-bottom: 10px;
     gap: 6px;
     font-weight: 500; 
 }
 
 .balance-header i {
-    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : L'icône s'adapte aussi */
+    color: var(--big-card-text-color); 
     font-size: 14px;
 }
 
@@ -596,7 +623,7 @@ body {
 
 .balance-subtitle {
     font-size: 15px; 
-    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : Utilise la couleur dynamique */
+    color: var(--big-card-text-color); 
     margin-bottom: 25px; 
     text-align: center;
     font-weight: 500;
@@ -645,20 +672,28 @@ body {
 .round-action-wrapper span {
     font-size: 15px; 
     font-weight: 500; 
-    color: var(--big-card-text-color); /* 🆕 CORRIGÉ : Utilise la couleur dynamique */
+    color: var(--big-card-text-color); 
     text-align: center;
     white-space: nowrap;
     line-height: 1.2;
     width: 100%;
 }
 
+/* 🆕 ANIMATION ICÔNE DE FOND : Effet "respiration" */
 .wallet-bg-icon {
     position: absolute;
     right: 15px;
     top: 15px;
     font-size: 40px;
-    color: var(--big-card-text-color); /* 🆕 CORRIGÉ */
+    color: var(--big-card-text-color); 
     opacity: 0.1;
+    animation: pulseWallet 5s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes pulseWallet {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.1; }
+    50% { transform: scale(1.1) rotate(-5deg); opacity: 0.2; }
 }
 
 /* ============ 3 MINI CARTES ============ */
