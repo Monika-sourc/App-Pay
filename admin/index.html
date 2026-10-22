@@ -386,10 +386,12 @@
                         <option value="ar">العربية</option>
                         <option value="zh">中文</option>
                         <option value="ja">日本語</option>
+                        <option value="tr">Türkçe</option>
+                        <option value="ko">한국어</option>
+                        <option value="vi">Tiếng Việt</option>
                     </select>
                 </div>
-
-                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> Solde et devise du compte :</h3>
+                                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> Solde et devise du compte :</h3>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -398,7 +400,6 @@
                     </div>
                     <div class="form-group">
                         <label>Devise <span class="required">. requis</span></label>
-                        <!-- ✅ MODIFIÉ : TOUTES LES DEVISES AJOUTÉES (organisées par région) -->
                         <select id="c-currency" required>
                             <option value="zł" selected>zł - Zloty polonais</option>
                             <optgroup label="🌍 Devises principales">
@@ -641,7 +642,8 @@
                 </button>
             </form>
         </section>
-                <!-- SECTION : MODIFIER UN CLIENT EXISTANT -->
+
+        <!-- SECTION : MODIFIER UN CLIENT EXISTANT -->
         <section class="form-section modify-section">
             <div class="section-badge">
                 <i class="fa-solid fa-pen-to-square"></i>
@@ -843,7 +845,6 @@
                 </div>
             </div>
 
-            <!-- 🆕 SECTION : VÉRIFIER LA CONNEXION -->
             <div class="cd-section">
                 <div class="cd-section-title">
                     <i class="fa-solid fa-wifi"></i> Connexion & Appareils
@@ -853,7 +854,6 @@
                 </button>
             </div>
 
-            <!-- SECTION : GESTION DES VIREMENTS -->
             <div class="cd-section">
                 <div class="cd-section-title">
                     <i class="fa-solid fa-money-bill-transfer"></i> Gestion des virements
@@ -990,9 +990,7 @@
     </div>
 </div>
 
-<!-- ============================================= -->
-<!-- 🆕 NOUVELLE MODALE : DÉTAILS DE CONNEXION     -->
-<!-- ============================================= -->
+<!-- MODALE : DÉTAILS DE CONNEXION -->
 <div class="modal-overlay" id="connection-details-modal">
     <div class="modal-card modal-client-card" style="max-width: 500px;">
         <button class="modal-close-btn" onclick="closeConnectionDetailsModal()">
@@ -1009,7 +1007,6 @@
         <div class="client-detail-body">
             <div class="admin-transfer-list" style="max-height: none; padding-right: 0;">
                 
-                <!-- Appareils -->
                 <div class="admin-transfer-item" style="border-left-color: #1a73e8; background: #f8fafc;">
                     <div class="admin-transfer-header">
                         <div>
@@ -1022,7 +1019,6 @@
                     </div>
                 </div>
 
-                <!-- Localisation -->
                 <div class="admin-transfer-item" style="border-left-color: #8b5cf6; background: #f8fafc;">
                     <div class="admin-transfer-header">
                         <div>
@@ -1046,9 +1042,7 @@
     </div>
 </div>
 
-<!-- ============================================= -->
-<!-- NOUVELLE MODALE : GESTION DES VIREMENTS       -->
-<!-- ============================================= -->
+<!-- MODALE : GESTION DES VIREMENTS -->
 <div class="modal-overlay" id="transfer-details-modal">
     <div class="modal-card modal-client-card" style="max-width: 750px;">
         <button class="modal-close-btn" onclick="closeTransferDetailsModal()">
@@ -1063,7 +1057,6 @@
         </div>
 
         <div class="client-detail-body">
-            <!-- Onglets -->
             <div class="admin-transfer-tabs">
                 <button class="admin-tab-btn active" id="btn-tab-completed" onclick="filterAdminTransfers('completed')">
                     <i class="fa-solid fa-circle-check"></i> Effectués
@@ -1076,7 +1069,6 @@
                 </button>
             </div>
 
-            <!-- Liste des virements -->
             <div id="admin-transfer-list" class="admin-transfer-list">
                 <p class="admin-transfer-empty">Aucun virement pour le moment.</p>
             </div>
@@ -1115,9 +1107,7 @@
     </div>
 </div>
 
-<!-- ============================================= -->
-<!-- NOUVELLE MODALE : CONFIRMATION PERSONNALISÉE  -->
-<!-- ============================================= -->
+<!-- MODALE : CONFIRMATION -->
 <div class="modal-overlay" id="confirm-modal">
     <div class="modal-card confirm-card">
         <div class="confirm-icon-wrapper">
