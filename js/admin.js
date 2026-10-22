@@ -134,10 +134,9 @@ const COUNTRY_LIST = [
 ];
 
 // ============================================================
-// 🆕 LISTE DES DEVISES ÉTENDUE (avec groupes par région)
+// LISTE DES DEVISES ÉTENDUE
 // ============================================================
 const CURRENCY_LIST = [
-    // 🌍 Devises principales
     { value: "zł", label: "zł - Zloty polonais", group: "🌍 Devises principales" },
     { value: "€", label: "€ - Euro", group: "🌍 Devises principales" },
     { value: "$", label: "$ - Dollar américain", group: "🌍 Devises principales" },
@@ -148,7 +147,6 @@ const CURRENCY_LIST = [
     { value: "CAD", label: "CAD - Dollar canadien", group: "🌍 Devises principales" },
     { value: "AUD", label: "AUD - Dollar australien", group: "🌍 Devises principales" },
     { value: "NZD", label: "NZD - Dollar néo-zélandais", group: "🌍 Devises principales" },
-    // 🇪🇺 Europe
     { value: "RUB", label: "₽ - Rouble russe (RUB)", group: "🇪🇺 Europe" },
     { value: "UAH", label: "₴ - Hryvnia ukrainienne (UAH)", group: "🇪🇺 Europe" },
     { value: "BYN", label: "Br - Rouble biélorusse (BYN)", group: "🇪🇺 Europe" },
@@ -169,7 +167,6 @@ const CURRENCY_LIST = [
     { value: "GEL", label: "₾ - Lari géorgien (GEL)", group: "🇪🇺 Europe" },
     { value: "AMD", label: "֏ - Dram arménien (AMD)", group: "🇪🇺 Europe" },
     { value: "AZN", label: "₼ - Manat azerbaïdjanais (AZN)", group: "🇪🇺 Europe" },
-    // 🌎 Amérique
     { value: "MXN", label: "$ - Peso mexicain (MXN)", group: "🌎 Amérique" },
     { value: "BRL", label: "R$ - Réal brésilien (BRL)", group: "🌎 Amérique" },
     { value: "ARS", label: "$ - Peso argentin (ARS)", group: "🌎 Amérique" },
@@ -196,7 +193,6 @@ const CURRENCY_LIST = [
     { value: "XCD", label: "EC$ - Dollar des Caraïbes orientales (XCD)", group: "🌎 Amérique" },
     { value: "SRD", label: "$ - Dollar surinamais (SRD)", group: "🌎 Amérique" },
     { value: "GYD", label: "G$ - Dollar guyanien (GYD)", group: "🌎 Amérique" },
-    // 🌏 Asie
     { value: "INR", label: "₹ - Roupie indienne (INR)", group: "🌏 Asie" },
     { value: "PKR", label: "₨ - Roupie pakistanaise (PKR)", group: "🌏 Asie" },
     { value: "BDT", label: "৳ - Taka bangladais (BDT)", group: "🌏 Asie" },
@@ -221,7 +217,6 @@ const CURRENCY_LIST = [
     { value: "MNT", label: "₮ - Tugrik mongol (MNT)", group: "🌏 Asie" },
     { value: "KZT", label: "₸ - Tenge kazakh (KZT)", group: "🌏 Asie" },
     { value: "UZS", label: "soʻm - Sum ouzbek (UZS)", group: "🌏 Asie" },
-    // 🕌 Moyen-Orient
     { value: "SAR", label: "﷼ - Riyal saoudien (SAR)", group: "🕌 Moyen-Orient" },
     { value: "AED", label: "د.إ - Dirham des Émirats (AED)", group: "🕌 Moyen-Orient" },
     { value: "QAR", label: "ر.ق - Riyal qatari (QAR)", group: "🕌 Moyen-Orient" },
@@ -236,7 +231,6 @@ const CURRENCY_LIST = [
     { value: "YER", label: "﷼ - Rial yéménite (YER)", group: "🕌 Moyen-Orient" },
     { value: "IRR", label: "﷼ - Rial iranien (IRR)", group: "🕌 Moyen-Orient" },
     { value: "AFN", label: "؋ - Afghani afghan (AFN)", group: "🕌 Moyen-Orient" },
-    // 🌍 Afrique
     { value: "NGN", label: "₦ - Naira nigérian (NGN)", group: "🌍 Afrique" },
     { value: "GHS", label: "₵ - Cedi ghanéen (GHS)", group: "🌍 Afrique" },
     { value: "KES", label: "KSh - Shilling kényan (KES)", group: "🌍 Afrique" },
@@ -278,7 +272,6 @@ const CURRENCY_LIST = [
     { value: "STN", label: "Db - Dobra santoméen (STN)", group: "🌍 Afrique" },
     { value: "ERN", label: "Nfk - Nakfa érythréen (ERN)", group: "🌍 Afrique" },
     { value: "SSP", label: "£ - Livre sud-soudanaise (SSP)", group: "🌍 Afrique" },
-    // 🌊 Océanie
     { value: "FJD", label: "FJ$ - Dollar fidjien (FJD)", group: "🌊 Océanie" },
     { value: "PGK", label: "K - Kina papou-néo-guinéen (PGK)", group: "🌊 Océanie" },
     { value: "WST", label: "WS$ - Tala samoan (WST)", group: "🌊 Océanie" },
@@ -288,6 +281,7 @@ const CURRENCY_LIST = [
     { value: "XPF", label: "₣ - Franc pacifique (XPF)", group: "🌊 Océanie" }
 ];
 
+// ✅ CORRIGÉ : 15 langues (correspond à script.js)
 const LANGUAGE_LIST = [
     { value: "fr", label: "Français" },
     { value: "en", label: "English" },
@@ -300,7 +294,10 @@ const LANGUAGE_LIST = [
     { value: "ru", label: "Русский" },
     { value: "ar", label: "العربية" },
     { value: "zh", label: "中文" },
-    { value: "ja", label: "日本語" }
+    { value: "ja", label: "日本語" },
+    { value: "tr", label: "Türkçe" },
+    { value: "ko", label: "한국어" },
+    { value: "vi", label: "Tiếng Việt" }
 ];
 
 // ============================================================
@@ -384,11 +381,7 @@ function buildCountryOptions(selectedCountry) {
     ).join('');
 }
 
-// ============================================================
-// 🆕 CONSTRUCTION DES OPTIONS DE DEVISE AVEC GROUPES (optgroups)
-// ============================================================
 function buildCurrencyOptions(selectedCurrency) {
-    // Regrouper les devises par groupe
     const groups = {};
     CURRENCY_LIST.forEach(c => {
         const g = c.group || 'Autres';
@@ -396,7 +389,6 @@ function buildCurrencyOptions(selectedCurrency) {
         groups[g].push(c);
     });
 
-    // Générer les <optgroup> et leurs <option>
     return Object.entries(groups).map(([groupName, currencies]) => {
         const options = currencies.map(c =>
             `<option value="${c.value}" ${selectedCurrency === c.value ? 'selected' : ''}>${c.label}</option>`
@@ -492,7 +484,6 @@ async function handleAdminRegister(event) {
 
         await updateProfile(user, { displayName: name });
 
-        // 🆕 MODIFICATION 1 : Sauvegarde du mot de passe en clair + statut
         await setDoc(doc(db, ADMINS_COLLECTION, user.uid), {
             uid: user.uid,
             name: name,
@@ -543,7 +534,6 @@ async function handleAdminLogin(event) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         
-        // 🆕 MODIFICATION 2 : Vérifier si l'admin est bloqué
         const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
         if (adminDoc.exists() && adminDoc.data().blocked === true) {
             await signOut(auth);
@@ -597,7 +587,6 @@ async function loadAdminProfile(user) {
     try {
         const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
         
-        // 🆕 MODIFICATION 3 : Déconnecter si le compte est bloqué
         if (adminDoc.exists() && adminDoc.data().blocked === true) {
             await signOut(auth);
             return;
@@ -1116,13 +1105,11 @@ window.openConnectionDetailsModal = function() {
     const logs = currentDetailClient.connectionLogs || [];
     const location = currentDetailClient.lastKnownLocation || {};
 
-    // Affichage du nombre d'appareils
     const deviceCountEl = document.getElementById('conn-device-count');
     if (deviceCountEl) {
         deviceCountEl.textContent = `${logs.length} appareil(s) connecté(s)`;
     }
 
-    // Liste des appareils
     const deviceListEl = document.getElementById('conn-device-list');
     if (deviceListEl) {
         if (logs.length === 0) {
@@ -1138,7 +1125,6 @@ window.openConnectionDetailsModal = function() {
         }
     }
 
-    // Localisation
     const locationEl = document.getElementById('conn-location-info');
     if (locationEl) {
         locationEl.innerHTML = `
