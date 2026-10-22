@@ -33,7 +33,7 @@ const SESSION_KEY = 'apppay_session_v2';
 const DEVICE_ID_KEY = 'apppay_device_id';
 
 // ============================================================
-// TRADUCTIONS (i18n)
+// TRADUCTIONS (i18n) - COMPLET AVEC TOUTES LES NOUVELLES CLÉS
 // ============================================================
 const TRANSLATIONS = {
     fr: {
@@ -79,10 +79,20 @@ const TRANSLATIONS = {
         identity_verified: "Vérification d'identité effectuée avec succès.",
         progress_desc: "Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.",
         
+        // 🆕 NOUVELLES CLÉS PAGE PROGRESSION ET REÇU
+        progress_details_title: "Détails du virement en cours",
+        personal_info: "Informations personnelles",
+        account_details: "Détails du compte",
+        operation_secured: "Votre opération est sécurisée et enregistrée.",
+        no_amount_debited: "Aucun montant n'a été débité de votre compte.",
+        download_receipt: "Télécharger le reçu",
+        receipt_thank_you_1: "Merci d'avoir utilisé APP PAY.",
+        receipt_thank_you_2: "Ce reçu est généré automatiquement.",
+        
         transfer_success: "Virement effectué avec succès",
         receipt_subtitle: "REÇU DE VIREMENT",
-        validated_status: "Validé",
-        success_subtitle: "Votre virement a été traité et sera crédité sur le compte du bénéficiaire sous 24 à 48 heures.",
+        validated_status: "Virement confirmé",
+        success_subtitle: "Votre virement a été bien enregistré et sera traité par la banque du bénéficiaire.",
         
         transfer_pending: "Virement en attente",
         pending_subtitle: "Votre virement a bien été enregistré et est en attente de validation par notre service administratif.",
@@ -96,7 +106,7 @@ const TRANSLATIONS = {
         cancelled_status: "Annulé",
         refunded_amount: "Montant recrédité",
         
-        amount_sent: "Montant envoyé",
+        amount_sent: "MONTANT ENVOYÉ",
         beneficiary: "Bénéficiaire",
         date: "Date",
         reference: "Référence",
@@ -217,10 +227,20 @@ const TRANSLATIONS = {
         identity_verified: "Identity verification successful.",
         progress_desc: "Please wait for the funds to reach your bank before refreshing this page.",
         
+        // 🆕 NOUVELLES CLÉS
+        progress_details_title: "Transfer details in progress",
+        personal_info: "Personal information",
+        account_details: "Account details",
+        operation_secured: "Your operation is secured and registered.",
+        no_amount_debited: "No amount has been debited from your account.",
+        download_receipt: "Download receipt",
+        receipt_thank_you_1: "Thank you for using APP PAY.",
+        receipt_thank_you_2: "This receipt is generated automatically.",
+        
         transfer_success: "Transfer completed successfully",
         receipt_subtitle: "TRANSFER RECEIPT",
-        validated_status: "Validated",
-        success_subtitle: "Your transfer has been processed and will be credited to the beneficiary within 24 to 48 hours.",
+        validated_status: "Transfer confirmed",
+        success_subtitle: "Your transfer has been registered and will be processed by the beneficiary's bank.",
         
         transfer_pending: "Pending transfer",
         pending_subtitle: "Your transfer has been registered and is pending validation by our administrative service.",
@@ -234,7 +254,7 @@ const TRANSLATIONS = {
         cancelled_status: "Cancelled",
         refunded_amount: "Refunded amount",
         
-        amount_sent: "Amount sent",
+        amount_sent: "AMOUNT SENT",
         beneficiary: "Beneficiary",
         date: "Date",
         reference: "Reference",
@@ -355,10 +375,20 @@ const TRANSLATIONS = {
         identity_verified: "Verificación de identidad exitosa.",
         progress_desc: "Espere a que los fondos lleguen a su banco antes de actualizar.",
         
+        // 🆕 NOUVELLES CLÉS
+        progress_details_title: "Detalles de la transferencia en curso",
+        personal_info: "Información personal",
+        account_details: "Detalles de la cuenta",
+        operation_secured: "Su operación está segura y registrada.",
+        no_amount_debited: "No se ha debitado ningún importe de su cuenta.",
+        download_receipt: "Descargar recibo",
+        receipt_thank_you_1: "Gracias por usar APP PAY.",
+        receipt_thank_you_2: "Este recibo se genera automáticamente.",
+        
         transfer_success: "Transferencia completada con éxito",
         receipt_subtitle: "RECIBO DE TRANSFERENCIA",
-        validated_status: "Validado",
-        success_subtitle: "Su transferencia ha sido procesada y se acreditará en 24 a 48 horas.",
+        validated_status: "Transferencia confirmada",
+        success_subtitle: "Su transferencia ha sido registrada y será procesada por el banco del beneficiario.",
         
         transfer_pending: "Transferencia pendiente",
         pending_subtitle: "Su transferencia ha sido registrada y está pendiente de validación por nuestro servicio administrativo.",
@@ -372,7 +402,7 @@ const TRANSLATIONS = {
         cancelled_status: "Cancelado",
         refunded_amount: "Importe reembolsado",
         
-        amount_sent: "Importe enviado",
+        amount_sent: "IMPORTE ENVIADO",
         beneficiary: "Beneficiario",
         date: "Fecha",
         reference: "Referencia",
@@ -493,10 +523,20 @@ const TRANSLATIONS = {
         identity_verified: "Identitätsprüfung erfolgreich.",
         progress_desc: "Bitte warten Sie, bis das Geld bei Ihrer Bank eingegangen ist.",
         
+        // 🆕 NOUVELLES CLÉS
+        progress_details_title: "Details der laufenden Überweisung",
+        personal_info: "Persönliche Informationen",
+        account_details: "Kontodetails",
+        operation_secured: "Ihr Vorgang ist gesichert und registriert.",
+        no_amount_debited: "Es wurde kein Betrag von Ihrem Konto abgebucht.",
+        download_receipt: "Beleg herunterladen",
+        receipt_thank_you_1: "Vielen Dank, dass Sie APP PAY nutzen.",
+        receipt_thank_you_2: "Dieser Beleg wird automatisch generiert.",
+        
         transfer_success: "Überweisung erfolgreich abgeschlossen",
         receipt_subtitle: "ÜBERWEISUNGSBELEG",
-        validated_status: "Validiert",
-        success_subtitle: "Ihre Überweisung wurde bearbeitet und wird innerhalb von 24 bis 48 Stunden gutgeschrieben.",
+        validated_status: "Überweisung bestätigt",
+        success_subtitle: "Ihre Überweisung wurde registriert und wird von der Bank des Begünstigten bearbeitet.",
         
         transfer_pending: "Überweisung ausstehend",
         pending_subtitle: "Ihre Überweisung wurde registriert und wartet auf die Validierung durch unseren Verwaltungsdienst.",
@@ -510,7 +550,7 @@ const TRANSLATIONS = {
         cancelled_status: "Storniert",
         refunded_amount: "Erstatteter Betrag",
         
-        amount_sent: "Gesendeter Betrag",
+        amount_sent: "GESENDETER BETRAG",
         beneficiary: "Begünstigter",
         date: "Datum",
         reference: "Referenz",
@@ -631,10 +671,20 @@ const TRANSLATIONS = {
         identity_verified: "Weryfikacja tożsamości zakończona pomyślnie.",
         progress_desc: "Poczekaj na zaksięgowanie środków w banku.",
         
+        // 🆕 NOUVELLES CLÉS
+        progress_details_title: "Szczegóły trwającego przelewu",
+        personal_info: "Informacje osobiste",
+        account_details: "Szczegóły konta",
+        operation_secured: "Twoja operacja jest zabezpieczona i zarejestrowana.",
+        no_amount_debited: "Żadna kwota nie została pobrana z Twojego konta.",
+        download_receipt: "Pobierz pokwitowanie",
+        receipt_thank_you_1: "Dziękujemy za korzystanie z APP PAY.",
+        receipt_thank_you_2: "To pokwitowanie jest generowane automatycznie.",
+        
         transfer_success: "Przelew zakończony pomyślnie",
         receipt_subtitle: "POKWITOWANIE PRZELEWU",
-        validated_status: "Zatwierdzony",
-        success_subtitle: "Twój przelew został przetworzony i zostanie zaksięgowany w ciągu 24-48 godzin.",
+        validated_status: "Przelew potwierdzony",
+        success_subtitle: "Twój przelew został zarejestrowany i zostanie przetworzony przez bank odbiorcy.",
         
         transfer_pending: "Przelew oczekujący",
         pending_subtitle: "Twój przelew został zarejestrowany i oczekuje na weryfikację przez nasz dział administracji.",
@@ -648,7 +698,7 @@ const TRANSLATIONS = {
         cancelled_status: "Anulowany",
         refunded_amount: "Zwrócona kwota",
         
-        amount_sent: "Wysłana kwota",
+        amount_sent: "WYSŁANA KWOTA",
         beneficiary: "Odbiorca",
         date: "Data",
         reference: "Referencja",
@@ -1212,7 +1262,7 @@ async function loadClientFromFirestore() {
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
 
         if (shouldAutoLogin) {
-            loginSuccess(); // ⚠️ Auto-login : pas de tracking
+            loginSuccess(); 
         } else {
             showScreen('login-screen');
         }
@@ -1939,7 +1989,7 @@ function renderPendingView(data) {
     
     const ssTextSmall = document.querySelector('.ss-text small');
     if (ssTextSmall) {
-        ssTextSmall.textContent = 'Votre virement est en cours de vérification.';
+        ssTextSmall.textContent = t('pending_status');
         ssTextSmall.style.color = '#b45309';
     }
 
@@ -2169,7 +2219,7 @@ function toggleNotifications(event) {
 }
 
 // ============================================================
-// REÇU PDF (MODALE HISTORIQUE)
+// REÇU PDF (MODALE HISTORIQUE) - CORRIGÉ POUR TRADUCTION DYNAMIQUE
 // ============================================================
 window.openReceipt = function(tx) {
     if (!tx) return;
@@ -2188,7 +2238,8 @@ window.openReceipt = function(tx) {
     
     const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
     
-    const partyLabel = isDebit ? t('beneficiary') : t('receipt_sender');
+    // 🆕 Utilisation des clés de traduction pour le libellé (au lieu de texte en dur)
+    const partyLabelKey = isDebit ? 'beneficiary' : 'receipt_sender';
     const partyName = tx.title || '--';
     
     let bankName = tx.bankName || 'APP PAY';
@@ -2201,7 +2252,11 @@ window.openReceipt = function(tx) {
     document.getElementById('rcpt-date').textContent = dateStr;
     document.getElementById('rcpt-type').textContent = typeStr;
     document.getElementById('rcpt-ref').textContent = refStr;
-    document.getElementById('rcpt-party-label').textContent = partyLabel;
+    
+    // 🆕 Mise à jour dynamique de l'attribut data-i18n pour le libellé
+    const partyLabelEl = document.getElementById('rcpt-party-label');
+    partyLabelEl.setAttribute('data-i18n', partyLabelKey);
+    
     document.getElementById('rcpt-party').textContent = partyName;
     document.getElementById('rcpt-bank').textContent = bankName;
     
@@ -2220,34 +2275,33 @@ window.openReceipt = function(tx) {
     
     let amountColor = '#e02424';
     let statusColor = '#00a04a';
-    let statusText = t('completed');
+    let statusKey = 'completed'; // 🆕 Clé de traduction
 
     if (isPending) {
         amountColor = '#d97706';
         statusColor = '#d97706';
-        statusText = t('pending_status');
+        statusKey = 'pending_status';
     } else if (isCancelled) {
         amountColor = '#3b82f6';
         statusColor = '#3b82f6';
-        statusText = t('cancelled_status');
+        statusKey = 'cancelled_status';
     } else if (isFailed) {
         amountColor = '#e02424';
         statusColor = '#e02424';
-        statusText = t('failed_status');
+        statusKey = 'failed_status';
     } else if (!isDebit) {
         amountColor = '#00a04a';
     }
     
     amountEl.style.color = amountColor;
     
+    // 🆕 Mise à jour dynamique de l'attribut data-i18n pour le statut
     const statusEl = document.getElementById('rcpt-status');
-    statusEl.textContent = statusText;
+    statusEl.setAttribute('data-i18n', statusKey);
     statusEl.style.color = statusColor;
-    
-    document.getElementById('rcpt-title').textContent = t('receipt_title');
-    
-    const closeBtn = document.querySelector('.receipt-close-btn span');
-    if(closeBtn) closeBtn.textContent = t('close');
+
+    // 🆕 Traduction de toute la modale (titres, labels fixes, footer)
+    applyLanguage();
 
     document.getElementById('receipt-modal').classList.add('show');
 };
