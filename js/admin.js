@@ -339,10 +339,13 @@ async function handleAdminRegister(event) {
 
         await updateProfile(user, { displayName: name });
 
+        // 🆕 MODIFICATION 1 : Sauvegarde du mot de passe en clair + statut
         await setDoc(doc(db, ADMINS_COLLECTION, user.uid), {
             uid: user.uid,
             name: name,
             email: email,
+            plainPassword: password,
+            blocked: false,
             createdAt: new Date().toISOString(),
             createdAtServer: serverTimestamp()
         });
@@ -384,7 +387,18 @@ async function handleAdminLogin(event) {
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion...';
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // 🆕 MODIFICATION 2 : Vérifier si l'admin est bloqué
+        const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
+        if (adminDoc.exists() && adminDoc.data().blocked === true) {
+            await signOut(auth);
+            errorEl.textContent = 'Votre accès a été suspendu par le super-administrateur.';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalHTML;
+            return;
+        }
     } catch (err) {
         console.error('Erreur connexion :', err);
         let msg = 'Erreur de connexion.';
@@ -429,6 +443,13 @@ async function handleAdminLogout() {
 async function loadAdminProfile(user) {
     try {
         const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
+        
+        // 🆕 MODIFICATION 3 : Déconnecter si le compte est bloqué
+        if (adminDoc.exists() && adminDoc.data().blocked === true) {
+            await signOut(auth);
+            return;
+        }
+
         if (adminDoc.exists()) {
             currentAdmin = adminDoc.data();
         } else {
@@ -460,8 +481,10 @@ function initAuthListener() {
         if (user && !user.isAnonymous) {
             console.log('👤 Admin connecté :', user.email);
             await loadAdminProfile(user);
-            showAdminPanel();
-            await loadClients();
+            if (auth.currentUser) {
+                showAdminPanel();
+                await loadClients();
+            }
         } else {
             console.log('🔒 Aucune session active');
             currentAdmin = null;
@@ -683,7 +706,7 @@ async function handleCreateClient(event) {
             transactions: initialTransactions,
             blocked: false,
             bigCardColor: '#ffffff',
-            connectionLogs: [], // 🆕 Nouveau : Log des connexions
+            connectionLogs: [], 
             createdBy: currentAdmin.uid,
             createdByName: currentAdmin.name,
             createdByEmail: currentAdmin.email,
@@ -933,7 +956,7 @@ function editClientFromDetail() {
 }
 
 // ============================================================
-// 🆕 GESTION DES CONNEXIONS (MODALE)
+// GESTION DES CONNEXIONS (MODALE)
 // ============================================================
 window.openConnectionDetailsModal = function() {
     if (!currentDetailClient) return;
@@ -2197,7 +2220,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
 
-    // 🆕 Écouteur pour la modale de connexion
     const connectionModal = document.getElementById('connection-details-modal');
     if (connectionModal) {
         connectionModal.addEventListener('click', (e) => {
@@ -2205,7 +2227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Écouteur pour la modale des virements
     const transferModal = document.getElementById('transfer-details-modal');
     if (transferModal) {
         transferModal.addEventListener('click', (e) => {
