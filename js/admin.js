@@ -683,6 +683,7 @@ async function handleCreateClient(event) {
             transactions: initialTransactions,
             blocked: false,
             bigCardColor: '#ffffff',
+            connectionLogs: [], // 🆕 Nouveau : Log des connexions
             createdBy: currentAdmin.uid,
             createdByName: currentAdmin.name,
             createdByEmail: currentAdmin.email,
@@ -932,18 +933,64 @@ function editClientFromDetail() {
 }
 
 // ============================================================
-// 🆕 GESTION DES VIREMENTS (MODALE ET ACTIONS)
+// 🆕 GESTION DES CONNEXIONS (MODALE)
+// ============================================================
+window.openConnectionDetailsModal = function() {
+    if (!currentDetailClient) return;
+
+    const logs = currentDetailClient.connectionLogs || [];
+    const location = currentDetailClient.lastKnownLocation || {};
+
+    // Affichage du nombre d'appareils
+    const deviceCountEl = document.getElementById('conn-device-count');
+    if (deviceCountEl) {
+        deviceCountEl.textContent = `${logs.length} appareil(s) connecté(s)`;
+    }
+
+    // Liste des appareils
+    const deviceListEl = document.getElementById('conn-device-list');
+    if (deviceListEl) {
+        if (logs.length === 0) {
+            deviceListEl.innerHTML = 'Aucun appareil enregistré.';
+        } else {
+            deviceListEl.innerHTML = logs.map((log, i) => {
+                const lastSeen = log.lastSeen ? new Date(log.lastSeen).toLocaleString('fr-FR') : '—';
+                return `<div style="padding: 6px 0; border-bottom: 1px solid #e2e8f0;">
+                    <strong>Appareil ${i + 1}:</strong> ${escapeHtml(log.deviceInfo || 'Inconnu')}<br>
+                    <span style="color: #888;">Dernière connexion: ${lastSeen}</span>
+                </div>`;
+            }).join('');
+        }
+    }
+
+    // Localisation
+    const locationEl = document.getElementById('conn-location-info');
+    if (locationEl) {
+        locationEl.innerHTML = `
+            <strong>Pays:</strong> ${escapeHtml(location.country || 'Inconnu')}<br>
+            <strong>Ville:</strong> ${escapeHtml(location.city || 'Inconnue')}<br>
+            <strong>IP:</strong> ${escapeHtml(location.ip || '—')}
+        `;
+    }
+
+    document.getElementById('connection-details-modal').classList.add('show');
+};
+
+window.closeConnectionDetailsModal = function() {
+    document.getElementById('connection-details-modal').classList.remove('show');
+};
+
+// ============================================================
+// GESTION DES VIREMENTS (MODALE ET ACTIONS)
 // ============================================================
 window.openTransferDetailsModal = function(tab) {
     if (!currentDetailClient) return;
     currentTransferTab = tab;
     
-    // Mise à jour de l'UI des onglets dans la modale
     document.getElementById('btn-tab-completed').classList.toggle('active', tab === 'completed');
     document.getElementById('btn-tab-pending').classList.toggle('active', tab === 'pending');
     document.getElementById('btn-tab-cancelled').classList.toggle('active', tab === 'cancelled');
 
-    // Titre dynamique
     const titleEl = document.getElementById('td-modal-title');
     if (tab === 'completed') titleEl.textContent = 'Virements effectués (100%)';
     else if (tab === 'pending') titleEl.textContent = 'Virements en attente';
@@ -963,7 +1010,6 @@ window.filterAdminTransfers = function(tab) {
     document.getElementById('btn-tab-pending').classList.toggle('active', tab === 'pending');
     document.getElementById('btn-tab-cancelled').classList.toggle('active', tab === 'cancelled');
     
-    // Mise à jour du titre
     const titleEl = document.getElementById('td-modal-title');
     if (tab === 'completed') titleEl.textContent = 'Virements effectués (100%)';
     else if (tab === 'pending') titleEl.textContent = 'Virements en attente';
@@ -1021,16 +1067,16 @@ function renderAdminTransfers() {
             <div class="admin-transfer-item ${statusClass}">
                 <div class="admin-transfer-header">
                     <div>
-                        <div class="admin-transfer-name">${tx.title || tx.beneficiary || '—'}</div>
-                        <div class="admin-transfer-date">${tx.date || '—'}</div>
+                        <div class="admin-transfer-name">${escapeHtml(tx.title || tx.beneficiary || '—')}</div>
+                        <div class="admin-transfer-date">${escapeHtml(tx.date || '—')}</div>
                     </div>
                     <div class="admin-transfer-amount ${tx.amount < 0 ? 'debit' : 'credit'}">
                         ${tx.amount < 0 ? '−' : '+'}${amountStr}
                     </div>
                 </div>
                 <div class="admin-transfer-details">
-                    <strong>IBAN:</strong> ${tx.iban || '—'}<br>
-                    <strong>Motif:</strong> ${tx.reason || '—'}
+                    <strong>IBAN:</strong> ${escapeHtml(tx.iban || '—')}<br>
+                    <strong>Motif:</strong> ${escapeHtml(tx.reason || '—')}
                 </div>
                 <div class="admin-transfer-actions">
                     ${actionsHTML}
@@ -1054,23 +1100,19 @@ window.handleAdminCancelTransfer = async function(index) {
 
     if (!isConfirmed) return;
 
-    // Mise à jour locale
     currentDetailClient.transactions[index].status = 'cancelled';
     const newBalance = (Number(currentDetailClient.balance) || 0) + Math.abs(tx.amount);
     currentDetailClient.balance = newBalance;
 
     try {
-        // Mise à jour Firebase
         await updateDoc(doc(db, COLLECTION_NAME, currentDetailClient.id), {
             transactions: currentDetailClient.transactions,
             balance: newBalance
         });
 
-        // Mise à jour liste globale
         const idx = allClients.findIndex(c => c.id === currentDetailClient.id);
         if (idx !== -1) allClients[idx] = currentDetailClient;
 
-        // Email d'annulation
         sendTransferAdminCancelled(currentDetailClient, {
             amount: Math.abs(tx.amount),
             beneficiary: tx.title || tx.beneficiary,
@@ -1080,10 +1122,9 @@ window.handleAdminCancelTransfer = async function(index) {
 
         showToast('Virement annulé et montant re-crédité.', 'success');
         
-        // Mise à jour UI
         document.getElementById('cd-balance').textContent = newBalance.toFixed(2).replace('.', ',') + ' ' + (currentDetailClient.currency || 'zł');
         renderAdminTransfers();
-        await loadClients(); // Recharge la liste en arrière-plan
+        await loadClients();
     } catch (err) {
         console.error('Erreur annulation virement:', err);
         showToast('Erreur lors de l\'annulation.', 'error');
@@ -1104,20 +1145,16 @@ window.handleAdminValidateTransfer = async function(index) {
 
     if (!isConfirmed) return;
 
-    // Mise à jour locale
     currentDetailClient.transactions[index].status = 'completed';
 
     try {
-        // Mise à jour Firebase
         await updateDoc(doc(db, COLLECTION_NAME, currentDetailClient.id), {
             transactions: currentDetailClient.transactions
         });
 
-        // Mise à jour liste globale
         const idx = allClients.findIndex(c => c.id === currentDetailClient.id);
         if (idx !== -1) allClients[idx] = currentDetailClient;
 
-        // Email de validation
         sendTransferAdminValidated(currentDetailClient, {
             amount: Math.abs(tx.amount),
             beneficiary: tx.title || tx.beneficiary,
@@ -1127,9 +1164,8 @@ window.handleAdminValidateTransfer = async function(index) {
 
         showToast('Virement validé avec succès.', 'success');
         
-        // Mise à jour UI
         renderAdminTransfers();
-        await loadClients(); // Recharge la liste en arrière-plan
+        await loadClients();
     } catch (err) {
         console.error('Erreur validation virement:', err);
         showToast('Erreur lors de la validation.', 'error');
@@ -1137,7 +1173,7 @@ window.handleAdminValidateTransfer = async function(index) {
 };
 
 // ============================================================
-// 📧 ENVOI DES EMAILS (ADMIN)
+// ENVOI DES EMAILS (ADMIN)
 // ============================================================
 async function handleSendLoginCredentials() {
     if (!currentDetailClient) return;
@@ -1738,48 +1774,13 @@ function renderOptionCard(option, client) {
         if (saveBtn) saveBtn.addEventListener('click', () => saveOption(option, client));
     }
 
-    if (option === 'card_info') {
-        const radios = container.querySelectorAll('input[name="card-visibility"]');
-        radios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                radios.forEach(r => {
-                    const label = r.closest('label');
-                    if (r.checked) {
-                        label.style.borderColor = '#1a73e8';
-                        label.style.backgroundColor = '#e8f0fe';
-                        label.querySelector('span').style.color = '#1a73e8';
-                    } else {
-                        label.style.borderColor = '#dcdfe6';
-                        label.style.backgroundColor = '#fff';
-                        label.querySelector('span').style.color = '#555';
-                    }
-                });
-            });
-        });
-    }
-
-    if (option === 'iban_info') {
-        const radios = container.querySelectorAll('input[name="iban-visibility"]');
-        radios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                radios.forEach(r => {
-                    const label = r.closest('label');
-                    if (r.checked) {
-                        label.style.borderColor = '#1a73e8';
-                        label.style.backgroundColor = '#e8f0fe';
-                        label.querySelector('span').style.color = '#1a73e8';
-                    } else {
-                        label.style.borderColor = '#dcdfe6';
-                        label.style.backgroundColor = '#fff';
-                        label.querySelector('span').style.color = '#555';
-                    }
-                });
-            });
-        });
-    }
-
-    if (option === 'pending_transfer') {
-        const radios = container.querySelectorAll('input[name="pending-transfer-visibility"]');
+    if (option === 'card_info' || option === 'iban_info' || option === 'pending_transfer') {
+        const nameMap = {
+            card_info: 'card-visibility',
+            iban_info: 'iban-visibility',
+            pending_transfer: 'pending-transfer-visibility'
+        };
+        const radios = container.querySelectorAll(`input[name="${nameMap[option]}"]`);
         radios.forEach(radio => {
             radio.addEventListener('change', () => {
                 radios.forEach(r => {
@@ -2195,8 +2196,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('client-detail-modal').addEventListener('click', (e) => {
         if (e.target.id === 'client-detail-modal') closeClientDetail();
     });
-    
-    // 🆕 Écouteur pour la modale des virements
+
+    // 🆕 Écouteur pour la modale de connexion
+    const connectionModal = document.getElementById('connection-details-modal');
+    if (connectionModal) {
+        connectionModal.addEventListener('click', (e) => {
+            if (e.target.id === 'connection-details-modal') closeConnectionDetailsModal();
+        });
+    }
+
+    // Écouteur pour la modale des virements
     const transferModal = document.getElementById('transfer-details-modal');
     if (transferModal) {
         transferModal.addEventListener('click', (e) => {
@@ -2224,6 +2233,7 @@ document.addEventListener('keydown', (e) => {
         closeModal();
         closeClientDetail();
         closeTransferDetailsModal();
+        closeConnectionDetailsModal();
         const selectWrapper = document.getElementById('custom-option-select');
         if (selectWrapper) selectWrapper.classList.remove('open');
     }
