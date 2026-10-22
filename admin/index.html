@@ -701,7 +701,17 @@
                 </div>
             </div>
 
-            <!-- 🆕 NOUVELLE SECTION : GESTION DES VIREMENTS (3 Boutons) -->
+            <!-- 🆕 SECTION : VÉRIFIER LA CONNEXION -->
+            <div class="cd-section">
+                <div class="cd-section-title">
+                    <i class="fa-solid fa-wifi"></i> Connexion & Appareils
+                </div>
+                <button type="button" class="admin-btn-action admin-btn-validate" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px; margin-top: 5px;" onclick="openConnectionDetailsModal()">
+                    <i class="fa-solid fa-magnifying-glass-location"></i> Vérifier la connexion
+                </button>
+            </div>
+
+            <!-- SECTION : GESTION DES VIREMENTS -->
             <div class="cd-section">
                 <div class="cd-section-title">
                     <i class="fa-solid fa-money-bill-transfer"></i> Gestion des virements
@@ -839,7 +849,63 @@
 </div>
 
 <!-- ============================================= -->
-<!-- 🆕 NOUVELLE MODALE : GESTION DES VIREMENTS    -->
+<!-- 🆕 NOUVELLE MODALE : DÉTAILS DE CONNEXION     -->
+<!-- ============================================= -->
+<div class="modal-overlay" id="connection-details-modal">
+    <div class="modal-card modal-client-card" style="max-width: 500px;">
+        <button class="modal-close-btn" onclick="closeConnectionDetailsModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="client-detail-header" style="background: linear-gradient(135deg, #1a73e8 0%, #4285f4 100%);">
+            <div style="flex: 1;">
+                <h2 class="client-detail-name" id="conn-modal-title">Détails de connexion</h2>
+                <div class="client-detail-meta">Informations sur les dernières connexions</div>
+            </div>
+        </div>
+
+        <div class="client-detail-body">
+            <div class="admin-transfer-list" style="max-height: none; padding-right: 0;">
+                
+                <!-- Appareils -->
+                <div class="admin-transfer-item" style="border-left-color: #1a73e8; background: #f8fafc;">
+                    <div class="admin-transfer-header">
+                        <div>
+                            <div class="admin-transfer-name"><i class="fa-solid fa-mobile-screen"></i> Appareils connectés</div>
+                            <div class="admin-transfer-date" id="conn-device-count">0 appareil(s)</div>
+                        </div>
+                    </div>
+                    <div class="admin-transfer-details" id="conn-device-list" style="font-family: monospace; font-size: 12px; background: #ffffff;">
+                        Aucun appareil enregistré.
+                    </div>
+                </div>
+
+                <!-- Localisation -->
+                <div class="admin-transfer-item" style="border-left-color: #8b5cf6; background: #f8fafc;">
+                    <div class="admin-transfer-header">
+                        <div>
+                            <div class="admin-transfer-name"><i class="fa-solid fa-location-dot"></i> Localisation</div>
+                        </div>
+                    </div>
+                    <div class="admin-transfer-details" id="conn-location-info" style="font-size: 13px; background: #ffffff;">
+                        Pays: -- <br>
+                        Ville: --
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="client-detail-footer">
+            <button class="btn-secondary" onclick="closeConnectionDetailsModal()">
+                <i class="fa-solid fa-xmark"></i> Fermer
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================= -->
+<!-- NOUVELLE MODALE : GESTION DES VIREMENTS       -->
 <!-- ============================================= -->
 <div class="modal-overlay" id="transfer-details-modal">
     <div class="modal-card modal-client-card" style="max-width: 750px;">
