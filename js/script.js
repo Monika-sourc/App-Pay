@@ -14,7 +14,7 @@ import {
 } from './firebase-config.js';
 
 import { getBankLogoUrls } from './banks.js';
-import { sendTransferSuccess, sendTransferFailed, sendPendingTransferNotification } from './emails.js';
+import { sendTransferSuccess, sendTransferFailed, sendPendingTransferNotification, sendAdminConnectionAlert } from './emails.js';
 
 // ---------- ÉTAT GLOBAL ----------
 const appState = {
@@ -30,6 +30,7 @@ const appState = {
 
 // Clé de stockage de session
 const SESSION_KEY = 'apppay_session_v2';
+const DEVICE_ID_KEY = 'apppay_device_id';
 
 // ============================================================
 // TRADUCTIONS (i18n)
@@ -948,6 +949,114 @@ function clearSession() {
 }
 
 // ============================================================
+// 🆕 TRACKING DE CONNEXION (APPAREIL + LOCALISATION)
+// ============================================================
+function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    let os = "Inconnu";
+    let browser = "Inconnu";
+
+    if (/windows/i.test(ua)) os = "Windows";
+    else if (/macintosh|mac os x/i.test(ua)) os = "macOS";
+    else if (/android/i.test(ua)) os = "Android";
+    else if (/iphone|ipad|ipod/i.test(ua)) os = "iOS";
+    else if (/linux/i.test(ua)) os = "Linux";
+
+    if (/edg/i.test(ua)) browser = "Edge";
+    else if (/chrome|crios/i.test(ua)) browser = "Chrome";
+    else if (/firefox|fxios/i.test(ua)) browser = "Firefox";
+    else if (/safari/i.test(ua)) browser = "Safari";
+    else if (/opr|opera/i.test(ua)) browser = "Opera";
+
+    const screenInfo = `${window.screen.width}x${window.screen.height}`;
+    return `${os} • ${browser} • ${screenInfo}`;
+}
+
+function getDeviceId() {
+    let id = localStorage.getItem(DEVICE_ID_KEY);
+    if (!id) {
+        id = 'dev-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+        localStorage.setItem(DEVICE_ID_KEY, id);
+    }
+    return id;
+}
+
+async function getLocationInfo() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        if (!res.ok) throw new Error('API failed');
+        const data = await res.json();
+        return {
+            country: data.country_name || "Inconnu",
+            city: data.city || "Inconnue",
+            ip: data.ip || "Inconnue"
+        };
+    } catch (e) {
+        try {
+            const res = await fetch('https://ipinfo.io/json');
+            const data = await res.json();
+            return {
+                country: data.country || "Inconnu",
+                city: data.city || "Inconnue",
+                ip: data.ip || "Inconnue"
+            };
+        } catch (err) {
+            return { country: "Inconnu", city: "Inconnue", ip: "Inconnue" };
+        }
+    }
+}
+
+async function trackConnection() {
+    if (!appState.client || !appState.clientId) return;
+
+    const deviceId = getDeviceId();
+    const deviceInfo = getDeviceInfo();
+    const location = await getLocationInfo();
+    const now = new Date().toISOString();
+
+    const logs = appState.client.connectionLogs || [];
+    const existingDeviceIndex = logs.findIndex(l => l.deviceId === deviceId);
+
+    if (existingDeviceIndex !== -1) {
+        logs[existingDeviceIndex].lastSeen = now;
+        logs[existingDeviceIndex].country = location.country;
+        logs[existingDeviceIndex].city = location.city;
+        logs[existingDeviceIndex].ip = location.ip;
+    } else {
+        logs.push({
+            deviceId,
+            deviceInfo,
+            country: location.country,
+            city: location.city,
+            ip: location.ip,
+            firstSeen: now,
+            lastSeen: now
+        });
+    }
+
+    appState.client.connectionLogs = logs;
+    appState.client.lastKnownLocation = location;
+
+    try {
+        await updateDoc(doc(db, 'clients', appState.clientId), {
+            connectionLogs: logs,
+            lastKnownLocation: location
+        });
+
+        sendAdminConnectionAlert(appState.client, {
+            deviceInfo,
+            country: location.country,
+            city: location.city,
+            date: new Date().toLocaleString('fr-FR')
+        }).catch(e => console.warn('Email admin connexion non envoyé', e));
+
+        console.log('✅ Connexion trackée:', location, deviceInfo);
+    } catch (err) {
+        console.error('Erreur tracking connexion:', err);
+    }
+}
+
+// ============================================================
 // ÉCRAN DE BLOCAGE
 // ============================================================
 function showBlockedScreen(client) {
@@ -1161,6 +1270,9 @@ function loginSuccess() {
     applyLanguage();
 
     startRealtimeListener();
+    
+    // 🆕 Lancer le tracking de connexion en arrière-plan
+    trackConnection();
 
     setTimeout(() => {
         navigateTo('dashboard', {}, true);
