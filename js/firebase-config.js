@@ -47,14 +47,17 @@ const auth = getAuth(app);
 const persistenceReady = Promise.resolve(true);
 
 // ============================================================
-// CONNEXION ANONYME AUTOMATIQUE (page client uniquement)
+// CONNEXION ANONYME AUTOMATIQUE (page client et admin-secure)
 // ============================================================
 const authPromise = new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             resolve(user);
         } else {
-            const isAdminPage = window.location.pathname.includes('admin');
+            // 🆕 CORRECTION : Exclure explicitement 'admin-secure' du blocage
+            const isAdminSecure = window.location.pathname.includes('admin-secure');
+            const isAdminPage = window.location.pathname.includes('admin') && !isAdminSecure;
+            
             if (isAdminPage) {
                 resolve(null);
             } else {
