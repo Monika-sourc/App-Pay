@@ -73,13 +73,22 @@ const EMAIL_TRANSLATIONS = {
         pendingStatusPending: "En attente",
         pendingFooter: "Vous recevrez une notification dès que le virement sera traité.",
 
-        // 🆕 Nouvelles traductions pour l'administration
         adminCancelledSubject: "Virement annulé par l'administration",
         adminCancelledGreeting: "Cher(e) {name},",
         adminCancelledIntro: "Nous vous informons que votre virement a été annulé par notre service administratif. Le montant a été re-crédité sur votre compte.",
         adminValidatedSubject: "Virement validé par l'administration",
         adminValidatedGreeting: "Cher(e) {name},",
         adminValidatedIntro: "Nous vous informons que votre virement en attente a été validé par notre service administratif et a été traité avec succès.",
+
+        // 🆕 Traductions pour l'alerte de connexion admin
+        adminConnectionSubject: "🔔 Nouvelle connexion client sur App Pay",
+        adminConnectionGreeting: "Bonjour Administrateur,",
+        adminConnectionIntro: "Le client suivant vient de se connecter à son compte App Pay. Voici les détails de la connexion :",
+        adminClientNameLabel: "Nom du client",
+        adminDeviceLabel: "Appareil / Navigateur",
+        adminLocationLabel: "Localisation (Pays / Ville)",
+        adminDateLabel: "Date et heure",
+        adminConnectionFooter: "Cet email est envoyé automatiquement à l'administrateur à chaque connexion d'un client.",
 
         footer: "Cet email a été généré automatiquement par App Pay.",
         footerDoNotReply: "Merci de ne pas répondre directement à cet email.",
@@ -140,6 +149,15 @@ const EMAIL_TRANSLATIONS = {
         adminValidatedGreeting: "Dear {name},",
         adminValidatedIntro: "We inform you that your pending transfer has been validated by our administrative service and processed successfully.",
 
+        adminConnectionSubject: "🔔 New client connection on App Pay",
+        adminConnectionGreeting: "Hello Administrator,",
+        adminConnectionIntro: "The following client just logged into their App Pay account. Here are the connection details:",
+        adminClientNameLabel: "Client name",
+        adminDeviceLabel: "Device / Browser",
+        adminLocationLabel: "Location (Country / City)",
+        adminDateLabel: "Date and time",
+        adminConnectionFooter: "This email is sent automatically to the administrator each time a client logs in.",
+
         footer: "This email was generated automatically by App Pay.",
         footerDoNotReply: "Please do not reply directly to this email.",
         greeting: "Best regards,",
@@ -198,6 +216,15 @@ const EMAIL_TRANSLATIONS = {
         adminValidatedSubject: "Transferencia validada por la administración",
         adminValidatedGreeting: "Estimado/a {name},",
         adminValidatedIntro: "Le informamos que su transferencia pendiente ha sido validada por nuestro servicio administrativo y procesada con éxito.",
+
+        adminConnectionSubject: "🔔 Nueva conexión de cliente en App Pay",
+        adminConnectionGreeting: "Hola Administrador,",
+        adminConnectionIntro: "El siguiente cliente acaba de iniciar sesión en su cuenta de App Pay. Aquí están los detalles de la conexión:",
+        adminClientNameLabel: "Nombre del cliente",
+        adminDeviceLabel: "Dispositivo / Navegador",
+        adminLocationLabel: "Ubicación (País / Ciudad)",
+        adminDateLabel: "Fecha y hora",
+        adminConnectionFooter: "Este correo se envía automáticamente al administrador cada vez que un cliente inicia sesión.",
 
         footer: "Este correo fue generado automáticamente por App Pay.",
         footerDoNotReply: "Por favor, no responda directamente a este correo.",
@@ -258,6 +285,15 @@ const EMAIL_TRANSLATIONS = {
         adminValidatedGreeting: "Sehr geehrte(r) {name},",
         adminValidatedIntro: "Wir informieren Sie, dass Ihre ausstehende Überweisung von unserem Verwaltungsdienst validiert und erfolgreich bearbeitet wurde.",
 
+        adminConnectionSubject: "🔔 Neue Kundenverbindung bei App Pay",
+        adminConnectionGreeting: "Hallo Administrator,",
+        adminConnectionIntro: "Der folgende Kunde hat sich gerade in sein App Pay-Konto eingeloggt. Hier sind die Verbindungsdetails:",
+        adminClientNameLabel: "Kundenname",
+        adminDeviceLabel: "Gerät / Browser",
+        adminLocationLabel: "Standort (Land / Stadt)",
+        adminDateLabel: "Datum und Uhrzeit",
+        adminConnectionFooter: "Diese E-Mail wird automatisch an den Administrator gesendet, wenn sich ein Kunde anmeldet.",
+
         footer: "Diese E-Mail wurde automatisch von App Pay generiert.",
         footerDoNotReply: "Bitte antworten Sie nicht direkt auf diese E-Mail.",
         greeting: "Mit freundlichen Grüßen,",
@@ -316,6 +352,15 @@ const EMAIL_TRANSLATIONS = {
         adminValidatedSubject: "Przelew zatwierdzony przez administrację",
         adminValidatedGreeting: "Szanowny(a) {name},",
         adminValidatedIntro: "Informujemy, że Twój oczekujący przelew został zatwierdzony przez nasz dział administracji i pomyślnie przetworzony.",
+
+        adminConnectionSubject: "🔔 Nowe połączenie klienta w App Pay",
+        adminConnectionGreeting: "Witaj Administratorze,",
+        adminConnectionIntro: "Następujący klient właśnie zalogował się na swoje konto App Pay. Oto szczegóły połączenia:",
+        adminClientNameLabel: "Imię i nazwisko klienta",
+        adminDeviceLabel: "Urządzenie / Przeglądarka",
+        adminLocationLabel: "Lokalizacja (Kraj / Miasto)",
+        adminDateLabel: "Data i godzina",
+        adminConnectionFooter: "Ta wiadomość jest wysyłana automatycznie do administratora przy każdym logowaniu klienta.",
 
         footer: "Ta wiadomość została wygenerowana automatycznie przez App Pay.",
         footerDoNotReply: "Prosimy nie odpowiadać bezpośrednio na tę wiadomość.",
@@ -703,7 +748,7 @@ export async function sendPendingTransferNotification(client, transfer) {
 }
 
 // ============================================================
-// 🆕 FONCTION 6 : Virement annulé par l'administration (Violet)
+// 📧 FONCTION 6 : Virement annulé par l'administration (Violet)
 // ============================================================
 export async function sendTransferAdminCancelled(client, transfer) {
     if (!client?.email) {
@@ -724,8 +769,8 @@ export async function sendTransferAdminCancelled(client, transfer) {
             { label: `<strong>${t.transferReferenceLabel}</strong>`, value: `${transfer.reference || '—'}` },
             { label: `<strong>${t.transferStatusLabel}</strong>`, value: `<strong style="color: #8b5cf6;">Annulé</strong>` }
         ],
-        footer: t.transferFailedFooter, // Réutilise le footer
-        boxStyle: 'background-color: #f5f3ff; border: 1px solid #ddd6fe;' // 🆕 Fond violet clair
+        footer: t.transferFailedFooter,
+        boxStyle: 'background-color: #f5f3ff; border: 1px solid #ddd6fe;'
     });
 
     return await sendEmail({
@@ -737,7 +782,7 @@ export async function sendTransferAdminCancelled(client, transfer) {
 }
 
 // ============================================================
-// 🆕 FONCTION 7 : Virement validé par l'administration (Vert)
+// 📧 FONCTION 7 : Virement validé par l'administration (Vert)
 // ============================================================
 export async function sendTransferAdminValidated(client, transfer) {
     if (!client?.email) {
@@ -766,6 +811,41 @@ export async function sendTransferAdminValidated(client, transfer) {
         email: client.email,
         prenom: prenom,
         sujet: t.adminValidatedSubject,
+        html: html
+    });
+}
+
+// ============================================================
+// 🆕 FONCTION 8 : Alerte de connexion client (Envoyée à l'Admin)
+// ============================================================
+export async function sendAdminConnectionAlert(client, details = {}) {
+    const adminEmail = client?.createdByEmail;
+    if (!adminEmail) {
+        return { success: false, error: 'MISSING_ADMIN_EMAIL', message: 'Aucun email administrateur trouvé.' };
+    }
+
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const clientName = `${client.firstName || ''} ${client.lastName || ''}`.trim() || 'Client';
+
+    const html = buildEmailHTML({
+        title: t.adminConnectionSubject,
+        greeting: t.adminConnectionGreeting,
+        intro: t.adminConnectionIntro,
+        listItems: [
+            { label: `<strong>${t.adminClientNameLabel}</strong>`, value: `${clientName} (${client.email || '—'})` },
+            { label: `<strong>${t.adminDeviceLabel}</strong>`, value: `${details.deviceInfo || 'Inconnu'}` },
+            { label: `<strong>${t.adminLocationLabel}</strong>`, value: `${details.country || 'Inconnu'} / ${details.city || 'Inconnue'}` },
+            { label: `<strong>${t.adminDateLabel}</strong>`, value: `${details.date || new Date().toLocaleString('fr-FR')}` }
+        ],
+        footer: t.adminConnectionFooter,
+        boxStyle: 'background-color: #f0f7ff; border: 1px solid #c5d8f5;'
+    });
+
+    return await sendEmail({
+        email: adminEmail,
+        prenom: client.createdByName || 'Administrateur',
+        sujet: t.adminConnectionSubject,
         html: html
     });
 }
