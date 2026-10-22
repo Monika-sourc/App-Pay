@@ -9,140 +9,81 @@
 </head>
 <body>
 
-<!-- ÉCRAN 0 : CHARGEMENT -->
 <div class="auth-screen active" id="admin-loading-screen">
     <div class="auth-loading">
-        <div class="auth-loading-logo">
-            <i class="fa-solid fa-landmark"></i>
-        </div>
+        <div class="auth-loading-logo"><i class="fa-solid fa-landmark"></i></div>
         <div class="auth-loading-title">APP PAY</div>
-        <div class="auth-loading-spinner">
-            <div class="spinner-circle"></div>
-        </div>
+        <div class="auth-loading-spinner"><div class="spinner-circle"></div></div>
         <div class="auth-loading-text">Chargement...</div>
     </div>
 </div>
 
-<!-- ÉCRAN 1 : CONNEXION ADMIN -->
 <div class="auth-screen" id="admin-login-screen">
     <div class="auth-card">
         <div class="auth-logo">
             <i class="fa-solid fa-landmark"></i>
-            <div>
-                <h1>APP PAY</h1>
-                <p>Espace administrateur</p>
-            </div>
+            <div><h1>APP PAY</h1><p>Espace administrateur</p></div>
         </div>
-
-        <div class="auth-badge">
-            <i class="fa-solid fa-shield-halved"></i>
-            Accès réservé aux administrateurs
-        </div>
-
+        <div class="auth-badge"><i class="fa-solid fa-shield-halved"></i> Accès réservé aux administrateurs</div>
         <h2 class="auth-title">Connexion</h2>
         <p class="auth-subtitle">Connectez-vous pour accéder à votre tableau de bord</p>
-
         <form id="admin-login-form" class="auth-form">
             <div class="auth-input-group">
-                <div class="auth-input-icon">
-                    <i class="fa-solid fa-envelope"></i>
-                </div>
+                <div class="auth-input-icon"><i class="fa-solid fa-envelope"></i></div>
                 <input type="email" id="login-admin-email" placeholder="Votre adresse e-mail" required autocomplete="off">
             </div>
-
             <div class="auth-input-group">
-                <div class="auth-input-icon">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
+                <div class="auth-input-icon"><i class="fa-solid fa-lock"></i></div>
                 <input type="password" id="login-admin-password" placeholder="Votre mot de passe" required autocomplete="off">
             </div>
-
             <div class="auth-error" id="login-admin-error"></div>
-
-            <button type="submit" class="auth-btn-primary">
-                <i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter
-            </button>
+            <button type="submit" class="auth-btn-primary"><i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter</button>
         </form>
-
-        <div class="auth-divider">
-            <span>Vous n'avez pas de compte ?</span>
-        </div>
-
+        <div class="auth-divider"><span>Vous n'avez pas de compte ?</span></div>
         <button type="button" class="auth-btn-secondary" onclick="showRegisterScreen()">
             <i class="fa-solid fa-user-plus"></i> Créer un compte administrateur
         </button>
     </div>
 </div>
 
-<!-- ÉCRAN 2 : INSCRIPTION ADMIN -->
 <div class="auth-screen" id="admin-register-screen">
     <div class="auth-card">
         <div class="auth-logo">
             <i class="fa-solid fa-landmark"></i>
-            <div>
-                <h1>APP PAY</h1>
-                <p>Espace administrateur</p>
-            </div>
+            <div><h1>APP PAY</h1><p>Espace administrateur</p></div>
         </div>
-
-        <div class="auth-badge register">
-            <i class="fa-solid fa-user-plus"></i>
-            Création de compte
-        </div>
-
+        <div class="auth-badge register"><i class="fa-solid fa-user-plus"></i> Création de compte</div>
         <h2 class="auth-title">Inscription</h2>
         <p class="auth-subtitle">Créez votre compte pour gérer vos clients</p>
-
         <form id="admin-register-form" class="auth-form">
             <div class="auth-input-group">
-                <div class="auth-input-icon">
-                    <i class="fa-solid fa-user"></i>
-                </div>
+                <div class="auth-input-icon"><i class="fa-solid fa-user"></i></div>
                 <input type="text" id="register-admin-name" placeholder="Votre nom complet" required autocomplete="off">
             </div>
-
             <div class="auth-input-group">
-                <div class="auth-input-icon">
-                    <i class="fa-solid fa-envelope"></i>
-                </div>
+                <div class="auth-input-icon"><i class="fa-solid fa-envelope"></i></div>
                 <input type="email" id="register-admin-email" placeholder="Votre adresse e-mail" required autocomplete="off">
             </div>
-
             <div class="auth-input-group">
-                <div class="auth-input-icon">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
+                <div class="auth-input-icon"><i class="fa-solid fa-lock"></i></div>
                 <input type="password" id="register-admin-password" placeholder="Mot de passe (min. 6 caractères)" minlength="6" required autocomplete="off">
             </div>
-
             <div class="auth-input-group">
-                <div class="auth-input-icon">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
+                <div class="auth-input-icon"><i class="fa-solid fa-lock"></i></div>
                 <input type="password" id="register-admin-confirm" placeholder="Confirmez le mot de passe" minlength="6" required autocomplete="off">
             </div>
-
             <div class="auth-error" id="register-admin-error"></div>
-
-            <button type="submit" class="auth-btn-primary">
-                <i class="fa-solid fa-circle-check"></i> Créer mon compte
-            </button>
+            <button type="submit" class="auth-btn-primary"><i class="fa-solid fa-circle-check"></i> Créer mon compte</button>
         </form>
-
-        <div class="auth-divider">
-            <span>Vous avez déjà un compte ?</span>
-        </div>
-
+        <div class="auth-divider"><span>Vous avez déjà un compte ?</span></div>
         <button type="button" class="auth-btn-secondary" onclick="showLoginScreen()">
             <i class="fa-solid fa-arrow-right-to-bracket"></i> Se connecter
         </button>
     </div>
 </div>
 
-<!-- ÉCRAN 3 : PANNEAU ADMIN -->
 <div class="auth-screen" id="admin-panel-screen">
     <div class="admin-container">
-
         <header class="admin-header">
             <div class="admin-logo">
                 <i class="fa-solid fa-landmark"></i>
@@ -151,7 +92,6 @@
                     <p id="admin-header-subtitle">Panneau d'administration</p>
                 </div>
             </div>
-
             <div class="admin-header-right">
                 <div class="admin-user-info">
                     <div class="admin-avatar" id="admin-avatar">A</div>
@@ -353,7 +293,7 @@
                         <option value="Zimbabwe" data-flag="🇿🇼">🇿🇼 Zimbabwe</option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Adresse de résidence <span class="optional">. facultatif</span></label>
                     <input type="text" id="c-address" placeholder="Adresse complète">
@@ -389,9 +329,35 @@
                         <option value="tr">Türkçe</option>
                         <option value="ko">한국어</option>
                         <option value="vi">Tiếng Việt</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="ur">اردو</option>
+                        <option value="fa">فارسی</option>
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="th">ไทย</option>
+                        <option value="ms">Bahasa Melayu</option>
+                        <option value="sw">Kiswahili</option>
+                        <option value="el">Ελληνικά</option>
+                        <option value="he">עברית</option>
+                        <option value="uk">Українська</option>
+                        <option value="ro">Română</option>
+                        <option value="hu">Magyar</option>
+                        <option value="sv">Svenska</option>
+                        <option value="no">Norsk</option>
+                        <option value="da">Dansk</option>
+                        <option value="fi">Suomi</option>
+                        <option value="cs">Čeština</option>
+                        <option value="sk">Slovenčina</option>
+                        <option value="hr">Hrvatski</option>
+                        <option value="bg">Български</option>
+                        <option value="sr">Српски</option>
+                        <option value="af">Afrikaans</option>
+                        <option value="am">አማርኛ</option>
+                        <option value="ha">Hausa</option>
                     </select>
                 </div>
-                                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> Solde et devise du compte :</h3>
+
+                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> Solde et devise du compte :</h3>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -642,9 +608,7 @@
                 </button>
             </form>
         </section>
-
-        <!-- SECTION : MODIFIER UN CLIENT EXISTANT -->
-        <section class="form-section modify-section">
+                <section class="form-section modify-section">
             <div class="section-badge">
                 <i class="fa-solid fa-pen-to-square"></i>
                 Modifier un client existant
@@ -741,7 +705,6 @@
             <div id="option-card-container"></div>
         </section>
         
-        <!-- LISTE DES CLIENTS -->
         <section class="clients-section">
             <div class="section-header-flex">
                 <h3 class="section-title">
@@ -760,7 +723,6 @@
 
     </div>
 </div>
-<!-- MODAL : DÉTAILS DU CLIENT -->
 <div class="modal-overlay" id="client-detail-modal">
     <div class="modal-card modal-client-card">
         <button class="modal-close-btn" onclick="closeClientDetail()">
@@ -990,7 +952,6 @@
     </div>
 </div>
 
-<!-- MODALE : DÉTAILS DE CONNEXION -->
 <div class="modal-overlay" id="connection-details-modal">
     <div class="modal-card modal-client-card" style="max-width: 500px;">
         <button class="modal-close-btn" onclick="closeConnectionDetailsModal()">
@@ -1042,7 +1003,6 @@
     </div>
 </div>
 
-<!-- MODALE : GESTION DES VIREMENTS -->
 <div class="modal-overlay" id="transfer-details-modal">
     <div class="modal-card modal-client-card" style="max-width: 750px;">
         <button class="modal-close-btn" onclick="closeTransferDetailsModal()">
@@ -1082,7 +1042,6 @@
     </div>
 </div>
 
-<!-- MODAL : LIEN GÉNÉRÉ -->
 <div class="modal-overlay" id="link-modal">
     <div class="modal-card">
         <div class="modal-icon-success">
@@ -1107,7 +1066,6 @@
     </div>
 </div>
 
-<!-- MODALE : CONFIRMATION -->
 <div class="modal-overlay" id="confirm-modal">
     <div class="modal-card confirm-card">
         <div class="confirm-icon-wrapper">
