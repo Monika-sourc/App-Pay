@@ -9,7 +9,6 @@ import {
     doc,
     setDoc,
     getDoc,
-    getDocFromServer,
     getDocs,
     updateDoc,
     deleteDoc,
@@ -24,7 +23,6 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Configuration Firebase du projet App Pay
 const firebaseConfig = {
     apiKey: "AIzaSyCQHmQcvTcpP15lSwIvDqKJIhjM4P8osEY",
     authDomain: "app-pay-181ae.firebaseapp.com",
@@ -34,23 +32,20 @@ const firebaseConfig = {
     appId: "1:365802603081:web:e87c746c90e092c7897598"
 };
 
-// Initialisation Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Connexion anonyme automatique (nécessaire pour Firestore)
+// 🆕 Nécessaire pour admin.js
+const persistenceReady = Promise.resolve();
+
 const authPromise = new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log("✅ Firebase : utilisateur connecté (anonyme)");
             resolve(user);
         } else {
             signInAnonymously(auth)
-                .then((cred) => {
-                    console.log("✅ Firebase : nouvelle connexion anonyme créée");
-                    resolve(cred.user);
-                })
+                .then((cred) => resolve(cred.user))
                 .catch((err) => {
                     console.error("❌ Firebase Auth erreur :", err);
                     resolve(null);
@@ -59,17 +54,16 @@ const authPromise = new Promise((resolve) => {
     });
 });
 
-// Export
 export {
     app,
     db,
     auth,
     authPromise,
+    persistenceReady,
     collection,
     doc,
     setDoc,
     getDoc,
-    getDocFromServer,
     getDocs,
     updateDoc,
     deleteDoc,
