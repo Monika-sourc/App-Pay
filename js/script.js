@@ -856,10 +856,6 @@ const TRANSLATIONS = {
     }
 };
 
-// ============================================================
-// 🆕 25 LANGUES SUPPLÉMENTAIRES (via Object.assign — aucun risque)
-// → Total de base : 40 langues
-// ============================================================
 Object.assign(TRANSLATIONS, {
     hi: {
         dashboard: "वॉलेट", personal_iban: "व्यक्तिगत IBAN", logout: "लॉग आउट", profile: "प्रोफ़ाइल",
@@ -1718,7 +1714,7 @@ Object.assign(TRANSLATIONS, {
         visa_premium: "Mastercard Premium", bank_details: "Bankoplysninger", iban_number: "IBAN-nummer",
         swift_code: "SWIFT / BIC-kode", iban_info_note: "Brug disse oplysninger til at modtage overførsler.",
         show_iban: "Vis fuld IBAN", hide_iban: "Skjul IBAN", allowed_limit: "Tilladt grænse:",
-        limit_percentage: "Grænseprocent:", current_balance: "Nuværende saldo:", attempted_amount: "FORSSØGT BELØB",
+        limit_percentage: "Grænseprocent:", current_balance: "Nuværende saldo:", attempted_amount: "FORSSØGT BELØP",
         new_transaction_received: "Ny transaktion modtaget!", copied: "Kopieret!",
         tap_to_flip: "Tryk på kortet for at vende", view_full_card: "Se fuldt nummer",
         flip_card: "Vend kortet", view_cvv: "Se CVV-kode", receipt_title: "TRANSAKTIONSKVITTERING",
@@ -2217,6 +2213,7 @@ Object.assign(TRANSLATIONS, {
 // 🆕 FUSION DES 105 NOUVELLES LANGUES (fichier extrait)
 // ============================================================
 Object.assign(TRANSLATIONS, EXTRA_TRANSLATIONS);
+
 // ============================================================
 // CONVERSION SYMBOLE -> CODE DEVISE
 // ============================================================
@@ -2486,42 +2483,85 @@ function startRealtimeListener() {
 // ============================================================
 async function loadClientFromFirestore() {
     const clientId = getClientIdFromURL();
-    if (!clientId) { showScreen('invalid-screen'); return null; }
+    if (!clientId) { 
+        console.error("Erreur: Aucun ID client dans l'URL.");
+        showScreen('invalid-screen'); 
+        return null; 
+    }
     appState.clientId = clientId;
     try {
         await authPromise;
         const docRef = doc(db, 'clients', clientId);
         let docSnap;
-        try { docSnap = await getDocFromServer(docRef); } catch { docSnap = await getDoc(docRef); }
-        if (!docSnap.exists()) { showScreen('invalid-screen'); return null; }
+        try { 
+            docSnap = await getDocFromServer(docRef); 
+        } catch (e) { 
+            docSnap = await getDoc(docRef); 
+        }
+        
+        if (!docSnap.exists()) { 
+            console.error("Erreur: Client introuvable dans Firestore.");
+            showScreen('invalid-screen'); 
+            return null; 
+        }
+        
         const client = docSnap.data();
         appState.client = client;
         appState.balance = Number(client.balance) || 0;
         appState.currency = client.currency || 'zł';
         appState.transactions = client.transactions || [];
         appState.lang = client.language || 'fr';
-        if (client.blocked === true) { clearSession(); showBlockedScreen(client); return null; }
+        
+        if (client.blocked === true) { 
+            clearSession(); 
+            showBlockedScreen(client); 
+            return null; 
+        }
+
+        // 🆕 CORRECTION : On entoure la génération de la carte et de l'IBAN d'un try/catch
+        // pour que si l'écriture échoue (problème de permission Firestore sur mobile par ex), 
+        // le client puisse quand même voir son compte.
         if (!client.cardNumber || !client.cardCVV || !client.cardExpiry) {
             const newCard = generateCardDetails();
-            await updateDoc(docRef, { cardNumber: newCard.cardNumber, cardCVV: newCard.cvv, cardExpiry: newCard.expiry });
-            appState.client.cardNumber = newCard.cardNumber; appState.client.cardCVV = newCard.cvv; appState.client.cardExpiry = newCard.expiry;
+            try {
+                await updateDoc(docRef, { cardNumber: newCard.cardNumber, cardCVV: newCard.cvv, cardExpiry: newCard.expiry });
+            } catch (e) {
+                console.warn("Impossible de sauvegarder la carte dans Firestore (non bloquant):", e);
+            }
+            appState.client.cardNumber = newCard.cardNumber; 
+            appState.client.cardCVV = newCard.cvv; 
+            appState.client.cardExpiry = newCard.expiry;
         }
+        
         if (!client.iban || !client.swift) {
             const newIban = generateIbanDetails();
-            await updateDoc(docRef, { iban: newIban.iban, swift: newIban.swift, canViewIban: false });
-            appState.client.iban = newIban.iban; appState.client.swift = newIban.swift; appState.client.canViewIban = false;
+            try {
+                await updateDoc(docRef, { iban: newIban.iban, swift: newIban.swift, canViewIban: false });
+            } catch (e) {
+                console.warn("Impossible de sauvegarder l'IBAN dans Firestore (non bloquant):", e);
+            }
+            appState.client.iban = newIban.iban; 
+            appState.client.swift = newIban.swift; 
+            appState.client.canViewIban = false;
         }
+
         applyClientColor(client.color);
         const badgeText = document.getElementById('badge-text');
         if (badgeText) badgeText.textContent = `${client.firstName} ${client.lastName}`;
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = '';
+        
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
         if (shouldAutoLogin) loginSuccess();
         else showScreen('login-screen');
+        
         return client;
-    } catch (err) { console.error('Erreur chargement:', err); showScreen('invalid-screen'); return null; }
+    } catch (err) { 
+        console.error('Erreur chargement:', err); 
+        showScreen('invalid-screen'); 
+        return null; 
+    }
 }
 
 function handleLogin(event) {
