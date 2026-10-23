@@ -2,7 +2,7 @@
 // APP PAY - Configuration Firebase
 // ============================================================
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
     getFirestore,
     collection,
@@ -15,21 +15,16 @@ import {
     deleteDoc,
     query,
     where,
-    serverTimestamp,
-    onSnapshot
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    onSnapshot,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import {
     getAuth,
     signInAnonymously,
-    onAuthStateChanged,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    updateProfile,
-    sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Configuration Firebase
+// Configuration Firebase du projet App Pay
 const firebaseConfig = {
     apiKey: "AIzaSyCQHmQcvTcpP15lSwIvDqKJIhjM4P8osEY",
     authDomain: "app-pay-181ae.firebaseapp.com",
@@ -44,30 +39,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const persistenceReady = Promise.resolve(true);
-
-// ============================================================
-// CONNEXION ANONYME AUTOMATIQUE (page client et admin-secure)
-// ============================================================
+// Connexion anonyme automatique (nécessaire pour Firestore)
 const authPromise = new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
+            console.log("✅ Firebase : utilisateur connecté (anonyme)");
             resolve(user);
         } else {
-            // 🆕 CORRECTION : Exclure explicitement 'admin-secure' du blocage
-            const isAdminSecure = window.location.pathname.includes('admin-secure');
-            const isAdminPage = window.location.pathname.includes('admin') && !isAdminSecure;
-            
-            if (isAdminPage) {
-                resolve(null);
-            } else {
-                signInAnonymously(auth)
-                    .then((cred) => resolve(cred.user))
-                    .catch((err) => {
-                        console.error("❌ Auth anonyme erreur :", err);
-                        resolve(null);
-                    });
-            }
+            signInAnonymously(auth)
+                .then((cred) => {
+                    console.log("✅ Firebase : nouvelle connexion anonyme créée");
+                    resolve(cred.user);
+                })
+                .catch((err) => {
+                    console.error("❌ Firebase Auth erreur :", err);
+                    resolve(null);
+                });
         }
     });
 });
@@ -78,7 +65,6 @@ export {
     db,
     auth,
     authPromise,
-    persistenceReady,
     collection,
     doc,
     setDoc,
@@ -89,12 +75,6 @@ export {
     deleteDoc,
     query,
     where,
-    serverTimestamp,
     onSnapshot,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    updateProfile,
-    sendPasswordResetEmail,
-    onAuthStateChanged
+    serverTimestamp
 };
