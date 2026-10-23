@@ -459,7 +459,7 @@ const TRANSLATIONS = {
         no_transactions: "Nog geen transacties", err_email: "Onjuist e-mailadres.",
         err_pin: "Onjuiste pincode.", err_amount: "Ongeldig bedrag.", err_balance: "Onvoldoende saldo.",
         err_fields: "Vul alle velden in.", err_activation: "Onjuiste activeringscode.",
-        err_percent: "Het bedrag overschrijdt de limiet ({limit}).", err_client_not_found: "Klant niet gevonden.",
+        err_percent: "Het bedrag overschrijdt de limiet ({limit}).", err_client_not_found: "Klant niet gevonden. Ongeldige link.",
         err_no_link: "Geen link. Toegang geweigerd.", welcome: "Welkom", login_success: "Inloggen geslaagd. Welkom!",
         transfer_cancelled_toast: "Overschrijving geannuleerd.", transfer_finalized: "Overschrijving voltooid!",
         err_card_locked: "Weergave niet toegestaan.", err_iban_locked: "IBAN-weergave niet toegestaan.",
@@ -2215,6 +2215,28 @@ Object.assign(TRANSLATIONS, {
 Object.assign(TRANSLATIONS, EXTRA_TRANSLATIONS);
 
 // ============================================================
+// 🆕 FONCTION DE TRADUCTION
+// ============================================================
+function t(key, vars = {}) {
+    const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS['en'];
+    let text = dict[key] || TRANSLATIONS['en'][key] || key;
+    Object.keys(vars).forEach(k => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
+    });
+    return text;
+}
+
+function applyLanguage() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        el.textContent = t(key);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        el.placeholder = t(key);
+    });
+}
+// ============================================================
 // CONVERSION SYMBOLE -> CODE DEVISE
 // ============================================================
 function getCurrencyCode(symbol) {
@@ -2479,7 +2501,7 @@ function startRealtimeListener() {
 }
 
 // ============================================================
-// CHARGEMENT INITIAL
+// CHARGEMENT INITIAL (CORRIGÉ)
 // ============================================================
 async function loadClientFromFirestore() {
     const clientId = getClientIdFromURL();
