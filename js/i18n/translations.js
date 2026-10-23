@@ -997,7 +997,7 @@ export const TRANSLATIONS = {
         flip_card: "কার্ড উল্টান", view_cvv: "CVV কোড দেখুন", receipt_title: "লেনদেন রসিদ",
         receipt_sender: "প্রেরক", receipt_thank_you: "APP PAY ব্যবহার করার জন্য ধন্যবাদ।",
         close: "বন্ধ করুন", confirm_title_warning: "সতর্কতা", confirm_btn_cancel: "বাতিল", confirm_btn_ok: "নিশ্চিত"
-    }
+    },
     // ═══════════════════════════════════════════════════════
 // LANGUE : OURDOU (ur)
 // ═══════════════════════════════════════════════════════
