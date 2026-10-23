@@ -9,6 +9,7 @@ import {
     doc,
     setDoc,
     getDoc,
+    getDocFromServer, // 🆕 On l'ajoute ici
     getDocs,
     updateDoc,
     deleteDoc,
@@ -36,7 +37,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// 🆕 Nécessaire pour admin.js
 const persistenceReady = Promise.resolve();
 
 const authPromise = new Promise((resolve) => {
@@ -64,6 +64,7 @@ export {
     doc,
     setDoc,
     getDoc,
+    getDocFromServer, // 🆕 On l'exporte ici
     getDocs,
     updateDoc,
     deleteDoc,
