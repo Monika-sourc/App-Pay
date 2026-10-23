@@ -25,6 +25,9 @@ import {
 
 import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
 
+// 🆕 IMPORT POUR LES 145 LANGUES
+import { buildLanguageOptionsHTML } from './i18n/languages.js';
+
 import {
     sendLoginCredentials,
     sendActivationCode,
@@ -275,7 +278,7 @@ const CURRENCY_LIST = [
     { value: "XPF", label: "₣ - Franc pacifique (XPF)", group: "🌊 Océanie" }
 ];
 
-// ✅ 40 LANGUES
+// ✅ 40 LANGUES (Ancienne liste, gardée pour éviter les erreurs, mais n'est plus utilisée)
 const LANGUAGE_LIST = [
     { value: "fr", label: "Français" },
     { value: "en", label: "English" },
@@ -411,12 +414,6 @@ function buildCurrencyOptions(selectedCurrency) {
         ).join('');
         return `<optgroup label="${groupName}">${options}</optgroup>`;
     }).join('');
-}
-
-function buildLanguageOptions(selectedLang) {
-    return LANGUAGE_LIST.map(l =>
-        `<option value="${l.value}" ${selectedLang === l.value ? 'selected' : ''}>${l.label}</option>`
-    ).join('');
 }
 
 function escapeHtml(str) {
@@ -772,7 +769,7 @@ async function handleCreateClient(event) {
         document.getElementById('c-balance').value = '0.00';
         document.getElementById('c-currency').value = 'zł';
         document.getElementById('c-country').value = 'France';
-        document.getElementById('c-language').value = 'fr';
+        document.getElementById('c-language').value = '';
         document.getElementById('c-percent-value').value = '100';
         populateBankSelect('c-bank', 'France', '');
 
@@ -1445,7 +1442,7 @@ function renderOptionCard(option, client) {
                 </div>
                 <div class="form-group">
                     <label>Langue d'affichage</label>
-                    <select id="opt-language">${buildLanguageOptions(client.language)}</select>
+                    <select id="opt-language"><option value="">-- Sélectionner une langue --</option>${buildLanguageOptionsHTML(client.language)}</select>
                 </div>
             `;
             break;
@@ -1872,6 +1869,7 @@ async function saveOption(option, client) {
                 const balance = parseFloat(document.getElementById('opt-balance').value) || 0;
                 const currency = document.getElementById('opt-currency').value;
                 const language = document.getElementById('opt-language').value;
+                if (!language) throw new Error('Langue obligatoire.');
                 updatedData = { ...updatedData, balance, currency, language };
                 break;
             }
@@ -2142,6 +2140,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('create-client-form').addEventListener('submit', handleCreateClient);
 
     populateBankSelect('c-bank', 'France', '');
+    
+    // 🆕 INITIALISATION DES 145 LANGUES
+    const langSelect = document.getElementById('c-language');
+    if (langSelect) {
+        langSelect.innerHTML = '<option value="">-- Sélectionner une langue --</option>' + buildLanguageOptionsHTML('');
+    }
+
     document.getElementById('c-country').addEventListener('change', (e) => {
         populateBankSelect('c-bank', e.target.value, '');
     });
