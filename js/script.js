@@ -16,6 +16,9 @@ import {
 import { getBankLogoUrls } from './banks.js';
 import { sendTransferSuccess, sendTransferFailed, sendPendingTransferNotification, sendAdminConnectionAlert } from './emails.js';
 
+// 🆕 IMPORTATION DES 105 NOUVELLES LANGUES
+import { EXTRA_TRANSLATIONS } from './i18n/translations.js';
+
 const appState = {
     client: null,
     clientId: null,
@@ -855,7 +858,7 @@ const TRANSLATIONS = {
 
 // ============================================================
 // 🆕 25 LANGUES SUPPLÉMENTAIRES (via Object.assign — aucun risque)
-// → Total : 40 langues
+// → Total de base : 40 langues
 // ============================================================
 Object.assign(TRANSLATIONS, {
     hi: {
@@ -2211,28 +2214,9 @@ Object.assign(TRANSLATIONS, {
 });
 
 // ============================================================
-// TRADUCTION
+// 🆕 FUSION DES 105 NOUVELLES LANGUES (fichier extrait)
 // ============================================================
-function t(key, vars = {}) {
-    const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.fr;
-    let text = dict[key] || TRANSLATIONS.fr[key] || key;
-    Object.keys(vars).forEach(k => {
-        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
-    });
-    return text;
-}
-
-function applyLanguage() {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        el.textContent = t(key);
-    });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.dataset.i18nPlaceholder;
-        el.placeholder = t(key);
-    });
-}
-
+Object.assign(TRANSLATIONS, EXTRA_TRANSLATIONS);
 // ============================================================
 // CONVERSION SYMBOLE -> CODE DEVISE
 // ============================================================
