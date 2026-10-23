@@ -8,6 +8,7 @@ import {
     collection,
     doc,
     getDoc,
+    getDocFromServer, // 🆕 AJOUTÉ ICI
     updateDoc,
     onSnapshot
 } from './firebase-config.js';
@@ -15,7 +16,6 @@ import {
 import { getBankLogoUrls } from './banks.js';
 import { sendTransferSuccess, sendTransferFailed, sendPendingTransferNotification, sendAdminConnectionAlert } from './emails.js';
 
-// 🆕 IMPORTATION UNIQUE : Toutes les 145 langues depuis le fichier dédié
 import { TRANSLATIONS } from './i18n/translations.js';
 
 const appState = {
@@ -33,7 +33,7 @@ const SESSION_KEY = 'apppay_session_v2';
 const DEVICE_ID_KEY = 'apppay_device_id';
 
 // ============================================================
-// 🆕 FONCTION DE TRADUCTION
+// TRADUCTION
 // ============================================================
 function t(key, vars = {}) {
     const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS['en'];
@@ -320,7 +320,7 @@ function startRealtimeListener() {
 }
 
 // ============================================================
-// CHARGEMENT INITIAL (CORRIGÉ)
+// CHARGEMENT INITIAL
 // ============================================================
 async function loadClientFromFirestore() {
     const clientId = getClientIdFromURL();
@@ -335,8 +335,8 @@ async function loadClientFromFirestore() {
         const docRef = doc(db, 'clients', clientId);
         let docSnap;
         try { 
-            // 🆕 CORRECTION ICI : Utilisation de la vraie méthode Firebase
-            docSnap = await getDoc(docRef, { source: "server" }); 
+            // 🆕 CORRECTION ICI : Utilisation de getDocFromServer importé
+            docSnap = await getDocFromServer(docRef); 
         } catch (e) { 
             docSnap = await getDoc(docRef); 
         }
