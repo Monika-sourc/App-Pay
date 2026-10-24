@@ -28,7 +28,12 @@ const EMAIL_TRANSLATIONS = {
         cancelledSubj: "Virement annulé par l'administration", cancelledGreet: "Cher(e) {name},", cancelledIntro: "Votre virement a été annulé par notre service administratif. Le montant a été re-crédité sur votre compte.", cancelledFooter: "Vous pouvez vérifier votre nouveau solde dans votre espace client.",
         refundSubj: "Virement remboursé", refundGreet: "Cher(e) {name},", refundIntro: "Nous vous informons que le montant de votre virement vous a été remboursé. Voici les détails :", refundFooter: "Le montant a été recrédité sur votre compte. Merci de votre compréhension.",
         userCancelledSubj: "Virement annulé", userCancelledGreet: "Cher(e) {name},", userCancelledIntro: "Nous vous confirmons que votre virement a bien été annulé. Aucun montant n'a été débité de votre compte.", userCancelledFooter: "Si vous n'êtes pas à l'origine de cette annulation, veuillez contacter notre service client.",
-        adminConnectionSubj: "Nouvelle connexion client sur App Pay", adminConnectionGreet: "Bonjour Administrateur,", adminConnectionIntro: "Le client suivant vient de se connecter à son compte App Pay. Voici les détails :", adminConnectionFooter: "Cet email est envoyé automatiquement à l'administrateur à chaque connexion d'un client."
+        adminConnectionSubj: "Nouvelle connexion client sur App Pay", adminConnectionGreet: "Bonjour Administrateur,", adminConnectionIntro: "Le client suivant vient de se connecter à son compte App Pay. Voici les détails :", adminConnectionFooter: "Cet email est envoyé automatiquement à l'administrateur à chaque connexion d'un client.",
+        // 🆕 AJOUT DES TRADUCTIONS POUR LES TABLEAUX
+        amount: "Montant", beneficiary: "Bénéficiaire", iban: "IBAN", date: "Date", reference: "Référence",
+        attempted_amount: "Montant tenté", allowed_limit: "Limite autorisée", status: "Statut",
+        failed_status: "Bloqué", completed: "Réussi", pending_status: "En attente", cancelled_status: "Annulé", refunded_amount: "Montant remboursé",
+        email_address: "E-mail", pin_code: "Code PIN", login_btn: "Se connecter", activation_code: "Code d'activation"
     },
     en: {
         loginSubj: "Welcome to App Pay – Your login credentials", loginGreet: "Dear {name},", loginIntro: "We are pleased to confirm the opening of your account with App Pay. Thank you for your trust. Here are your login credentials:", loginFooter: "For your security, keep this information confidential. Never share your PIN code.",
@@ -40,7 +45,11 @@ const EMAIL_TRANSLATIONS = {
         cancelledSubj: "Transfer cancelled by administration", cancelledGreet: "Dear {name},", cancelledIntro: "Your transfer has been cancelled by our administrative service. The amount has been re-credited to your account.", cancelledFooter: "You can check your new balance in your client portal.",
         refundSubj: "Transfer refunded", refundGreet: "Dear {name},", refundIntro: "We inform you that your transfer amount has been refunded to you. Here are the details:", refundFooter: "The amount has been re-credited to your account. Thank you for your understanding.",
         userCancelledSubj: "Transfer cancelled", userCancelledGreet: "Dear {name},", userCancelledIntro: "We confirm that your transfer has been cancelled. No amount was debited from your account.", userCancelledFooter: "If you did not initiate this cancellation, please contact our customer service.",
-        adminConnectionSubj: "New client connection on App Pay", adminConnectionGreet: "Hello Administrator,", adminConnectionIntro: "The following client just logged into their App Pay account. Here are the details:", adminConnectionFooter: "This email is sent automatically to the administrator each time a client logs in."
+        adminConnectionSubj: "New client connection on App Pay", adminConnectionGreet: "Hello Administrator,", adminConnectionIntro: "The following client just logged into their App Pay account. Here are the details:", adminConnectionFooter: "This email is sent automatically to the administrator each time a client logs in.",
+        amount: "Amount", beneficiary: "Beneficiary", iban: "IBAN", date: "Date", reference: "Reference",
+        attempted_amount: "Attempted Amount", allowed_limit: "Allowed Limit", status: "Status",
+        failed_status: "Blocked", completed: "Completed", pending_status: "Pending", cancelled_status: "Cancelled", refunded_amount: "Refunded Amount",
+        email_address: "Email", pin_code: "PIN", login_btn: "Login", activation_code: "Activation Code"
     },
     es: {
         loginSubj: "Bienvenido a App Pay – Sus credenciales de acceso", loginGreet: "Estimado/a {name},", loginIntro: "Nos complace confirmar la apertura de su cuenta en App Pay. Gracias por su confianza. Aquí están sus credenciales:", loginFooter: "Por su seguridad, mantenga esta información confidencial. Nunca comparta su código PIN.",
@@ -824,95 +833,378 @@ const EMAIL_TRANSLATIONS = {
     }
 };
 
-function getT(lang) { return EMAIL_TRANSLATIONS[lang] || EMAIL_TRANSLATIONS['fr']; }
-function replaceVars(text, vars) { if (!text) return ''; let result = text; Object.keys(vars).forEach(key => { result = result.replace(new RegExp(`\\{${key}\\}`, 'g'), vars[key] || ''); }); return result; }
-function getClientFirstName(client) { return client?.firstName || client?.lastName || 'Client'; }
-function formatAmount(amount, currency) { if (amount === undefined || amount === null) return '—'; const num = Number(amount); if (isNaN(num)) return '—'; return num.toFixed(2).replace('.', ',') + ' ' + (currency || '€'); }
+function getT(lang) {
+    const langDict = EMAIL_TRANSLATIONS[lang] || {};
+    const frDict = EMAIL_TRANSLATIONS['fr'];
+    return { ...frDict, ...langDict };
+}
+
+function replaceVars(text, vars) {
+    if (!text) return '';
+    let result = text;
+    Object.keys(vars).forEach(key => {
+        result = result.replace(new RegExp(`\\{${key}\\}`, 'g'), vars[key] || '');
+    });
+    return result;
+}
+
+function getClientFirstName(client) {
+    return client?.firstName || client?.lastName || 'Client';
+}
+
+function formatAmount(amount, currency) {
+    if (amount === undefined || amount === null) return '—';
+    const num = Number(amount);
+    if (isNaN(num)) return '—';
+    const formattedNumber = num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `${formattedNumber}&nbsp;${currency || '€'}`;
+}
 
 function buildEmailHTML({ title, greeting, intro, listItems = [], buttonText, buttonLink, warning, footer, boxStyle = '' }) {
-    const listHtml = listItems.length > 0 ? `<table width="100%" cellpadding="10" cellspacing="0" style="margin: 20px 0; border-collapse: collapse; background-color: #fafafa; border-radius: 8px; border: 1px solid #eeeeee; ${boxStyle}">${listItems.map(item => `<tr><td style="padding: 12px 15px; border-bottom: 1px solid #eeeeee; font-family: Arial, sans-serif; font-size: 14px; color: #555;">${item.label || ''}</td><td style="padding: 12px 15px; border-bottom: 1px solid #eeeeee; font-family: Arial, sans-serif; font-size: 14px; color: #111; text-align: right; word-break: break-all;">${item.value || ''}</td></tr>`).join('')}</table>` : '';
-    const buttonHtml = (buttonText && buttonLink) ? `<div style="text-align: center; margin: 30px 0;"><a href="${buttonLink}" style="background-color: #ff7a00; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-family: Arial, sans-serif; font-size: 16px; display: inline-block;">${buttonText}</a></div>` : '';
-    const warningHtml = warning ? `<div style="background-color: #fff8e1; border-left: 4px solid #ffb300; padding: 15px; margin: 25px 0; border-radius: 4px;"><p style="margin: 0; font-family: Arial, sans-serif; font-size: 13px; color: #6d4c41; line-height: 1.5;">${warning}</p></div>` : '';
-    return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin: 0; padding: 0; background-color: #f4f7f6; font-family: Arial, sans-serif;"><table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f7f6; padding: 20px 0;"><tr><td align="center"><table width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);"><tr><td style="background-color: #ff7a00; padding: 25px; text-align: center;"><h1 style="color: #ffffff; margin: 0; font-size: 22px; font-family: Arial, sans-serif; letter-spacing: 1px;">APP PAY</h1></td></tr><tr><td style="padding: 30px;"><h2 style="color: #111; font-size: 20px; margin-top: 0; margin-bottom: 20px; font-family: Arial, sans-serif;">${title || ''}</h2><p style="font-size: 15px; color: #333; line-height: 1.6; font-family: Arial, sans-serif;">${greeting || ''}</p><p style="font-size: 15px; color: #333; line-height: 1.6; font-family: Arial, sans-serif;">${intro || ''}</p>${listHtml}${buttonHtml}${warningHtml}<p style="font-size: 13px; color: #888; line-height: 1.5; margin-top: 30px; font-family: Arial, sans-serif; border-top: 1px solid #eeeeee; padding-top: 20px;">${footer || ''}</p></td></tr><tr><td style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eeeeee;"><p style="margin: 0; font-size: 12px; color: #aaa; font-family: Arial, sans-serif;">&copy; ${new Date().getFullYear()} App Pay. Tous droits réservés.</p></td></tr></table></td></tr></table></body></html>`;
+    const listHtml = listItems.length > 0 
+        ? `<table width="100%" cellpadding="0" cellspacing="0" style="margin: 25px 0; border-collapse: collapse; border: 1px solid #eeeeee; border-radius: 8px; overflow: hidden; ${boxStyle}">
+            ${listItems.map(item => `
+                <tr>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #eeeeee; background-color: #fafafa; font-family: Arial, sans-serif; font-size: 14px; color: #555555; width: 40%; vertical-align: top;">
+                        ${item.label || ''}
+                    </td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #eeeeee; background-color: #ffffff; font-family: Arial, sans-serif; font-size: 14px; color: #111111; font-weight: bold; text-align: right; word-break: break-word; width: 60%; vertical-align: top;">
+                        ${item.value || ''}
+                    </td>
+                </tr>
+            `).join('')}
+           </table>`
+        : '';
+
+    const buttonHtml = (buttonText && buttonLink)
+        ? `<div style="text-align: center; margin: 30px 0;">
+            <a href="${buttonLink}" style="background-color: #ff7a00; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-family: Arial, sans-serif; font-size: 16px; display: inline-block;">
+                ${buttonText}
+            </a>
+           </div>`
+        : '';
+
+    const warningHtml = warning
+        ? `<div style="background-color: #fff8e1; border-left: 4px solid #ffb300; padding: 15px; margin: 25px 0; border-radius: 4px;">
+            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 14px; color: #6d4c41; line-height: 1.5;">${warning}</p>
+           </div>`
+        : '';
+
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f4f7f6; font-family: Arial, sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f7f6; padding: 40px 10px;">
+            <tr>
+                <td align="center">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <!-- Header -->
+                        <tr>
+                            <td style="background-color: #ff7a00; padding: 30px; text-align: center;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: bold; letter-spacing: 1px;">APP PAY</h1>
+                            </td>
+                        </tr>
+                        
+                        <!-- Body -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <h2 style="color: #111111; font-size: 22px; margin-top: 0; margin-bottom: 20px; text-align: center;">${title || ''}</h2>
+                                <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-bottom: 10px;">${greeting || ''}</p>
+                                <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-bottom: 20px;">${intro || ''}</p>
+                                
+                                ${listHtml}
+                                ${buttonHtml}
+                                ${warningHtml}
+                                
+                                <p style="font-size: 14px; color: #888888; line-height: 1.5; margin-top: 30px; border-top: 1px solid #eeeeee; padding-top: 20px; text-align: center;">
+                                    ${footer || ''}
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eeeeee;">
+                                <p style="margin: 0; font-size: 12px; color: #aaaaaa;">
+                                    &copy; ${new Date().getFullYear()} App Pay. Tous droits réservés.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    `;
 }
 
 async function sendEmail({ email, prenom, sujet, html }) {
     if (!email) return { success: false, error: 'MISSING_EMAIL' };
-    const payload = { email: email, prenom: prenom || 'Client', sujet: sujet || 'Notification App Pay', html: html };
-    const fetchWithTimeout = async (url, options) => { const controller = new AbortController(); const id = setTimeout(() => controller.abort(), REQUEST_TIMEOUT); try { const response = await fetch(url, { ...options, signal: controller.signal }); clearTimeout(id); return response; } catch (error) { clearTimeout(id); throw error; } };
-    try { const res = await fetchWithTimeout(API_PRIMARY.url, { method: 'POST', headers: API_PRIMARY.headers, body: JSON.stringify(payload) }); if (res.ok) { const data = await res.json().catch(() => ({})); return { success: true, data }; } console.warn('API Principale a échoué avec status:', res.status); } catch (err) { console.warn('Erreur API Principale:', err.message); }
-    try { const resBackup = await fetchWithTimeout(API_BACKUP.url, { method: 'POST', headers: API_BACKUP.headers, body: JSON.stringify(payload) }); if (resBackup.ok) { const data = await resBackup.json().catch(() => ({})); return { success: true, data }; } console.warn('API Backup a échoué avec status:', resBackup.status); } catch (err) { console.warn('Erreur API Backup:', err.message); }
+
+    const payload = {
+        email: email,
+        prenom: prenom || 'Client',
+        sujet: sujet || 'Notification App Pay',
+        html: html
+    };
+
+    const fetchWithTimeout = async (url, options) => {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
+        try {
+            const response = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(id);
+            return response;
+        } catch (error) {
+            clearTimeout(id);
+            throw error;
+        }
+    };
+
+    try {
+        const res = await fetchWithTimeout(API_PRIMARY.url, {
+            method: 'POST',
+            headers: API_PRIMARY.headers,
+            body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            return { success: true, data };
+        }
+        console.warn('API Principale a échoué avec status:', res.status);
+    } catch (err) {
+        console.warn('Erreur API Principale:', err.message);
+    }
+
+    try {
+        const resBackup = await fetchWithTimeout(API_BACKUP.url, {
+            method: 'POST',
+            headers: API_BACKUP.headers,
+            body: JSON.stringify(payload)
+        });
+        if (resBackup.ok) {
+            const data = await resBackup.json().catch(() => ({}));
+            return { success: true, data };
+        }
+        console.warn('API Backup a échoué avec status:', resBackup.status);
+    } catch (err) {
+        console.warn('Erreur API Backup:', err.message);
+    }
+
     return { success: false, error: 'ALL_APIS_FAILED' };
 }
 
 export async function sendLoginCredentials(client) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
+
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
     const baseUrl = window.location.origin.includes('localhost') ? 'https://app.getzenpay.com' : window.location.origin;
     const loginLink = `${baseUrl}/?id=${client.id}`;
-    const html = buildEmailHTML({ title: t.loginSubj, greeting: replaceVars(t.loginGreet, { name: prenom }), intro: t.loginIntro, listItems: [ { label: `<strong>${t.email_address || 'Email'}</strong>`, value: `<a href="mailto:${client.email}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">${client.email}</a>` }, { label: `<strong>${t.pin_code || 'PIN'}</strong>`, value: `<strong style="color: #111; font-family: monospace; font-size: 16px; letter-spacing: 1px;">${client.pin}</strong>` } ], buttonText: t.login_btn || 'Login', buttonLink: loginLink, warning: t.loginFooter, footer: t.loginFooter, boxStyle: 'background-color: #f9f9f9; border: 1px solid #eeeeee;' });
+
+    const html = buildEmailHTML({
+        title: t.loginSubj,
+        greeting: replaceVars(t.loginGreet, { name: prenom }),
+        intro: t.loginIntro,
+        listItems: [
+            { label: `<strong>${t.email_address}</strong>`, value: `<a href="mailto:${client.email}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">${client.email}</a>` },
+            { label: `<strong>${t.pin_code}</strong>`, value: `<strong style="color: #111; font-family: monospace; font-size: 16px; letter-spacing: 1px;">${client.pin}</strong>` }
+        ],
+        buttonText: t.login_btn,
+        buttonLink: loginLink,
+        warning: t.loginFooter,
+        footer: t.loginFooter,
+        boxStyle: 'background-color: #f9f9f9; border: 1px solid #eeeeee;' 
+    });
+
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.loginSubj, html: html });
 }
 
 export async function sendActivationCode(client) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.actSubj, greeting: replaceVars(t.actGreet, { name: prenom }), intro: t.actIntro, listItems: [ { label: `<strong>${t.activation_code || 'Activation Code'}</strong>`, value: `<strong style="color: #ff7a00; font-family: monospace; font-size: 18px; letter-spacing: 2px;">${client.activationCode}</strong>` } ], warning: t.actFooter, footer: t.actFooter, boxStyle: 'background-color: #f9f9f9; border: 1px solid #eeeeee;' });
+
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.actSubj,
+        greeting: replaceVars(t.actGreet, { name: prenom }),
+        intro: t.actIntro,
+        listItems: [
+            { label: `<strong>${t.activation_code}</strong>`, value: `<strong style="color: #ff7a00; font-family: monospace; font-size: 18px; letter-spacing: 2px;">${client.activationCode}</strong>` }
+        ],
+        warning: t.actFooter,
+        footer: t.actFooter,
+        boxStyle: 'background-color: #f9f9f9; border: 1px solid #eeeeee;'
+    });
+
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.actSubj, html: html });
 }
 
 export async function sendTransferSuccess(client, transfer) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.successSubj, greeting: replaceVars(t.successGreet, { name: prenom }), intro: t.successIntro, listItems: [ { label: `<strong>${t.amount || 'Amount'}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${transfer.beneficiary || '—'}` }, { label: `<strong>${t.iban || 'IBAN'}</strong>`, value: `<span style="font-family: monospace;">${transfer.iban || '—'}</span>` }, { label: `<strong>${t.date || 'Date'}</strong>`, value: `${transfer.date || new Date().toLocaleString('fr-FR')}` }, { label: `<strong>${t.reference || 'Reference'}</strong>`, value: `${transfer.reference || '—'}` } ], footer: t.successFooter, boxStyle: 'background-color: #f0fdf4; border: 1px solid #bbf7d0;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.successSubj,
+        greeting: replaceVars(t.successGreet, { name: prenom }),
+        intro: t.successIntro,
+        listItems: [
+            { label: `<strong>${t.amount}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.iban}</strong>`, value: `<span style="font-family: monospace;">${transfer.iban || '—'}</span>` },
+            { label: `<strong>${t.date}</strong>`, value: `${transfer.date}` },
+            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` }
+        ],
+        footer: t.successFooter,
+        boxStyle: 'background-color: #ffffff; border: 1px solid #eeeeee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.successSubj, html: html });
 }
 
 export async function sendTransferFailed(client, details = {}) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.failedSubj, greeting: replaceVars(t.failedGreet, { name: prenom }), intro: t.failedIntro, listItems: [ { label: `<strong>${t.attempted_amount || 'Attempted Amount'}</strong>`, value: `${formatAmount(details.amount, client.currency)}` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${details.beneficiary || '—'}` }, { label: `<strong>${t.allowed_limit || 'Allowed Limit'}</strong>`, value: `${formatAmount(details.limit, client.currency)}` }, { label: `<strong>${t.status || 'Status'}</strong>`, value: `<strong style="color: #e02424;">${t.failed_status || 'Blocked'}</strong>` } ], footer: t.failedFooter, boxStyle: 'background-color: #fef2f2; border: 1px solid #fecaca;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.failedSubj,
+        greeting: replaceVars(t.failedGreet, { name: prenom }),
+        intro: t.failedIntro,
+        listItems: [
+            { label: `<strong>${t.attempted_amount}</strong>`, value: `${formatAmount(details.amount, client.currency)}` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${details.beneficiary || '—'}` },
+            { label: `<strong>${t.allowed_limit}</strong>`, value: `${formatAmount(details.limit, client.currency)}` },
+            { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #e02424;">${t.failed_status}</strong>` }
+        ],
+        footer: t.failedFooter,
+        boxStyle: 'background-color: #ffffff; border: 1px solid #eeeeee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.failedSubj, html: html });
 }
 
 export async function sendPendingTransferNotification(client, transfer) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.pendingSubj, greeting: replaceVars(t.pendingGreet, { name: prenom }), intro: t.pendingIntro, listItems: [ { label: `<strong>${t.amount || 'Amount'}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${transfer.beneficiary || '—'}` }, { label: `<strong>${t.reference || 'Reference'}</strong>`, value: `${transfer.reference || '—'}` }, { label: `<strong>${t.status || 'Status'}</strong>`, value: `<strong style="color: #d97706;">${t.pending_status || 'Pending'}</strong>` } ], footer: t.pendingFooter, boxStyle: 'background-color: #fffbeb; border: 1px solid #fde68a;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.pendingSubj,
+        greeting: replaceVars(t.pendingGreet, { name: prenom }),
+        intro: t.pendingIntro,
+        listItems: [
+            { label: `<strong>${t.amount}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #d97706;">${t.pending_status}</strong>` }
+        ],
+        footer: t.pendingFooter,
+        boxStyle: 'background-color: #ffffff; border: 1px solid #eeeeee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.pendingSubj, html: html });
 }
 
 export async function sendTransferAdminValidated(client, transfer) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.validatedSubj, greeting: replaceVars(t.validatedGreet, { name: prenom }), intro: t.validatedIntro, listItems: [ { label: `<strong>${t.amount || 'Amount'}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${transfer.beneficiary || '—'}` }, { label: `<strong>${t.reference || 'Reference'}</strong>`, value: `${transfer.reference || '—'}` }, { label: `<strong>${t.status || 'Status'}</strong>`, value: `<strong style="color: #00a04a;">${t.completed || 'Completed'}</strong>` } ], footer: t.validatedFooter, boxStyle: 'background-color: #f0fdf4; border: 1px solid #bbf7d0;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.validatedSubj,
+        greeting: replaceVars(t.validatedGreet, { name: prenom }),
+        intro: t.validatedIntro,
+        listItems: [
+            { label: `<strong>${t.amount}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #00a04a;">${t.completed}</strong>` }
+        ],
+        footer: t.validatedFooter,
+        boxStyle: 'background-color: #ffffff; border: 1px solid #eeeeee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.validatedSubj, html: html });
 }
 
 export async function sendTransferAdminCancelled(client, transfer) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.cancelledSubj, greeting: replaceVars(t.cancelledGreet, { name: prenom }), intro: t.cancelledIntro, listItems: [ { label: `<strong>${t.amount || 'Amount'}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${transfer.beneficiary || '—'}` }, { label: `<strong>${t.reference || 'Reference'}</strong>`, value: `${transfer.reference || '—'}` }, { label: `<strong>${t.status || 'Status'}</strong>`, value: `<strong style="color: #e02424;">${t.cancelled_status || 'Cancelled'}</strong>` } ], footer: t.cancelledFooter, boxStyle: 'background-color: #fef2f2; border: 1px solid #fecaca;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.cancelledSubj,
+        greeting: replaceVars(t.cancelledGreet, { name: prenom }),
+        intro: t.cancelledIntro,
+        listItems: [
+            { label: `<strong>${t.amount}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #e02424;">${t.cancelled_status}</strong>` }
+        ],
+        footer: t.cancelledFooter,
+        boxStyle: 'background-color: #ffffff; border: 1px solid #eeeeee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.cancelledSubj, html: html });
 }
 
 export async function sendTransferRefunded(client, transfer) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.refundSubj, greeting: replaceVars(t.refundGreet, { name: prenom }), intro: t.refundIntro, listItems: [ { label: `<strong>${t.refunded_amount || 'Refunded Amount'}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${transfer.beneficiary || '—'}` }, { label: `<strong>${t.reference || 'Reference'}</strong>`, value: `${transfer.reference || '—'}` }, { label: `<strong>${t.status || 'Status'}</strong>`, value: `<strong style="color: #00a04a;">${t.completed || 'Completed'}</strong>` } ], footer: t.refundFooter, boxStyle: 'background-color: #f0fdf4; border: 1px solid #bbf7d0;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.refundSubj,
+        greeting: replaceVars(t.refundGreet, { name: prenom }),
+        intro: t.refundIntro,
+        listItems: [
+            { label: `<strong>${t.refunded_amount}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
+            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #00a04a;">${t.completed}</strong>` }
+        ],
+        footer: t.refundFooter,
+        boxStyle: 'background-color: #ffffff; border: 1px solid #eeeeee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.refundSubj, html: html });
 }
 
 export async function sendTransferUserCancelled(client, transfer) {
     if (!client?.email) return { success: false, error: 'MISSING_EMAIL' };
-    const lang = client.language || 'fr'; const t = getT(lang); const prenom = getClientFirstName(client);
-    const html = buildEmailHTML({ title: t.userCancelledSubj, greeting: replaceVars(t.userCancelledGreet, { name: prenom }), intro: t.userCancelledIntro, listItems: [ { label: `<strong>${t.amount || 'Amount'}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` }, { label: `<strong>${t.beneficiary || 'Beneficiary'}</strong>`, value: `${transfer.beneficiary || '—'}` } ], footer: t.userCancelledFooter, boxStyle: 'background-color: #f8f9fa; border: 1px solid #e8eaee;' });
+    const lang = client.language || 'fr';
+    const t = getT(lang);
+    const prenom = getClientFirstName(client);
+
+    const html = buildEmailHTML({
+        title: t.userCancelledSubj,
+        greeting: replaceVars(t.userCancelledGreet, { name: prenom }),
+        intro: t.userCancelledIntro,
+        listItems: [
+            { label: `<strong>${t.amount}</strong>`, value: `<strong>${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` }
+        ],
+        footer: t.userCancelledFooter,
+        boxStyle: 'background-color: #f8f9fa; border: 1px solid #e8eaee;'
+    });
     return await sendEmail({ email: client.email, prenom: prenom, sujet: t.userCancelledSubj, html: html });
 }
 
 export async function sendAdminConnectionAlert(client, details = {}) {
     const adminEmail = client?.createdByEmail;
     if (!adminEmail) return { success: false, error: 'MISSING_ADMIN_EMAIL' };
+
     const clientName = `${client.firstName || ''} ${client.lastName || ''}`.trim() || 'Client inconnu';
     const tFr = getT('fr'); 
     
@@ -920,7 +1212,7 @@ export async function sendAdminConnectionAlert(client, details = {}) {
         <!DOCTYPE html>
         <html>
         <head><meta charset="UTF-8"></head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px;">
+        <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px;">
             <p style="font-size: 16px; margin-top: 0;">${tFr.adminConnectionGreet}</p>
             <p style="font-size: 15px;">${tFr.adminConnectionIntro}</p>
             <div style="margin: 25px 0; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #ff7a00; border-radius: 4px;">
