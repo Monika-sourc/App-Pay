@@ -63,7 +63,7 @@ body {
 }
 
 .auth-loading-title {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     color: white;
     letter-spacing: 3px;
@@ -87,7 +87,7 @@ body {
 }
 
 .auth-loading-text {
-    font-size: 14px;
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
     letter-spacing: 0.5px;
@@ -141,14 +141,14 @@ body {
 }
 
 .auth-logo h1 {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 800;
     color: #111;
     letter-spacing: 1px;
 }
 
 .auth-logo p {
-    font-size: 12px;
+    font-size: 14px;
     color: #888;
     margin-top: 2px;
 }
@@ -159,7 +159,7 @@ body {
     gap: 8px;
     background-color: #fff5eb;
     color: #ff7a00;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     padding: 8px 14px;
     border-radius: 20px;
@@ -175,11 +175,11 @@ body {
 }
 
 .auth-badge i {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .auth-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     color: #111;
     text-align: center;
@@ -187,7 +187,7 @@ body {
 }
 
 .auth-subtitle {
-    font-size: 13px;
+    font-size: 15px;
     color: #888;
     text-align: center;
     margin-bottom: 25px;
@@ -225,7 +225,7 @@ body {
     align-items: center;
     justify-content: center;
     color: #888;
-    font-size: 15px;
+    font-size: 16px;
     flex-shrink: 0;
     border-right: 1px solid #f0f0f0;
     transition: color 0.2s;
@@ -240,7 +240,7 @@ body {
     border: none;
     outline: none;
     padding: 15px 18px;
-    font-size: 14px;
+    font-size: 16px;
     color: #111;
     background: transparent;
     min-width: 0;
@@ -254,7 +254,7 @@ body {
 
 .auth-error {
     color: #e02424;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
     min-height: 16px;
     font-weight: 500;
@@ -269,7 +269,7 @@ body {
     border: none;
     border-radius: 12px;
     padding: 15px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -303,7 +303,7 @@ body {
     border: 2px solid #e8eaee;
     border-radius: 12px;
     padding: 14px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -340,7 +340,7 @@ body {
     background-color: white;
     padding: 0 15px;
     color: #999;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 @keyframes authFadeInUp {
@@ -389,11 +389,11 @@ body {
 }
 
 .admin-logo i {
-    font-size: 32px;
+    font-size: 34px;
 }
 
 .admin-logo h1 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 1px;
     display: flex;
@@ -402,14 +402,14 @@ body {
 }
 
 .admin-logo p {
-    font-size: 12px;
+    font-size: 14px;
     opacity: 0.9;
     margin-top: 2px;
 }
 
 .badge-admin {
     background: rgba(255, 255, 255, 0.25);
-    font-size: 10px;
+    font-size: 12px;
     padding: 3px 8px;
     border-radius: 4px;
     font-weight: 600;
@@ -442,13 +442,13 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     flex-shrink: 0;
     border: 2px solid rgba(255, 255, 255, 0.4);
 }
 
 .admin-user-name {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     color: white;
     white-space: nowrap;
@@ -458,7 +458,7 @@ body {
 }
 
 .admin-user-email {
-    font-size: 10px;
+    font-size: 12px;
     opacity: 0.85;
     white-space: nowrap;
     overflow: hidden;
@@ -477,7 +477,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    font-size: 16px;
     transition: all 0.2s;
     flex-shrink: 0;
 }
@@ -517,7 +517,7 @@ body {
     color: #333;
     padding: 10px 16px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     margin-bottom: 25px;
     border: 1px solid #e4e6eb;
@@ -528,7 +528,7 @@ body {
 }
 
 .section-title {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
     color: #222;
     margin-bottom: 18px;
@@ -544,7 +544,7 @@ body {
 
 .section-title i {
     color: #ff7a00;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 /* Formulaire */
@@ -560,7 +560,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 13px;
+    font-size: 15px;
     color: #555;
     margin-bottom: 6px;
     font-weight: 500;
@@ -583,7 +583,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 12px 14px;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     outline: none;
     background-color: #fff;
@@ -613,7 +613,7 @@ body {
 
 .form-group small {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
     color: #909399;
     margin-top: 5px;
     line-height: 1.4;
@@ -636,7 +636,7 @@ body {
 }
 
 .percentage-label {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
     font-weight: 500;
     white-space: nowrap;
@@ -647,7 +647,7 @@ body {
     border: none;
     outline: none;
     padding: 6px 8px;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
     color: #ff7a00;
     background: transparent;
@@ -676,7 +676,7 @@ body {
     border: none;
     outline: none;
     padding: 12px 14px;
-    font-size: 15px;
+    font-size: 16px;
     color: #333;
     background: transparent;
     min-width: 0;
@@ -687,7 +687,7 @@ body {
     font-weight: 600;
     color: #444;
     background-color: #f8f9fa;
-    font-size: 14px;
+    font-size: 16px;
     flex-shrink: 0;
 }
 
@@ -745,7 +745,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 16px;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     margin-top: 15px;
@@ -777,7 +777,7 @@ body {
 .btn-access {
     padding: 12px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: 2px solid;
@@ -826,7 +826,7 @@ body {
     padding: 10px 14px;
     border-radius: 6px;
     border-left: 3px solid #ff7a00;
-    font-size: 13px;
+    font-size: 15px;
     gap: 10px;
 }
 
@@ -853,13 +853,13 @@ body {
 }
 
 .m-tx-item-date {
-    font-size: 11px;
+    font-size: 13px;
     color: #888;
 }
 
 .m-tx-item-amount {
     font-weight: 700;
-    font-size: 13px;
+    font-size: 15px;
     white-space: nowrap;
 }
 
@@ -878,7 +878,7 @@ body {
     cursor: pointer;
     padding: 4px 6px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 14px;
     transition: background 0.15s;
 }
 
@@ -909,7 +909,7 @@ body {
 .m-tx-logo-box.fallback {
     background: #fff5eb;
     color: #ff7a00;
-    font-size: 14px;
+    font-size: 16px;
     padding: 0;
 }
 
@@ -934,7 +934,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 12px 14px;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     cursor: pointer;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -962,14 +962,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 16px;
     flex-shrink: 0;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .custom-select-text {
     flex: 1;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     font-weight: 500;
     white-space: nowrap;
@@ -985,7 +985,7 @@ body {
 
 .custom-select-arrow {
     color: #909399;
-    font-size: 12px;
+    font-size: 14px;
     flex-shrink: 0;
     transition: transform 0.2s;
 }
@@ -1023,7 +1023,7 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.15s;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
 }
 
@@ -1041,7 +1041,7 @@ body {
     width: 20px;
     text-align: center;
     color: #1a73e8;
-    font-size: 14px;
+    font-size: 16px;
     flex-shrink: 0;
 }
 
@@ -1096,18 +1096,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 20px;
     flex-shrink: 0;
 }
 
 .option-card-header-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: #111;
 }
 
 .option-card-header-subtitle {
-    font-size: 12px;
+    font-size: 14px;
     color: #888;
     margin-top: 2px;
 }
@@ -1134,7 +1134,7 @@ body {
 .option-card-actions button {
     padding: 11px 20px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -1172,7 +1172,7 @@ body {
     border: 1px solid #c5d8f5;
     border-radius: 8px;
     padding: 12px 14px;
-    font-size: 12px;
+    font-size: 14px;
     color: #1a73e8;
     display: flex;
     align-items: flex-start;
@@ -1191,13 +1191,13 @@ body {
 }
 
 .option-status-box-label {
-    font-size: 13px;
+    font-size: 15px;
     color: #666;
     font-weight: 500;
 }
 
 .option-status-box-value {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     padding: 4px 12px;
     border-radius: 20px;
@@ -1234,7 +1234,7 @@ body {
     display: inline-block;
     background-color: #ff7a00;
     color: white;
-    font-size: 12px;
+    font-size: 14px;
     padding: 3px 10px;
     border-radius: 10px;
     margin-left: 6px;
@@ -1249,7 +1249,7 @@ body {
     color: #e02424;
     padding: 8px 14px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     display: inline-flex;
@@ -1270,7 +1270,7 @@ body {
 .empty-state {
     text-align: center;
     color: #999;
-    font-size: 13px;
+    font-size: 15px;
     padding: 40px 20px;
     background-color: #f8f9fa;
     border-radius: 8px;
@@ -1318,7 +1318,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 17px;
     flex-shrink: 0;
     letter-spacing: 0.5px;
 }
@@ -1329,7 +1329,7 @@ body {
 }
 
 .client-row-name {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     color: #111;
     margin-bottom: 3px;
@@ -1339,7 +1339,7 @@ body {
 }
 
 .client-row-email {
-    font-size: 12px;
+    font-size: 14px;
     color: #888;
     white-space: nowrap;
     overflow: hidden;
@@ -1357,7 +1357,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     padding: 5px 12px;
     border-radius: 20px;
@@ -1376,7 +1376,7 @@ body {
 }
 
 .client-row-status i {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .client-row-delete {
@@ -1390,7 +1390,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 15px;
     transition: all 0.2s;
     flex-shrink: 0;
 }
@@ -1408,7 +1408,7 @@ body {
 
 .client-row-arrow {
     color: #c0c4cc;
-    font-size: 14px;
+    font-size: 16px;
     flex-shrink: 0;
     transition: transform 0.2s;
 }
@@ -1417,6 +1417,7 @@ body {
     color: #ff7a00;
     transform: translateX(3px);
 }
+
 /* ============================================================
    MODAL DÉTAILS CLIENT
    ============================================================ */
@@ -1445,7 +1446,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 16px;
     z-index: 10;
     transition: background 0.2s, color 0.2s;
 }
@@ -1477,7 +1478,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 22px;
     flex-shrink: 0;
     border: 2px solid rgba(255, 255, 255, 0.4);
 }
@@ -1488,7 +1489,7 @@ body {
 }
 
 .client-detail-name {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: white;
     margin-bottom: 4px;
@@ -1498,7 +1499,7 @@ body {
 }
 
 .client-detail-meta {
-    font-size: 12px;
+    font-size: 14px;
     opacity: 0.9;
     white-space: nowrap;
     overflow: hidden;
@@ -1508,7 +1509,7 @@ body {
 .client-detail-status {
     padding: 5px 12px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.3px;
     background-color: rgba(255, 255, 255, 0.25);
@@ -1545,7 +1546,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     color: #ff7a00;
     text-transform: uppercase;
@@ -1556,7 +1557,7 @@ body {
 }
 
 .cd-section-title i {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .cd-row {
@@ -1565,7 +1566,7 @@ body {
     align-items: center;
     gap: 15px;
     padding: 9px 0;
-    font-size: 13px;
+    font-size: 15px;
     border-bottom: 1px solid #f8f8f8;
 }
 
@@ -1608,7 +1609,7 @@ body {
     background-color: #f8f9fa;
     padding: 4px 10px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 15px;
     color: #111;
     font-weight: 700;
 }
@@ -1624,7 +1625,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
     transition: all 0.2s;
     flex-shrink: 0;
 }
@@ -1647,7 +1648,7 @@ body {
     background-color: #ff7a00;
     color: white;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .copy-btn-primary:hover {
@@ -1670,7 +1671,7 @@ body {
     outline: none;
     background: transparent;
     padding: 8px 10px;
-    font-size: 11px;
+    font-size: 13px;
     color: #333;
     font-family: 'Courier New', monospace;
     min-width: 0;
@@ -1678,7 +1679,7 @@ body {
 
 .cd-hint {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
     color: #909399;
     margin-top: 8px;
     line-height: 1.4;
@@ -1697,7 +1698,7 @@ body {
     flex: 1;
     padding: 12px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -1722,7 +1723,7 @@ body {
     width: 100%;
     padding: 12px 16px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     border: 1px solid transparent;
@@ -1757,7 +1758,7 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 15px;
     transition: all 0.2s;
     display: flex;
     align-items: center;
@@ -1788,7 +1789,7 @@ body {
 .admin-transfer-empty {
     text-align: center;
     color: #999;
-    font-size: 14px;
+    font-size: 16px;
     padding: 30px;
     background: #f8f9fa;
     border-radius: 8px;
@@ -1819,19 +1820,19 @@ body {
 }
 
 .admin-transfer-name {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 700;
     color: #111;
     margin-bottom: 4px;
 }
 
 .admin-transfer-date {
-    font-size: 12px;
+    font-size: 14px;
     color: #888;
 }
 
 .admin-transfer-amount {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 700;
     color: #e02424;
     white-space: nowrap;
@@ -1842,7 +1843,7 @@ body {
 }
 
 .admin-transfer-details {
-    font-size: 13px;
+    font-size: 15px;
     color: #555;
     line-height: 1.5;
     background: #f8f9fa;
@@ -1864,7 +1865,7 @@ body {
 .admin-btn-action {
     padding: 8px 16px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -1953,7 +1954,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     flex-shrink: 0;
 }
 
@@ -1973,7 +1974,7 @@ body {
 }
 
 .email-action-text strong {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
@@ -1981,7 +1982,7 @@ body {
 }
 
 .email-action-text small {
-    font-size: 11px;
+    font-size: 13px;
     opacity: 0.75;
     font-weight: 500;
     white-space: nowrap;
@@ -2029,18 +2030,18 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto 18px auto;
-    font-size: 32px;
+    font-size: 34px;
 }
 
 .modal-card h2 {
-    font-size: 19px;
+    font-size: 21px;
     font-weight: 700;
     color: #111;
     margin-bottom: 10px;
 }
 
 .modal-card p {
-    font-size: 13px;
+    font-size: 15px;
     color: #666;
     line-height: 1.5;
     margin-bottom: 22px;
@@ -2057,7 +2058,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 12px 14px;
-    font-size: 12px;
+    font-size: 14px;
     color: #333;
     background: #f8f9fa;
     font-family: 'Courier New', monospace;
@@ -2071,7 +2072,7 @@ body {
     border: none;
     border-radius: 6px;
     padding: 0 18px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -2094,7 +2095,7 @@ body {
     flex: 1;
     padding: 12px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -2151,20 +2152,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 30px;
     margin: 0 auto 20px auto;
     border: 4px solid #fee2e2;
 }
 
 .confirm-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
     color: #111;
     margin-bottom: 12px;
 }
 
 .confirm-message {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
     line-height: 1.5;
     margin-bottom: 25px;
@@ -2177,7 +2178,7 @@ body {
     border: none;
     border-radius: 6px;
     padding: 12px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
@@ -2218,10 +2219,10 @@ body {
     .client-detail-avatar {
         width: 50px;
         height: 50px;
-        font-size: 17px;
+        font-size: 18px;
     }
     .client-detail-name {
-        font-size: 16px;
+        font-size: 18px;
     }
     .client-detail-body {
         padding: 20px;
@@ -2273,7 +2274,7 @@ body {
 }
 
 /* ============================================================
-   🆕 RECHERCHE DANS LES SELECTS (NOUVEAU)
+   🆕 RECHERCHE DANS LES SELECTS
    ============================================================ */
 .searchable-select-container {
     position: relative;
@@ -2290,7 +2291,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 12px 14px;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     cursor: pointer;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -2304,7 +2305,7 @@ body {
 
 .searchable-select-trigger i {
     color: #888;
-    font-size: 12px;
+    font-size: 14px;
     transition: transform 0.2s;
 }
 
@@ -2348,7 +2349,7 @@ body {
 
 .searchable-select-search i {
     color: #aaa;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .searchable-select-search input {
@@ -2356,7 +2357,7 @@ body {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 14px;
+    font-size: 16px;
     padding: 4px;
     color: #333;
     font-family: inherit;
@@ -2369,7 +2370,7 @@ body {
 }
 
 .searchable-optgroup {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     color: #888;
     text-transform: uppercase;
@@ -2381,7 +2382,7 @@ body {
 
 .searchable-option {
     padding: 10px 12px;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     cursor: pointer;
     border-radius: 6px;
@@ -2403,7 +2404,7 @@ body {
     padding: 20px;
     text-align: center;
     color: #888;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 /* Fix pour la section modifier */
@@ -2411,7 +2412,7 @@ body {
     border-color: #1a73e8;
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
 }
-.modify-section .searchable-select-option.selected {
+.modify-section .searchable-option.selected {
     background: #e8f0fe;
     color: #1a73e8;
 }
