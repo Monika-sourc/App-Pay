@@ -115,15 +115,10 @@
             <form id="create-client-form">
                 <h3 class="section-title"><i class="fa-solid fa-user"></i> Informations sur le client :</h3>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom <span class="required">. requis</span></label>
-                        <input type="text" id="c-lastname" required placeholder="Nom de famille">
-                    </div>
-                    <div class="form-group">
-                        <label>Prénom(s) <span class="required">. requis</span></label>
-                        <input type="text" id="c-firstname" required placeholder="Prénom(s)">
-                    </div>
+                <!-- 🆕 MODIFICATION : UN SEUL CHAMP NOM COMPLET -->
+                <div class="form-group">
+                    <label>Nom complet (Nom et Prénom) <span class="required">. requis</span></label>
+                    <input type="text" id="c-fullname" required placeholder="Ex: Jean Dupont">
                 </div>
 
                 <div class="form-group">
@@ -568,7 +563,8 @@
                 </button>
             </form>
         </section>
-                <section class="form-section modify-section">
+        
+        <section class="form-section modify-section">
             <div class="section-badge">
                 <i class="fa-solid fa-pen-to-square"></i>
                 Modifier un client existant
