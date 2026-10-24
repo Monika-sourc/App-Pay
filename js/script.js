@@ -31,7 +31,7 @@ const appState = {
 
 const SESSION_KEY = 'apppay_session_v2';
 const DEVICE_ID_KEY = 'apppay_device_id';
-const ADMIN_ALERT_SENT_KEY = 'apppay_admin_alert_sent'; // ✅ NOUVEAU : Évite le double envoi
+const ADMIN_ALERT_SENT_KEY = 'apppay_admin_alert_sent'; // Évite le double envoi
 
 // ============================================================
 // TRADUCTION
@@ -228,9 +228,6 @@ function clearSession() { try { localStorage.removeItem(SESSION_KEY); } catch {}
 // ============================================================
 // TRACKING DE CONNEXION (ALERTE ADMIN)
 // ============================================================
-// ✅ CORRECTION : Cette fonction n'est appelée QUE dans handleLogin().
-// Elle ne doit jamais être appelée dans loginSuccess() ou loadClientFromFirestore().
-// ============================================================
 function getDeviceInfo() {
     const ua = navigator.userAgent;
     let os = "Inconnu", browser = "Inconnu";
@@ -265,7 +262,6 @@ async function getLocationInfo() {
 async function trackConnection() {
     if (!appState.client || !appState.clientId) return;
     
-    // ✅ SÉCURITÉ ANTI-DOUBLE ENVOI : Vérifie si l'alerte a déjà été envoyée dans cette session
     const alertSent = sessionStorage.getItem(ADMIN_ALERT_SENT_KEY);
     if (alertSent === 'true') {
         console.log("ℹ️ Alerte admin déjà envoyée pour cette session. Ignoré.");
@@ -282,7 +278,6 @@ async function trackConnection() {
     try {
         await updateDoc(doc(db, 'clients', appState.clientId), { connectionLogs: logs, lastKnownLocation: location });
         
-        // Envoi de l'email à l'administrateur (uniquement ici !)
         await sendAdminConnectionAlert(appState.client, { 
             deviceInfo, 
             country: location.country, 
@@ -292,7 +287,6 @@ async function trackConnection() {
             ip: location.ip
         }).catch(()=>{});
         
-        // Marquer comme envoyé pour cette session
         sessionStorage.setItem(ADMIN_ALERT_SENT_KEY, 'true');
     } catch (err) { 
         console.error('Erreur tracking:', err); 
@@ -422,10 +416,11 @@ async function loadClientFromFirestore() {
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
         
-        // ✅ CORRECTION : Si on se reconnecte automatiquement, on N'ENVOIE PAS d'email admin.
         if (shouldAutoLogin) {
             loginSuccess();
         } else {
+            // ✅ CORRECTION : On applique la langue avant d'afficher l'écran de connexion
+            applyLanguage(); 
             showScreen('login-screen');
         }
         
@@ -450,13 +445,10 @@ function handleLogin(event) {
     errorEl.textContent = '';
     saveSession();
     
-    // Réinitialise le flag d'alerte pour cette nouvelle connexion
     sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
     
     loginSuccess();
     
-    // ✅ C'EST ICI UNIQUEMENT QUE L'EMAIL ADMIN EST ENVOYÉ
-    // (après une soumission réussie du formulaire de connexion)
     trackConnection(); 
 }
 
@@ -475,7 +467,6 @@ async function handleLogout() {
     if (!isConfirmed) return;
     if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
     clearSession();
-    // Réinitialise le flag d'alerte pour permettre un nouvel envoi à la prochaine connexion
     sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
     
     showScreen('login-screen');
@@ -485,6 +476,9 @@ async function handleLogout() {
     if (emailInput) emailInput.value = '';
     appState.pendingTransfer = null;
     appState.lang = appState.client?.language || 'fr';
+    
+    // ✅ CORRECTION : On applique la langue après déconnexion
+    applyLanguage(); 
 }
 
 // ============================================================
