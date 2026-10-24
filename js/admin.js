@@ -278,48 +278,27 @@ const CURRENCY_LIST = [
     { value: "XPF", label: "₣ - Franc pacifique (XPF)", group: "🌊 Océanie" }
 ];
 
-// ✅ 40 LANGUES (Ancienne liste, gardée pour éviter les erreurs, mais n'est plus utilisée)
 const LANGUAGE_LIST = [
-    { value: "fr", label: "Français" },
-    { value: "en", label: "English" },
-    { value: "es", label: "Español" },
-    { value: "de", label: "Deutsch" },
-    { value: "it", label: "Italiano" },
-    { value: "pt", label: "Português" },
-    { value: "pl", label: "Polski" },
-    { value: "nl", label: "Nederlands" },
-    { value: "ru", label: "Русский" },
-    { value: "ar", label: "العربية" },
-    { value: "zh", label: "中文" },
-    { value: "ja", label: "日本語" },
-    { value: "tr", label: "Türkçe" },
-    { value: "ko", label: "한국어" },
-    { value: "vi", label: "Tiếng Việt" },
-    { value: "hi", label: "हिन्दी" },
-    { value: "bn", label: "বাংলা" },
-    { value: "ur", label: "اردو" },
-    { value: "fa", label: "فارسی" },
-    { value: "id", label: "Bahasa Indonesia" },
-    { value: "th", label: "ไทย" },
-    { value: "ms", label: "Bahasa Melayu" },
-    { value: "sw", label: "Kiswahili" },
-    { value: "el", label: "Ελληνικά" },
-    { value: "he", label: "עברית" },
-    { value: "uk", label: "Українська" },
-    { value: "ro", label: "Română" },
-    { value: "hu", label: "Magyar" },
-    { value: "sv", label: "Svenska" },
-    { value: "no", label: "Norsk" },
-    { value: "da", label: "Dansk" },
-    { value: "fi", label: "Suomi" },
-    { value: "cs", label: "Čeština" },
-    { value: "sk", label: "Slovenčina" },
-    { value: "hr", label: "Hrvatski" },
-    { value: "bg", label: "Български" },
-    { value: "sr", label: "Српски" },
-    { value: "af", label: "Afrikaans" },
-    { value: "am", label: "አማርኛ" },
-    { value: "ha", label: "Hausa" }
+    { value: "fr", label: "Français" }, { value: "en", label: "English" },
+    { value: "es", label: "Español" }, { value: "de", label: "Deutsch" },
+    { value: "it", label: "Italiano" }, { value: "pt", label: "Português" },
+    { value: "pl", label: "Polski" }, { value: "nl", label: "Nederlands" },
+    { value: "ru", label: "Русский" }, { value: "ar", label: "العربية" },
+    { value: "zh", label: "中文" }, { value: "ja", label: "日本語" },
+    { value: "tr", label: "Türkçe" }, { value: "ko", label: "한국어" },
+    { value: "vi", label: "Tiếng Việt" }, { value: "hi", label: "हिन्दी" },
+    { value: "bn", label: "বাংলা" }, { value: "ur", label: "اردو" },
+    { value: "fa", label: "فارسی" }, { value: "id", label: "Bahasa Indonesia" },
+    { value: "th", label: "ไทย" }, { value: "ms", label: "Bahasa Melayu" },
+    { value: "sw", label: "Kiswahili" }, { value: "el", label: "Ελληνικά" },
+    { value: "he", label: "עברית" }, { value: "uk", label: "Українська" },
+    { value: "ro", label: "Română" }, { value: "hu", label: "Magyar" },
+    { value: "sv", label: "Svenska" }, { value: "no", label: "Norsk" },
+    { value: "da", label: "Dansk" }, { value: "fi", label: "Suomi" },
+    { value: "cs", label: "Čeština" }, { value: "sk", label: "Slovenčina" },
+    { value: "hr", label: "Hrvatski" }, { value: "bg", label: "Български" },
+    { value: "sr", label: "Српски" }, { value: "af", label: "Afrikaans" },
+    { value: "am", label: "አማርኛ" }, { value: "ha", label: "Hausa" }
 ];
 
 function showToast(message, type = 'success') {
@@ -648,6 +627,143 @@ function resetCustomSelect() {
     }
 }
 
+// 🆕 NOUVELLE FONCTION : RENDRE LES SELECTS RECHERCHABLES
+function enhanceSelect(selectId) {
+    const select = document.getElementById(selectId);
+    if (!select || select.dataset.enhanced) return;
+    select.dataset.enhanced = 'true';
+    
+    select.style.display = 'none';
+    
+    const wrapper = document.createElement('div');
+    wrapper.className = 'searchable-select-container';
+    
+    const trigger = document.createElement('div');
+    trigger.className = 'searchable-select-trigger';
+    trigger.innerHTML = `<span>${select.options[select.selectedIndex]?.text || 'Sélectionner...'}</span> <i class="fa-solid fa-chevron-down"></i>`;
+    
+    const dropdown = document.createElement('div');
+    dropdown.className = 'searchable-select-dropdown';
+    
+    const searchWrapper = document.createElement('div');
+    searchWrapper.className = 'searchable-select-search';
+    searchWrapper.innerHTML = '<i class="fa-solid fa-search"></i>';
+    
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Rechercher...';
+    
+    searchWrapper.appendChild(searchInput);
+    
+    const optionsList = document.createElement('div');
+    optionsList.className = 'searchable-select-options';
+    
+    dropdown.appendChild(searchWrapper);
+    dropdown.appendChild(optionsList);
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(dropdown);
+    
+    select.parentNode.insertBefore(wrapper, select.nextSibling);
+    
+    function renderOptions(filter = '') {
+        optionsList.innerHTML = '';
+        let hasResults = false;
+        
+        Array.from(select.children).forEach(child => {
+            if (child.tagName === 'OPTGROUP') {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'searchable-optgroup';
+                groupDiv.textContent = child.label;
+                
+                const groupOptions = Array.from(child.children).filter(opt => 
+                    opt.text.toLowerCase().includes(filter.toLowerCase())
+                );
+                
+                if (groupOptions.length > 0) {
+                    hasResults = true;
+                    optionsList.appendChild(groupDiv);
+                    groupOptions.forEach(opt => {
+                        const optDiv = document.createElement('div');
+                        optDiv.className = 'searchable-option' + (opt.selected ? ' selected' : '');
+                        optDiv.textContent = opt.text;
+                        optDiv.onclick = () => {
+                            select.value = opt.value;
+                            trigger.querySelector('span').textContent = opt.text;
+                            dropdown.classList.remove('open');
+                            wrapper.classList.remove('open');
+                            select.dispatchEvent(new Event('change'));
+                            Array.from(optionsList.children).forEach(c => c.classList.remove('selected'));
+                            optDiv.classList.add('selected');
+                        };
+                        optionsList.appendChild(optDiv);
+                    });
+                }
+            } else if (child.tagName === 'OPTION') {
+                if (child.text.toLowerCase().includes(filter.toLowerCase())) {
+                    hasResults = true;
+                    const optDiv = document.createElement('div');
+                    optDiv.className = 'searchable-option' + (child.selected ? ' selected' : '');
+                    optDiv.textContent = child.text;
+                    optDiv.onclick = () => {
+                        select.value = child.value;
+                        trigger.querySelector('span').textContent = child.text;
+                        dropdown.classList.remove('open');
+                        wrapper.classList.remove('open');
+                        select.dispatchEvent(new Event('change'));
+                        Array.from(optionsList.children).forEach(c => c.classList.remove('selected'));
+                        optDiv.classList.add('selected');
+                    };
+                    optionsList.appendChild(optDiv);
+                }
+            }
+        });
+        
+        if (!hasResults) {
+            optionsList.innerHTML = '<div class="searchable-no-results">Aucun résultat trouvé</div>';
+        }
+    }
+    
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        document.querySelectorAll('.searchable-select-dropdown').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.searchable-select-container').forEach(w => w.classList.remove('open'));
+        
+        if (!isOpen) {
+            dropdown.classList.add('open');
+            wrapper.classList.add('open');
+            searchInput.value = '';
+            renderOptions();
+            searchInput.focus();
+        }
+    });
+    
+    searchInput.addEventListener('input', (e) => renderOptions(e.target.value));
+    
+    document.addEventListener('click', () => {
+        dropdown.classList.remove('open');
+        wrapper.classList.remove('open');
+    });
+    
+    dropdown.addEventListener('click', (e) => e.stopPropagation());
+}
+
+// 🆕 METTRE À JOUR LES SELECTS RECHERCHABLES
+function refreshEnhancedSelect(selectId) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    const wrapper = select.nextElementSibling;
+    if (wrapper && wrapper.classList.contains('searchable-select-container')) {
+        wrapper.remove();
+        delete select.dataset.enhanced;
+    }
+    enhanceSelect(selectId);
+    const newWrapper = select.nextElementSibling;
+    if (newWrapper) {
+        newWrapper.querySelector('.searchable-select-trigger span').textContent = select.options[select.selectedIndex]?.text || 'Sélectionner...';
+    }
+}
+
 function populateBankSelect(selectId, clientCountry, selectedDomain) {
     const select = document.getElementById(selectId);
     if (!select) return;
@@ -682,6 +798,8 @@ function populateBankSelect(selectId, clientCountry, selectedDomain) {
         });
         select.appendChild(group);
     });
+    // 🆕 Mettre à jour la recherche
+    refreshEnhancedSelect(selectId);
 }
 
 async function handleCreateClient(event) {
@@ -771,6 +889,11 @@ async function handleCreateClient(event) {
         document.getElementById('c-country').value = 'France';
         document.getElementById('c-language').value = '';
         document.getElementById('c-percent-value').value = '100';
+        
+        // 🆕 Mettre à jour tous les selects après reset
+        refreshEnhancedSelect('c-country');
+        refreshEnhancedSelect('c-currency');
+        refreshEnhancedSelect('c-language');
         populateBankSelect('c-bank', 'France', '');
 
         await loadClients();
@@ -1321,12 +1444,19 @@ function populateModifySelect() {
         select.appendChild(opt);
     });
     if (current) select.value = current;
+    
+    // 🆕 Mettre à jour le select de recherche
+    refreshEnhancedSelect('m-select-client');
 }
 
 function selectClientForModify(clientId) {
     const select = document.getElementById('m-select-client');
     select.value = clientId;
     handleModifyClientChange();
+    
+    // 🆕 Mettre à jour l'affichage du select de recherche
+    refreshEnhancedSelect('m-select-client');
+
     document.querySelector('.modify-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1768,6 +1898,13 @@ function renderOptionCard(option, client) {
         </div>
     `;
 
+    // 🆕 Transformer les selects en menus avec recherche
+    if (option === 'info') enhanceSelect('opt-country');
+    if (option === 'account') {
+        enhanceSelect('opt-currency');
+        enhanceSelect('opt-language');
+    }
+
     if (option === 'color') {
         const picker = document.getElementById('opt-color-picker');
         picker.querySelectorAll('.color-option').forEach(opt => {
@@ -2055,6 +2192,7 @@ async function deleteClient(id) {
             document.getElementById('option-select-wrapper').style.display = 'none';
             document.getElementById('option-card-container').innerHTML = '';
             resetCustomSelect();
+            refreshEnhancedSelect('m-select-client');
         }
         await loadClients();
         showToast('Client supprimé.', 'info');
@@ -2146,6 +2284,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (langSelect) {
         langSelect.innerHTML = '<option value="">-- Sélectionner une langue --</option>' + buildLanguageOptionsHTML('');
     }
+
+    // 🆕 ACTIVER LA RECHERCHE SUR LES SELECTS STATIQUES
+    enhanceSelect('c-country');
+    enhanceSelect('c-currency');
+    enhanceSelect('c-language');
+    enhanceSelect('m-select-client');
 
     document.getElementById('c-country').addEventListener('change', (e) => {
         populateBankSelect('c-bank', e.target.value, '');
