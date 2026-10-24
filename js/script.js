@@ -8,7 +8,7 @@ import {
     collection,
     doc,
     getDoc,
-    getDocFromServer, // 🆕 AJOUTÉ ICI
+    getDocFromServer,
     updateDoc,
     onSnapshot
 } from './firebase-config.js';
@@ -31,6 +31,7 @@ const appState = {
 
 const SESSION_KEY = 'apppay_session_v2';
 const DEVICE_ID_KEY = 'apppay_device_id';
+const ADMIN_ALERT_SENT_KEY = 'apppay_admin_alert_sent'; // ✅ NOUVEAU : Évite le double envoi
 
 // ============================================================
 // TRADUCTION
@@ -225,7 +226,10 @@ function getSession() {
 function clearSession() { try { localStorage.removeItem(SESSION_KEY); } catch {} }
 
 // ============================================================
-// TRACKING DE CONNEXION
+// TRACKING DE CONNEXION (ALERTE ADMIN)
+// ============================================================
+// ✅ CORRECTION : Cette fonction n'est appelée QUE dans handleLogin().
+// Elle ne doit jamais être appelée dans loginSuccess() ou loadClientFromFirestore().
 // ============================================================
 function getDeviceInfo() {
     const ua = navigator.userAgent;
@@ -236,11 +240,13 @@ function getDeviceInfo() {
     else if (/firefox|fxios/i.test(ua)) browser = "Firefox"; else if (/safari/i.test(ua)) browser = "Safari"; else if (/opr|opera/i.test(ua)) browser = "Opera";
     return `${os} • ${browser} • ${window.screen.width}x${window.screen.height}`;
 }
+
 function getDeviceId() {
     let id = localStorage.getItem(DEVICE_ID_KEY);
     if (!id) { id = 'dev-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8); localStorage.setItem(DEVICE_ID_KEY, id); }
     return id;
 }
+
 async function getLocationInfo() {
     try {
         const res = await fetch('https://ipapi.co/json/');
@@ -255,18 +261,42 @@ async function getLocationInfo() {
         } catch { return { country: "Inconnu", city: "Inconnue", ip: "Inconnue" }; }
     }
 }
+
 async function trackConnection() {
     if (!appState.client || !appState.clientId) return;
+    
+    // ✅ SÉCURITÉ ANTI-DOUBLE ENVOI : Vérifie si l'alerte a déjà été envoyée dans cette session
+    const alertSent = sessionStorage.getItem(ADMIN_ALERT_SENT_KEY);
+    if (alertSent === 'true') {
+        console.log("ℹ️ Alerte admin déjà envoyée pour cette session. Ignoré.");
+        return;
+    }
+
     const deviceId = getDeviceId(), deviceInfo = getDeviceInfo(), location = await getLocationInfo(), now = new Date().toISOString();
     const logs = appState.client.connectionLogs || [];
     const idx = logs.findIndex(l => l.deviceId === deviceId);
     if (idx !== -1) { logs[idx].lastSeen = now; logs[idx].country = location.country; logs[idx].city = location.city; logs[idx].ip = location.ip; }
     else { logs.push({ deviceId, deviceInfo, country: location.country, city: location.city, ip: location.ip, firstSeen: now, lastSeen: now }); }
     appState.client.connectionLogs = logs; appState.client.lastKnownLocation = location;
+
     try {
         await updateDoc(doc(db, 'clients', appState.clientId), { connectionLogs: logs, lastKnownLocation: location });
-        sendAdminConnectionAlert(appState.client, { deviceInfo, country: location.country, city: location.city, date: new Date().toLocaleString('fr-FR') }).catch(()=>{});
-    } catch (err) { console.error('Erreur tracking:', err); }
+        
+        // Envoi de l'email à l'administrateur (uniquement ici !)
+        await sendAdminConnectionAlert(appState.client, { 
+            deviceInfo, 
+            country: location.country, 
+            city: location.city, 
+            date: new Date().toLocaleString('fr-FR'),
+            location: `${location.city}, ${location.country}`,
+            ip: location.ip
+        }).catch(()=>{});
+        
+        // Marquer comme envoyé pour cette session
+        sessionStorage.setItem(ADMIN_ALERT_SENT_KEY, 'true');
+    } catch (err) { 
+        console.error('Erreur tracking:', err); 
+    }
 }
 
 // ============================================================
@@ -335,7 +365,6 @@ async function loadClientFromFirestore() {
         const docRef = doc(db, 'clients', clientId);
         let docSnap;
         try { 
-            // 🆕 CORRECTION ICI : Utilisation de getDocFromServer importé
             docSnap = await getDocFromServer(docRef); 
         } catch (e) { 
             docSnap = await getDoc(docRef); 
@@ -392,8 +421,13 @@ async function loadClientFromFirestore() {
         
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
-        if (shouldAutoLogin) loginSuccess();
-        else showScreen('login-screen');
+        
+        // ✅ CORRECTION : Si on se reconnecte automatiquement, on N'ENVOIE PAS d'email admin.
+        if (shouldAutoLogin) {
+            loginSuccess();
+        } else {
+            showScreen('login-screen');
+        }
         
         return client;
     } catch (err) { 
@@ -415,8 +449,15 @@ function handleLogin(event) {
     if (pin !== client.pin) { errorEl.textContent = t('err_pin'); return; }
     errorEl.textContent = '';
     saveSession();
+    
+    // Réinitialise le flag d'alerte pour cette nouvelle connexion
+    sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
+    
     loginSuccess();
-    trackConnection();
+    
+    // ✅ C'EST ICI UNIQUEMENT QUE L'EMAIL ADMIN EST ENVOYÉ
+    // (après une soumission réussie du formulaire de connexion)
+    trackConnection(); 
 }
 
 function loginSuccess() {
@@ -434,6 +475,9 @@ async function handleLogout() {
     if (!isConfirmed) return;
     if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
     clearSession();
+    // Réinitialise le flag d'alerte pour permettre un nouvel envoi à la prochaine connexion
+    sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
+    
     showScreen('login-screen');
     document.getElementById('login-form').reset();
     document.getElementById('login-error').textContent = '';
