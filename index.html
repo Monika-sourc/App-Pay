@@ -41,7 +41,8 @@
                 <div class="logo-text">APP PAY</div>
             </div>
 
-            <h1 class="login-title" id="login-title-text">Connexion sécurisée</h1>
+            <!-- ✅ MODIFICATION 1 : Ajout de data-i18n="login_title" pour la traduction -->
+            <h1 class="login-title" id="login-title-text" data-i18n="login_title">Connexion sécurisée</h1>
 
             <div class="user-badge" id="user-badge">
                 <i class="fa-solid fa-id-card-clip"></i> <span id="badge-text">Chargement...</span>
@@ -64,8 +65,9 @@
 
                 <div class="login-error" id="login-error"></div>
 
+                <!-- ✅ MODIFICATION 2 : Ajout de data-i18n="login_btn" pour le bouton de connexion -->
                 <button type="submit" class="btn-login">
-                    Se connecter &rarr;
+                    <span data-i18n="login_btn">Se connecter</span> &rarr;
                 </button>
             </form>
         </div>
@@ -277,28 +279,29 @@
             </div>
 
             <div class="verification-details-grey-box">
+                <!-- ✅ MODIFICATION 3A : Sortie des deux-points (:) du span de traduction pour la vérification -->
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="amount">Montant du virement :</div>
+                    <div class="detail-label"><span data-i18n="amount">Montant du virement</span> :</div>
                     <div class="detail-value" id="vf-amount">-</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="beneficiary_name">Nom du bénéficiaire :</div>
+                    <div class="detail-label"><span data-i18n="beneficiary_name">Nom du bénéficiaire</span> :</div>
                     <div class="detail-value" id="vf-beneficiary">-</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="iban">IBAN / Numéro de Compte :</div>
+                    <div class="detail-label"><span data-i18n="iban">IBAN / Numéro de Compte</span> :</div>
                     <div class="detail-value" id="vf-iban">-</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="bic">Code Banque (BIC / SWIFT) :</div>
+                    <div class="detail-label"><span data-i18n="bic">Code Banque (BIC / SWIFT)</span> :</div>
                     <div class="detail-value" id="vf-bic">-</div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label" data-i18n="bank_name">Nom de la Banque :</div>
+                    <div class="detail-label"><span data-i18n="bank_name">Nom de la Banque</span> :</div>
                     <div class="detail-value" id="vf-bank">-</div>
                 </div>
                 <div class="detail-row" style="margin-bottom: 20px;">
-                    <div class="detail-label" data-i18n="reason">Raison du virement :</div>
+                    <div class="detail-label"><span data-i18n="reason">Raison du virement</span> :</div>
                     <div class="detail-value" id="vf-reason">-</div>
                 </div>
 
@@ -350,26 +353,28 @@
             </div>
 
             <div class="inner-details-box">
+                <!-- ✅ MODIFICATION 3B : Sortie des deux-points (:) du span de traduction pour la progression -->
                 <div class="detail-row-new">
-                    <div class="detail-label-new" data-i18n="amount">Montant du virement :</div>
+                    <div class="detail-label-new"><span data-i18n="amount">Montant du virement</span> :</div>
                     <div class="detail-value-new" id="pf-amount">-</div>
                 </div>
                 <div class="detail-row-new">
-                    <div class="detail-label-new" data-i18n="beneficiary_name">Nom du bénéficiaire :</div>
+                    <div class="detail-label-new"><span data-i18n="beneficiary_name">Nom du bénéficiaire</span> :</div>
                     <div class="detail-value-new" id="pf-beneficiary">-</div>
                 </div>
                 <div class="detail-row-new">
-                    <div class="detail-label-new" data-i18n="iban">IBAN / Numéro de Compte :</div>
+                    <div class="detail-label-new"><span data-i18n="iban">IBAN / Numéro de Compte</span> :</div>
                     <div class="detail-value-new" id="pf-iban">-</div>
                 </div>
                 <div class="detail-row-new" style="margin-bottom: 0;">
-                    <div class="detail-label-new" data-i18n="bank_name">Nom de la Banque :</div>
+                    <div class="detail-label-new"><span data-i18n="bank_name">Nom de la Banque</span> :</div>
                     <div class="detail-value-new" id="pf-bank">-</div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 <template id="tpl-success">
     <div class="dashboard-body success-page">
         
