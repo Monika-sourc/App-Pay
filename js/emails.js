@@ -67,7 +67,7 @@ const EMAIL_TRANSLATIONS = {
     sl: { loginSubj: "Dobrodošli v App Pay – Vaši podatki za prijavo", loginGreet: "Spoštovani/a {name},", loginIntro: "Z veseljem potrjujemo odprtje vašega računa pri App Pay. Tukaj so vaši podatki za prijavo:", loginFooter: "Za vašo varnost priporočamo, da te podatke hranite zaupno. Nikoli ne delite svoje kode PIN.", actSubj: "Vaša aktivacijska koda za App Pay nakazila", actGreet: "Spoštovani/a {name},", actIntro: "Za zagotavljanje varnosti vaših transakcij v nadaljevanju najdete svojo osebno aktivacijsko kodo:", actFooter: "To kodo shranite na varnem mestu. Je strogo osebna in zaupna.", successSubj: "Potrditev vašega App Pay nakazila", successGreet: "Spoštovani/a {name},", successIntro: "Potrjujemo, da je bilo vaše nakazilo uspešno obdelano. Tukaj je povzetek:", successFooter: "Sredstva bodo knjižena v dobro prejemnikovega računa v 24 do 48 delovnih urah. Hvala za zaupanje.", failedSubj: "Opozorilo: Vaše App Pay nakazilo je bilo blokirano", failedGreet: "Spoštovani/a {name},", failedIntro: "Poskus nakazila na vaš račun je bil blokiran s strani naših varnostnih sistemov. Tukaj so podrobnosti:", failedFooter: "Noben znesek ni bil bremenjen. Za več informacij se obrnite na službo za pomoč strankam.", pendingSubj: "Vaše App Pay nakazilo čaka na preverjanje", pendingGreet: "Spoštovani/a {name},", pendingIntro: "Vaše nakazilo je bilo registrirano in trenutno čaka na preverjanje s strani naše upravne službe.", pendingFooter: "Obvestilo boste prejeli takoj, ko bo nakazilo obdelano.", validatedSubj: "Nakazilo potrjeno s strani uprave", validatedGreet: "Spoštovani/a {name},", validatedIntro: "Vaše čakajoče nakazilo je bilo potrjeno s strani naše upravne službe in uspešno obdelano.", validatedFooter: "Sredstva bodo knjižena v dobro prejemnikovega računa v 24 do 48 delovnih urah. Hvala za zaupanje.", cancelledSubj: "Nakazilo preklicano s strani uprave", cancelledGreet: "Spoštovani/a {name},", cancelledIntro: "Vaše nakazilo je bilo preklicano s strani naše upravne službe. Znesek je bil ponovno knjižen v dobro vašega računa.", cancelledFooter: "Svoje novo stanje lahko preverite v svojem portalu za stranke.", refundSubj: "Nakazilo povrnjeno", refundGreet: "Spoštovani/a {name},", refundIntro: "Znesek vašega nakazila vam je bil povrnjen. Tukaj so podrobnosti:", refundFooter: "Znesek je bil ponovno knjižen v dobro vašega računa. Hvala za razumevanje.", userCancelledSubj: "Nakazilo preklicano", userCancelledGreet: "Spoštovani/a {name},", userCancelledIntro: "Potrjujemo, da je bilo vaše nakazilo preklicano. Z vašega računa ni bil bremenjen noben znesek.", userCancelledFooter: "Če tega preklica niste sprožili vi, se takoj obrnite na našo službo za pomoč strankam.", adminConnectionSubj: "Nova povezava stranke na App Pay", adminConnectionGreet: "Pozdravljeni, skrbnik,", adminConnectionIntro: "Naslednja stranka se je pravkar prijavila v svoj App Pay račun. Tukaj so podrobnosti:", adminConnectionFooter: "To e-poštno sporočilo se samodejno pošlje skrbniku vsakič, ko se stranka prijavi." },
     bs: { loginSubj: "Dobro došli u App Pay – Vaši podaci za prijavu", loginGreet: "Poštovani/a {name},", loginIntro: "Sa zadovoljstvom potvrđujemo otvaranje vašeg računa u App Pay. Evo vaših podataka za prijavu:", loginFooter: "Za vašu sigurnost preporučujemo da ove podatke držite povjerljivima. Nikada nemojte dijeliti svoj PIN kod.", actSubj: "Vaš aktivacijski kod za App Pay transfere", actGreet: "Poštovani/a {name},", actIntro: "Kako biste osigurali sigurnost vaših transakcija, u nastavku pronađite svoj lični aktivacijski kod:", actFooter: "Čuvajte ovaj kod na sigurnom mjestu. Strogo je lični i povjerljiv.", successSubj: "Potvrda vašeg App Pay transfera", successGreet: "Poštovani/a {name},", successIntro: "Potvrđujemo da je vaš transfer uspješno obrađen. Evo sažetka:", successFooter: "Sredstva će biti odobrena na račun primaoca u roku od 24 do 48 radnih sati. Zahvaljujemo na povjerenju.", failedSubj: "Upozorenje: Vaš App Pay transfer je blokiran", failedGreet: "Poštovani/a {name},", failedIntro: "Pokušaj transfera na vašem računu blokiran je od strane naših sigurnosnih sistema. Evo detalja:", failedFooter: "Nijedan iznos nije zadužen. Molimo kontaktirajte korisničku podršku.", pendingSubj: "Vaš App Pay transfer čeka validaciju", pendingGreet: "Poštovani/a {name},", pendingIntro: "Vaš transfer je registrovan i trenutno čeka validaciju naše administrativne službe.", pendingFooter: "Primit ćete obavijest čim transfer bude obrađen.", validatedSubj: "Transfer odobren od strane administracije", validatedGreet: "Poštovani/a {name},", validatedIntro: "Vaš transfer na čekanju odobren je od strane naše administrativne službe i uspješno obrađen.", validatedFooter: "Sredstva će biti odobrena na račun primaoca u roku od 24 do 48 radnih sati. Zahvaljujemo na povjerenju.", cancelledSubj: "Transfer otkazan od strane administracije", cancelledGreet: "Poštovani/a {name},", cancelledIntro: "Vaš transfer otkazan je od strane naše administrativne službe. Iznos je ponovo odobren na vaš račun.", cancelledFooter: "Svoj novi saldo možete provjeriti u svom klijentskom portalu.", refundSubj: "Transfer refundiran", refundGreet: "Poštovani/a {name},", refundIntro: "Iznos vašeg transfera vam je refundiran. Evo detalja:", refundFooter: "Iznos je ponovo odobren na vaš račun. Zahvaljujemo na razumijevanju.", userCancelledSubj: "Transfer otkazan", userCancelledGreet: "Poštovani/a {name},", userCancelledIntro: "Potvrđujemo da je vaš transfer otkazan. Nijedan iznos nije zadužen s vašeg računa.", userCancelledFooter: "Ako vi niste pokrenuli ovo otkazivanje, molimo odmah kontaktirajte našu korisničku podršku.", adminConnectionSubj: "Nova veza klijenta na App Pay", adminConnectionGreet: "Pozdrav Administratoru,", adminConnectionIntro: "Sljedeći klijent se upravo prijavio na svoj App Pay račun. Evo detalja:", adminConnectionFooter: "Ovaj e-mail se automatski šalje administratoru svaki put kada se klijent prijavi." },
     sq: { loginSubj: "Mirë se vini në App Pay – Kredencialet tuaja të hyrjes", loginGreet: "I nderuar/I nderuara {name},", loginIntro: "Jemi të kënaqur të konfirmojmë hapjen e llogarisë tuaj në App Pay. Këto janë kredencialet tuaja të hyrjes:", loginFooter: "Për sigurinë tuaj, ju rekomandojmë të mbani këtë informacion konfidencial. Mos e ndani kurrë kodin tuaj PIN.", actSubj: "Kodi juaj i aktivizimit për transfertat App Pay", actGreet: "I nderuar/I nderuara {name},", actIntro: "Për të garantuar sigurinë e transaksioneve tuaja, ju lutemi gjeni më poshtë kodin tuaj personal të aktivizimit:", actFooter: "Mbajeni këtë kod në një vend të sigurt. Është rreptësisht personal dhe konfidencial.", successSubj: "Konfirmimi i transfertës tuaj App Pay", successGreet: "I nderuar/I nderuara {name},", successIntro: "Konfirmojmë që transferta juaj është përpunuar me sukses. Këtu është përmbledhja:", successFooter: "Fondet do të kreditohen në llogarinë e përfituesit brenda 24 deri në 48 orëve pune. Faleminderit për besimin tuaj.", failedSubj: "Alarm: Transferta juaj App Pay u bllokua", failedGreet: "I nderuar/I nderuara {name},", failedIntro: "Një përpjekje për transfertë në llogarinë tuaj u bllokua nga sistemet tona të sigurisë. Këtu janë detajet:", failedFooter: "Asnjë shumë nuk u debit ua. Ju lutemi kontaktoni shërbimin e klientit.", pendingSubj: "Transferta juaj App Pay është në pritje të vërtetimit", pendingGreet: "I nderuar/I nderuara {name},", pendingIntro: "Transferta juaj është regjistruar dhe aktualisht është në pritje të vërtetimit nga shërbimi ynë administrativ.", pendingFooter: "Do të merrni një njoftim sapo transferta të përpunohet.", validatedSubj: "Transferta u vërtetua nga administrata", validatedGreet: "I nderuar/I nderuara {name},", validatedIntro: "Transferta juaj në pritje u vërtetua nga shërbimi ynë administrativ dhe u përpunua me sukses.", validatedFooter: "Fondet do të kreditohen në llogarinë e përfituesit brenda 24 deri në 48 orëve pune. Faleminderit për besimin tuaj.", cancelledSubj: "Transferta u anulua nga administrata", cancelledGreet: "I nderuar/I nderuara {name},", cancelledIntro: "Transferta juaj u anulua nga shërbimi ynë administrativ. Shuma u rikreditua në llogarinë tuaj.", cancelledFooter: "Mund të kontrolloni bilancin tuaj të ri në portalin tuaj të klientit.", refundSubj: "Transferta u rimbursua", refundGreet: "I nderuar/I nderuara {name},", refundIntro: "Shuma e transfertës tuaj ju është rimbursuar. Këtu janë detajet:", refundFooter: "Shuma u rikreditua në llogarinë tuaj. Faleminderit për mirëkuptimin tuaj.", userCancelledSubj: "Transferta u anulua", userCancelledGreet: "I nderuar/I nderuara {name},", userCancelledIntro: "Konfirmojmë që transferta juaj u anulua. Asnjë shumë nuk u debit ua nga llogaria juaj.", userCancelledFooter: "Nëse nuk e keni iniciuar ju këtë anulim, ju lutemi kontaktoni menjëherë shërbimin tonë të klientit.", adminConnectionSubj: "Lidhje e re klienti në App Pay", adminConnectionGreet: "Përshëndetje Administrator,", adminConnectionIntro: "Klienti i mëposhtëm sapo u identifikua në llogarinë e tij App Pay. Këtu janë detajet:", adminConnectionFooter: "Ky email i dërgohet automatikisht administratorit sa herë që një klient identifikohet." },
-    el: { loginSubj: "Καλώς ήρθατε στο App Pay – Τα διαπιστευτήρια σύνδεσής σας", loginGreet: "Αξιότιμε/η {name},", loginIntro: "Χαιρόμαστε που επιβεβαιώνουμε το άνοιγμα του λογαριασμού σας στο App Pay. Ακολουθούν τα διαπιστευτήρια σύνδεσής σας:", loginFooter: "Για την ασφάλειά σας, διατηρήστε αυτές τις πληροφορίες εμπιστευτικές. Μην μοιράζεστε ποτέ τον κωδικό PIN σας.", actSubj: "Ο κωδικός ενεργοποίησης για τα εμβάσματά σας στο App Pay", actGreet: "Αξιότιμε/η {name},", actIntro: "Για να διασφαλίσουμε την ασφάλεια των συναλλαγών σας, παρακαλούμε βρείτε παρακάτω τον προσωπικό σας κωδικό ενεργοποίησης:", actFooter: "Φυλάξτε αυτόν τον κωδικό σε ασφαλές μέρος. Είναι αυστηρά προσωπικός και εμπιστευτικός.", successSubj: "Επιβεβαίωση του εμβάσματός σας στο App Pay", successGreet: "Αξιότιμε/η {name},", successIntro: "Επιβεβαιώνουμε ότι το έμβασμά σας υποβλήθηκε σε επεξεργασία με επιτυχία. Ακολουθεί η σύνοψη:", successFooter: "Τα κεφάλαια θα πιστωθούν στον λογαριασμό του δικαιούχου εντός 24 έως 48 εργάσιμων ωρών. Ευχαριστούμε για την εμπιστοσύνη σας.", failedSubj: "Προειδοποίηση: Το έμβασμά σας στο App Pay αποκλείστηκε", failedGreet: "Αξιότιμε/η {name},", failedIntro: "Μια προσπάθεια εμβάσματος στον λογαριασμό σας αποκλείστηκε από τα συστήματα ασφαλείας μας. Ακολουθούν οι λεπτομέρειες:", failedFooter: "Κανένα ποσό δεν χρεώθηκε. Παρακαλούμε επικοινωνήστε με την εξυπηρέτηση πελατών.", pendingSubj: "Το έμβασμά σας στο App Pay εκκρεμεί για επικύρωση", pendingGreet: "Αξιότιμε/η {name},", pendingIntro: "Το έμβασμά σας καταχωρήθηκε και εκκρεμεί η επικύρωσή του από την υπηρεσία διαχείρισής μας.", pendingFooter: "Θα λάβετε ειδοποίηση μόλις το έμβασμα διεκπεραιωθεί.", validatedSubj: "Το έμβασμα επικυρώθηκε από τη διαχείριση", validatedGreet: "Αξιότιμε/η {name},", validatedIntro: "Το εκκρεμές έμβασμά σας επικυρώθηκε από την υπηρεσία διαχείρισής μας και διεκπεραιώθηκε με επιτυχία.", validatedFooter: "Τα κεφάλαια θα πιστωθούν στον λογαριασμό του δικαιούχου εντός 24 έως 48 εργάσιμων ωρών. Ευχαριστούμε για την εμπιστοσύνη σας.", cancelledSubj: "Το έμβασμα ακυρώθηκε από τη διαχείριση", cancelledGreet: "Αξιότιμε/η {name},", cancelledIntro: "Το έμβασμά σας ακυρώθηκε από την υπηρεσία διαχείρισής μας. Το ποσό πιστώθηκε εκ νέου στον λογαριασμό σας.", cancelledFooter: "Μπορείτε να ελέγξετε το νέο σας υπόλοιπο στην πύλη πελατών σας.", refundSubj: "Το έμβασμα επιστράφηκε", refundGreet: "Αξιότιμε/η {name},", refundIntro: "Το ποσό του εμβάσματός σας σάς επιστράφηκε. Ακολουθούν οι λεπτομέρειες:", refundFooter: "Το ποσό πιστώθηκε εκ νέου στον λογαριασμό σας. Ευχαριστούμε για την κατανόησή σας.", userCancelledSubj: "Το έμβασμα ακυρώθηκε", userCancelledGreet: "Αξιότιμε/η {name},", userCancelledIntro: "Επιβεβαιώνουμε ότι το έμβασμά σας ακυρώθηκε. Κανένα ποσό δεν χρεώθηκε από τον λογαριασμό σας.", userCancelledFooter: "Αν δεν ξεκινήσατε εσείς αυτήν την ακύρωση, επικοινωνήστε αμέσως με την εξυπηρέτηση πελατών μας.", adminConnectionSubj: "Νέα σύνδεση πελάτη στο App Pay", adminConnectionGreet: "Γεια σας Διαχειριστή,", adminConnectionIntro: "Ο ακόλουθος πελάτης συνδέθηκε πρόσφατα στον λογαριασμό του App Pay. Ακολουθούν οι λεπτομέρειες:", adminConnectionFooter: "Αυτό το email αποστέλλεται αυτόματα στον διαχειριστή κάθε φορά που συνδέεται ένας πελάτης." },
+       el: { loginSubj: "Καλώς ήρθατε στο App Pay – Τα διαπιστευτήρια σύνδεσής σας", loginGreet: "Αξιότιμε/η {name},", loginIntro: "Χαιρόμαστε που επιβεβαιώνουμε το άνοιγμα του λογαριασμού σας στο App Pay. Ακολουθούν τα διαπιστευτήρια σύνδεσής σας:", loginFooter: "Για την ασφάλειά σας, διατηρήστε αυτές τις πληροφορίες εμπιστευτικές. Μην μοιράζεστε ποτέ τον κωδικό PIN σας.", actSubj: "Ο κωδικός ενεργοποίησης για τα εμβάσματά σας στο App Pay", actGreet: "Αξιότιμε/η {name},", actIntro: "Για να διασφαλίσουμε την ασφάλεια των συναλλαγών σας, παρακαλούμε βρείτε παρακάτω τον προσωπικό σας κωδικό ενεργοποίησης:", actFooter: "Φυλάξτε αυτόν τον κωδικό σε ασφαλές μέρος. Είναι αυστηρά προσωπικός και εμπιστευτικός.", successSubj: "Επιβεβαίωση του εμβάσματός σας στο App Pay", successGreet: "Αξιότιμε/η {name},", successIntro: "Επιβεβαιώνουμε ότι το έμβασμά σας υποβλήθηκε σε επεξεργασία με επιτυχία. Ακολουθεί η σύνοψη:", successFooter: "Τα κεφάλαια θα πιστωθούν στον λογαριασμό του δικαιούχου εντός 24 έως 48 εργάσιμων ωρών. Ευχαριστούμε για την εμπιστοσύνη σας.", failedSubj: "Προειδοποίηση: Το έμβασμά σας στο App Pay αποκλείστηκε", failedGreet: "Αξιότιμε/η {name},", failedIntro: "Μια προσπάθεια εμβάσματος στον λογαριασμό σας αποκλείστηκε από τα συστήματα ασφαλείας μας. Ακολουθούν οι λεπτομέρειες:", failedFooter: "Κανένα ποσό δεν χρεώθηκε. Παρακαλούμε επικοινωνήστε με την εξυπηρέτηση πελατών.", pendingSubj: "Το έμβασμά σας στο App Pay εκκρεμεί για επικύρωση", pendingGreet: "Αξιότιμε/η {name},", pendingIntro: "Το έμβασμά σας καταχωρήθηκε και εκκρεμεί η επικύρωσή του από την υπηρεσία διαχείρισής μας.", pendingFooter: "Θα λάβετε ειδοποίηση μόλις το έμβασμα διεκπεραιωθεί.", validatedSubj: "Το έμβασμα επικυρώθηκε από τη διαχείριση", validatedGreet: "Αξιότιμε/η {name},", validatedIntro: "Το εκκρεμές έμβασμά σας επικυρώθηκε από την υπηρεσία διαχείρισής μας και διεκπεραιώθηκε με επιτυχία.", validatedFooter: "Τα κεφάλαια θα πιστωθούν στον λογαριασμό του δικαιούχου εντός 24 έως 48 εργάσιμων ωρών. Ευχαριστούμε για την εμπιστοσύνη σας.", cancelledSubj: "Το έμβασμα ακυρώθηκε από τη διαχείριση", cancelledGreet: "Αξιότιμε/η {name},", cancelledIntro: "Το έμβασμά σας ακυρώθηκε από την υπηρεσία διαχείρισής μας. Το ποσό πιστώθηκε εκ νέου στον λογαριασμό σας.", cancelledFooter: "Μπορείτε να ελέγξετε το νέο σας υπόλοιπο στην πύλη πελατών σας.", refundSubj: "Το έμβασμα επιστράφηκε", refundGreet: "Αξιότιμε/η {name},", refundIntro: "Το ποσό του εμβάσματός σας σάς επιστράφηκε. Ακολουθούν οι λεπτομέρειες:", refundFooter: "Το ποσό πιστώθηκε εκ νέου στον λογαριασμό σας. Ευχαριστούμε για την κατανόησή σας.", userCancelledSubj: "Το έμβασμα ακυρώθηκε", userCancelledGreet: "Αξιότιμε/η {name},", userCancelledIntro: "Επιβεβαιώνουμε ότι το έμβασμά σας ακυρώθηκε. Κανένα ποσό δεν χρεώθηκε από τον λογαριασμό σας.", userCancelledFooter: "Αν δεν ξεκινήσατε εσείς αυτήν την ακύρωση, επικοινωνήστε αμέσως με την εξυπηρέτηση πελατών μας.", adminConnectionSubj: "Νέα σύνδεση πελάτη στο App Pay", adminConnectionGreet: "Γεια σας Διαχειριστή,", adminConnectionIntro: "Ο ακόλουθος πελάτης συνδέθηκε πρόσφατα στον λογαριασμό του App Pay. Ακολουθούν οι λεπτομέρειες:", adminConnectionFooter: "Αυτό το email αποστέλλεται αυτόματα στον διαχειριστή κάθε φορά που συνδέεται ένας πελάτης." },
     he: { loginSubj: "ברוכים הבאים ל-App Pay – פרטי ההתחברות שלך", loginGreet: "שלום {name},", loginIntro: "אנו שמחים לאשר את פתיחת החשבון שלך ב-App Pay. להלן פרטי ההתחברות שלך:", loginFooter: "למען ביטחונך, אנא שמור מידע זה חסוי. לעולם אל תשתף את קוד ה-PIN שלך.", actSubj: "קוד ההפעלה שלך להעברות App Pay", actGreet: "שלום {name},", actIntro: "כדי להבטיח את אבטחת העסקאות שלך, אנא מצא להלן את קוד ההפעלה האישי שלך:", actFooter: "שמור קוד זה במקום בטוח. הוא אישי וסודי לחלוטין.", successSubj: "אישור ההעברה שלך ב-App Pay", successGreet: "שלום {name},", successIntro: "אנו מאשרים שההעברה שלך עובדה בהצלחה. להלן סיכום הפעולה:", successFooter: "הכספים יזוכו לחשבון המוטב בתוך 24 עד 48 שעות עסקים. תודה על אמונך.", failedSubj: "אזהרה: ההעברה שלך ב-App Pay נחסמה", failedGreet: "שלום {name},", failedIntro: "ניסיון העברה בחשבונך נחסם על ידי מערכות האבטחה שלנו. להלן הפרטים:", failedFooter: "לא חויב סכום. אנא צור קשר עם שירות הלקוחות למידע נוסף.", pendingSubj: "ההעברה שלך ב-App Pay ממתינה לאימות", pendingGreet: "שלום {name},", pendingIntro: "ההעברה שלך נרשמה והיא ממתינה כעת לאימות על ידי שירות הניהול שלנו.", pendingFooter: "תקבל הודעה ברגע שההעברה תעובד.", validatedSubj: "ההעברה אושרה על ידי ההנהלה", validatedGreet: "שלום {name},", validatedIntro: "ההעברה הממתינה שלך אושרה על ידי שירות הניהול שלנו ועובדה בהצלחה.", validatedFooter: "הכספים יזוכו לחשבון המוטב בתוך 24 עד 48 שעות עסקים. תודה על אמונך.", cancelledSubj: "ההעברה בוטלה על ידי ההנהלה", cancelledGreet: "שלום {name},", cancelledIntro: "ההעברה שלך בוטלה על ידי שירות הניהול שלנו. הסכום זוכה מחדש לחשבונך.", cancelledFooter: "תוכל לבדוק את היתרה החדשה שלך בפורטל הלקוחות.", refundSubj: "ההעברה הוחזרה", refundGreet: "שלום {name},", refundIntro: "סכום ההעברה שלך הוחזר לך. להלן הפרטים:", refundFooter: "הסכום זוכה מחדש לחשבונך. תודה על הבנתך.", userCancelledSubj: "ההעברה בוטלה", userCancelledGreet: "שלום {name},", userCancelledIntro: "אנו מאשרים שההעברה שלך בוטלה. לא חויב סכום מחשבונך.", userCancelledFooter: "אם לא יזמת ביטול זה, אנא צור קשר עם שירות הלקוחות שלנו מיד.", adminConnectionSubj: "חיבור לקוח חדש ב-App Pay", adminConnectionGreet: "שלום מנהל,", adminConnectionIntro: "הלקוח הבא התחבר זה עתה לחשבון ה-App Pay שלו. להלן פרטי החיבור:", adminConnectionFooter: "דוא\"ל זה נשלח אוטומטית למנהל בכל פעם שלקוח מתחבר." },
     uk: { loginSubj: "Ласкаво просимо до App Pay – Ваші облікові дані", loginGreet: "Шановний(а) {name},", loginIntro: "Ми раді підтвердити відкриття вашого рахунку в App Pay. Ось ваші дані для входу:", loginFooter: "Для вашої безпеки зберігайте цю інформацію конфіденційною. Ніколи не повідомляйте свій PIN-код.", actSubj: "Ваш код активації для переказів App Pay", actGreet: "Шановний(а) {name},", actIntro: "Щоб забезпечити безпеку ваших транзакцій, нижче вказано ваш особистий код активації:", actFooter: "Зберігайте цей код у безпечному місці. Він є суворо особистим і конфіденційним.", successSubj: "Підтвердження вашого переказу App Pay", successGreet: "Шановний(а) {name},", successIntro: "Підтверджуємо, що ваш переказ успішно оброблено. Ось підсумок операції:", successFooter: "Кошти будуть зараховані на рахунок отримувача протягом 24–48 робочих годин. Дякуємо за довіру.", failedSubj: "Увага: Ваш переказ App Pay заблоковано", failedGreet: "Шановний(а) {name},", failedIntro: "Спроба переказу з вашого рахунку була заблокована нашими системами безпеки. Ось подробиці:", failedFooter: "Жодна сума не була списана. Зв'яжіться зі службою підтримки для отримання інформації.", pendingSubj: "Ваш переказ App Pay очікує підтвердження", pendingGreet: "Шановний(а) {name},", pendingIntro: "Ваш переказ зареєстровано, і він очікує перевірки нашою адміністративною службою.", pendingFooter: "Ви отримаєте повідомлення, щойно переказ буде оброблено.", validatedSubj: "Переказ підтверджено адміністрацією", validatedGreet: "Шановний(а) {name},", validatedIntro: "Ваш очікуваний переказ було підтверджено нашою адміністративною службою та успішно оброблено.", validatedFooter: "Кошти будуть зараховані на рахунок отримувача протягом 24–48 робочих годин. Дякуємо за довіру.", cancelledSubj: "Переказ скасовано адміністрацією", cancelledGreet: "Шановний(а) {name},", cancelledIntro: "Ваш переказ було скасовано нашою адміністративною службою. Суму повернено на ваш рахунок.", cancelledFooter: "Ви можете перевірити свій новий баланс у клієнтському порталі.", refundSubj: "Переказ повернено", refundGreet: "Шановний(а) {name},", refundIntro: "Суму вашого переказу було повернено вам. Ось подробиці:", refundFooter: "Суму повернено на ваш рахунок. Дякуємо за розуміння.", userCancelledSubj: "Переказ скасовано", userCancelledGreet: "Шановний(а) {name},", userCancelledIntro: "Підтверджуємо, що ваш переказ було скасовано. Жодна сума не була списана з вашого рахунку.", userCancelledFooter: "Якщо ви не ініціювали це скасування, негайно зв'яжіться з нашою службою підтримки.", adminConnectionSubj: "Нове підключення клієнта в App Pay", adminConnectionGreet: "Вітаю, Адміністраторе,", adminConnectionIntro: "Наступний клієнт щойно увійшов до свого акаунта App Pay. Ось деталі підключення:", adminConnectionFooter: "Цей лист автоматично надсилається адміністратору щоразу, коли клієнт входить у систему." },
     mk: { loginSubj: "Добредојдовте во App Pay – Ваши податоци за најава", loginGreet: "Почитуван/а {name},", loginIntro: "Со задоволство потврдуваме отворање на вашата сметка во App Pay. Еве ги вашите податоци за најава:", loginFooter: "За ваша безбедност, чувајте ги овие информации доверливи. Никогаш не го споделувајте вашиот PIN код.", actSubj: "Вашиот код за активација за трансфери App Pay", actGreet: "Почитуван/а {name},", actIntro: "За да ја осигураме безбедноста на вашите трансакции, ве молиме најдете го вашиот личен код за активација подолу:", actFooter: "Чувајте го овој код на безбедно место. Тој е строго личен и доверлив.", successSubj: "Потврда за вашиот трансфер App Pay", successGreet: "Почитуван/а {name},", successIntro: "Потврдуваме дека вашиот трансфер е успешно обработен. Еве го резимето:", successFooter: "Средствата ќе бидат одобрени на сметката на примачот во рок од 24 до 48 работни часови. Ви благодариме за довербата.", failedSubj: "Предупредување: Вашиот трансфер App Pay е блокиран", failedGreet: "Почитуван/а {name},", failedIntro: "Обид за трансфер на вашата сметка беше блокиран од нашите безбедносни системи. Еве ги деталите:", failedFooter: "Ниту еден износ не е задолжен. Ве молиме контактирајте ја корисничката поддршка.", pendingSubj: "Вашиот трансфер App Pay чека валидација", pendingGreet: "Почитуван/а {name},", pendingIntro: "Вашиот трансфер е регистриран и моментално чека валидација од нашата административна служба.", pendingFooter: "Ќе добиете известување штом трансферот биде обработен.", validatedSubj: "Трансферот е одобрен од администрацијата", validatedGreet: "Почитуван/а {name},", validatedIntro: "Вашиот трансфер што чекаше е одобрен од нашата административна служба и успешно обработен.", validatedFooter: "Средствата ќе бидат одобрени на сметката на примачот во рок од 24 до 48 работни часови. Ви благодариме за довербата.", cancelledSubj: "Трансферот е откажан од администрацијата", cancelledGreet: "Почитуван/а {name},", cancelledIntro: "Вашиот трансфер е откажан од нашата административна служба. Износот е повторно одобрен на вашата сметка.", cancelledFooter: "Можете да го проверите вашето ново салдо во клиентскиот портал.", refundSubj: "Трансферот е вратен", refundGreet: "Почитуван/а {name},", refundIntro: "Износот на вашиот трансфер ви е вратен. Еве ги деталите:", refundFooter: "Износот е повторно одобрен на вашата сметка. Ви благодариме за разбирањето.", userCancelledSubj: "Трансферот е откажан", userCancelledGreet: "Почитуван/а {name},", userCancelledIntro: "Потврдуваме дека вашиот трансфер е откажан. Ниту еден износ не е задолжен од вашата сметка.", userCancelledFooter: "Ако вие не го инициравте ова откажување, ве молиме веднаш контактирајте ја нашата корисничка поддршка.", adminConnectionSubj: "Нова врска со клиент на App Pay", adminConnectionGreet: "Здраво Администраторе,", adminConnectionIntro: "Следниот клиент штотуку се најави на својата сметка на App Pay. Еве ги деталите:", adminConnectionFooter: "Оваа е-пошта автоматски се испраќа до администраторот секој пат кога клиент ќе се најави." },
@@ -140,11 +140,10 @@ function formatAmount(amount, currency) {
 }
 
 // ============================================================
-// 🆕 DESIGN PLEIN ÉCRAN (SANS MARGES) + COULEURS
+// 🆕 DESIGN PLEIN ÉCRAN + TAILLES RÉDUITES (−60%) + COULEURS
 // ============================================================
 function buildEmailHTML({ title, greeting, intro, listItems = [], buttonText, buttonLink, warning, footer, type = 'default' }) {
-    
-    // Couleurs selon le type d'email
+
     let headerBgColor = '#ff7a00';
     let titleColor = '#111111';
     let borderColor = '#eeeeee';
@@ -164,14 +163,14 @@ function buildEmailHTML({ title, greeting, intro, listItems = [], buttonText, bu
         tableBg = '#fffbeb';
     }
 
-    const listHtml = listItems.length > 0 
-        ? `<table width="100%" cellpadding="0" cellspacing="0" style="margin: 25px 0; border-collapse: collapse; border: 1px solid ${borderColor}; border-radius: 8px; overflow: hidden;">
+    const listHtml = listItems.length > 0
+        ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin: 14px 0; border-collapse: collapse; border: 1px solid ${borderColor}; border-radius: 6px; overflow: hidden;">
             ${listItems.map((item, index) => `
                 <tr>
-                    <td style="padding: 16px 20px; border-bottom: ${index === listItems.length - 1 ? 'none' : `1px solid ${borderColor}`}; background-color: ${tableBg}; font-family: Arial, sans-serif; font-size: 15px; color: #555555; width: 40%; vertical-align: top;">
+                    <td style="padding: 9px 12px; border-bottom: ${index === listItems.length - 1 ? 'none' : `1px solid ${borderColor}`}; background-color: ${tableBg}; font-family: Arial, sans-serif; font-size: 9px; color: #555555; width: 42%; vertical-align: middle;">
                         ${item.label || ''}
                     </td>
-                    <td style="padding: 16px 20px; border-bottom: ${index === listItems.length - 1 ? 'none' : `1px solid ${borderColor}`}; background-color: #ffffff; font-family: Arial, sans-serif; font-size: 15px; color: ${titleColor}; font-weight: bold; text-align: right; word-break: break-word; width: 60%; vertical-align: top;">
+                    <td style="padding: 9px 12px; border-bottom: ${index === listItems.length - 1 ? 'none' : `1px solid ${borderColor}`}; background-color: #ffffff; font-family: Arial, sans-serif; font-size: 9px; color: ${titleColor}; font-weight: bold; text-align: right; word-break: break-word; width: 58%; vertical-align: middle;">
                         ${item.value || ''}
                     </td>
                 </tr>
@@ -180,16 +179,16 @@ function buildEmailHTML({ title, greeting, intro, listItems = [], buttonText, bu
         : '';
 
     const buttonHtml = (buttonText && buttonLink)
-        ? `<div style="text-align: center; margin: 30px 0;">
-            <a href="${buttonLink}" style="background-color: ${headerBgColor}; color: #ffffff; padding: 16px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-family: Arial, sans-serif; font-size: 16px; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        ? `<div style="text-align: center; margin: 18px 0;">
+            <a href="${buttonLink}" style="background-color: ${headerBgColor}; color: #ffffff; padding: 9px 18px; text-decoration: none; border-radius: 5px; font-weight: bold; font-family: Arial, sans-serif; font-size: 10px; display: inline-block; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
                 ${buttonText}
             </a>
            </div>`
         : '';
 
     const warningHtml = warning
-        ? `<div style="background-color: #fff8e1; border-left: 4px solid #ffb300; padding: 15px; margin: 25px 0; border-radius: 4px;">
-            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 14px; color: #6d4c41; line-height: 1.5;">${warning}</p>
+        ? `<div style="background-color: #fff8e1; border-left: 3px solid #ffb300; padding: 9px; margin: 14px 0; border-radius: 3px;">
+            <p style="margin: 0; font-family: Arial, sans-serif; font-size: 8px; color: #6d4c41; line-height: 1.4;">${warning}</p>
            </div>`
         : '';
 
@@ -199,49 +198,56 @@ function buildEmailHTML({ title, greeting, intro, listItems = [], buttonText, bu
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="x-apple-disable-message-reformatting">
         <style>
-            /* Force le plein écran sur Gmail mobile et PC */
+            /* Full-screen Gmail — suppress default padding/margins */
             body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
             table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-            img { -ms-interpolation-mode: bicubic; }
+            img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
             body { margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #ffffff; }
-            .email-container { width: 100% !important; max-width: 100% !important; margin: 0 auto; background-color: #ffffff; }
+            table { border-collapse: collapse; }
+            .email-container { width: 100% !important; max-width: 100% !important; min-width: 100% !important; margin: 0 auto; background-color: #ffffff; }
+            u + .body .email-container { width: 100% !important; }
+            @media only screen and (max-width: 600px) {
+                .email-container { width: 100% !important; max-width: 100% !important; }
+                .email-body { padding: 16px 12px !important; }
+            }
         </style>
     </head>
-    <body style="margin: 0; padding: 0; background-color: #ffffff; width: 100%;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; width: 100%; margin: 0; padding: 0;">
+    <body class="body" style="margin: 0; padding: 0; background-color: #ffffff; width: 100%;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; width: 100%; margin: 0; padding: 0; border-collapse: collapse;">
             <tr>
-                <td align="center" style="padding: 0;">
-                    <table class="email-container" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 100%; background-color: #ffffff;">
-                        
-                        <!-- EN-TÊTE COLORÉ -->
+                <td align="center" style="padding: 0; margin: 0;">
+                    <table role="presentation" class="email-container" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 100%; min-width: 100%; background-color: #ffffff; border-collapse: collapse;">
+
+                        <!-- EN-TÊTE COLORÉ (plein écran, sans marge) -->
                         <tr>
-                            <td style="background-color: ${headerBgColor}; padding: 40px 20px; text-align: center;">
-                                <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 900; letter-spacing: 2px; font-family: Arial, sans-serif;">APP PAY</h1>
+                            <td style="background-color: ${headerBgColor}; padding: 22px 15px; text-align: center; margin: 0;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 1.2px; font-family: Arial, sans-serif;">APP PAY</h1>
                             </td>
                         </tr>
-                        
+
                         <!-- CORPS DU MESSAGE -->
                         <tr>
-                            <td style="padding: 35px 25px; border-left: 1px solid ${borderColor}; border-right: 1px solid ${borderColor};">
-                                <h2 style="color: ${titleColor}; font-size: 24px; margin-top: 0; margin-bottom: 25px; text-align: center; font-family: Arial, sans-serif; line-height: 1.3;">${title || ''}</h2>
-                                
-                                <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-bottom: 15px; font-family: Arial, sans-serif; font-weight: bold;">${greeting || ''}</p>
-                                <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-bottom: 20px; font-family: Arial, sans-serif;">${intro || ''}</p>
-                                
+                            <td class="email-body" style="padding: 20px 15px; border-left: 1px solid ${borderColor}; border-right: 1px solid ${borderColor};">
+                                <h2 style="color: ${titleColor}; font-size: 14px; margin-top: 0; margin-bottom: 14px; text-align: center; font-family: Arial, sans-serif; line-height: 1.3;">${title || ''}</h2>
+
+                                <p style="font-size: 10px; color: #333333; line-height: 1.5; margin-bottom: 8px; font-family: Arial, sans-serif; font-weight: bold;">${greeting || ''}</p>
+                                <p style="font-size: 10px; color: #333333; line-height: 1.5; margin-bottom: 12px; font-family: Arial, sans-serif;">${intro || ''}</p>
+
                                 ${listHtml}
                                 ${buttonHtml}
                                 ${warningHtml}
                             </td>
                         </tr>
-                        
+
                         <!-- PIED DE PAGE -->
                         <tr>
-                            <td style="background-color: #f8f9fa; padding: 30px 20px; text-align: center; border: 1px solid ${borderColor}; border-top: none;">
-                                <p style="font-size: 14px; color: #888888; line-height: 1.5; margin: 0 0 15px 0; font-family: Arial, sans-serif;">
+                            <td style="background-color: #f8f9fa; padding: 16px 12px; text-align: center; border: 1px solid ${borderColor}; border-top: none;">
+                                <p style="font-size: 8px; color: #888888; line-height: 1.4; margin: 0 0 8px 0; font-family: Arial, sans-serif;">
                                     ${footer || ''}
                                 </p>
-                                <p style="margin: 0; font-size: 12px; color: #aaaaaa; font-family: Arial, sans-serif;">
+                                <p style="margin: 0; font-size: 7px; color: #aaaaaa; font-family: Arial, sans-serif;">
                                     &copy; ${new Date().getFullYear()} App Pay. Tous droits réservés.
                                 </p>
                             </td>
@@ -326,7 +332,7 @@ export async function sendLoginCredentials(client) {
         intro: t.loginIntro,
         listItems: [
             { label: `<strong>${t.email_address}</strong>`, value: `<a href="mailto:${client.email}" style="color: #1a73e8; text-decoration: none; font-weight: bold;">${client.email}</a>` },
-            { label: `<strong>${t.pin_code}</strong>`, value: `<strong style="color: #111; font-family: monospace; font-size: 18px; letter-spacing: 1px;">${client.pin}</strong>` }
+            { label: `<strong>${t.pin_code}</strong>`, value: `<strong style="color: #e02424; font-family: monospace; font-size: 11px; letter-spacing: 1px;">${client.pin}</strong>` }
         ],
         buttonText: t.login_btn,
         buttonLink: loginLink,
@@ -350,7 +356,7 @@ export async function sendActivationCode(client) {
         greeting: replaceVars(t.actGreet, { name: prenom }),
         intro: t.actIntro,
         listItems: [
-            { label: `<strong>${t.activation_code}</strong>`, value: `<strong style="color: #ff7a00; font-family: monospace; font-size: 20px; letter-spacing: 2px;">${client.activationCode}</strong>` }
+            { label: `<strong>${t.activation_code}</strong>`, value: `<strong style="color: #ff7a00; font-family: monospace; font-size: 12px; letter-spacing: 1.5px;">${client.activationCode}</strong>` }
         ],
         warning: t.actFooter,
         footer: t.actFooter,
@@ -371,11 +377,11 @@ export async function sendTransferSuccess(client, transfer) {
         greeting: replaceVars(t.successGreet, { name: prenom }),
         intro: t.successIntro,
         listItems: [
-            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #00a04a; font-size: 18px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
-            { label: `<strong>${t.iban}</strong>`, value: `<span style="font-family: monospace;">${transfer.iban || '—'}</span>` },
-            { label: `<strong>${t.date}</strong>`, value: `${transfer.date}` },
-            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` }
+            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #00a04a; font-size: 11px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${transfer.beneficiary || '—'}</span>` },
+            { label: `<strong>${t.iban}</strong>`, value: `<span style="font-family: monospace; color: #1a73e8;">${transfer.iban || '—'}</span>` },
+            { label: `<strong>${t.date}</strong>`, value: `<span style="color: #6b7280;">${transfer.date}</span>` },
+            { label: `<strong>${t.reference}</strong>`, value: `<span style="color: #8b5cf6; font-weight: bold;">${transfer.reference}</span>` }
         ],
         footer: t.successFooter,
         type: 'success'
@@ -394,9 +400,9 @@ export async function sendTransferFailed(client, details = {}) {
         greeting: replaceVars(t.failedGreet, { name: prenom }),
         intro: t.failedIntro,
         listItems: [
-            { label: `<strong>${t.attempted_amount}</strong>`, value: `<strong style="color: #e02424; font-size: 18px;">${formatAmount(details.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${details.beneficiary || '—'}` },
-            { label: `<strong>${t.allowed_limit}</strong>`, value: `${formatAmount(details.limit, client.currency)}` },
+            { label: `<strong>${t.attempted_amount}</strong>`, value: `<strong style="color: #e02424; font-size: 11px;">${formatAmount(details.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${details.beneficiary || '—'}</span>` },
+            { label: `<strong>${t.allowed_limit}</strong>`, value: `<span style="color: #6b7280;">${formatAmount(details.limit, client.currency)}</span>` },
             { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #e02424;">${t.failed_status}</strong>` }
         ],
         footer: t.failedFooter,
@@ -416,9 +422,9 @@ export async function sendPendingTransferNotification(client, transfer) {
         greeting: replaceVars(t.pendingGreet, { name: prenom }),
         intro: t.pendingIntro,
         listItems: [
-            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #d97706; font-size: 18px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
-            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #d97706; font-size: 11px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${transfer.beneficiary || '—'}</span>` },
+            { label: `<strong>${t.reference}</strong>`, value: `<span style="color: #8b5cf6; font-weight: bold;">${transfer.reference}</span>` },
             { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #d97706;">${t.pending_status}</strong>` }
         ],
         footer: t.pendingFooter,
@@ -438,9 +444,9 @@ export async function sendTransferAdminValidated(client, transfer) {
         greeting: replaceVars(t.validatedGreet, { name: prenom }),
         intro: t.validatedIntro,
         listItems: [
-            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #00a04a; font-size: 18px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
-            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #00a04a; font-size: 11px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${transfer.beneficiary || '—'}</span>` },
+            { label: `<strong>${t.reference}</strong>`, value: `<span style="color: #8b5cf6; font-weight: bold;">${transfer.reference}</span>` },
             { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #00a04a;">${t.completed}</strong>` }
         ],
         footer: t.validatedFooter,
@@ -460,9 +466,9 @@ export async function sendTransferAdminCancelled(client, transfer) {
         greeting: replaceVars(t.cancelledGreet, { name: prenom }),
         intro: t.cancelledIntro,
         listItems: [
-            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #e02424; font-size: 18px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
-            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #e02424; font-size: 11px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${transfer.beneficiary || '—'}</span>` },
+            { label: `<strong>${t.reference}</strong>`, value: `<span style="color: #8b5cf6; font-weight: bold;">${transfer.reference}</span>` },
             { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #e02424;">${t.cancelled_status}</strong>` }
         ],
         footer: t.cancelledFooter,
@@ -482,9 +488,9 @@ export async function sendTransferRefunded(client, transfer) {
         greeting: replaceVars(t.refundGreet, { name: prenom }),
         intro: t.refundIntro,
         listItems: [
-            { label: `<strong>${t.refunded_amount}</strong>`, value: `<strong style="color: #00a04a; font-size: 18px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` },
-            { label: `<strong>${t.reference}</strong>`, value: `${transfer.reference}` },
+            { label: `<strong>${t.refunded_amount}</strong>`, value: `<strong style="color: #00a04a; font-size: 11px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${transfer.beneficiary || '—'}</span>` },
+            { label: `<strong>${t.reference}</strong>`, value: `<span style="color: #8b5cf6; font-weight: bold;">${transfer.reference}</span>` },
             { label: `<strong>${t.status}</strong>`, value: `<strong style="color: #00a04a;">${t.completed}</strong>` }
         ],
         footer: t.refundFooter,
@@ -504,8 +510,8 @@ export async function sendTransferUserCancelled(client, transfer) {
         greeting: replaceVars(t.userCancelledGreet, { name: prenom }),
         intro: t.userCancelledIntro,
         listItems: [
-            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #e02424; font-size: 18px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
-            { label: `<strong>${t.beneficiary}</strong>`, value: `${transfer.beneficiary || '—'}` }
+            { label: `<strong>${t.amount}</strong>`, value: `<strong style="color: #e02424; font-size: 11px;">${formatAmount(transfer.amount, client.currency)}</strong>` },
+            { label: `<strong>${t.beneficiary}</strong>`, value: `<span style="color: #111111; font-weight: 600;">${transfer.beneficiary || '—'}</span>` }
         ],
         footer: t.userCancelledFooter,
         type: 'failed'
@@ -518,8 +524,8 @@ export async function sendAdminConnectionAlert(client, details = {}) {
     if (!adminEmail) return { success: false, error: 'MISSING_ADMIN_EMAIL' };
 
     const clientName = `${client.firstName || ''} ${client.lastName || ''}`.trim() || 'Client inconnu';
-    const tFr = getT('fr'); 
-    
+    const tFr = getT('fr');
+
     const html = buildEmailHTML({
         title: tFr.adminConnectionSubj,
         greeting: tFr.adminConnectionGreet,
