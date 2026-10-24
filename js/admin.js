@@ -301,6 +301,15 @@ const LANGUAGE_LIST = [
     { value: "am", label: "አማርኛ" }, { value: "ha", label: "Hausa" }
 ];
 
+// 🆕 FONCTION POUR SÉPARER LE NOM COMPLET
+function splitFullName(fullName) {
+    const parts = fullName.trim().split(/\s+/);
+    if (parts.length === 1) return { firstName: parts[0], lastName: '' };
+    const lastName = parts.pop();
+    const firstName = parts.join(' ');
+    return { firstName, lastName };
+}
+
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
@@ -627,7 +636,7 @@ function resetCustomSelect() {
     }
 }
 
-// 🆕 NOUVELLE FONCTION : RENDRE LES SELECTS RECHERCHABLES
+// 🆕 FONCTION : RENDRE LES SELECTS RECHERCHABLES
 function enhanceSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select || select.dataset.enhanced) return;
@@ -806,8 +815,9 @@ async function handleCreateClient(event) {
     event.preventDefault();
     if (!currentAdmin) { showToast('Vous devez être connecté pour créer un client.', 'error'); return; }
 
-    const lastName = document.getElementById('c-lastname').value.trim();
-    const firstName = document.getElementById('c-firstname').value.trim();
+    const fullName = document.getElementById('c-fullname').value.trim();
+    const { firstName, lastName } = splitFullName(fullName);
+    
     const country = document.getElementById('c-country').value;
     const countryFlag = document.querySelector('#c-country option:checked')?.dataset.flag || '';
     const address = document.getElementById('c-address').value.trim();
@@ -829,7 +839,7 @@ async function handleCreateClient(event) {
     const messageAfterTransfer = document.getElementById('c-message').value.trim();
     const color = document.getElementById('c-color').value;
 
-    if (!lastName || !firstName) return showToast('Nom et prénom obligatoires.', 'error');
+    if (!fullName) return showToast('Le nom complet est obligatoire.', 'error');
     if (!country) return showToast('Pays obligatoire.', 'error');
     if (!email.includes('@') || !email.includes('.')) return showToast('Adresse e-mail invalide.', 'error');
     if (!language) return showToast('Langue obligatoire.', 'error');
@@ -1511,16 +1521,11 @@ function renderOptionCard(option, client) {
             headerIcon = 'fa-user';
             headerTitle = 'Informations personnelles';
             headerSubtitle = 'Nom, prénom, pays et adresse du client';
+            const fullNameValue = `${client.firstName || ''} ${client.lastName || ''}`.trim();
             bodyHtml = `
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom</label>
-                        <input type="text" id="opt-lastname" value="${escapeHtml(client.lastName)}" placeholder="Nom de famille">
-                    </div>
-                    <div class="form-group">
-                        <label>Prénom(s)</label>
-                        <input type="text" id="opt-firstname" value="${escapeHtml(client.firstName)}" placeholder="Prénom(s)">
-                    </div>
+                <div class="form-group">
+                    <label>Nom complet (Nom et Prénom)</label>
+                    <input type="text" id="opt-fullname" value="${escapeHtml(fullNameValue)}" placeholder="Ex: Jean Dupont">
                 </div>
                 <div class="form-group">
                     <label>Pays de résidence</label>
@@ -1981,12 +1986,12 @@ async function saveOption(option, client) {
 
         switch (option) {
             case 'info': {
-                const lastName = document.getElementById('opt-lastname').value.trim();
-                const firstName = document.getElementById('opt-firstname').value.trim();
+                const fullName = document.getElementById('opt-fullname').value.trim();
+                const { firstName, lastName } = splitFullName(fullName);
                 const country = document.getElementById('opt-country').value;
                 const countryFlag = document.querySelector('#opt-country option:checked')?.dataset.flag || '';
                 const address = document.getElementById('opt-address').value.trim();
-                if (!lastName || !firstName) throw new Error('Nom et prénom obligatoires.');
+                if (!fullName) throw new Error('Le nom complet est obligatoire.');
                 if (!country) throw new Error('Pays obligatoire.');
                 updatedData = { ...updatedData, lastName, firstName, country, countryFlag, address };
                 break;
