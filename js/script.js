@@ -278,6 +278,8 @@ async function trackConnection() {
     try {
         await updateDoc(doc(db, 'clients', appState.clientId), { connectionLogs: logs, lastKnownLocation: location });
         
+        // 🔧 MODIF 1 : Logs visibles pour l'email d'alerte admin
+        console.log('📧 [MODIF 1] Envoi email admin connexion... Client:', appState.client.email);
         await sendAdminConnectionAlert(appState.client, { 
             deviceInfo, 
             country: location.country, 
@@ -285,7 +287,9 @@ async function trackConnection() {
             date: new Date().toLocaleString('fr-FR'),
             location: `${location.city}, ${location.country}`,
             ip: location.ip
-        }).catch(()=>{});
+        })
+            .then(r => console.log('📧 [MODIF 1] Email admin connexion → OK:', r))
+            .catch(e => console.error('❌ [MODIF 1] Email admin connexion → KO:', e));
         
         sessionStorage.setItem(ADMIN_ALERT_SENT_KEY, 'true');
     } catch (err) { 
@@ -731,7 +735,20 @@ async function finalizeTransfer() {
     try {
         await authPromise;
         await updateDoc(doc(db, 'clients', appState.clientId), { balance: appState.balance, transactions: appState.transactions });
-        sendTransferSuccess(appState.client, { amount: tr.amount, beneficiary: tr.beneficiary, date: dateStr, reference: ref, iban: tr.iban }).catch(()=>{});
+        
+        // 🔧 MODIF 2 : Logs visibles pour l'email de succès + vérification email client
+        console.log('📧 [MODIF 2] Envoi email succès — Client:', {
+            email: appState.client?.email,
+            firstName: appState.client?.firstName,
+            lastName: appState.client?.lastName,
+            language: appState.client?.language
+        });
+        if (!appState.client?.email) {
+            console.warn('⚠️ [MODIF 2] Client sans email — aucun envoi possible !');
+        }
+        sendTransferSuccess(appState.client, { amount: tr.amount, beneficiary: tr.beneficiary, date: dateStr, reference: ref, iban: tr.iban })
+            .then(r => console.log('📧 [MODIF 2] Email succès → OK:', r))
+            .catch(e => console.error('❌ [MODIF 2] Email succès → KO:', e));
     } catch (err) { console.error('Erreur sauvegarde virement:', err); }
     navigateTo('success', { amount: tr.amount, beneficiary: tr.beneficiary, date: dateStr, reference: ref, bank: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason });
     showToast(t('transfer_finalized'), 'success');
@@ -752,7 +769,20 @@ async function finalizePendingTransfer() {
     try {
         await authPromise;
         await updateDoc(doc(db, 'clients', appState.clientId), { balance: appState.balance, transactions: appState.transactions });
-        sendPendingTransferNotification(appState.client, { amount: tr.amount, beneficiary: tr.beneficiary, date: dateStr, reference: ref, iban: tr.iban }).catch(()=>{});
+        
+        // 🔧 MODIF 3 : Logs visibles pour l'email en attente + vérification email client
+        console.log('📧 [MODIF 3] Envoi email pending — Client:', {
+            email: appState.client?.email,
+            firstName: appState.client?.firstName,
+            lastName: appState.client?.lastName,
+            language: appState.client?.language
+        });
+        if (!appState.client?.email) {
+            console.warn('⚠️ [MODIF 3] Client sans email — aucun envoi possible !');
+        }
+        sendPendingTransferNotification(appState.client, { amount: tr.amount, beneficiary: tr.beneficiary, date: dateStr, reference: ref, iban: tr.iban })
+            .then(r => console.log('📧 [MODIF 3] Email pending → OK:', r))
+            .catch(e => console.error('❌ [MODIF 3] Email pending → KO:', e));
     } catch (err) { console.error('Erreur sauvegarde virement en attente:', err); }
     navigateTo('pending', { amount: tr.amount, beneficiary: tr.beneficiary, date: dateStr, reference: ref, bank: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason });
     showToast(t('transfer_pending'), 'info');
@@ -770,7 +800,21 @@ function finalizeFailedTransfer() {
     const ref = 'AP' + Date.now().toString().slice(-8);
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
-    sendTransferFailed(appState.client, { amount: tr.amount, limit: maxAllowed }).catch(()=>{});
+    
+    // 🔧 MODIF 4 : Logs visibles pour l'email d'échec + vérification email client
+    console.log('📧 [MODIF 4] Envoi email échec — Client:', {
+        email: appState.client?.email,
+        firstName: appState.client?.firstName,
+        lastName: appState.client?.lastName,
+        language: appState.client?.language
+    });
+    if (!appState.client?.email) {
+        console.warn('⚠️ [MODIF 4] Client sans email — aucun envoi possible !');
+    }
+    sendTransferFailed(appState.client, { amount: tr.amount, limit: maxAllowed })
+        .then(r => console.log('📧 [MODIF 4] Email échec → OK:', r))
+        .catch(e => console.error('❌ [MODIF 4] Email échec → KO:', e));
+    
     navigateTo('failed', { amount: tr.amount, beneficiary: tr.beneficiary, bank: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, date: dateStr, reference: ref });
     showToast(t('transfer_failed'), 'error');
     appState.pendingTransfer = null;
