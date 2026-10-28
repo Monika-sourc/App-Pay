@@ -375,8 +375,8 @@ function buildDetailsTable(rows, lang) {
         .map(r => {
             const label = keys[r.key] || r.label || r.key;
             return `<tr>
-                <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#6b7280;font-size:13px;font-weight:600;">${escapeHtml(label)}</td>
-                <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:14px;font-weight:600;">${escapeHtml(r.value)}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#6b7280;font-size:13px;font-weight:600;white-space:nowrap;vertical-align:top;text-align:left;">${escapeHtml(label)}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:14px;font-weight:600;word-break:break-word;vertical-align:top;text-align:left;">${escapeHtml(r.value)}</td>
             </tr>`;
         })
         .join('');
@@ -426,36 +426,36 @@ function buildEmailHTML(opts) {
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>${escapeHtml(subject)}</title>
 </head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
 ${preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(preheader)}</div>` : ''}
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f4f6;padding:24px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;margin:0;padding:0;width:100%;">
   <tr>
-    <td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.06);">
+    <td align="center" style="padding:0;margin:0;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:100%;background:#ffffff;margin:0;padding:0;border-collapse:collapse;">
         <tr>
-          <td style="background:${escapeHtml(accent)};padding:26px 24px;text-align:center;">
+          <td style="background:${escapeHtml(accent)};padding:26px 20px;text-align:center;">
             <div style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:1px;">APP PAY</div>
           </td>
         </tr>
         <tr>
-          <td style="padding:28px 24px 12px 24px;">
+          <td style="padding:28px 20px 12px 20px;">
             <h1 style="margin:0 0 8px 0;font-size:20px;color:#111827;font-weight:700;">${escapeHtml(subject)}</h1>
             <p style="margin:0 0 4px 0;font-size:15px;color:#374151;font-weight:600;">${escapeHtml(greeting)}</p>
             <p style="margin:0;font-size:14px;color:#4b5563;line-height:1.6;">${escapeHtml(intro)}</p>
           </td>
         </tr>
-        ${detailsTable ? `<tr><td style="padding:8px 24px 4px 24px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
+        ${detailsTable ? `<tr><td style="padding:8px 20px 4px 20px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e5e7eb;width:100%;border-collapse:collapse;">
             ${detailsTable}
           </table>
         </td></tr>` : ''}
         <tr>
-          <td style="padding:20px 24px 28px 24px;">
+          <td style="padding:20px 20px 28px 20px;">
             <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.6;">${escapeHtml(footer)}</p>
           </td>
         </tr>
         <tr>
-          <td style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #e5e7eb;">
+          <td style="background:#f9fafb;padding:16px 20px;text-align:center;border-top:1px solid #e5e7eb;">
             <p style="margin:0;font-size:11px;color:#9ca3af;">© ${new Date().getFullYear()} APP PAY</p>
           </td>
         </tr>
@@ -482,10 +482,6 @@ function sanitizeEmail(email) {
     return String(email).replace(/[\s\u200B-\u200D\uFEFF]/g, '').toLowerCase();
 }
 
-// ============================================================
-// ✅ FONCTION D'ENVOI PRINCIPALE
-// Format exact API : { email, prenom, sujet, html }
-// ============================================================
 async function sendEmail({ to, subject, html, prenom }) {
     const cleanTo = sanitizeEmail(to);
     if (!cleanTo || !subject) {
@@ -543,10 +539,6 @@ async function sendEmail({ to, subject, html, prenom }) {
         return { ok: false, provider: 'backup', error: (e && e.message) || String(e) };
     }
 }
-
-// ============================================================
-// FONCTIONS MÉTIER D'ENVOI
-// ============================================================
 
 async function sendWelcomeEmail({ to, name, prenom, email, pin, iban, clientId, language }) {
     const lang = normalizeLang(language);
@@ -716,10 +708,6 @@ async function sendAdminConnectionEmail({ to, name, prenom, language, client }) 
     return sendEmail({ to, subject, html, prenom: prenom || name || 'Admin' });
 }
 
-// ============================================================
-// WRAPPERS DE COMPATIBILITÉ AVEC admin.js
-// ============================================================
-
 async function sendLoginCredentials(client) {
     if (!client) return { success: false, error: 'Client manquant' };
     const result = await sendWelcomeEmail({
@@ -768,10 +756,6 @@ async function sendTransferAdminValidated(client, tx) {
         transaction: tx
     });
 }
-
-// ============================================================
-// ALIAS DE COMPATIBILITÉ AVEC script.js
-// ============================================================
 
 async function sendTransferSuccess(client, tx) {
     if (!client) return { ok: false, error: 'Client manquant' };
@@ -825,10 +809,6 @@ async function sendAdminConnectionAlert(client, info) {
     });
 }
 
-// ============================================================
-// EXPORTS
-// ============================================================
-
 export {
     EMAIL_TRANSLATIONS,
     TABLE_KEYS,
@@ -857,6 +837,3 @@ export {
     sendPendingTransferNotification,
     sendAdminConnectionAlert
 };
-// ============================================================
-// ✅ FIN DU FICHIER emails.js — 146 langues + tous les exports
-// ============================================================
