@@ -1,7 +1,3 @@
-// ============================================================
-// APP PAY - Module d'envoi d'emails (146 langues + Design plein écran)
-// ============================================================
-
 const API_PRIMARY = {
     url: "https://new-app-three-eta.vercel.app/api/send-email",
     headers: { "Content-Type": "application/json" }
@@ -17,9 +13,6 @@ const API_BACKUP = {
 
 const REQUEST_TIMEOUT = 15000;
 
-// ============================================================
-// 🆕 TRADUCTIONS DES TABLEAUX (Montant, Statut, etc.) — 146 langues
-// ============================================================
 const TABLE_KEYS = {
     fr: { amount: "Montant", beneficiary: "Bénéficiaire", iban: "IBAN", date: "Date", reference: "Référence", attempted_amount: "Montant tenté", allowed_limit: "Limite autorisée", status: "Statut", failed_status: "Bloqué", completed: "Réussi", pending_status: "En attente", cancelled_status: "Annulé", refunded_amount: "Montant remboursé", email_address: "E-mail", pin_code: "Code PIN", login_btn: "Se connecter", activation_code: "Code d'activation" },
     en: { amount: "Amount", beneficiary: "Beneficiary", iban: "IBAN", date: "Date", reference: "Reference", attempted_amount: "Attempted Amount", allowed_limit: "Allowed Limit", status: "Status", failed_status: "Blocked", completed: "Completed", pending_status: "Pending", cancelled_status: "Cancelled", refunded_amount: "Refunded Amount", email_address: "Email", pin_code: "PIN", login_btn: "Login", activation_code: "Activation Code" },
@@ -169,9 +162,6 @@ const TABLE_KEYS = {
     br: { amount: "Sam", beneficiary: "Resever", iban: "IBAN", date: "Deiziad", reference: "Daveenn", attempted_amount: "Sam klasket", allowed_limit: "Bevenn aotreet", status: "Stad", failed_status: "Stanket", completed: "Echu", pending_status: "O c'hortoz", cancelled_status: "Nullet", refunded_amount: "Sam distroet", email_address: "Postel", pin_code: "Kod PIN", login_btn: "Kevreañ", activation_code: "Kod gweredekaat" }
 };
 
-// ============================================================
-// EMAIL_TRANSLATIONS — 146 langues, chacune avec 40 clés
-// ============================================================
 const EMAIL_TRANSLATIONS = {
     fr: { loginSubj: "Bienvenue chez App Pay – Vos identifiants de connexion", loginGreet: "Cher(e) {name},", loginIntro: "Nous avons le plaisir de vous confirmer l'ouverture de votre compte chez App Pay. Nous vous remercions de votre confiance. Voici vos identifiants de connexion :", loginFooter: "Pour votre sécurité, gardez ces informations confidentielles. Ne partagez jamais votre code PIN.", actSubj: "Votre code d'activation pour vos virements App Pay", actGreet: "Cher(e) {name},", actIntro: "Afin de garantir la sécurité de vos transactions, voici votre code d'activation personnel. Il vous sera demandé pour valider vos virements :", actFooter: "Gardez ce code en lieu sûr. Il est strictement personnel et confidentiel.", successSubj: "Confirmation de votre virement App Pay", successGreet: "Cher(e) {name},", successIntro: "Nous vous confirmons que votre virement a été traité avec succès. Voici le récapitulatif :", successFooter: "Le crédit sur le compte du bénéficiaire s'effectuera sous 24 à 48 heures ouvrées. Merci de votre confiance.", failedSubj: "Alerte : Votre virement App Pay a été bloqué", failedGreet: "Cher(e) {name},", failedIntro: "Une tentative de virement sur votre compte a été bloquée par nos systèmes de sécurité. Voici les détails :", failedFooter: "Aucun montant n'a été débité. Veuillez contacter le service client pour plus d'informations.", pendingSubj: "Votre virement App Pay est en attente de validation", pendingGreet: "Cher(e) {name},", pendingIntro: "Votre virement a bien été enregistré et est en attente de validation par notre service administratif.", pendingFooter: "Vous recevrez une notification dès que le virement sera traité.", validatedSubj: "Virement validé par l'administration", validatedGreet: "Cher(e) {name},", validatedIntro: "Votre virement en attente a été validé par notre service administratif et traité avec succès.", validatedFooter: "Le crédit sur le compte du bénéficiaire s'effectuera sous 24 à 48 heures ouvrées. Merci de votre confiance.", cancelledSubj: "Virement annulé par l'administration", cancelledGreet: "Cher(e) {name},", cancelledIntro: "Votre virement a été annulé par notre service administratif. Le montant a été re-crédité sur votre compte.", cancelledFooter: "Vous pouvez vérifier votre nouveau solde dans votre espace client.", refundSubj: "Virement remboursé", refundGreet: "Cher(e) {name},", refundIntro: "Nous vous informons que le montant de votre virement vous a été remboursé. Voici les détails :", refundFooter: "Le montant a été recrédité sur votre compte. Merci de votre compréhension.", userCancelledSubj: "Virement annulé", userCancelledGreet: "Cher(e) {name},", userCancelledIntro: "Nous vous confirmons que votre virement a bien été annulé. Aucun montant n'a été débité de votre compte.", userCancelledFooter: "Si vous n'êtes pas à l'origine de cette annulation, veuillez contacter notre service client.", adminConnectionSubj: "Nouvelle connexion client sur App Pay", adminConnectionGreet: "Bonjour Administrateur,", adminConnectionIntro: "Le client suivant vient de se connecter à son compte App Pay. Voici les détails :", adminConnectionFooter: "Cet email est envoyé automatiquement à l'administrateur à chaque connexion d'un client." },
     en: { loginSubj: "Welcome to App Pay – Your login credentials", loginGreet: "Dear {name},", loginIntro: "We are pleased to confirm the opening of your account with App Pay. Thank you for your trust. Here are your login credentials:", loginFooter: "For your security, keep this information confidential. Never share your PIN code.", actSubj: "Your activation code for App Pay transfers", actGreet: "Dear {name},", actIntro: "To ensure the security of your transactions, here is your personal activation code. It will be required to validate your transfers:", actFooter: "Keep this code safe. It is strictly personal and confidential.", successSubj: "Confirmation of your App Pay transfer", successGreet: "Dear {name},", successIntro: "We confirm that your transfer has been successfully processed. Here is the summary:", successFooter: "The funds will be credited to the beneficiary's account within 24 to 48 business hours. Thank you for your trust.", failedSubj: "Alert: Your App Pay transfer was blocked", failedGreet: "Dear {name},", failedIntro: "A transfer attempt on your account was blocked by our security systems. Here are the details:", failedFooter: "No amount was debited. Please contact customer service for more information.", pendingSubj: "Your App Pay transfer is pending validation", pendingGreet: "Dear {name},", pendingIntro: "Your transfer has been registered and is pending validation by our administrative service.", pendingFooter: "You will receive a notification as soon as the transfer is processed.", validatedSubj: "Transfer validated by administration", validatedGreet: "Dear {name},", validatedIntro: "Your pending transfer has been validated by our administrative service and processed successfully.", validatedFooter: "The funds will be credited to the beneficiary's account within 24 to 48 business hours. Thank you for your trust.", cancelledSubj: "Transfer cancelled by administration", cancelledGreet: "Dear {name},", cancelledIntro: "Your transfer has been cancelled by our administrative service. The amount has been re-credited to your account.", cancelledFooter: "You can check your new balance in your client portal.", refundSubj: "Transfer refunded", refundGreet: "Dear {name},", refundIntro: "We inform you that your transfer amount has been refunded to you. Here are the details:", refundFooter: "The amount has been re-credited to your account. Thank you for your understanding.", userCancelledSubj: "Transfer cancelled", userCancelledGreet: "Dear {name},", userCancelledIntro: "We confirm that your transfer has been cancelled. No amount was debited from your account.", userCancelledFooter: "If you did not initiate this cancellation, please contact our customer service.", adminConnectionSubj: "New client connection on App Pay", adminConnectionGreet: "Hello Administrator,", adminConnectionIntro: "The following client just logged into their App Pay account. Here are the details:", adminConnectionFooter: "This email is sent automatically to the administrator each time a client logs in." },
@@ -321,9 +311,6 @@ const EMAIL_TRANSLATIONS = {
     br: { loginSubj: "Donemat e App Pay – Ho titouroù kevreañ", loginGreet: "A {name} ker,", loginIntro: "Laouen omp o kadarnaat digoradur ho kont e App Pay. Setu amañ ho titouroù kevreañ:", loginFooter: "Evit ho surentez, dalc'hit an titouroù-mañ e sekred. Na rannit morse ho kod PIN gant den ebet.", actSubj: "Ho kod gweredekaat evit treuzkasoù App Pay", actGreet: "A {name} ker,", actIntro: "Evit kadarnaat surentez ho treuzkasoù, sellit ouzh ho kod gweredekaat personel amañ dindan:", actFooter: "Mirit ar c'hod-mañ en ul lec'h surañ. Kement-se a zo strizh personel ha sekred.", successSubj: "Kadarnadenn ho treuzkas App Pay", successGreet: "A {name} ker,", successIntro: "Kadarnaat a reomp eo bet graet ho treuzkas gant berzh. Setu an diverradur:", successFooter: "Ar moneiz a vo kredet e kont ar resever a-benn 24 da 48 eur labour. Trugarez evit ho fiziañs.", failedSubj: "Kemenn: Stanket eo bet ho treuzkas App Pay", failedGreet: "A {name} ker,", failedIntro: "Un taol-esae treuzkas war ho kont a zo bet stanket gant hor reizhiadoù surentez. Setu ar munudoù:", failedFooter: "N'eus bet tennet sam ebet. Kit e darempred gant hor servij d'an dud.", pendingSubj: "Ho treuzkas App Pay a c'hortoz gwiriekadur", pendingGreet: "A {name} ker,", pendingIntro: "Enrollet eo bet ho treuzkas hag emañ o c'hortoz gwiriekadur gant hor servij melestradurel.", pendingFooter: "Ur c'hemenn a resevot kerkent ha ma vo bet graet ho treuzkas.", validatedSubj: "Treuzkas gwiriet gant ar velestradurezh", validatedGreet: "A {name} ker,", validatedIntro: "Ho treuzkas o c'hortoz a zo bet gwiriet gant hor servij melestradurel ha graet gant berzh.", validatedFooter: "Ar moneiz a vo kredet e kont ar resever a-benn 24 da 48 eur labour. Trugarez evit ho fiziañs.", cancelledSubj: "Treuzkas nullet gant ar velestradurezh", cancelledGreet: "A {name} ker,", cancelledIntro: "Ho treuzkas a zo bet nullet gant hor servij melestradurel. Distroet eo bet ar sam d'ho kont.", cancelledFooter: "Gellout a rit gwiriañ ho kementad nevez en ho porzh kleant.", refundSubj: "Treuzkas distroet", refundGreet: "A {name} ker,", refundIntro: "Kelaouiñ a reomp ac'hanoc'h eo bet distroet sam ho treuzkas deoc'h. Setu ar munudoù:", refundFooter: "Distroet eo bet ar sam d'ho kont. Trugarez evit ho komprenadenn.", userCancelledSubj: "Treuzkas nullet", userCancelledGreet: "A {name} ker,", userCancelledIntro: "Kadarnaat a reomp eo bet nullet ho treuzkas. N'eus bet tennet sam ebet eus ho kont.", userCancelledFooter: "Ma n'eo ket deoc'h ho peus kroget gant an nulladenn-mañ, kit e darempred gant hor servij d'an dud raktal.", adminConnectionSubj: "Kevreadenn kleant nevez war App Pay", adminConnectionGreet: "Demat Merour,", adminConnectionIntro: "Ar c'hleant da-heul en deus kevreet er mare-mañ en e gont App Pay. Setu munudoù ar gevreadenn:", adminConnectionFooter: "An e-mail-mañ a zo kaset ent emgefreek d'ar Merour bewech ma kevre ur c'hleant." }
 };
 
-// ============================================================
-// HELPERS
-// ============================================================
 function normalizeLang(lang) {
     return (lang || 'fr').toLowerCase().split('-')[0];
 }
@@ -367,9 +354,12 @@ function buildDetailsTable(rows, lang) {
         .filter(r => r && r.value !== null && r.value !== undefined && r.value !== '')
         .map(r => {
             const label = keys[r.key] || r.label || r.key;
+            const isCopyable = ['email_address', 'pin_code', 'activation_code'].includes(r.key);
+            const safeValue = escapeHtml(r.value).replace(/'/g, "\\'");
+            const copyIcon = isCopyable ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;margin-left:8px;vertical-align:middle;" onclick="navigator.clipboard.writeText('${safeValue}')"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` : '';
             return `<tr>
                 <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#6b7280;font-size:12px;font-weight:600;white-space:nowrap;vertical-align:top;text-align:left;">${escapeHtml(label)}</td>
-                <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:13px;font-weight:600;word-break:break-word;vertical-align:top;text-align:left;">${escapeHtml(r.value)}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:13px;font-weight:600;word-break:break-word;vertical-align:top;text-align:left;"><span style="user-select:all;-webkit-user-select:all;display:inline-block;vertical-align:middle;">${escapeHtml(r.value)}</span>${copyIcon}</td>
             </tr>`;
         })
         .join('');
@@ -488,8 +478,6 @@ async function sendEmail({ to, subject, html, prenom }) {
         html: html
     };
 
-    console.log('📤 [sendEmail] Payload :', JSON.stringify({ email: payload.email, prenom: payload.prenom, sujet: payload.sujet }));
-
     try {
         const response = await fetchWithTimeout(
             API_PRIMARY.url,
@@ -501,7 +489,6 @@ async function sendEmail({ to, subject, html, prenom }) {
             REQUEST_TIMEOUT
         );
         const txt = await response.text();
-        console.log('📥 [sendEmail] PRIMARY :', response.status, txt.slice(0, 200));
         if (response.ok) {
             let data = {};
             try { data = JSON.parse(txt); } catch {}
@@ -539,8 +526,7 @@ async function sendWelcomeEmail({ to, name, prenom, email, pin, iban, clientId, 
     const subject = t.loginSubj;
     const rows = [
         { key: 'email_address', value: email },
-        { key: 'pin_code', value: pin },
-        { key: 'iban', value: iban }
+        { key: 'pin_code', value: pin }
     ];
     const html = buildEmailHTML({
         lang, subject,
