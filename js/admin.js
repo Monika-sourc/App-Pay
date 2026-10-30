@@ -1364,6 +1364,8 @@ window.handleAdminValidateTransfer = async function(index) {
 async function handleSendLoginCredentials() {
     if (!currentDetailClient) return;
     const client = currentDetailClient;
+    // ✅ AJOUT : On attache le lien unique du client pour l'inclure dans l'email
+    client.clientLink = getClientLink(client.id);
 
     if (!client.email) {
         return showToast('Ce client n\'a pas d\'adresse e-mail.', 'error');
@@ -1392,6 +1394,8 @@ async function handleSendLoginCredentials() {
 async function handleSendActivationCode() {
     if (!currentDetailClient) return;
     const client = currentDetailClient;
+    // ✅ AJOUT : On attache aussi le lien unique du client pour le code d'activation
+    client.clientLink = getClientLink(client.id);
 
     if (!client.email) {
         return showToast('Ce client n\'a pas d\'adresse e-mail.', 'error');
