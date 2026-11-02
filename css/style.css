@@ -258,7 +258,7 @@ body {
 
 .login-user-name {
     font-size: 26px;
-    font-weight: 800;
+    font-weight: 600; /* 🆕 MODIFIÉ : Réduit de 800 à 600 */
     color: #001a66;
     margin-bottom: 8px;
     text-align: center;
@@ -352,9 +352,9 @@ body {
     color: white;
     border: none;
     border-radius: 30px;
-    padding: 18px;
+    padding: 15px; /* 🆕 MODIFIÉ : Réduit de 18px à 15px */
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 600; /* 🆕 MODIFIÉ : Réduit de 800 à 600 */
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.2s;
     display: flex;
@@ -724,7 +724,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px; /* 🆕 Augmenté de 16px à 18px */
+    font-size: 18px; 
     color: var(--big-card-text-color); 
     margin-bottom: 10px;
     gap: 6px;
@@ -733,11 +733,11 @@ body {
 
 .balance-header i {
     color: var(--big-card-text-color); 
-    font-size: 16px; /* 🆕 Augmenté de 14px à 16px */
+    font-size: 16px; 
 }
 
 .balance-amount {
-    font-size: 42px; /* 🆕 Augmenté de 36px à 42px */
+    font-size: 42px; 
     font-weight: 700; 
     margin-bottom: 22px; 
     text-align: center;
@@ -745,7 +745,7 @@ body {
 }
 
 .balance-subtitle {
-    font-size: 17px; /* 🆕 Augmenté de 15px à 17px */
+    font-size: 17px; 
     color: var(--big-card-text-color); 
     margin-bottom: 25px; 
     text-align: center;
@@ -793,7 +793,7 @@ body {
 }
 
 .round-action-wrapper span {
-    font-size: 17px; /* 🆕 Augmenté de 15px à 17px */
+    font-size: 17px; 
     font-weight: 500; 
     color: var(--big-card-text-color); 
     text-align: center;
@@ -1047,10 +1047,9 @@ body {
     gap: 6px; 
 }
 
-/* 🆕 TEXTE EN GRAS DANS L'HISTORIQUE */
 .tx-details h4 {
     font-size: 16px; 
-    font-weight: 700; /* Gras */
+    font-weight: 700; 
     color: #000;
     margin: 0;
     line-height: 1.2;
@@ -1059,7 +1058,6 @@ body {
     text-overflow: ellipsis;
 }
 
-/* 🆕 TEXTE NORMAL DANS L'HISTORIQUE */
 .tx-details p {
     font-size: 14px; 
     color: #000; 
@@ -1071,7 +1069,6 @@ body {
     font-weight: 500; 
 }
 
-/* 🆕 HEURE NORMALE */
 .tx-details .tx-time {
     font-size: 13px; 
     color: #000; 
@@ -1088,7 +1085,6 @@ body {
     margin-left: 5px;
 }
 
-/* 🆕 MONTANT EN GRAS */
 .tx-amount {
     font-size: 17px; 
     font-weight: 700; 
@@ -1178,7 +1174,6 @@ body {
     margin-bottom: 18px;
 }
 
-/* 🆕 LABEL EN GRAS */
 .form-group label {
     display: block;
     font-size: 14px; 
@@ -1187,7 +1182,6 @@ body {
     font-weight: 700; 
 }
 
-/* 🆕 MODIFICATION : Enlever le gras des labels sur la page virement et vérification */
 #transfer-form .form-group label,
 #verify-form .form-group label {
     font-weight: 500 !important;
@@ -1214,7 +1208,7 @@ body {
     outline: none;
     padding: 14px 15px;
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Changé de 500 à 700 */
+    font-weight: 700; 
     color: #000;
     background: transparent;
     min-width: 0;
@@ -1241,7 +1235,7 @@ body {
     border-radius: 4px;
     padding: 14px 15px;
     font-size: 16px; 
-    font-weight: 700; /* 🆕 Changé de 500 à 700 */
+    font-weight: 700; 
     color: #000;
     outline: none;
     background-color: #fff;
@@ -1313,7 +1307,6 @@ body {
     z-index: 0;
 }
 
-/* 🆕 TITRE EN GRAS */
 .card-header-title {
     display: flex;
     align-items: center;
@@ -1326,7 +1319,6 @@ body {
     z-index: 1;
 }
 
-/* 🆕 MODIFICATION : Enlever le gras du titre de la carte sur la page vérification */
 .verification-card .card-header-title {
     font-weight: 500 !important;
 }
@@ -1353,14 +1345,12 @@ body {
     gap: 4px;
 }
 
-/* 🆕 LABEL NORMAL */
 .verification-details-grey-box .detail-label {
     font-size: 15px; 
     color: #000 !important; 
     font-weight: 500; 
 }
 
-/* 🆕 VALEUR EN GRAS */
 .verification-details-grey-box .detail-value {
     font-size: 16px; 
     font-weight: 700; 
@@ -1387,7 +1377,6 @@ body {
 .btn-cancel-solid:hover { background-color: #dc2626; }
 .btn-cancel-solid:active { transform: scale(0.95); }
 
-/* 🆕 TITRE EN GRAS */
 .activation-section-title {
     display: flex;
     align-items: center;
@@ -1429,7 +1418,6 @@ body {
     z-index: 0;
 }
 
-/* 🆕 TITRE EN GRAS */
 .success-message-title {
     display: flex;
     align-items: center;
@@ -1484,7 +1472,6 @@ body {
     transition: width 0.1s linear; 
 }
 
-/* 🆕 TITRE EN GRAS */
 .details-section-title {
     display: flex;
     align-items: center;
@@ -1521,14 +1508,12 @@ body {
     margin-bottom: 0; 
 }
 
-/* 🆕 LABEL NORMAL */
 .detail-label-new {
     font-size: 15px; 
     color: #000;
     font-weight: 500; 
 }
 
-/* 🆕 VALEUR EN GRAS */
 .detail-value-new {
     font-size: 16px; 
     font-weight: 700; 
@@ -1652,10 +1637,9 @@ body {
 }
 
 .sd-icon {
-    display: none; /* Caché par défaut pour toutes les lignes */
+    display: none; 
 }
 
-/* Exception : On affiche l'icône UNIQUEMENT sur la première ligne (Bénéficiaire) */
 .success-detail-row:first-child .sd-icon {
     display: flex;
     align-items: center;
