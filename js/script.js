@@ -31,7 +31,7 @@ const appState = {
 
 const SESSION_KEY = 'apppay_session_v2';
 const DEVICE_ID_KEY = 'apppay_device_id';
-const ADMIN_ALERT_SENT_KEY = 'apppay_admin_alert_sent'; // Évite le double envoi
+const ADMIN_ALERT_SENT_KEY = 'apppay_admin_alert_sent';
 
 // ============================================================
 // TRADUCTION
@@ -278,7 +278,6 @@ async function trackConnection() {
     try {
         await updateDoc(doc(db, 'clients', appState.clientId), { connectionLogs: logs, lastKnownLocation: location });
         
-        // 🔧 MODIF 1 : Logs visibles pour l'email d'alerte admin
         console.log('📧 [MODIF 1] Envoi email admin connexion... Client:', appState.client.email);
         await sendAdminConnectionAlert(appState.client, { 
             deviceInfo, 
@@ -423,7 +422,6 @@ async function loadClientFromFirestore() {
         if (shouldAutoLogin) {
             loginSuccess();
         } else {
-            // ✅ CORRECTION : On applique la langue avant d'afficher l'écran de connexion
             applyLanguage(); 
             showScreen('login-screen');
         }
@@ -481,7 +479,6 @@ async function handleLogout() {
     appState.pendingTransfer = null;
     appState.lang = appState.client?.language || 'fr';
     
-    // ✅ CORRECTION : On applique la langue après déconnexion
     applyLanguage(); 
 }
 
@@ -696,7 +693,9 @@ function renderProgressView(data) {
     document.getElementById('pf-amount').textContent = formatMoney(tr.amount);
     document.getElementById('pf-beneficiary').textContent = tr.beneficiary;
     document.getElementById('pf-iban').textContent = tr.iban;
+    document.getElementById('pf-bic').textContent = tr.bic || '—';
     document.getElementById('pf-bank').textContent = tr.bank;
+    document.getElementById('pf-reason').textContent = tr.reason || '—';
     const isPendingEnabled = appState.client?.pendingTransferEnabled === true;
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const targetProgress = isPendingEnabled ? 100 : Math.min(100, Math.max(0, percentLimit));
@@ -736,7 +735,6 @@ async function finalizeTransfer() {
         await authPromise;
         await updateDoc(doc(db, 'clients', appState.clientId), { balance: appState.balance, transactions: appState.transactions });
         
-        // 🔧 MODIF 2 : Logs visibles pour l'email de succès + vérification email client
         console.log('📧 [MODIF 2] Envoi email succès — Client:', {
             email: appState.client?.email,
             firstName: appState.client?.firstName,
@@ -770,7 +768,6 @@ async function finalizePendingTransfer() {
         await authPromise;
         await updateDoc(doc(db, 'clients', appState.clientId), { balance: appState.balance, transactions: appState.transactions });
         
-        // 🔧 MODIF 3 : Logs visibles pour l'email en attente + vérification email client
         console.log('📧 [MODIF 3] Envoi email pending — Client:', {
             email: appState.client?.email,
             firstName: appState.client?.firstName,
@@ -801,7 +798,6 @@ function finalizeFailedTransfer() {
     const percentLimit = Number(appState.client?.percentValue ?? 100);
     const maxAllowed = appState.balance * (percentLimit / 100);
     
-    // 🔧 MODIF 4 : Logs visibles pour l'email d'échec + vérification email client
     console.log('📧 [MODIF 4] Envoi email échec — Client:', {
         email: appState.client?.email,
         firstName: appState.client?.firstName,
@@ -883,6 +879,7 @@ function renderFailedView(data) {
     document.getElementById('ff-bic').textContent = d.bic || '—';
     document.getElementById('ff-reason').textContent = d.reason || '—';
     document.getElementById('ff-date').textContent = d.date || '—';
+    document.getElementById('ff-ref').textContent = d.reference || '—';
 }
 
 // ============================================================
@@ -1068,7 +1065,7 @@ window.toggleCardNumber = toggleCardNumber;
 window.showToast = showToast;
 
 // ============================================================
-// ✅ NOUVEAU : TOGGLE PASSWORD VISIBILITY (LOGIN)
+// ✅ TOGGLE PASSWORD VISIBILITY (LOGIN)
 // ============================================================
 window.togglePasswordVisibility = function() {
     const pinInput = document.getElementById('login-password');
