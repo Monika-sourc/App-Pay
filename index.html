@@ -33,43 +33,78 @@
 
     <!-- ÉCRAN 1 : CONNEXION -->
     <div class="screen" id="login-screen">
+        <!-- Éléments de fond décoratifs -->
+        <div class="login-bg-decoration top-left"></div>
+        <div class="login-bg-decoration top-right"></div>
+        <div class="login-bg-decoration bottom-left"></div>
+        <div class="login-bg-decoration bottom-right"></div>
+
         <div class="login-card">
-            <div class="logo-container">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-landmark"></i>
+            <!-- Logo -->
+            <div class="login-logo-box">
+                <i class="fa-solid fa-landmark"></i>
+            </div>
+            
+            <!-- Titre de l'application -->
+            <div class="login-app-title-container">
+                <div class="login-app-title">APP PAY</div>
+                <div class="login-title-line"></div>
+            </div>
+
+            <!-- Avatar -->
+            <div class="login-avatar-container">
+                <div class="login-avatar-circle">
+                    <i class="fa-solid fa-user"></i>
                 </div>
-                <div class="logo-text">APP PAY</div>
+                <div class="login-avatar-badge">
+                    <i class="fa-solid fa-check"></i>
+                </div>
             </div>
-
-            <!-- ✅ MODIFICATION 1 : Ajout de data-i18n="login_title" pour la traduction -->
-            <h1 class="login-title" id="login-title-text" data-i18n="login_title">Connexion sécurisée</h1>
-
-            <div class="user-badge" id="user-badge">
-                <i class="fa-solid fa-id-card-clip"></i> <span id="badge-text">Chargement...</span>
-            </div>
+            
+            <!-- Nom de l'utilisateur (Chargé dynamiquement) -->
+            <div class="login-user-name" id="badge-text">Chargement...</div>
+            
+            <!-- Sous-titre -->
+            <div class="login-subtitle" data-i18n="login_subtitle">Utilisez vos identifiants enregistrés pour vous connecter</div>
 
             <form class="login-form" id="login-form">
-                <div class="input-group">
-                    <div class="input-icon-box">
-                        <i class="fa-regular fa-envelope"></i>
+                <!-- Champ E-mail -->
+                <div class="login-input-group">
+                    <div class="login-input-icon">
+                        <i class="fa-solid fa-envelope"></i>
                     </div>
+                    <div class="login-input-separator"></div>
                     <input type="email" id="login-email" placeholder="Votre adresse e-mail" data-i18n-placeholder="placeholder_email" required>
                 </div>
 
-                <div class="input-group">
-                    <div class="input-icon-box">
-                        <i class="fa-solid fa-shield-halved"></i>
+                <!-- Champ Code PIN -->
+                <div class="login-input-group">
+                    <div class="login-input-icon">
+                        <i class="fa-solid fa-lock"></i>
                     </div>
+                    <div class="login-input-separator"></div>
                     <input type="password" id="login-password" placeholder="Votre code PIN" data-i18n-placeholder="placeholder_pin" required>
+                    <button type="button" class="login-toggle-password" onclick="togglePasswordVisibility()">
+                        <i class="fa-regular fa-eye-slash" id="toggle-password-icon"></i>
+                    </button>
                 </div>
 
                 <div class="login-error" id="login-error"></div>
 
-                <!-- ✅ MODIFICATION 2 : Ajout de data-i18n="login_btn" pour le bouton de connexion -->
+                <!-- Bouton Se connecter -->
                 <button type="submit" class="btn-login">
-                    <span data-i18n="login_btn">Se connecter</span> &rarr;
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    <span data-i18n="login_btn">Se connecter</span>
                 </button>
             </form>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <div class="login-footer-line"></div>
+                <div class="login-footer-shield"><i class="fa-solid fa-check"></i></div>
+                <div class="login-footer-line"></div>
+            </div>
+            <div class="login-footer-text" data-i18n="secure_access">Accès sécurisé et fiable</div>
         </div>
     </div>
 
@@ -279,7 +314,6 @@
             </div>
 
             <div class="verification-details-grey-box">
-                <!-- ✅ MODIFICATION 3A : Sortie des deux-points (:) du span de traduction pour la vérification -->
                 <div class="detail-row">
                     <div class="detail-label"><span data-i18n="amount">Montant du virement</span> :</div>
                     <div class="detail-value" id="vf-amount">-</div>
@@ -353,7 +387,6 @@
             </div>
 
             <div class="inner-details-box">
-                <!-- ✅ MODIFICATION 3B : Sortie des deux-points (:) du span de traduction pour la progression -->
                 <div class="detail-row-new">
                     <div class="detail-label-new"><span data-i18n="amount">Montant du virement</span> :</div>
                     <div class="detail-value-new" id="pf-amount">-</div>
