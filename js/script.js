@@ -1068,6 +1068,25 @@ window.toggleCardNumber = toggleCardNumber;
 window.showToast = showToast;
 
 // ============================================================
+// ✅ NOUVEAU : TOGGLE PASSWORD VISIBILITY (LOGIN)
+// ============================================================
+window.togglePasswordVisibility = function() {
+    const pinInput = document.getElementById('login-password');
+    const icon = document.getElementById('toggle-password-icon');
+    if (!pinInput || !icon) return;
+    
+    if (pinInput.type === 'password') {
+        pinInput.type = 'text';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    } else {
+        pinInput.type = 'password';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    }
+};
+
+// ============================================================
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
