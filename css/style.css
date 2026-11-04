@@ -434,46 +434,47 @@ body {
     height: 100%;
 }
 
-/* --- HEADER --- */
+/* --- HEADER (HAUTEUR ET TAILLE AUGMENTÉES) --- */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 15px;
+    padding: 15px 20px;
     background-color: var(--card-bg);
     border-bottom: 1px solid #e8eaee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 70px;
+    min-height: 85px; /* Augmenté de 70px à 85px */
 }
 
-/* --- TEXTE APP PAY EN GRAS ET PLUS GRAND --- */
+/* --- TEXTE APP PAY --- */
 .header-logo {
-    font-size: 22px; 
+    font-size: 24px; /* Augmenté pour correspondre à la nouvelle hauteur */
     font-weight: 900; 
     color: var(--primary-color);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 /* LOGO HEADER */
 .header-logo-svg {
-    height: 32px;
+    height: 36px; /* Augmenté de 32px à 36px */
     width: auto;
 }
 
 .header-icons {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
     position: relative;
 }
 
+/* BOUTONS RONDS ET ICÔNES PLUS GRANDS */
 .icon-btn {
-    width: 38px;
-    height: 38px;
+    width: 46px; /* Augmenté de 38px à 46px */
+    height: 46px; /* Augmenté de 38px à 46px */
     border-radius: 50%;
     background-color: #e4e6eb;
     display: flex;
@@ -482,7 +483,7 @@ body {
     color: #000;
     cursor: pointer;
     border: none;
-    font-size: 15px;
+    font-size: 18px; /* Augmenté de 15px à 18px */
     position: relative;
     transition: background 0.2s, transform 0.1s;
 }
@@ -491,18 +492,19 @@ body {
 
 .icon-btn .notif-dot {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
+    top: 10px; /* Ajusté */
+    right: 10px; /* Ajusté */
+    width: 10px;
+    height: 10px;
     background-color: #e02424;
     border-radius: 50%;
     border: 2px solid #ffffff;
 }
 
+/* AVATAR UTILISATEUR PLUS GRAND */
 .user-avatar {
-    width: 38px;
-    height: 38px;
+    width: 46px; /* Augmenté de 38px à 46px */
+    height: 46px; /* Augmenté de 38px à 46px */
     border-radius: 50%;
     background-color: var(--primary-color);
     color: white;
@@ -510,7 +512,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 17px; /* Augmenté de 15px à 17px */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
 }
@@ -518,7 +520,7 @@ body {
 
 .notif-dropdown {
     position: absolute;
-    top: 50px;
+    top: 55px; /* Ajusté pour le nouveau header */
     right: 0;
     width: 280px;
     background: var(--card-bg);
