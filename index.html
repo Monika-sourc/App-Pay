@@ -40,17 +40,23 @@
         <div class="login-bg-decoration bottom-right"></div>
 
         <div class="login-card">
-            <!-- Logo Image 2 -->
-            <div style="background: #ffffff; border-radius: 20px; padding: 12px 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-bottom: 20px;">
-                <svg viewBox="0 0 120 40" style="height: 45px; width: auto;">
-                    <!-- Lettre A (Bleu foncé) -->
-                    <path d="M 10 30 L 25 5 L 40 25 L 32 30 L 25 18 L 15 30 Z" fill="#00246B"/>
-                    <!-- Lettre P (Bleu clair) -->
-                    <path d="M 25 5 L 45 5 C 65 5 65 25 45 25 L 35 25 L 35 35 L 25 35 Z M 35 12 L 35 18 L 45 18 C 52 18 52 12 45 12 Z" fill="#2D6BCC"/>
-                    <!-- Swoosh (Orange/Doré) -->
-                    <path d="M 12 30 C 45 40 75 20 95 5 C 75 25 45 35 12 30 Z" fill="#F29D00"/>
+            <!-- LOGO IMAGE 2 EXACT -->
+            <div style="background: #ffffff; border-radius: 16px; padding: 12px 25px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 25px; width: auto; height: auto;">
+                <svg viewBox="0 0 200 60" style="height: 42px; width: auto;" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="swooshGradLogin" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#E87A00" />
+                            <stop offset="100%" stop-color="#FFD700" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Lettre A -->
+                    <path d="M 10 50 L 40 5 L 70 45 L 50 45 L 40 30 L 25 50 Z" fill="#002D72"/>
+                    <!-- Lettre P -->
+                    <path d="M 40 5 L 90 5 C 120 5 120 40 90 40 L 60 40 L 60 55 L 45 55 L 45 5 Z M 60 18 L 60 27 L 90 27 C 105 27 105 18 90 18 Z" fill="#2D6BCC"/>
+                    <!-- Courbe Orange/Dorée -->
+                    <path d="M 20 50 C 80 70 140 40 170 5 C 130 45 80 60 30 50 Z" fill="url(#swooshGradLogin)"/>
                     <!-- Barre verticale -->
-                    <path d="M 105 5 L 107 5 L 107 35 L 105 35 Z" fill="#1F2D54"/>
+                    <rect x="185" y="5" width="4" height="45" fill="#0F1C3F" />
                 </svg>
             </div>
             
@@ -123,15 +129,18 @@
         <!-- HEADER -->
         <header class="header">
             <div class="header-logo">
-                <svg viewBox="0 0 120 40" style="height: 22px; width: auto; margin-right: 8px;">
-                    <!-- Lettre A (Bleu foncé) -->
-                    <path d="M 10 30 L 25 5 L 40 25 L 32 30 L 25 18 L 15 30 Z" fill="#00246B"/>
-                    <!-- Lettre P (Bleu clair) -->
-                    <path d="M 25 5 L 45 5 C 65 5 65 25 45 25 L 35 25 L 35 35 L 25 35 Z M 35 12 L 35 18 L 45 18 C 52 18 52 12 45 12 Z" fill="#2D6BCC"/>
-                    <!-- Swoosh (Orange/Doré) -->
-                    <path d="M 12 30 C 45 40 75 20 95 5 C 75 25 45 35 12 30 Z" fill="#F29D00"/>
-                    <!-- Barre verticale -->
-                    <path d="M 105 5 L 107 5 L 107 35 L 105 35 Z" fill="#1F2D54"/>
+                <!-- NOUVEAU LOGO IMAGE 2 DANS LE HEADER -->
+                <svg viewBox="0 0 200 60" style="height: 24px; width: auto; margin-right: 2px;" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="swooshGradHead" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#E87A00" />
+                            <stop offset="100%" stop-color="#FFD700" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 10 50 L 40 5 L 70 45 L 50 45 L 40 30 L 25 50 Z" fill="#002D72"/>
+                    <path d="M 40 5 L 90 5 C 120 5 120 40 90 40 L 60 40 L 60 55 L 45 55 L 45 5 Z M 60 18 L 60 27 L 90 27 C 105 27 105 18 90 18 Z" fill="#2D6BCC"/>
+                    <path d="M 20 50 C 80 70 140 40 170 5 C 130 45 80 60 30 50 Z" fill="url(#swooshGradHead)"/>
+                    <rect x="185" y="5" width="4" height="45" fill="#0F1C3F" />
                 </svg>
                 APP PAY
             </div>
@@ -892,11 +901,17 @@
     <div class="receipt-card">
         <div class="receipt-header">
             <div class="receipt-logo">
-                <svg viewBox="0 0 120 40" style="height: 18px; width: auto; margin-right: 8px;">
-                    <path d="M 10 30 L 25 5 L 40 25 L 32 30 L 25 18 L 15 30 Z" fill="#00246B"/>
-                    <path d="M 25 5 L 45 5 C 65 5 65 25 45 25 L 35 25 L 35 35 L 25 35 Z M 35 12 L 35 18 L 45 18 C 52 18 52 12 45 12 Z" fill="#2D6BCC"/>
-                    <path d="M 12 30 C 45 40 75 20 95 5 C 75 25 45 35 12 30 Z" fill="#F29D00"/>
-                    <path d="M 105 5 L 107 5 L 107 35 L 105 35 Z" fill="#1F2D54"/>
+                <svg viewBox="0 0 200 60" style="height: 20px; width: auto; margin-right: 8px;" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="swooshGradReceipt" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#E87A00" />
+                            <stop offset="100%" stop-color="#FFD700" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 10 50 L 40 5 L 70 45 L 50 45 L 40 30 L 25 50 Z" fill="#002D72"/>
+                    <path d="M 40 5 L 90 5 C 120 5 120 40 90 40 L 60 40 L 60 55 L 45 55 L 45 5 Z M 60 18 L 60 27 L 90 27 C 105 27 105 18 90 18 Z" fill="#2D6BCC"/>
+                    <path d="M 20 50 C 80 70 140 40 170 5 C 130 45 80 60 30 50 Z" fill="url(#swooshGradReceipt)"/>
+                    <rect x="185" y="5" width="4" height="45" fill="#0F1C3F" />
                 </svg>
                 APP PAY
             </div>
