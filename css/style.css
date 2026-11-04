@@ -450,8 +450,8 @@ body {
 
 /* --- TEXTE APP PAY EN GRAS ET PLUS GRAND --- */
 .header-logo {
-    font-size: 22px; /* Augmenté (était à 20px puis 17px avant) */
-    font-weight: 900; /* Gras maximal */
+    font-size: 22px; 
+    font-weight: 900; 
     color: var(--primary-color);
     display: flex;
     align-items: center;
