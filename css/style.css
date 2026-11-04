@@ -434,7 +434,7 @@ body {
     height: 100%;
 }
 
-/* --- HEADER (HAUTEUR AUGMENTÉE) --- */
+/* --- HEADER --- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -450,8 +450,8 @@ body {
 
 /* --- TEXTE APP PAY EN GRAS ET PLUS GRAND --- */
 .header-logo {
-    font-size: 20px; /* Augmenté de 17px à 20px */
-    font-weight: 900; /* Augmenté en gras */
+    font-size: 22px; /* Augmenté (était à 20px puis 17px avant) */
+    font-weight: 900; /* Gras maximal */
     color: var(--primary-color);
     display: flex;
     align-items: center;
@@ -690,12 +690,12 @@ body {
     font-weight: 500 !important;
 }
 
-/* ============ CARTE DE SOLDE (TAILLE RÉDUITE) ============ */
+/* ============ CARTE DE SOLDE ============ */
 .balance-card {
     background: var(--big-card-color);
     color: var(--big-card-text-color);
     border-radius: 12px;
-    padding: 20px 15px; /* Réduit */
+    padding: 20px 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 6px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     position: relative;
@@ -745,9 +745,9 @@ body {
 }
 
 .balance-amount {
-    font-size: 38px; /* Réduit */
+    font-size: 38px; 
     font-weight: 700; 
-    margin-bottom: 15px; /* Réduit */
+    margin-bottom: 15px; 
     text-align: center;
     letter-spacing: 0.5px;
 }
@@ -755,7 +755,7 @@ body {
 .balance-subtitle {
     font-size: 17px; 
     color: var(--big-card-text-color); 
-    margin-bottom: 15px; /* Réduit */
+    margin-bottom: 15px; 
     text-align: center;
     font-weight: 500;
 }
@@ -764,7 +764,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-top: 20px; /* Réduit */
+    margin-top: 20px; 
     width: 100%;
 }
 
@@ -783,17 +783,16 @@ body {
     transform: scale(0.9);
 }
 
-/* BOUTONS RONDS (TAILLE AUGMENTÉE) */
 .round-action-btn {
-    width: 70px; /* Augmenté */
-    height: 70px; /* Augmenté */
+    width: 70px; 
+    height: 70px; 
     border-radius: 50%;
     background-color: #000000;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px; /* Augmenté */
+    font-size: 28px; 
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s;
 }
