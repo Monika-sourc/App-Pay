@@ -39,6 +39,7 @@
         <div class="login-bg-decoration bottom-right"></div>
 
         <div class="login-card">
+            <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
             <div class="login-logo-box">
                 <svg class="login-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -47,9 +48,13 @@
                             <stop offset="100%" stop-color="#FFC107" />
                         </linearGradient>
                     </defs>
+                    <!-- Courbe Orange (Épaisse et Ronde) -->
                     <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGrad)" stroke-width="14" fill="none" stroke-linecap="round"/>
+                    <!-- Lettre A (Bleu Foncé) -->
                     <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
+                    <!-- Lettre P (Bleu Clair, pied incliné) -->
                     <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
+                    <!-- Barre verticale -->
                     <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
                 </svg>
             </div>
@@ -114,6 +119,7 @@
         <!-- HEADER -->
         <header class="header">
             <div class="header-logo">
+                <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
                 <svg class="header-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="swooshGradHead" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -448,39 +454,11 @@
         </div>
 
         <div class="success-details-card">
-            <!-- LIGNE BÉNÉFICIAIRE CORRIGÉE -->
-            <div class="success-detail-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;">
-                <!-- Gauche : Logo + Texte Bénéficiaire -->
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <svg viewBox="0 0 220 100" style="height: 26px; width: auto;" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="swooshGradSuccess" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#E87A00" />
-                                <stop offset="100%" stop-color="#FFC107" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradSuccess)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                        <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                        <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                    </svg>
-                    <span class="sd-label" data-i18n="beneficiary" style="font-weight: 500; font-size: 13px; color: #000000;">Bénéficiaire</span>
-                </div>
-
-                <!-- Milieu : Flèche -->
-                <div style="color: #94a3b8; font-size: 16px; margin: 0 10px; flex-shrink: 0;">
-                    <i class="fa-solid fa-arrow-right-long"></i>
-                </div>
-
-                <!-- Droite : Icône Profil + Nom -->
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background-color: #e2e8f0; color: #64748b; border-radius: 50%; flex-shrink: 0;">
-                        <i class="fa-regular fa-user" style="font-size: 13px;"></i>
-                    </div>
-                    <span id="sf-beneficiary" class="sd-value" style="font-weight: 700; color: #000000; font-size: 13px;">-</span>
-                </div>
+            <div class="success-detail-row">
+                <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
+                <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
+                <div class="sd-value" id="sf-beneficiary">-</div>
             </div>
-            <!-- FIN LIGNE BÉNÉFICIAIRE -->
-
             <div class="success-detail-row">
                 <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
                 <div class="sd-value" id="sf-bank">-</div>
@@ -550,39 +528,11 @@
         </div>
 
         <div class="success-details-card">
-            <!-- LIGNE BÉNÉFICIAIRE CORRIGÉE -->
-            <div class="success-detail-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;">
-                <!-- Gauche : Logo + Texte Bénéficiaire -->
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <svg viewBox="0 0 220 100" style="height: 26px; width: auto;" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="swooshGradFailed" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#E87A00" />
-                                <stop offset="100%" stop-color="#FFC107" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradFailed)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                        <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                        <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                    </svg>
-                    <span class="sd-label" data-i18n="beneficiary" style="font-weight: 500; font-size: 13px; color: #000000;">Bénéficiaire</span>
-                </div>
-
-                <!-- Milieu : Flèche -->
-                <div style="color: #94a3b8; font-size: 16px; margin: 0 10px; flex-shrink: 0;">
-                    <i class="fa-solid fa-arrow-right-long"></i>
-                </div>
-
-                <!-- Droite : Icône Profil + Nom -->
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background-color: #e2e8f0; color: #64748b; border-radius: 50%; flex-shrink: 0;">
-                        <i class="fa-regular fa-user" style="font-size: 13px;"></i>
-                    </div>
-                    <span id="ff-beneficiary" class="sd-value" style="font-weight: 700; color: #000000; font-size: 13px;">-</span>
-                </div>
+            <div class="success-detail-row">
+                <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
+                <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
+                <div class="sd-value" id="ff-beneficiary">-</div>
             </div>
-            <!-- FIN LIGNE BÉNÉFICIAIRE -->
-
             <div class="success-detail-row">
                 <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
                 <div class="sd-value" id="ff-bank">-</div>
@@ -634,6 +584,7 @@
 
         <div class="flip-card-container" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
             <div class="flip-card" id="flip-card">
+                <!-- FACE AVANT (RECTO) -->
                 <div class="flip-card-front">
                     <div class="vc-top">
                         <div class="vc-logo">
@@ -703,6 +654,7 @@
                     </div>
                 </div>
 
+                <!-- FACE ARRIÈRE (VERSO) -->
                 <div class="flip-card-back">
                     <div class="vc-magnetic-strip"></div>
                     <div class="vc-signature-box">
@@ -830,6 +782,7 @@
     <div class="dashboard-body profile-page">
         <h1 class="welcome-title" data-i18n="profile">Profil</h1>
 
+        <!-- Premium Profile Header -->
         <div class="profile-header-card">
             <div class="profile-avatar-large" id="account-initials">--</div>
             <div class="profile-header-text">
@@ -838,6 +791,7 @@
             </div>
         </div>
 
+        <!-- Personal Info Section -->
         <div class="profile-section-card">
             <h3 class="profile-section-title"><i class="fa-regular fa-id-card"></i> <span data-i18n="personal_info">Informations personnelles</span></h3>
             <div class="profile-list">
@@ -872,6 +826,7 @@
             </div>
         </div>
 
+        <!-- Account Details Section -->
         <div class="profile-section-card">
             <h3 class="profile-section-title"><i class="fa-solid fa-building-columns"></i> <span data-i18n="account_details">Détails du compte</span></h3>
             <div class="profile-list">
@@ -892,6 +847,7 @@
             </div>
         </div>
 
+        <!-- Settings Actions -->
         <div class="profile-section-card">
             <button class="profile-action-btn" onclick="showToast('Modification du profil', 'info')">
                 <div class="profile-action-left">
@@ -916,6 +872,7 @@
             </button>
         </div>
 
+        <!-- Logout -->
         <div style="margin-top: 25px; margin-bottom: 25px;">
             <button class="btn-logout-profile" onclick="handleLogout()">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
