@@ -448,11 +448,10 @@
         </div>
 
         <div class="success-details-card">
-            <!-- LIGNE RÉORGANISÉE : LOGO APP PAY -> FLÈCHE -> PROFIL + NOM -->
-            <div class="success-detail-row" style="display: flex; align-items: center; padding: 12px 0; justify-content: space-between;">
-                
-                <!-- Côté Gauche : Logo APP PAY -->
-                <div class="sd-icon-left" style="display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <!-- LIGNE BÉNÉFICIAIRE CORRIGÉE -->
+            <div class="success-detail-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;">
+                <!-- Gauche : Logo + Texte Bénéficiaire -->
+                <div style="display: flex; align-items: center; gap: 10px;">
                     <svg viewBox="0 0 220 100" style="height: 26px; width: auto;" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="swooshGradSuccess" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -464,23 +463,23 @@
                         <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
                         <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
                     </svg>
+                    <span class="sd-label" data-i18n="beneficiary" style="font-weight: 500; font-size: 13px; color: #000000;">Bénéficiaire</span>
                 </div>
 
                 <!-- Milieu : Flèche -->
-                <div class="sd-arrow-middle" style="display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 18px; margin: 0 10px; flex-shrink: 0;">
+                <div style="color: #94a3b8; font-size: 16px; margin: 0 10px; flex-shrink: 0;">
                     <i class="fa-solid fa-arrow-right-long"></i>
                 </div>
 
-                <!-- Côté Droit : Icône Profil (dans un cercle gris) + Nom -->
-                <div class="sd-value-right" style="display: flex; align-items: center; justify-content: flex-end; flex: 1; gap: 10px;">
-                    <!-- Cercle gris autour de l'icône utilisateur -->
-                    <div class="sd-icon-profile" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background-color: #e2e8f0; color: #64748b; border-radius: 50%; flex-shrink: 0;">
-                        <i class="fa-regular fa-user" style="font-size: 14px;"></i>
+                <!-- Droite : Icône Profil + Nom -->
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background-color: #e2e8f0; color: #64748b; border-radius: 50%; flex-shrink: 0;">
+                        <i class="fa-regular fa-user" style="font-size: 13px;"></i>
                     </div>
-                    <span id="sf-beneficiary" style="font-weight: 700; color: #000; font-size: 15px; word-break: break-word; text-align: right;">-</span>
+                    <span id="sf-beneficiary" class="sd-value" style="font-weight: 700; color: #000000; font-size: 13px;">-</span>
                 </div>
             </div>
-            <!-- FIN DE LA LIGNE RÉORGANISÉE -->
+            <!-- FIN LIGNE BÉNÉFICIAIRE -->
 
             <div class="success-detail-row">
                 <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
@@ -551,11 +550,10 @@
         </div>
 
         <div class="success-details-card">
-            <!-- LIGNE RÉORGANISÉE : LOGO APP PAY -> FLÈCHE -> PROFIL + NOM -->
-            <div class="success-detail-row" style="display: flex; align-items: center; padding: 12px 0; justify-content: space-between;">
-                
-                <!-- Côté Gauche : Logo APP PAY -->
-                <div class="sd-icon-left" style="display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <!-- LIGNE BÉNÉFICIAIRE CORRIGÉE -->
+            <div class="success-detail-row" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0;">
+                <!-- Gauche : Logo + Texte Bénéficiaire -->
+                <div style="display: flex; align-items: center; gap: 10px;">
                     <svg viewBox="0 0 220 100" style="height: 26px; width: auto;" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="swooshGradFailed" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -567,22 +565,23 @@
                         <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
                         <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
                     </svg>
+                    <span class="sd-label" data-i18n="beneficiary" style="font-weight: 500; font-size: 13px; color: #000000;">Bénéficiaire</span>
                 </div>
 
                 <!-- Milieu : Flèche -->
-                <div class="sd-arrow-middle" style="display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 18px; margin: 0 10px; flex-shrink: 0;">
+                <div style="color: #94a3b8; font-size: 16px; margin: 0 10px; flex-shrink: 0;">
                     <i class="fa-solid fa-arrow-right-long"></i>
                 </div>
 
-                <!-- Côté Droit : Icône Profil (dans un cercle gris) + Nom -->
-                <div class="sd-value-right" style="display: flex; align-items: center; justify-content: flex-end; flex: 1; gap: 10px;">
-                    <div class="sd-icon-profile" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background-color: #e2e8f0; color: #64748b; border-radius: 50%; flex-shrink: 0;">
-                        <i class="fa-regular fa-user" style="font-size: 14px;"></i>
+                <!-- Droite : Icône Profil + Nom -->
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background-color: #e2e8f0; color: #64748b; border-radius: 50%; flex-shrink: 0;">
+                        <i class="fa-regular fa-user" style="font-size: 13px;"></i>
                     </div>
-                    <span id="ff-beneficiary" style="font-weight: 700; color: #000; font-size: 15px; word-break: break-word; text-align: right;">-</span>
+                    <span id="ff-beneficiary" class="sd-value" style="font-weight: 700; color: #000000; font-size: 13px;">-</span>
                 </div>
             </div>
-            <!-- FIN DE LA LIGNE RÉORGANISÉE -->
+            <!-- FIN LIGNE BÉNÉFICIAIRE -->
 
             <div class="success-detail-row">
                 <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
