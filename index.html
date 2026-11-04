@@ -33,36 +33,37 @@
 
     <!-- ÉCRAN 1 : CONNEXION -->
     <div class="screen" id="login-screen">
-        <!-- Éléments de fond décoratifs -->
         <div class="login-bg-decoration top-left"></div>
         <div class="login-bg-decoration top-right"></div>
         <div class="login-bg-decoration bottom-left"></div>
         <div class="login-bg-decoration bottom-right"></div>
 
         <div class="login-card">
-            <!-- LOGO IMAGE 2 EXACT -->
+            <!-- LOGO EXACT IMAGE 2 -->
             <div class="login-logo-box">
-                <svg class="login-logo-svg" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                <svg class="login-logo-svg" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="swooshGradLogin" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <linearGradient id="swooshGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#E87A00" />
                             <stop offset="100%" stop-color="#FFC107" />
                         </linearGradient>
                     </defs>
-                    <path d="M 10 50 L 40 5 L 70 45 L 52 45 L 40 28 L 28 45 Z" fill="#002D72"/>
-                    <path d="M 35 5 L 85 5 C 115 5 115 40 85 40 L 55 40 L 55 55 L 40 55 L 40 5 Z M 55 18 L 55 27 L 85 27 C 100 27 100 18 85 18 Z" fill="#2D6BCC"/>
-                    <path d="M 12 52 C 60 75 140 45 185 5 C 130 42 60 60 22 46 Z" fill="url(#swooshGradLogin)"/>
-                    <rect x="190" y="5" width="4" height="45" fill="#0F1C3F" />
+                    <!-- Lettre P (Bleu clair) -->
+                    <path d="M 45 10 L 90 10 C 120 10 120 55 90 55 L 65 55 L 65 75 L 45 75 Z M 65 25 L 65 35 L 90 35 C 105 35 105 25 90 25 Z" fill="#2D6BCC"/>
+                    <!-- Lettre A (Bleu foncé) -->
+                    <path d="M 10 75 L 35 10 L 55 10 L 80 75 L 60 75 L 45 45 L 30 75 Z" fill="#002D72"/>
+                    <!-- Courbe Orange/Dorée -->
+                    <path d="M 15 70 C 60 85, 140 65, 190 15 C 120 60, 60 75, 25 65 Z" fill="url(#swooshGrad)"/>
+                    <!-- Barre verticale -->
+                    <rect x="205" y="10" width="4" height="60" fill="#0F1C3F" />
                 </svg>
             </div>
             
-            <!-- Titre de l'application -->
             <div class="login-app-title-container">
                 <div class="login-app-title">APP PAY</div>
                 <div class="login-title-line"></div>
             </div>
 
-            <!-- Avatar -->
             <div class="login-avatar-container">
                 <div class="login-avatar-circle">
                     <i class="fa-solid fa-user"></i>
@@ -72,14 +73,10 @@
                 </div>
             </div>
             
-            <!-- Nom de l'utilisateur (Chargé dynamiquement) -->
             <div class="login-user-name" id="badge-text">Chargement...</div>
-            
-            <!-- Sous-titre -->
             <div class="login-subtitle" data-i18n="login_subtitle">Utilisez vos identifiants enregistrés pour vous connecter</div>
 
             <form class="login-form" id="login-form">
-                <!-- Champ E-mail -->
                 <div class="login-input-group">
                     <div class="login-input-icon">
                         <i class="fa-solid fa-envelope"></i>
@@ -88,7 +85,6 @@
                     <input type="email" id="login-email" placeholder="Votre adresse e-mail" data-i18n-placeholder="placeholder_email" required>
                 </div>
 
-                <!-- Champ Code PIN -->
                 <div class="login-input-group">
                     <div class="login-input-icon">
                         <i class="fa-solid fa-lock"></i>
@@ -102,14 +98,12 @@
 
                 <div class="login-error" id="login-error"></div>
 
-                <!-- Bouton Se connecter -->
                 <button type="submit" class="btn-login">
                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                     <span data-i18n="login_btn">Se connecter</span>
                 </button>
             </form>
 
-            <!-- Footer -->
             <div class="login-footer">
                 <div class="login-footer-line"></div>
                 <div class="login-footer-shield"><i class="fa-solid fa-check"></i></div>
@@ -125,18 +119,17 @@
         <!-- HEADER -->
         <header class="header">
             <div class="header-logo">
-                <!-- LOGO IMAGE 2 DANS LE HEADER -->
-                <svg class="header-logo-svg" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                <svg class="header-logo-svg" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="swooshGradHead" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#E87A00" />
                             <stop offset="100%" stop-color="#FFC107" />
                         </linearGradient>
                     </defs>
-                    <path d="M 10 50 L 40 5 L 70 45 L 52 45 L 40 28 L 28 45 Z" fill="#002D72"/>
-                    <path d="M 35 5 L 85 5 C 115 5 115 40 85 40 L 55 40 L 55 55 L 40 55 L 40 5 Z M 55 18 L 55 27 L 85 27 C 100 27 100 18 85 18 Z" fill="#2D6BCC"/>
-                    <path d="M 12 52 C 60 75 140 45 185 5 C 130 42 60 60 22 46 Z" fill="url(#swooshGradHead)"/>
-                    <rect x="190" y="5" width="4" height="45" fill="#0F1C3F" />
+                    <path d="M 45 10 L 90 10 C 120 10 120 55 90 55 L 65 55 L 65 75 L 45 75 Z M 65 25 L 65 35 L 90 35 C 105 35 105 25 90 25 Z" fill="#2D6BCC"/>
+                    <path d="M 10 75 L 35 10 L 55 10 L 80 75 L 60 75 L 45 45 L 30 75 Z" fill="#002D72"/>
+                    <path d="M 15 70 C 60 85, 140 65, 190 15 C 120 60, 60 75, 25 65 Z" fill="url(#swooshGradHead)"/>
+                    <rect x="205" y="10" width="4" height="60" fill="#0F1C3F" />
                 </svg>
                 APP PAY
             </div>
@@ -160,12 +153,10 @@
             </div>
         </header>
 
-        <!-- CONTENU PRINCIPAL -->
         <main class="main-content">
             <div id="views-container"></div>
         </main>
 
-        <!-- BARRE DE NAVIGATION FLOTTANTE EN BAS -->
         <nav class="bottom-nav">
             <ul class="nav-links" id="nav-links">
                 <li data-view="dashboard" class="active">
@@ -897,17 +888,17 @@
     <div class="receipt-card">
         <div class="receipt-header">
             <div class="receipt-logo">
-                <svg class="receipt-logo-svg" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                <svg class="receipt-logo-svg" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="swooshGradReceipt" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#E87A00" />
                             <stop offset="100%" stop-color="#FFC107" />
                         </linearGradient>
                     </defs>
-                    <path d="M 10 50 L 40 5 L 70 45 L 52 45 L 40 28 L 28 45 Z" fill="#002D72"/>
-                    <path d="M 35 5 L 85 5 C 115 5 115 40 85 40 L 55 40 L 55 55 L 40 55 L 40 5 Z M 55 18 L 55 27 L 85 27 C 100 27 100 18 85 18 Z" fill="#2D6BCC"/>
-                    <path d="M 12 52 C 60 75 140 45 185 5 C 130 42 60 60 22 46 Z" fill="url(#swooshGradReceipt)"/>
-                    <rect x="190" y="5" width="4" height="45" fill="#0F1C3F" />
+                    <path d="M 45 10 L 90 10 C 120 10 120 55 90 55 L 65 55 L 65 75 L 45 75 Z M 65 25 L 65 35 L 90 35 C 105 35 105 25 90 25 Z" fill="#2D6BCC"/>
+                    <path d="M 10 75 L 35 10 L 55 10 L 80 75 L 60 75 L 45 45 L 30 75 Z" fill="#002D72"/>
+                    <path d="M 15 70 C 60 85, 140 65, 190 15 C 120 60, 60 75, 25 65 Z" fill="url(#swooshGradReceipt)"/>
+                    <rect x="205" y="10" width="4" height="60" fill="#0F1C3F" />
                 </svg>
                 APP PAY
             </div>
@@ -940,7 +931,6 @@
                 <span data-i18n="bank_name">Banque</span>
                 <span id="rcpt-bank">--</span>
             </div>
-            <!-- Ligne IBAN (ajoutée pour le virement envoyé) -->
             <div class="receipt-row" id="rcpt-iban-row" style="display: none;">
                 <span data-i18n="iban">IBAN</span>
                 <span id="rcpt-iban">--</span>
