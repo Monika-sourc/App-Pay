@@ -168,14 +168,14 @@ body {
     height: 350px;
 }
 
-/* ENCADREMENT DE LA CARTE DE CONNEXION */
+/* ENCADREMENT RECTANGULAIRE DE LA CARTE DE CONNEXION */
 .login-card {
     background: #ffffff;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    border-radius: 24px;
+    border-radius: 12px; /* Moins arrondi pour être rectangulaire */
     width: 100%;
     max-width: 420px;
-    padding: 35px 25px;
+    padding: 45px 30px; /* Espacement interne plus haut */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,7 +184,7 @@ body {
     animation: fadeInUp 0.5s ease;
 }
 
-/* LOGO NOUVEAU FORMAT (SANS FOND BLEU) */
+/* LOGO NOUVEAU FORMAT */
 .login-logo-box {
     width: auto;
     height: auto;
@@ -197,7 +197,7 @@ body {
 }
 
 .login-logo-svg {
-    height: 50px;
+    height: 55px;
     width: auto;
 }
 
