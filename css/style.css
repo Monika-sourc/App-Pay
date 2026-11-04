@@ -2,7 +2,7 @@
    APP PAY - Styles client
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;500;600;700;900&display=swap');
 
 :root {
     --primary-color: #ff7a00;
@@ -434,27 +434,28 @@ body {
     height: 100%;
 }
 
-/* --- HEADER (AUGMENTATION DE LA HAUTEUR) --- */
+/* --- HEADER (HAUTEUR AUGMENTÉE) --- */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 15px; /* Modifié pour accompagner la hauteur */
+    padding: 15px 15px;
     background-color: var(--card-bg);
     border-bottom: 1px solid #e8eaee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 70px; /* Modifié de 55px à 70px */
+    min-height: 70px;
 }
 
+/* --- TEXTE APP PAY EN GRAS ET PLUS GRAND --- */
 .header-logo {
-    font-size: 17px; 
-    font-weight: 700; 
+    font-size: 20px; /* Augmenté de 17px à 20px */
+    font-weight: 900; /* Augmenté en gras */
     color: var(--primary-color);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
 }
 
 /* LOGO HEADER */
@@ -689,12 +690,12 @@ body {
     font-weight: 500 !important;
 }
 
-/* ============ CARTE DE SOLDE (RÉDUITE) ============ */
+/* ============ CARTE DE SOLDE (TAILLE RÉDUITE) ============ */
 .balance-card {
     background: var(--big-card-color);
     color: var(--big-card-text-color);
     border-radius: 12px;
-    padding: 20px 15px; /* Modifié : réduit de 30px 20px à 20px 15px */
+    padding: 20px 15px; /* Réduit */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 6px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     position: relative;
@@ -744,9 +745,9 @@ body {
 }
 
 .balance-amount {
-    font-size: 38px; /* Modifié : réduit de 42px à 38px */
+    font-size: 38px; /* Réduit */
     font-weight: 700; 
-    margin-bottom: 15px; /* Modifié : réduit de 22px à 15px */
+    margin-bottom: 15px; /* Réduit */
     text-align: center;
     letter-spacing: 0.5px;
 }
@@ -754,7 +755,7 @@ body {
 .balance-subtitle {
     font-size: 17px; 
     color: var(--big-card-text-color); 
-    margin-bottom: 15px; /* Modifié : réduit de 25px à 15px */
+    margin-bottom: 15px; /* Réduit */
     text-align: center;
     font-weight: 500;
 }
@@ -763,7 +764,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-top: 20px; /* Modifié : réduit de 30px à 20px */
+    margin-top: 20px; /* Réduit */
     width: 100%;
 }
 
@@ -782,17 +783,17 @@ body {
     transform: scale(0.9);
 }
 
-/* BOUTONS RONDS (AUGMENTÉS) */
+/* BOUTONS RONDS (TAILLE AUGMENTÉE) */
 .round-action-btn {
-    width: 70px; /* Modifié : augmenté de 60px à 70px */
-    height: 70px; /* Modifié : augmenté de 60px à 70px */
+    width: 70px; /* Augmenté */
+    height: 70px; /* Augmenté */
     border-radius: 50%;
     background-color: #000000;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px; /* Modifié : augmenté de 24px à 28px */
+    font-size: 28px; /* Augmenté */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s;
 }
@@ -2929,7 +2930,7 @@ body {
     .tx-amount { font-size: 16px; font-weight: 700; }
     
     .balance-actions { gap: 30px; }
-    .round-action-btn { width: 60px; height: 60px; font-size: 22px; } /* Ajusté pour le mobile */
+    .round-action-btn { width: 60px; height: 60px; font-size: 22px; } 
     .round-action-wrapper span { font-size: 13px; }
 }
 
