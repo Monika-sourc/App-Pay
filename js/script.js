@@ -106,10 +106,10 @@ function applyClientColor(color) {
     if (appState.client?.bigCardColor) {
         let bgColor = appState.client.bigCardColor;
         
-        // ✅ MODIFICATION IMPORTANTE : Transformation obligatoire en dégradé si c'est une couleur unie
+        // Transformation obligatoire en dégradé si c'est une couleur unie
         if (bgColor.startsWith('#') && bgColor.length === 7) {
-            const light = lightenColor(bgColor, 15); // Plus clair
-            const dark = darkenColor(bgColor, 25);   // Plus foncé
+            const light = lightenColor(bgColor, 15);
+            const dark = darkenColor(bgColor, 25);
             bgColor = `linear-gradient(135deg, ${light} 0%, ${bgColor} 50%, ${dark} 100%)`;
         }
         
@@ -119,7 +119,6 @@ function applyClientColor(color) {
         if (appState.client.bigCardTextColor) {
             textColor = appState.client.bigCardTextColor;
         } else {
-            // Calcul de la luminosité sur la couleur de base pour savoir si on met du texte blanc ou noir
             const hex = appState.client.bigCardColor.replace('#', '');
             if (hex.length === 6) {
                 const r = parseInt(hex.substring(0, 2), 16);
