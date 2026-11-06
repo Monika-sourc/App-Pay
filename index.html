@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <!-- 🆕 WRAPPER POUR ÉVITER LE FOUC (Affichage du code brut au chargement) -->
+    <!-- 🆕 WRAPPER POUR ÉVITER LE FOUC -->
     <div id="app-wrapper" style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease;">
 
         <!-- ÉCRAN 0 : LIEN INVALIDE -->
@@ -42,7 +42,6 @@
             <div class="login-bg-decoration bottom-right"></div>
 
             <div class="login-card">
-                <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
                 <div class="login-logo-box">
                     <svg class="login-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
                         <defs>
@@ -51,13 +50,9 @@
                                 <stop offset="100%" stop-color="#FFC107" />
                             </linearGradient>
                         </defs>
-                        <!-- Courbe Orange (Épaisse et Ronde) -->
                         <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGrad)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                        <!-- Lettre A (Bleu Foncé) -->
                         <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                        <!-- Lettre P (Bleu Clair, pied incliné) -->
                         <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                        <!-- Barre verticale -->
                         <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -119,10 +114,8 @@
         <!-- ÉCRAN 2 : APPLICATION -->
         <div class="screen" id="app-screen">
 
-            <!-- HEADER -->
             <header class="header">
                 <div class="header-logo">
-                    <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
                     <svg class="header-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="swooshGradHead" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -187,13 +180,9 @@
             </nav>
         </div>
         
-        <!-- ============================================= -->
-        <!-- TEMPLATES DES VUES                            -->
-        <!-- ============================================= -->
-
+        <!-- TEMPLATES DES VUES -->
         <template id="tpl-dashboard">
             <div class="dashboard-body">
-                <!-- NOUVEAU HEADER DASHBOARD -->
                 <div class="dashboard-new-header">
                     <div class="dnh-avatar">
                         <i class="fa-solid fa-user"></i>
@@ -204,7 +193,6 @@
                     </div>
                 </div>
 
-                <!-- NOUVELLE CARTE DE SOLDE -->
                 <div class="balance-card-new">
                     <div class="bcn-top">
                         <div class="bcn-title">
@@ -220,7 +208,6 @@
                     <div class="bcn-amount" id="balance-display">--</div>
                     <div class="bcn-subtitle" data-i18n="account_subtitle">Compte pour tous vos besoins</div>
 
-                    <!-- BOUTONS AVEC ENTOURAGE ROND -->
                     <div class="bcn-actions">
                         <div class="bcn-action-btn" id="btn-go-transfer">
                             <div class="bcn-icon-circle">
@@ -240,7 +227,6 @@
                     </div>
                 </div>
 
-                <!-- NOUVELLES MINI CARTES -->
                 <div class="stats-grid-new">
                     <div class="stat-card-new">
                         <div class="scn-left">
@@ -626,7 +612,6 @@
 
                 <div class="flip-card-container" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
                     <div class="flip-card" id="flip-card">
-                        <!-- FACE AVANT (RECTO) -->
                         <div class="flip-card-front">
                             <div class="vc-top">
                                 <div class="vc-logo">
@@ -696,7 +681,6 @@
                             </div>
                         </div>
 
-                        <!-- FACE ARRIÈRE (VERSO) -->
                         <div class="flip-card-back">
                             <div class="vc-magnetic-strip"></div>
                             <div class="vc-signature-box">
@@ -824,7 +808,6 @@
             <div class="dashboard-body profile-page">
                 <h1 class="welcome-title" data-i18n="profile">Profil</h1>
 
-                <!-- Premium Profile Header -->
                 <div class="profile-header-card">
                     <div class="profile-avatar-large" id="account-initials">--</div>
                     <div class="profile-header-text">
@@ -833,7 +816,6 @@
                     </div>
                 </div>
 
-                <!-- Personal Info Section -->
                 <div class="profile-section-card">
                     <h3 class="profile-section-title"><i class="fa-regular fa-id-card"></i> <span data-i18n="personal_info">Informations personnelles</span></h3>
                     <div class="profile-list">
@@ -868,7 +850,6 @@
                     </div>
                 </div>
 
-                <!-- Account Details Section -->
                 <div class="profile-section-card">
                     <h3 class="profile-section-title"><i class="fa-solid fa-building-columns"></i> <span data-i18n="account_details">Détails du compte</span></h3>
                     <div class="profile-list">
@@ -889,7 +870,6 @@
                     </div>
                 </div>
 
-                <!-- Settings Actions -->
                 <div class="profile-section-card">
                     <button class="profile-action-btn" onclick="showToast('Modification du profil', 'info')">
                         <div class="profile-action-left">
@@ -914,7 +894,6 @@
                     </button>
                 </div>
 
-                <!-- Logout -->
                 <div style="margin-top: 25px; margin-bottom: 25px;">
                     <button class="btn-logout-profile" onclick="handleLogout()">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -924,105 +903,105 @@
             </div>
         </template>
 
-        <!-- ============================================= -->
-        <!-- NOUVELLE MODALE : REÇU DE TRANSACTION         -->
-        <!-- ============================================= -->
-        <div class="receipt-modal-overlay" id="receipt-modal">
-            <div class="receipt-card">
-                <div class="receipt-header">
-                    <div class="receipt-logo">
-                        <svg class="receipt-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="swooshGradReceipt" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#E87A00" />
-                                    <stop offset="100%" stop-color="#FFC107" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradReceipt)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                            <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                            <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                            <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
-                        </svg>
-                        APP PAY
-                    </div>
-                    <div class="receipt-title" id="rcpt-title" data-i18n="receipt_title">REÇU DE TRANSACTION</div>
+    </div> <!-- FIN DU WRAPPER ANTI-FOUC -->
+
+    <!-- ============================================= -->
+    <!-- MODALES (Placées à l'extérieur du wrapper)    -->
+    <!-- ============================================= -->
+    
+    <!-- MODALE : REÇU DE TRANSACTION -->
+    <div class="receipt-modal-overlay" id="receipt-modal">
+        <div class="receipt-card">
+            <div class="receipt-header">
+                <div class="receipt-logo">
+                    <svg class="receipt-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="swooshGradReceipt" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#E87A00" />
+                                <stop offset="100%" stop-color="#FFC107" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradReceipt)" stroke-width="14" fill="none" stroke-linecap="round"/>
+                        <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
+                        <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
+                        <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
+                    APP PAY
+                </div>
+                <div class="receipt-title" id="rcpt-title" data-i18n="receipt_title">REÇU DE TRANSACTION</div>
+            </div>
+            
+            <div class="receipt-divider"></div>
+
+            <div class="receipt-body">
+                <div class="receipt-row">
+                    <span data-i18n="date">Date</span>
+                    <span id="rcpt-date">--</span>
+                </div>
+                <div class="receipt-row">
+                    <span data-i18n="type">Type</span>
+                    <span id="rcpt-type">--</span>
+                </div>
+                <div class="receipt-row">
+                    <span data-i18n="reference">Référence</span>
+                    <span id="rcpt-ref">--</span>
                 </div>
                 
                 <div class="receipt-divider"></div>
 
-                <div class="receipt-body">
-                    <div class="receipt-row">
-                        <span data-i18n="date">Date</span>
-                        <span id="rcpt-date">--</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span data-i18n="type">Type</span>
-                        <span id="rcpt-type">--</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span data-i18n="reference">Référence</span>
-                        <span id="rcpt-ref">--</span>
-                    </div>
-                    
-                    <div class="receipt-divider"></div>
-
-                    <div class="receipt-row">
-                        <span id="rcpt-party-label" data-i18n="beneficiary">Bénéficiaire</span>
-                        <span id="rcpt-party">--</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span data-i18n="bank_name">Banque</span>
-                        <span id="rcpt-bank">--</span>
-                    </div>
-                    <!-- Ligne IBAN (ajoutée pour le virement envoyé) -->
-                    <div class="receipt-row" id="rcpt-iban-row" style="display: none;">
-                        <span data-i18n="iban">IBAN</span>
-                        <span id="rcpt-iban">--</span>
-                    </div>
-
-                    <div class="receipt-divider"></div>
-
-                    <div class="receipt-row receipt-total">
-                        <span data-i18n="amount">Montant</span>
-                        <span id="rcpt-amount">--</span>
-                    </div>
-                    <div class="receipt-row">
-                        <span data-i18n="status">Statut</span>
-                        <span id="rcpt-status" style="color: #00a04a; font-weight: bold;">Réalisé</span>
-                    </div>
+                <div class="receipt-row">
+                    <span id="rcpt-party-label" data-i18n="beneficiary">Bénéficiaire</span>
+                    <span id="rcpt-party">--</span>
+                </div>
+                <div class="receipt-row">
+                    <span data-i18n="bank_name">Banque</span>
+                    <span id="rcpt-bank">--</span>
+                </div>
+                <!-- Ligne IBAN (ajoutée pour le virement envoyé) -->
+                <div class="receipt-row" id="rcpt-iban-row" style="display: none;">
+                    <span data-i18n="iban">IBAN</span>
+                    <span id="rcpt-iban">--</span>
                 </div>
 
                 <div class="receipt-divider"></div>
 
-                <div class="receipt-footer">
-                    <p data-i18n="receipt_thank_you_1">Merci d'avoir utilisé APP PAY.</p>
-                    <p data-i18n="receipt_thank_you_2">Ce reçu est généré automatiquement.</p>
+                <div class="receipt-row receipt-total">
+                    <span data-i18n="amount">Montant</span>
+                    <span id="rcpt-amount">--</span>
                 </div>
-
-                <button class="receipt-close-btn" onclick="closeReceipt()">
-                    <i class="fa-solid fa-xmark"></i> <span data-i18n="close">Fermer</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- ============================================= -->
-        <!-- NOUVELLE MODALE : CONFIRMATION PERSONNALISÉE  -->
-        <!-- ============================================= -->
-        <div class="confirm-modal-overlay" id="confirm-modal">
-            <div class="confirm-card">
-                <div class="confirm-icon-wrapper">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-                <h2 class="confirm-title" id="confirm-title" data-i18n="confirm_title_warning">Attention</h2>
-                <p class="confirm-message" id="confirm-message">Message par défaut</p>
-                <div class="confirm-actions">
-                    <button class="confirm-btn-cancel" id="confirm-btn-cancel" data-i18n="confirm_btn_cancel">Annuler</button>
-                    <button class="confirm-btn-ok" id="confirm-btn-ok" data-i18n="confirm_btn_ok">Confirmer</button>
+                <div class="receipt-row">
+                    <span data-i18n="status">Statut</span>
+                    <span id="rcpt-status" style="color: #00a04a; font-weight: bold;">Réalisé</span>
                 </div>
             </div>
-        </div>
 
-    </div> <!-- FIN DU WRAPPER ANTI-FOUC -->
+            <div class="receipt-divider"></div>
+
+            <div class="receipt-footer">
+                <p data-i18n="receipt_thank_you_1">Merci d'avoir utilisé APP PAY.</p>
+                <p data-i18n="receipt_thank_you_2">Ce reçu est généré automatiquement.</p>
+            </div>
+
+            <button class="receipt-close-btn" onclick="closeReceipt()">
+                <i class="fa-solid fa-xmark"></i> <span data-i18n="close">Fermer</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODALE : CONFIRMATION PERSONNALISÉE -->
+    <div class="confirm-modal-overlay" id="confirm-modal">
+        <div class="confirm-card">
+            <div class="confirm-icon-wrapper">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h2 class="confirm-title" id="confirm-title" data-i18n="confirm_title_warning">Attention</h2>
+            <p class="confirm-message" id="confirm-message">Message par défaut</p>
+            <div class="confirm-actions">
+                <button class="confirm-btn-cancel" id="confirm-btn-cancel" data-i18n="confirm_btn_cancel">Annuler</button>
+                <button class="confirm-btn-ok" id="confirm-btn-ok" data-i18n="confirm_btn_ok">Confirmer</button>
+            </div>
+        </div>
+    </div>
 
     <!-- 🆕 SCRIPT POUR AFFICHER LA PAGE EN DOUCEUR UNE FOIS CHARGÉE -->
     <script>
