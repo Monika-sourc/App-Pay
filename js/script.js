@@ -137,6 +137,16 @@ function formatMoney(amount) {
     return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
 }
 
+// Nouvelle fonction pour séparer le montant (chiffres plus petits après la virgule)
+function formatBalanceHTML(amount) {
+    const num = Number(amount) || 0;
+    const formatted = num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const parts = formatted.split(',');
+    const intPart = parts[0];
+    const decPart = parts[1] || '00';
+    return `<span class="balance-int">${intPart}</span><span class="balance-dec">,${decPart}</span> <span class="balance-curr">${appState.currency}</span>`;
+}
+
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
@@ -572,7 +582,10 @@ window.handleBankLogoError = function (img) {
 // VUE : DASHBOARD
 // ============================================================
 function renderDashboard() {
-    document.getElementById('balance-display').textContent = formatMoney(appState.balance);
+    // MODIFICATION ICI : Utilisation de formatBalanceHTML pour réduire les centimes
+    const balanceEl = document.getElementById('balance-display');
+    if (balanceEl) balanceEl.innerHTML = formatBalanceHTML(appState.balance);
+    
     const welcomeName = document.getElementById('welcome-name');
     if (welcomeName && appState.client) welcomeName.textContent = `${appState.client.firstName} ${appState.client.lastName}`;
     const statBalance = document.getElementById('stat-balance'), statTx = document.getElementById('stat-transactions'), statCurr = document.getElementById('stat-currency');
