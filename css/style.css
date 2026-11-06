@@ -655,7 +655,7 @@ body {
 }
 
 /* ============================================================
-   NOUVEAU DASHBOARD (Style Image 2)
+   NOUVEAU DASHBOARD (Style Image 2 modifiée)
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -722,19 +722,18 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE (Dynamique) */
+/* NOUVELLE CARTE DE SOLDE (Dynamique & Hauteur Réduite) */
 .balance-card-new {
     background: var(--big-card-color);
     border-radius: 20px;
-    padding: 25px;
+    padding: 20px 20px; /* Hauteur réduite */
     color: var(--big-card-text-color);
     position: relative;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Dégradé superposé obligatoire pour le mélange de couleurs */
 .balance-card-new::before {
     content: '';
     position: absolute;
@@ -759,45 +758,44 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
     color: var(--big-card-text-color);
 }
 
 .bcn-bank-icon {
-    font-size: 60px;
+    font-size: 55px;
     opacity: 0.15;
     position: absolute;
-    top: 20px;
+    top: 15px;
     right: 20px;
     color: var(--big-card-text-color);
 }
 
 .bcn-amount {
-    font-size: 44px;
-    font-weight: 600; /* Épaisseur réduite */
+    font-size: 38px; /* Taille réduite */
+    font-weight: 600; 
     text-align: center;
-    margin: 15px 0 5px 0;
+    margin: 10px 0 5px 0; /* Marge réduite */
     letter-spacing: 0.5px;
     color: var(--big-card-text-color);
 }
 
-/* Petits chiffres après la virgule */
 .bcn-amount .balance-dec {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
 }
 
 .bcn-amount .balance-curr {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
 }
 
 .bcn-subtitle {
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     opacity: 0.9;
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Marge réduite */
     font-weight: 500;
     color: var(--big-card-text-color);
 }
@@ -807,14 +805,14 @@ body {
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid rgba(128, 128, 128, 0.3);
-    padding-top: 25px;
+    padding-top: 20px; /* Marge réduite */
 }
 
 .bcn-action-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     cursor: pointer;
     flex: 1;
     transition: transform 0.2s;
@@ -824,47 +822,48 @@ body {
     transform: scale(0.95);
 }
 
-/* ENTOURAGE ROND BLANC POUR LES ICÔNES */
 .bcn-icon-circle {
-    width: 55px;
-    height: 55px;
+    width: 50px; /* Légèrement réduit */
+    height: 50px;
     border-radius: 50%;
     background-color: #ffffff;
     color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 20px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     border: 1px solid rgba(0,0,0,0.05);
 }
 
 .bcn-action-btn span {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--big-card-text-color);
 }
 
 .bcn-divider {
     width: 1px;
-    height: 60px;
+    height: 50px;
     background-color: rgba(128, 128, 128, 0.3);
     margin: 0 15px;
 }
 
-/* NOUVELLES MINI CARTES (Alignées sur 3 colonnes) */
+/* NOUVELLES MINI CARTES (Centrées, Hauteur réduite, Texte noir) */
 .stats-grid-new {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .stat-card-new {
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centré */
+    justify-content: center;
     background: white;
-    padding: 15px 12px;
+    padding: 12px 8px; /* Hauteur réduite */
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     cursor: pointer;
@@ -879,13 +878,14 @@ body {
 .scn-left {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    align-items: center; /* Centré */
+    gap: 6px;
+    width: 100%;
 }
 
 .scn-icon {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 8px;
     background-color: var(--primary-color-soft);
     color: var(--primary-color);
@@ -898,36 +898,35 @@ body {
 .scn-info {
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centré */
     gap: 2px;
     width: 100%;
 }
 
 .scn-value {
-    font-size: 16px;
-    font-weight: 800;
-    color: #111;
+    font-size: 15px;
+    font-weight: 700; /* Épaisseur réduite */
+    color: #000; /* Noir */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    text-align: center;
 }
 
 .scn-label {
     font-size: 12px;
-    color: #666;
-    font-weight: 500;
+    color: #000; /* Noir */
+    font-weight: 500; /* Épaisseur réduite */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    text-align: center;
 }
 
 .scn-arrow {
-    position: absolute;
-    top: 15px;
-    right: 12px;
-    color: var(--primary-color);
-    font-size: 14px;
+    display: none; /* Masqué pour un centrage parfait */
 }
 
 /* ============================================================
@@ -1165,7 +1164,6 @@ body {
 }
 
 /* --- AUTRES PAGES (Virements, Profil, etc.) --- */
-/* (Je conserve tes styles originaux pour ne rien casser) */
 .transfer-card {
     background: #ffffff;
     border-radius: 6px;
