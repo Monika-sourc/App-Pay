@@ -104,11 +104,22 @@ function applyClientColor(color) {
     document.documentElement.style.setProperty('--primary-color-soft', hexToRgba(color, 0.1));
 
     if (appState.client?.bigCardColor) {
-        document.documentElement.style.setProperty('--big-card-color', appState.client.bigCardColor);
+        let bgColor = appState.client.bigCardColor;
+        
+        // ✅ MODIFICATION IMPORTANTE : Transformation obligatoire en dégradé si c'est une couleur unie
+        if (bgColor.startsWith('#') && bgColor.length === 7) {
+            const light = lightenColor(bgColor, 15); // Plus clair
+            const dark = darkenColor(bgColor, 25);   // Plus foncé
+            bgColor = `linear-gradient(135deg, ${light} 0%, ${bgColor} 50%, ${dark} 100%)`;
+        }
+        
+        document.documentElement.style.setProperty('--big-card-color', bgColor);
+        
         let textColor = '#111111';
         if (appState.client.bigCardTextColor) {
             textColor = appState.client.bigCardTextColor;
         } else {
+            // Calcul de la luminosité sur la couleur de base pour savoir si on met du texte blanc ou noir
             const hex = appState.client.bigCardColor.replace('#', '');
             if (hex.length === 6) {
                 const r = parseInt(hex.substring(0, 2), 16);
@@ -582,7 +593,6 @@ window.handleBankLogoError = function (img) {
 // VUE : DASHBOARD
 // ============================================================
 function renderDashboard() {
-    // MODIFICATION ICI : Utilisation de formatBalanceHTML pour réduire les centimes
     const balanceEl = document.getElementById('balance-display');
     if (balanceEl) balanceEl.innerHTML = formatBalanceHTML(appState.balance);
     
