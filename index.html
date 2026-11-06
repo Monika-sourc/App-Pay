@@ -14,1014 +14,1027 @@
 </head>
 <body>
 
-    <!-- ÉCRAN 0 : LIEN INVALIDE -->
-    <div class="screen" id="invalid-screen">
-        <div class="invalid-card">
-            <div class="invalid-icon">
-                <i class="fa-solid fa-link-slash"></i>
-            </div>
-            <h1 class="invalid-title">Accès refusé</h1>
-            <p class="invalid-message">
-                Vous devez utiliser le lien unique fourni par l'administrateur pour accéder à votre compte App Pay.
-            </p>
-            <div class="invalid-info">
-                <i class="fa-solid fa-circle-info"></i>
-                <span>Si vous n'avez pas reçu de lien, veuillez contacter votre administrateur.</span>
+    <!-- 🆕 WRAPPER POUR ÉVITER LE FOUC (Affichage du code brut au chargement) -->
+    <div id="app-wrapper" style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease;">
+
+        <!-- ÉCRAN 0 : LIEN INVALIDE -->
+        <div class="screen" id="invalid-screen">
+            <div class="invalid-card">
+                <div class="invalid-icon">
+                    <i class="fa-solid fa-link-slash"></i>
+                </div>
+                <h1 class="invalid-title">Accès refusé</h1>
+                <p class="invalid-message">
+                    Vous devez utiliser le lien unique fourni par l'administrateur pour accéder à votre compte App Pay.
+                </p>
+                <div class="invalid-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Si vous n'avez pas reçu de lien, veuillez contacter votre administrateur.</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ÉCRAN 1 : CONNEXION -->
-    <div class="screen" id="login-screen">
-        <div class="login-bg-decoration top-left"></div>
-        <div class="login-bg-decoration top-right"></div>
-        <div class="login-bg-decoration bottom-left"></div>
-        <div class="login-bg-decoration bottom-right"></div>
+        <!-- ÉCRAN 1 : CONNEXION -->
+        <div class="screen" id="login-screen">
+            <div class="login-bg-decoration top-left"></div>
+            <div class="login-bg-decoration top-right"></div>
+            <div class="login-bg-decoration bottom-left"></div>
+            <div class="login-bg-decoration bottom-right"></div>
 
-        <div class="login-card">
-            <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
-            <div class="login-logo-box">
-                <svg class="login-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="swooshGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#E87A00" />
-                            <stop offset="100%" stop-color="#FFC107" />
-                        </linearGradient>
-                    </defs>
-                    <!-- Courbe Orange (Épaisse et Ronde) -->
-                    <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGrad)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                    <!-- Lettre A (Bleu Foncé) -->
-                    <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                    <!-- Lettre P (Bleu Clair, pied incliné) -->
-                    <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                    <!-- Barre verticale -->
-                    <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
-                </svg>
-            </div>
-            
-            <div class="login-app-title-container">
-                <div class="login-app-title">APP PAY</div>
-                <div class="login-title-line"></div>
-            </div>
-
-            <div class="login-avatar-container">
-                <div class="login-avatar-circle">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <div class="login-avatar-badge">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-            </div>
-            
-            <div class="login-user-name" id="badge-text">Chargement...</div>
-            <div class="login-subtitle" data-i18n="login_subtitle">Utilisez vos identifiants enregistrés pour vous connecter</div>
-
-            <form class="login-form" id="login-form">
-                <div class="login-input-group">
-                    <div class="login-input-icon">
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
-                    <div class="login-input-separator"></div>
-                    <input type="email" id="login-email" placeholder="Votre adresse e-mail" data-i18n-placeholder="placeholder_email" required>
-                </div>
-
-                <div class="login-input-group">
-                    <div class="login-input-icon">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <div class="login-input-separator"></div>
-                    <input type="password" id="login-password" placeholder="Votre code PIN" data-i18n-placeholder="placeholder_pin" required>
-                    <button type="button" class="login-toggle-password" onclick="togglePasswordVisibility()">
-                        <i class="fa-regular fa-eye-slash" id="toggle-password-icon"></i>
-                    </button>
-                </div>
-
-                <div class="login-error" id="login-error"></div>
-
-                <button type="submit" class="btn-login">
-                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                    <span data-i18n="login_btn">Se connecter</span>
-                </button>
-            </form>
-
-            <div class="login-footer">
-                <div class="login-footer-line"></div>
-                <div class="login-footer-shield"><i class="fa-solid fa-check"></i></div>
-                <div class="login-footer-line"></div>
-            </div>
-            <div class="login-footer-text" data-i18n="secure_access">Accès sécurisé et fiable</div>
-        </div>
-    </div>
-
-    <!-- ÉCRAN 2 : APPLICATION -->
-    <div class="screen" id="app-screen">
-
-        <!-- HEADER -->
-        <header class="header">
-            <div class="header-logo">
+            <div class="login-card">
                 <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
-                <svg class="header-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="swooshGradHead" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#E87A00" />
-                            <stop offset="100%" stop-color="#FFC107" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradHead)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                    <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                    <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                    <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
-                </svg>
-                APP PAY
-            </div>
-            <div class="header-icons">
-                <button class="icon-btn" id="notif-btn">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="notif-dot"></span>
-                </button>
-                <div class="user-avatar" id="header-avatar">--</div>
-            </div>
-
-            <div class="notif-dropdown" id="notif-dropdown">
-                <div class="notif-dropdown-header">Notifications</div>
-                <div class="notif-item">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <div class="notif-item-text">
-                        <strong>Sécurité</strong>
-                        Votre compte a été vérifié avec succès
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <div id="views-container"></div>
-        </main>
-
-        <nav class="bottom-nav">
-            <ul class="nav-links" id="nav-links">
-                <li data-view="dashboard" class="active">
-                    <i class="fa-solid fa-wallet"></i> 
-                    <span data-i18n="dashboard">Portefeuille</span>
-                </li>
-                <li data-view="transfer">
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i> 
-                    <span data-i18n="transfer_menu">Virement</span>
-                </li>
-                <li data-view="card">
-                    <i class="fa-regular fa-credit-card"></i> 
-                    <span data-i18n="my_virtual_card">Carte virtuelle</span>
-                </li>
-                <li data-view="iban">
-                    <i class="fa-solid fa-barcode"></i> 
-                    <span data-i18n="personal_iban">IBAN Personnel</span>
-                </li>
-                <li data-view="account">
-                    <i class="fa-regular fa-user"></i> 
-                    <span data-i18n="profile">Profil</span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    
-<!-- ============================================= -->
-<!-- TEMPLATES DES VUES                            -->
-<!-- ============================================= -->
-
-<template id="tpl-dashboard">
-    <div class="dashboard-body">
-        <!-- NOUVEAU HEADER DASHBOARD (Style Image 2) -->
-        <div class="dashboard-new-header">
-            <div class="dnh-avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <h1 class="dnh-title"><span data-i18n="welcome">Bienvenue</span>, <span id="welcome-name">--</span></h1>
-            <div class="dnh-status">
-                <span class="status-dot"></span> <span data-i18n="account_active">Compte actif</span>
-            </div>
-        </div>
-
-        <!-- NOUVELLE CARTE DE SOLDE (Style Image 2) -->
-        <div class="balance-card-new">
-            <div class="bcn-top">
-                <div class="bcn-title">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span data-i18n="available_balance">Solde disponible</span>
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
-                <div class="bcn-bank-icon">
-                    <i class="fa-solid fa-building-columns"></i>
-                </div>
-            </div>
-            
-            <div class="bcn-amount" id="balance-display">--</div>
-            <div class="bcn-subtitle" data-i18n="account_subtitle">Compte pour tous vos besoins</div>
-
-            <!-- BOUTONS AVEC ENTOURAGE ROND (Style Image 2) -->
-            <div class="bcn-actions">
-                <div class="bcn-action-btn" id="btn-go-transfer">
-                    <div class="bcn-icon-circle">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </div>
-                    <span data-i18n="transfer_btn">Effectuer un virement</span>
+                <div class="login-logo-box">
+                    <svg class="login-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="swooshGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#E87A00" />
+                                <stop offset="100%" stop-color="#FFC107" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Courbe Orange (Épaisse et Ronde) -->
+                        <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGrad)" stroke-width="14" fill="none" stroke-linecap="round"/>
+                        <!-- Lettre A (Bleu Foncé) -->
+                        <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
+                        <!-- Lettre P (Bleu Clair, pied incliné) -->
+                        <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
+                        <!-- Barre verticale -->
+                        <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
                 </div>
                 
-                <div class="bcn-divider"></div>
+                <div class="login-app-title-container">
+                    <div class="login-app-title">APP PAY</div>
+                    <div class="login-title-line"></div>
+                </div>
+
+                <div class="login-avatar-container">
+                    <div class="login-avatar-circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="login-avatar-badge">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
                 
-                <div class="bcn-action-btn" id="btn-go-card">
-                    <div class="bcn-icon-circle">
-                        <i class="fa-regular fa-credit-card"></i>
-                    </div>
-                    <span data-i18n="virtual_card_btn">Carte virtuelle</span>
-                </div>
-            </div>
-        </div>
+                <div class="login-user-name" id="badge-text">Chargement...</div>
+                <div class="login-subtitle" data-i18n="login_subtitle">Utilisez vos identifiants enregistrés pour vous connecter</div>
 
-        <!-- NOUVELLES MINI CARTES (Style Image 2) -->
-        <div class="stats-grid-new">
-            <div class="stat-card-new">
-                <div class="scn-left">
-                    <div class="scn-icon"><i class="fa-solid fa-coins"></i></div>
-                    <div class="scn-info">
-                        <div class="scn-value" id="stat-balance">--</div>
-                        <div class="scn-label" data-i18n="total_balance">Solde total</div>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right scn-arrow"></i>
-            </div>
-            
-            <div class="stat-card-new">
-                <div class="scn-left">
-                    <div class="scn-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
-                    <div class="scn-info">
-                        <div class="scn-value" id="stat-transactions">0</div>
-                        <div class="scn-label" data-i18n="transactions_label">Transactions</div>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right scn-arrow"></i>
-            </div>
-            
-            <div class="stat-card-new">
-                <div class="scn-left">
-                    <div class="scn-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <div class="scn-info">
-                        <div class="scn-value" id="stat-currency">--</div>
-                        <div class="scn-label" data-i18n="currency_label">Devise</div>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right scn-arrow"></i>
-            </div>
-        </div>
-
-        <div class="history-card">
-            <div class="history-card-header">
-                <div class="history-card-header-left">
-                    <div class="history-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <span data-i18n="transactions_history">Historique des transactions</span>
-                </div>
-                <div class="history-card-header-right">
-                    <span class="history-count-badge" id="history-count">0</span>
-                </div>
-            </div>
-            <div class="history-list" id="tx-list"></div>
-        </div>
-    </div>
-</template>
-
-<template id="tpl-transfer">
-    <div class="dashboard-body">
-        <h1 class="welcome-title" data-i18n="make_transfer">Effectuer un virement</h1>
-
-        <div class="transfer-card">
-            <div class="transfer-card-icon-top-right"><i class="fa-solid fa-wallet"></i></div>
-
-            <div class="transfer-info-top">
-                <span data-i18n="available_balance">Solde disponible</span> : <strong id="transfer-balance">--</strong>
-            </div>
-
-            <div class="international-link">
-                <svg class="transfer-custom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="4" y="3" width="16" height="12" rx="2" />
-                    <circle cx="7" cy="6" r="1.5" fill="currentColor" stroke="none"/>
-                    <circle cx="17" cy="6" r="1.5" fill="currentColor" stroke="none"/>
-                    <circle cx="7" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-                    <circle cx="17" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-                    <circle cx="12" cy="9" r="1.5" fill="currentColor" stroke="none"/>
-                    <path d="M 2 15 L 2 21 L 22 21" />
-                    <path d="M 19 18 L 22 21 L 19 24" />
-                </svg>
-                <span data-i18n="international_transfer">Effectuer un virement international</span>
-            </div>
-
-            <form id="transfer-form">
-                <div class="form-group">
-                    <label data-i18n="amount">Montant du virement</label>
-                    <div class="input-with-addon">
-                        <input type="number" id="tf-amount" step="0.01" min="0.01" placeholder="0.00" required>
-                        <div class="input-addon" id="tf-currency">zł</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label data-i18n="beneficiary_name">Nom du bénéficiaire</label>
-                    <input type="text" class="standard-input" id="tf-beneficiary" required>
-                </div>
-
-                <div class="form-group">
-                    <label data-i18n="iban">IBAN / Numéro de Compte</label>
-                    <input type="text" class="standard-input" id="tf-iban" required>
-                </div>
-
-                <div class="form-group">
-                    <label data-i18n="bic">Code Banque (BIC / SWIFT)</label>
-                    <input type="text" class="standard-input" id="tf-bic" required>
-                </div>
-
-                <div class="form-group">
-                    <label data-i18n="bank_name">Nom de la Banque</label>
-                    <input type="text" class="standard-input" id="tf-bank" required>
-                </div>
-
-                <div class="form-group">
-                    <label data-i18n="reason">Raison du virement</label>
-                    <input type="text" class="standard-input" id="tf-reason" required>
-                </div>
-
-                <div class="transfer-warning">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <span data-i18n="transfer_warning">Le traitement du transfert prend de 1 à 3 minutes après la vérification finale.</span>
-                </div>
-
-                <button type="submit" class="btn-continue"><span data-i18n="continue">Continuer</span> &rarr;</button>
-            </form>
-        </div>
-    </div>
-</template>
-
-<template id="tpl-verification">
-    <div class="dashboard-body">
-        <h1 class="welcome-title" data-i18n="identity_verification">Vérification d'identité</h1>
-
-        <div class="verification-card">
-            <div class="verification-icon-top-right">
-                <i class="fa-solid fa-wallet"></i>
-            </div>
-
-            <div class="card-header-title">
-                <i class="fa-regular fa-file-lines"></i> <span data-i18n="pending_transfer_details">Détails du virement en attente</span>
-            </div>
-
-            <div class="verification-details-grey-box">
-                <div class="detail-row">
-                    <div class="detail-label"><span data-i18n="amount">Montant du virement</span> :</div>
-                    <div class="detail-value" id="vf-amount">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label"><span data-i18n="beneficiary_name">Nom du bénéficiaire</span> :</div>
-                    <div class="detail-value" id="vf-beneficiary">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label"><span data-i18n="iban">IBAN / Numéro de Compte</span> :</div>
-                    <div class="detail-value" id="vf-iban">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label"><span data-i18n="bic">Code Banque (BIC / SWIFT)</span> :</div>
-                    <div class="detail-value" id="vf-bic">-</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label"><span data-i18n="bank_name">Nom de la Banque</span> :</div>
-                    <div class="detail-value" id="vf-bank">-</div>
-                </div>
-                <div class="detail-row" style="margin-bottom: 20px;">
-                    <div class="detail-label"><span data-i18n="reason">Raison du virement</span> :</div>
-                    <div class="detail-value" id="vf-reason">-</div>
-                </div>
-
-                <button class="btn-cancel-solid" onclick="cancelTransfer()">
-                    <span data-i18n="cancel_transfer">Annuler le virement</span> &rarr;
-                </button>
-            </div>
-
-            <div class="activation-section-title" style="margin-top: 25px;">
-                <i class="fa-solid fa-lock"></i> <span data-i18n="enter_activation_code">Veuillez saisir le code d'activation du virement</span>
-            </div>
-
-            <form id="verify-form">
-                <div class="form-group">
-                    <label data-i18n="activation_code">Code d'activation</label>
-                    <input type="text" class="standard-input" id="vf-code" placeholder="Entrez votre code secret" data-i18n-placeholder="placeholder_activation" required autocomplete="off" style="text-align: center;">
-                </div>
-
-                <button type="submit" class="btn-continue" style="margin-top: 20px;">
-                    <span data-i18n="validate_transfer">Validé le virement</span> &rarr;
-                </button>
-            </form>
-        </div>
-    </div>
-</template>
-
-<template id="tpl-progress">
-    <div class="dashboard-body progress-page">
-        <h1 class="welcome-title" data-i18n="transfer_in_progress">Votre ordre de virement en cours...</h1>
-
-        <div class="progress-card">
-            <i class="fa-solid fa-wallet progress-watermark"></i>
-
-            <div class="success-message-title">
-                <i class="fa-regular fa-user"></i> <span data-i18n="identity_verified">Vérification d'identité effectuée avec succès.</span>
-            </div>
-
-            <p class="progress-desc" data-i18n="progress_desc">
-                Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.
-            </p>
-
-            <div class="progress-container">
-                <div class="progress-bar-fill" id="progress-fill">0%</div>
-            </div>
-
-            <div class="details-section-title" style="margin-top: 25px;">
-                <i class="fa-regular fa-file-lines" style="color: #ff7a00; font-size: 20px;"></i> 
-                <span data-i18n="progress_details_title">Détails du virement en cours</span>
-            </div>
-
-            <div class="inner-details-box">
-                <div class="detail-row-new">
-                    <div class="detail-label-new"><span data-i18n="amount">Montant du virement</span> :</div>
-                    <div class="detail-value-new" id="pf-amount">-</div>
-                </div>
-                <div class="detail-row-new">
-                    <div class="detail-label-new"><span data-i18n="beneficiary_name">Nom du bénéficiaire</span> :</div>
-                    <div class="detail-value-new" id="pf-beneficiary">-</div>
-                </div>
-                <div class="detail-row-new">
-                    <div class="detail-label-new"><span data-i18n="iban">IBAN / Numéro de Compte</span> :</div>
-                    <div class="detail-value-new" id="pf-iban">-</div>
-                </div>
-                <div class="detail-row-new">
-                    <div class="detail-label-new"><span data-i18n="bic">Code Banque (BIC / SWIFT)</span> :</div>
-                    <div class="detail-value-new" id="pf-bic">-</div>
-                </div>
-                <div class="detail-row-new">
-                    <div class="detail-label-new"><span data-i18n="bank_name">Nom de la Banque</span> :</div>
-                    <div class="detail-value-new" id="pf-bank">-</div>
-                </div>
-                <div class="detail-row-new" style="margin-bottom: 0;">
-                    <div class="detail-label-new"><span data-i18n="reason">Raison du virement</span> :</div>
-                    <div class="detail-value-new" id="pf-reason">-</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template id="tpl-success">
-    <div class="dashboard-body success-page">
-        
-        <div class="success-header-icon">
-            <div class="success-icon-circle">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h1 class="success-main-title" data-i18n="transfer_success">Virement effectué avec succès</h1>
-            <p class="success-subtitle" data-i18n="success_subtitle">Votre virement a été bien enregistré et sera traité par la banque du bénéficiaire.</p>
-        </div>
-
-        <div class="success-amount-card">
-            <div class="success-amount-icon">
-                <i class="fa-solid fa-coins"></i>
-            </div>
-            <div class="success-amount-info">
-                <span class="success-amount-label" data-i18n="amount_sent">MONTANT ENVOYÉ</span>
-                <span class="success-amount-value" id="sf-amount">-</span>
-            </div>
-        </div>
-
-        <div class="success-details-card">
-            <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
-                <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
-                <div class="sd-value" id="sf-beneficiary">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
-                <div class="sd-value" id="sf-bank">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="iban">IBAN / Numéro de compte</div>
-                <div class="sd-value" id="sf-iban">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="bic">Code Banque (BIC / SWIFT)</div>
-                <div class="sd-value" id="sf-bic">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="reason">Motif du virement</div>
-                <div class="sd-value" id="sf-reason">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="date">Date et heure</div>
-                <div class="sd-value" id="sf-date">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="reference">Référence</div>
-                <div class="sd-value" id="sf-ref">-</div>
-            </div>
-        </div>
-
-        <div class="success-status-card">
-            <div class="ss-text">
-                <strong data-i18n="validated_status">Virement confirmé</strong>
-                <small data-i18n="operation_secured">Votre opération est sécurisée et enregistrée.</small>
-            </div>
-        </div>
-
-        <div class="success-actions">
-            <button class="btn-download-receipt" onclick="window.print()">
-                <i class="fa-solid fa-download"></i> <span data-i18n="download_receipt">Télécharger le reçu</span>
-            </button>
-            <button class="btn-back-dashboard" onclick="navigateTo('dashboard')">
-                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_to_dashboard">Retour au tableau de bord</span>
-            </button>
-        </div>
-
-    </div>
-</template>
-
-<template id="tpl-failed">
-    <div class="dashboard-body success-page">
-        
-        <div class="success-header-icon">
-            <div class="success-icon-circle" style="background-color: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);">
-                <i class="fa-solid fa-xmark"></i>
-            </div>
-            <h1 class="success-main-title" data-i18n="transfer_failed">Virement échoué</h1>
-            <p class="success-subtitle" data-i18n="transfer_failed_subtitle">
-                Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.
-            </p>
-        </div>
-
-        <div class="success-amount-card" style="background-color: #fef2f2;">
-            <div class="success-amount-icon" style="background-color: #fee2e2; color: #dc2626;">
-                <i class="fa-solid fa-ban"></i>
-            </div>
-            <div class="success-amount-info">
-                <span class="success-amount-label" style="color: #991b1b;" data-i18n="attempted_amount">MONTANT TENTÉ</span>
-                <span class="success-amount-value" style="color: #7f1d1d;" id="ff-amount">-</span>
-            </div>
-        </div>
-
-        <div class="success-details-card">
-            <div class="success-detail-row">
-                <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
-                <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
-                <div class="sd-value" id="ff-beneficiary">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
-                <div class="sd-value" id="ff-bank">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="iban">IBAN / Numéro de compte</div>
-                <div class="sd-value" id="ff-iban">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="bic">Code Banque (BIC / SWIFT)</div>
-                <div class="sd-value" id="ff-bic">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="reason">Motif du virement</div>
-                <div class="sd-value" id="ff-reason">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="date">Date et heure</div>
-                <div class="sd-value" id="ff-date">-</div>
-            </div>
-            <div class="success-detail-row">
-                <div class="sd-label" data-i18n="reference">Référence</div>
-                <div class="sd-value" id="ff-ref">-</div>
-            </div>
-        </div>
-
-        <div class="success-status-card" style="background-color: #fef2f2; border: 1px solid #fecaca;">
-            <div class="ss-text">
-                <strong style="color: #991b1b;" data-i18n="transfer_failed">Virement bloqué</strong>
-                <small style="color: #b91c1c;" data-i18n="no_amount_debited">Aucun montant n'a été débité de votre compte.</small>
-            </div>
-        </div>
-
-        <div class="success-actions">
-            <button class="btn-download-receipt" onclick="window.print()" style="color: #dc2626; border-color: #dc2626;">
-                <i class="fa-solid fa-download"></i> <span data-i18n="download_receipt">Télécharger le reçu</span>
-            </button>
-            <button class="btn-back-dashboard" onclick="navigateTo('dashboard')" style="background-color: #dc2626; border-color: #dc2626;">
-                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_to_dashboard">Retour au tableau de bord</span>
-            </button>
-        </div>
-
-    </div>
-</template>
-
-<template id="tpl-card">
-    <div class="dashboard-body card-page-wrapper">
-        <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
-
-        <div class="flip-card-container" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
-            <div class="flip-card" id="flip-card">
-                <!-- FACE AVANT (RECTO) -->
-                <div class="flip-card-front">
-                    <div class="vc-top">
-                        <div class="vc-logo">
-                            <i class="fa-solid fa-building-columns"></i> APP PAY
+                <form class="login-form" id="login-form">
+                    <div class="login-input-group">
+                        <div class="login-input-icon">
+                            <i class="fa-solid fa-envelope"></i>
                         </div>
-                        <div class="vc-top-right">
-                            <svg class="vc-chip-svg" viewBox="0 0 50 36" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="chipBase" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#fceabb" />
-                                        <stop offset="50%" stop-color="#e4b24d" />
-                                        <stop offset="100%" stop-color="#b88328" />
-                                    </linearGradient>
-                                    <linearGradient id="chipContact" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#d4a344" />
-                                        <stop offset="100%" stop-color="#a57321" />
-                                    </linearGradient>
-                                    <filter id="chipShadow" x="-10%" y="-10%" width="120%" height="120%">
-                                        <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.4"/>
-                                    </filter>
-                                </defs>
-                                <rect x="1" y="1" width="48" height="34" rx="4" fill="url(#chipBase)" stroke="#9e6b1d" stroke-width="1" filter="url(#chipShadow)"/>
-                                <rect x="16" y="14" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="6" y="14" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="36" y="14" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="16" y="4" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="6" y="4" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="36" y="4" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="16" y="24" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="6" y="24" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <rect x="36" y="24" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
-                                <line x1="15" y1="1" x2="15" y2="35" stroke="#9e6b1d" stroke-width="1"/>
-                                <line x1="35" y1="1" x2="35" y2="35" stroke="#9e6b1d" stroke-width="1"/>
-                                <line x1="1" y1="13" x2="49" y2="13" stroke="#9e6b1d" stroke-width="1"/>
-                                <line x1="1" y1="23" x2="49" y2="23" stroke="#9e6b1d" stroke-width="1"/>
-                            </svg>
-                            <svg class="vc-contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                <path d="M8.5 15.5a5 5 0 0 1 0-7" />
-                                <path d="M12.5 18.5a10 10 0 0 0 0-13" />
-                                <path d="M16.5 21.5a15 15 0 0 0 0-19" />
-                            </svg>
-                        </div>
+                        <div class="login-input-separator"></div>
+                        <input type="email" id="login-email" placeholder="Votre adresse e-mail" data-i18n-placeholder="placeholder_email" required>
                     </div>
-                    
-                    <div class="vc-number">
-                        <span id="vc-number-display">•••• •••• •••• 4823</span>
-                        <button onclick="event.stopPropagation(); copyCardInfo('number')" class="vc-copy-btn" title="Copier le numéro de carte">
-                            <i class="fa-regular fa-copy"></i>
+
+                    <div class="login-input-group">
+                        <div class="login-input-icon">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div class="login-input-separator"></div>
+                        <input type="password" id="login-password" placeholder="Votre code PIN" data-i18n-placeholder="placeholder_pin" required>
+                        <button type="button" class="login-toggle-password" onclick="togglePasswordVisibility()">
+                            <i class="fa-regular fa-eye-slash" id="toggle-password-icon"></i>
                         </button>
                     </div>
+
+                    <div class="login-error" id="login-error"></div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <span data-i18n="login_btn">Se connecter</span>
+                    </button>
+                </form>
+
+                <div class="login-footer">
+                    <div class="login-footer-line"></div>
+                    <div class="login-footer-shield"><i class="fa-solid fa-check"></i></div>
+                    <div class="login-footer-line"></div>
+                </div>
+                <div class="login-footer-text" data-i18n="secure_access">Accès sécurisé et fiable</div>
+            </div>
+        </div>
+
+        <!-- ÉCRAN 2 : APPLICATION -->
+        <div class="screen" id="app-screen">
+
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-logo">
+                    <!-- LOGO EXACT (A et P séparés, courbe épaisse et ronde) -->
+                    <svg class="header-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="swooshGradHead" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#E87A00" />
+                                <stop offset="100%" stop-color="#FFC107" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradHead)" stroke-width="14" fill="none" stroke-linecap="round"/>
+                        <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
+                        <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
+                        <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
+                    APP PAY
+                </div>
+                <div class="header-icons">
+                    <button class="icon-btn" id="notif-btn">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notif-dot"></span>
+                    </button>
+                    <div class="user-avatar" id="header-avatar">--</div>
+                </div>
+
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div class="notif-dropdown-header">Notifications</div>
+                    <div class="notif-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div class="notif-item-text">
+                            <strong>Sécurité</strong>
+                            Votre compte a été vérifié avec succès
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div id="views-container"></div>
+            </main>
+
+            <nav class="bottom-nav">
+                <ul class="nav-links" id="nav-links">
+                    <li data-view="dashboard" class="active">
+                        <i class="fa-solid fa-wallet"></i> 
+                        <span data-i18n="dashboard">Portefeuille</span>
+                    </li>
+                    <li data-view="transfer">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i> 
+                        <span data-i18n="transfer_menu">Virement</span>
+                    </li>
+                    <li data-view="card">
+                        <i class="fa-regular fa-credit-card"></i> 
+                        <span data-i18n="my_virtual_card">Carte virtuelle</span>
+                    </li>
+                    <li data-view="iban">
+                        <i class="fa-solid fa-barcode"></i> 
+                        <span data-i18n="personal_iban">IBAN Personnel</span>
+                    </li>
+                    <li data-view="account">
+                        <i class="fa-regular fa-user"></i> 
+                        <span data-i18n="profile">Profil</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- ============================================= -->
+        <!-- TEMPLATES DES VUES                            -->
+        <!-- ============================================= -->
+
+        <template id="tpl-dashboard">
+            <div class="dashboard-body">
+                <!-- NOUVEAU HEADER DASHBOARD -->
+                <div class="dashboard-new-header">
+                    <div class="dnh-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h1 class="dnh-title"><span data-i18n="welcome">Bienvenue</span>, <span id="welcome-name">--</span></h1>
+                    <div class="dnh-status">
+                        <span class="status-dot"></span> <span data-i18n="account_active">Compte actif</span>
+                    </div>
+                </div>
+
+                <!-- NOUVELLE CARTE DE SOLDE -->
+                <div class="balance-card-new">
+                    <div class="bcn-top">
+                        <div class="bcn-title">
+                            <i class="fa-solid fa-wallet"></i>
+                            <span data-i18n="available_balance">Solde disponible</span>
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="bcn-bank-icon">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                    </div>
                     
-                    <div class="vc-bottom">
-                        <div>
-                            <div class="vc-label" data-i18n="holder">Titulaire</div>
-                            <div class="vc-value" id="vc-holder">--</div>
+                    <div class="bcn-amount" id="balance-display">--</div>
+                    <div class="bcn-subtitle" data-i18n="account_subtitle">Compte pour tous vos besoins</div>
+
+                    <!-- BOUTONS AVEC ENTOURAGE ROND -->
+                    <div class="bcn-actions">
+                        <div class="bcn-action-btn" id="btn-go-transfer">
+                            <div class="bcn-icon-circle">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </div>
+                            <span data-i18n="transfer_btn">Effectuer un virement</span>
                         </div>
-                        <div>
-                            <div class="vc-label" data-i18n="expires">Expire</div>
-                            <div class="vc-value" id="vc-expiry">12/28</div>
+                        
+                        <div class="bcn-divider"></div>
+                        
+                        <div class="bcn-action-btn" id="btn-go-card">
+                            <div class="bcn-icon-circle">
+                                <i class="fa-regular fa-credit-card"></i>
+                            </div>
+                            <span data-i18n="virtual_card_btn">Carte virtuelle</span>
                         </div>
-                        <div class="vc-brand">
-                            <div class="mastercard-logo">
-                                <div class="mc-circle mc-red"></div>
-                                <div class="mc-circle mc-yellow"></div>
+                    </div>
+                </div>
+
+                <!-- NOUVELLES MINI CARTES -->
+                <div class="stats-grid-new">
+                    <div class="stat-card-new">
+                        <div class="scn-left">
+                            <div class="scn-icon"><i class="fa-solid fa-coins"></i></div>
+                            <div class="scn-info">
+                                <div class="scn-value" id="stat-balance">--</div>
+                                <div class="scn-label" data-i18n="total_balance">Solde total</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card-new">
+                        <div class="scn-left">
+                            <div class="scn-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+                            <div class="scn-info">
+                                <div class="scn-value" id="stat-transactions">0</div>
+                                <div class="scn-label" data-i18n="transactions_label">Transactions</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card-new">
+                        <div class="scn-left">
+                            <div class="scn-icon"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="scn-info">
+                                <div class="scn-value" id="stat-currency">--</div>
+                                <div class="scn-label" data-i18n="currency_label">Devise</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- FACE ARRIÈRE (VERSO) -->
-                <div class="flip-card-back">
-                    <div class="vc-magnetic-strip"></div>
-                    <div class="vc-signature-box">
-                        <span class="vc-cvv-label">CVV</span>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span class="vc-cvv" id="vc-cvv">•••</span>
-                            <button onclick="event.stopPropagation(); copyCardInfo('cvv')" class="vc-copy-btn" title="Copier le CVV">
+                <div class="history-card">
+                    <div class="history-card-header">
+                        <div class="history-card-header-left">
+                            <div class="history-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                            <span data-i18n="transactions_history">Historique des transactions</span>
+                        </div>
+                        <div class="history-card-header-right">
+                            <span class="history-count-badge" id="history-count">0</span>
+                        </div>
+                    </div>
+                    <div class="history-list" id="tx-list"></div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tpl-transfer">
+            <div class="dashboard-body">
+                <h1 class="welcome-title" data-i18n="make_transfer">Effectuer un virement</h1>
+
+                <div class="transfer-card">
+                    <div class="transfer-card-icon-top-right"><i class="fa-solid fa-wallet"></i></div>
+
+                    <div class="transfer-info-top">
+                        <span data-i18n="available_balance">Solde disponible</span> : <strong id="transfer-balance">--</strong>
+                    </div>
+
+                    <div class="international-link">
+                        <svg class="transfer-custom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="3" width="16" height="12" rx="2" />
+                            <circle cx="7" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+                            <circle cx="17" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+                            <circle cx="7" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                            <circle cx="17" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                            <circle cx="12" cy="9" r="1.5" fill="currentColor" stroke="none"/>
+                            <path d="M 2 15 L 2 21 L 22 21" />
+                            <path d="M 19 18 L 22 21 L 19 24" />
+                        </svg>
+                        <span data-i18n="international_transfer">Effectuer un virement international</span>
+                    </div>
+
+                    <form id="transfer-form">
+                        <div class="form-group">
+                            <label data-i18n="amount">Montant du virement</label>
+                            <div class="input-with-addon">
+                                <input type="number" id="tf-amount" step="0.01" min="0.01" placeholder="0.00" required>
+                                <div class="input-addon" id="tf-currency">zł</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="beneficiary_name">Nom du bénéficiaire</label>
+                            <input type="text" class="standard-input" id="tf-beneficiary" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="iban">IBAN / Numéro de Compte</label>
+                            <input type="text" class="standard-input" id="tf-iban" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="bic">Code Banque (BIC / SWIFT)</label>
+                            <input type="text" class="standard-input" id="tf-bic" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="bank_name">Nom de la Banque</label>
+                            <input type="text" class="standard-input" id="tf-bank" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="reason">Raison du virement</label>
+                            <input type="text" class="standard-input" id="tf-reason" required>
+                        </div>
+
+                        <div class="transfer-warning">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span data-i18n="transfer_warning">Le traitement du transfert prend de 1 à 3 minutes après la vérification finale.</span>
+                        </div>
+
+                        <button type="submit" class="btn-continue"><span data-i18n="continue">Continuer</span> &rarr;</button>
+                    </form>
+                </div>
+            </div>
+        </template>
+
+        <template id="tpl-verification">
+            <div class="dashboard-body">
+                <h1 class="welcome-title" data-i18n="identity_verification">Vérification d'identité</h1>
+
+                <div class="verification-card">
+                    <div class="verification-icon-top-right">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+
+                    <div class="card-header-title">
+                        <i class="fa-regular fa-file-lines"></i> <span data-i18n="pending_transfer_details">Détails du virement en attente</span>
+                    </div>
+
+                    <div class="verification-details-grey-box">
+                        <div class="detail-row">
+                            <div class="detail-label"><span data-i18n="amount">Montant du virement</span> :</div>
+                            <div class="detail-value" id="vf-amount">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label"><span data-i18n="beneficiary_name">Nom du bénéficiaire</span> :</div>
+                            <div class="detail-value" id="vf-beneficiary">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label"><span data-i18n="iban">IBAN / Numéro de Compte</span> :</div>
+                            <div class="detail-value" id="vf-iban">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label"><span data-i18n="bic">Code Banque (BIC / SWIFT)</span> :</div>
+                            <div class="detail-value" id="vf-bic">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label"><span data-i18n="bank_name">Nom de la Banque</span> :</div>
+                            <div class="detail-value" id="vf-bank">-</div>
+                        </div>
+                        <div class="detail-row" style="margin-bottom: 20px;">
+                            <div class="detail-label"><span data-i18n="reason">Raison du virement</span> :</div>
+                            <div class="detail-value" id="vf-reason">-</div>
+                        </div>
+
+                        <button class="btn-cancel-solid" onclick="cancelTransfer()">
+                            <span data-i18n="cancel_transfer">Annuler le virement</span> &rarr;
+                        </button>
+                    </div>
+
+                    <div class="activation-section-title" style="margin-top: 25px;">
+                        <i class="fa-solid fa-lock"></i> <span data-i18n="enter_activation_code">Veuillez saisir le code d'activation du virement</span>
+                    </div>
+
+                    <form id="verify-form">
+                        <div class="form-group">
+                            <label data-i18n="activation_code">Code d'activation</label>
+                            <input type="text" class="standard-input" id="vf-code" placeholder="Entrez votre code secret" data-i18n-placeholder="placeholder_activation" required autocomplete="off" style="text-align: center;">
+                        </div>
+
+                        <button type="submit" class="btn-continue" style="margin-top: 20px;">
+                            <span data-i18n="validate_transfer">Validé le virement</span> &rarr;
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </template>
+
+        <template id="tpl-progress">
+            <div class="dashboard-body progress-page">
+                <h1 class="welcome-title" data-i18n="transfer_in_progress">Votre ordre de virement en cours...</h1>
+
+                <div class="progress-card">
+                    <i class="fa-solid fa-wallet progress-watermark"></i>
+
+                    <div class="success-message-title">
+                        <i class="fa-regular fa-user"></i> <span data-i18n="identity_verified">Vérification d'identité effectuée avec succès.</span>
+                    </div>
+
+                    <p class="progress-desc" data-i18n="progress_desc">
+                        Veuillez patienter la fin du virement des fonds vers votre banque avant d'actualiser cette page.
+                    </p>
+
+                    <div class="progress-container">
+                        <div class="progress-bar-fill" id="progress-fill">0%</div>
+                    </div>
+
+                    <div class="details-section-title" style="margin-top: 25px;">
+                        <i class="fa-regular fa-file-lines" style="color: #ff7a00; font-size: 20px;"></i> 
+                        <span data-i18n="progress_details_title">Détails du virement en cours</span>
+                    </div>
+
+                    <div class="inner-details-box">
+                        <div class="detail-row-new">
+                            <div class="detail-label-new"><span data-i18n="amount">Montant du virement</span> :</div>
+                            <div class="detail-value-new" id="pf-amount">-</div>
+                        </div>
+                        <div class="detail-row-new">
+                            <div class="detail-label-new"><span data-i18n="beneficiary_name">Nom du bénéficiaire</span> :</div>
+                            <div class="detail-value-new" id="pf-beneficiary">-</div>
+                        </div>
+                        <div class="detail-row-new">
+                            <div class="detail-label-new"><span data-i18n="iban">IBAN / Numéro de Compte</span> :</div>
+                            <div class="detail-value-new" id="pf-iban">-</div>
+                        </div>
+                        <div class="detail-row-new">
+                            <div class="detail-label-new"><span data-i18n="bic">Code Banque (BIC / SWIFT)</span> :</div>
+                            <div class="detail-value-new" id="pf-bic">-</div>
+                        </div>
+                        <div class="detail-row-new">
+                            <div class="detail-label-new"><span data-i18n="bank_name">Nom de la Banque</span> :</div>
+                            <div class="detail-value-new" id="pf-bank">-</div>
+                        </div>
+                        <div class="detail-row-new" style="margin-bottom: 0;">
+                            <div class="detail-label-new"><span data-i18n="reason">Raison du virement</span> :</div>
+                            <div class="detail-value-new" id="pf-reason">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tpl-success">
+            <div class="dashboard-body success-page">
+                
+                <div class="success-header-icon">
+                    <div class="success-icon-circle">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h1 class="success-main-title" data-i18n="transfer_success">Virement effectué avec succès</h1>
+                    <p class="success-subtitle" data-i18n="success_subtitle">Votre virement a été bien enregistré et sera traité par la banque du bénéficiaire.</p>
+                </div>
+
+                <div class="success-amount-card">
+                    <div class="success-amount-icon">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div class="success-amount-info">
+                        <span class="success-amount-label" data-i18n="amount_sent">MONTANT ENVOYÉ</span>
+                        <span class="success-amount-value" id="sf-amount">-</span>
+                    </div>
+                </div>
+
+                <div class="success-details-card">
+                    <div class="success-detail-row">
+                        <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
+                        <div class="sd-value" id="sf-beneficiary">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
+                        <div class="sd-value" id="sf-bank">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="iban">IBAN / Numéro de compte</div>
+                        <div class="sd-value" id="sf-iban">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="bic">Code Banque (BIC / SWIFT)</div>
+                        <div class="sd-value" id="sf-bic">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="reason">Motif du virement</div>
+                        <div class="sd-value" id="sf-reason">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="date">Date et heure</div>
+                        <div class="sd-value" id="sf-date">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="reference">Référence</div>
+                        <div class="sd-value" id="sf-ref">-</div>
+                    </div>
+                </div>
+
+                <div class="success-status-card">
+                    <div class="ss-text">
+                        <strong data-i18n="validated_status">Virement confirmé</strong>
+                        <small data-i18n="operation_secured">Votre opération est sécurisée et enregistrée.</small>
+                    </div>
+                </div>
+
+                <div class="success-actions">
+                    <button class="btn-download-receipt" onclick="window.print()">
+                        <i class="fa-solid fa-download"></i> <span data-i18n="download_receipt">Télécharger le reçu</span>
+                    </button>
+                    <button class="btn-back-dashboard" onclick="navigateTo('dashboard')">
+                        <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_to_dashboard">Retour au tableau de bord</span>
+                    </button>
+                </div>
+
+            </div>
+        </template>
+
+        <template id="tpl-failed">
+            <div class="dashboard-body success-page">
+                
+                <div class="success-header-icon">
+                    <div class="success-icon-circle" style="background-color: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <h1 class="success-main-title" data-i18n="transfer_failed">Virement échoué</h1>
+                    <p class="success-subtitle" data-i18n="transfer_failed_subtitle">
+                        Le montant saisi dépasse la limite autorisée par votre compte. Veuillez contacter votre conseiller.
+                    </p>
+                </div>
+
+                <div class="success-amount-card" style="background-color: #fef2f2;">
+                    <div class="success-amount-icon" style="background-color: #fee2e2; color: #dc2626;">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+                    <div class="success-amount-info">
+                        <span class="success-amount-label" style="color: #991b1b;" data-i18n="attempted_amount">MONTANT TENTÉ</span>
+                        <span class="success-amount-value" style="color: #7f1d1d;" id="ff-amount">-</span>
+                    </div>
+                </div>
+
+                <div class="success-details-card">
+                    <div class="success-detail-row">
+                        <div class="sd-icon"><i class="fa-regular fa-user"></i></div>
+                        <div class="sd-label" data-i18n="beneficiary">Bénéficiaire</div>
+                        <div class="sd-value" id="ff-beneficiary">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="bank_name">Banque du bénéficiaire</div>
+                        <div class="sd-value" id="ff-bank">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="iban">IBAN / Numéro de compte</div>
+                        <div class="sd-value" id="ff-iban">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="bic">Code Banque (BIC / SWIFT)</div>
+                        <div class="sd-value" id="ff-bic">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="reason">Motif du virement</div>
+                        <div class="sd-value" id="ff-reason">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="date">Date et heure</div>
+                        <div class="sd-value" id="ff-date">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="sd-label" data-i18n="reference">Référence</div>
+                        <div class="sd-value" id="ff-ref">-</div>
+                    </div>
+                </div>
+
+                <div class="success-status-card" style="background-color: #fef2f2; border: 1px solid #fecaca;">
+                    <div class="ss-text">
+                        <strong style="color: #991b1b;" data-i18n="transfer_failed">Virement bloqué</strong>
+                        <small style="color: #b91c1c;" data-i18n="no_amount_debited">Aucun montant n'a été débité de votre compte.</small>
+                    </div>
+                </div>
+
+                <div class="success-actions">
+                    <button class="btn-download-receipt" onclick="window.print()" style="color: #dc2626; border-color: #dc2626;">
+                        <i class="fa-solid fa-download"></i> <span data-i18n="download_receipt">Télécharger le reçu</span>
+                    </button>
+                    <button class="btn-back-dashboard" onclick="navigateTo('dashboard')" style="background-color: #dc2626; border-color: #dc2626;">
+                        <i class="fa-solid fa-arrow-left"></i> <span data-i18n="back_to_dashboard">Retour au tableau de bord</span>
+                    </button>
+                </div>
+
+            </div>
+        </template>
+
+        <template id="tpl-card">
+            <div class="dashboard-body card-page-wrapper">
+                <h1 class="welcome-title" data-i18n="my_virtual_card">Carte virtuelle</h1>
+
+                <div class="flip-card-container" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
+                    <div class="flip-card" id="flip-card">
+                        <!-- FACE AVANT (RECTO) -->
+                        <div class="flip-card-front">
+                            <div class="vc-top">
+                                <div class="vc-logo">
+                                    <i class="fa-solid fa-building-columns"></i> APP PAY
+                                </div>
+                                <div class="vc-top-right">
+                                    <svg class="vc-chip-svg" viewBox="0 0 50 36" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="chipBase" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#fceabb" />
+                                                <stop offset="50%" stop-color="#e4b24d" />
+                                                <stop offset="100%" stop-color="#b88328" />
+                                            </linearGradient>
+                                            <linearGradient id="chipContact" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stop-color="#d4a344" />
+                                                <stop offset="100%" stop-color="#a57321" />
+                                            </linearGradient>
+                                            <filter id="chipShadow" x="-10%" y="-10%" width="120%" height="120%">
+                                                <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.4"/>
+                                            </filter>
+                                        </defs>
+                                        <rect x="1" y="1" width="48" height="34" rx="4" fill="url(#chipBase)" stroke="#9e6b1d" stroke-width="1" filter="url(#chipShadow)"/>
+                                        <rect x="16" y="14" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="6" y="14" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="36" y="14" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="16" y="4" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="6" y="4" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="36" y="4" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="16" y="24" width="18" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="6" y="24" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <rect x="36" y="24" width="8" height="8" rx="1" fill="url(#chipContact)" stroke="#9e6b1d" stroke-width="0.5"/>
+                                        <line x1="15" y1="1" x2="15" y2="35" stroke="#9e6b1d" stroke-width="1"/>
+                                        <line x1="35" y1="1" x2="35" y2="35" stroke="#9e6b1d" stroke-width="1"/>
+                                        <line x1="1" y1="13" x2="49" y2="13" stroke="#9e6b1d" stroke-width="1"/>
+                                        <line x1="1" y1="23" x2="49" y2="23" stroke="#9e6b1d" stroke-width="1"/>
+                                    </svg>
+                                    <svg class="vc-contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                        <path d="M8.5 15.5a5 5 0 0 1 0-7" />
+                                        <path d="M12.5 18.5a10 10 0 0 0 0-13" />
+                                        <path d="M16.5 21.5a15 15 0 0 0 0-19" />
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div class="vc-number">
+                                <span id="vc-number-display">•••• •••• •••• 4823</span>
+                                <button onclick="event.stopPropagation(); copyCardInfo('number')" class="vc-copy-btn" title="Copier le numéro de carte">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="vc-bottom">
+                                <div>
+                                    <div class="vc-label" data-i18n="holder">Titulaire</div>
+                                    <div class="vc-value" id="vc-holder">--</div>
+                                </div>
+                                <div>
+                                    <div class="vc-label" data-i18n="expires">Expire</div>
+                                    <div class="vc-value" id="vc-expiry">12/28</div>
+                                </div>
+                                <div class="vc-brand">
+                                    <div class="mastercard-logo">
+                                        <div class="mc-circle mc-red"></div>
+                                        <div class="mc-circle mc-yellow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FACE ARRIÈRE (VERSO) -->
+                        <div class="flip-card-back">
+                            <div class="vc-magnetic-strip"></div>
+                            <div class="vc-signature-box">
+                                <span class="vc-cvv-label">CVV</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="vc-cvv" id="vc-cvv">•••</span>
+                                    <button onclick="event.stopPropagation(); copyCardInfo('cvv')" class="vc-copy-btn" title="Copier le CVV">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="vc-back-text" data-i18n="card_footer">
+                                Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.
+                            </div>
+                            <div class="vc-back-logo">
+                                <div class="mastercard-logo">
+                                    <div class="mc-circle mc-red"></div>
+                                    <div class="mc-circle mc-yellow"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-flip-custom" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
+                    <i class="fa-solid fa-rotate"></i> 
+                    <span data-i18n="flip_card">Retourner la carte</span>
+                </button>
+
+                <div class="card-security-note">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span data-i18n="card_security_note">Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.</span>
+                </div>
+
+                <div class="vc-actions-premium">
+                    <button class="btn-premium" onclick="toggleCardNumber()">
+                        <div class="btn-premium-icon"><i class="fa-regular fa-eye"></i></div>
+                        <div class="btn-premium-text">
+                            <strong id="vc-toggle-label" data-i18n="show_details">Afficher les détails</strong>
+                            <small data-i18n="view_full_card">Voir le numéro complet</small>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="vc-info-grid premium-grid">
+                    <div class="vc-info-item">
+                        <div class="vc-info-icon icon-blue"><i class="fa-solid fa-chart-line"></i></div>
+                        <div>
+                            <div class="vc-info-label" data-i18n="monthly_limit">Plafond mensuel</div>
+                            <div class="vc-info-value" id="card-limit">--</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vc-info-item">
+                        <div class="vc-info-icon icon-red"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                        <div>
+                            <div class="vc-info-label" data-i18n="monthly_spent">Dépenses du mois</div>
+                            <div class="vc-info-value">0,00</div>
+                        </div>
+                    </div>
+
+                    <div class="vc-info-item">
+                        <div class="vc-info-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+                        <div>
+                            <div class="vc-info-label" data-i18n="status">Statut</div>
+                            <div class="vc-info-value" style="color:#03543f;" data-i18n="active">Active</div>
+                        </div>
+                    </div>
+
+                    <div class="vc-info-item">
+                        <div class="vc-info-icon icon-cyan"><i class="fa-brands fa-cc-mastercard"></i></div>
+                        <div>
+                            <div class="vc-info-label" data-i18n="type">Type</div>
+                            <div class="vc-info-value" data-i18n="visa_premium">Mastercard Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tpl-iban">
+            <div class="dashboard-body">
+                <h1 class="welcome-title" data-i18n="personal_iban">IBAN Personnel</h1>
+
+                <div class="transfer-card" style="padding: 25px;">
+                    <div class="card-header-title" style="margin-bottom: 25px;">
+                        <i class="fa-solid fa-building-columns"></i> <span data-i18n="bank_details">Coordonnées bancaires</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;" data-i18n="iban_number">Numéro IBAN</label>
+                        <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
+                            <span id="client-iban-display" style="flex: 1;">PL00 0000 0000 ••••</span>
+                            <button onclick="copyIbanInfo('iban')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier l'IBAN">
                                 <i class="fa-regular fa-copy"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="vc-back-text" data-i18n="card_footer">
-                        Cette carte est la propriété exclusive d'APP PAY. Toute utilisation frauduleuse sera poursuivie.
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;" data-i18n="swift_code">Code SWIFT / BIC</label>
+                        <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
+                            <span id="client-swift-display" style="flex: 1;">--------</span>
+                            <button onclick="copyIbanInfo('swift')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier le SWIFT">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="vc-back-logo">
-                        <div class="mastercard-logo">
-                            <div class="mc-circle mc-red"></div>
-                            <div class="mc-circle mc-yellow"></div>
+
+                    <div class="vc-actions" style="margin-bottom: 25px;">
+                        <button class="action-chip" onclick="toggleIbanVisibility()">
+                            <i class="fa-regular fa-eye"></i> <span id="iban-toggle-label" data-i18n="show_iban">Afficher l'IBAN complet</span>
+                        </button>
+                    </div>
+
+                    <div style="background: #f0f7ff; border: 1px solid #c5d8f5; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #1a73e8; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;">
+                        <i class="fa-solid fa-circle-info" style="margin-top: 2px; font-size: 14px;"></i>
+                        <span data-i18n="iban_info_note">Utilisez ces coordonnées pour recevoir des virements. Les 4 derniers chiffres de l'IBAN sont masqués pour des raisons de sécurité.</span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tpl-account">
+            <div class="dashboard-body profile-page">
+                <h1 class="welcome-title" data-i18n="profile">Profil</h1>
+
+                <!-- Premium Profile Header -->
+                <div class="profile-header-card">
+                    <div class="profile-avatar-large" id="account-initials">--</div>
+                    <div class="profile-header-text">
+                        <h2 id="account-fullname">--</h2>
+                        <span class="profile-badge"><i class="fa-solid fa-check-circle"></i> <span data-i18n="verified">Vérifié</span></span>
+                    </div>
+                </div>
+
+                <!-- Personal Info Section -->
+                <div class="profile-section-card">
+                    <h3 class="profile-section-title"><i class="fa-regular fa-id-card"></i> <span data-i18n="personal_info">Informations personnelles</span></h3>
+                    <div class="profile-list">
+                        <div class="profile-list-item">
+                            <div class="profile-list-icon blue"><i class="fa-solid fa-signature"></i></div>
+                            <div class="profile-list-content">
+                                <span class="profile-list-label" data-i18n="full_name">Nom complet</span>
+                                <span class="profile-list-value" id="account-name">--</span>
+                            </div>
+                        </div>
+                        <div class="profile-list-item">
+                            <div class="profile-list-icon purple"><i class="fa-regular fa-envelope"></i></div>
+                            <div class="profile-list-content">
+                                <span class="profile-list-label" data-i18n="email_address">Adresse e-mail</span>
+                                <span class="profile-list-value" id="account-email">--</span>
+                            </div>
+                        </div>
+                        <div class="profile-list-item">
+                            <div class="profile-list-icon green"><i class="fa-solid fa-phone"></i></div>
+                            <div class="profile-list-content">
+                                <span class="profile-list-label" data-i18n="phone_number">Numéro de téléphone</span>
+                                <span class="profile-list-value" id="account-phone">--</span>
+                            </div>
+                        </div>
+                        <div class="profile-list-item">
+                            <div class="profile-list-icon orange"><i class="fa-solid fa-earth-africa"></i></div>
+                            <div class="profile-list-content">
+                                <span class="profile-list-label" data-i18n="country">Pays de résidence</span>
+                                <span class="profile-list-value" id="account-country">--</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <button class="btn-flip-custom" onclick="document.getElementById('flip-card').classList.toggle('flipped')">
-            <i class="fa-solid fa-rotate"></i> 
-            <span data-i18n="flip_card">Retourner la carte</span>
-        </button>
-
-        <div class="card-security-note">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span data-i18n="card_security_note">Les 4 derniers chiffres et le CVV ont été masqués pour des raisons de sécurité.</span>
-        </div>
-
-        <div class="vc-actions-premium">
-            <button class="btn-premium" onclick="toggleCardNumber()">
-                <div class="btn-premium-icon"><i class="fa-regular fa-eye"></i></div>
-                <div class="btn-premium-text">
-                    <strong id="vc-toggle-label" data-i18n="show_details">Afficher les détails</strong>
-                    <small data-i18n="view_full_card">Voir le numéro complet</small>
+                <!-- Account Details Section -->
+                <div class="profile-section-card">
+                    <h3 class="profile-section-title"><i class="fa-solid fa-building-columns"></i> <span data-i18n="account_details">Détails du compte</span></h3>
+                    <div class="profile-list">
+                        <div class="profile-list-item">
+                            <div class="profile-list-icon dark"><i class="fa-solid fa-fingerprint"></i></div>
+                            <div class="profile-list-content">
+                                <span class="profile-list-label" data-i18n="account_id">Identifiant unique</span>
+                                <span class="profile-list-value" id="account-id">--</span>
+                            </div>
+                        </div>
+                        <div class="profile-list-item">
+                            <div class="profile-list-icon dark"><i class="fa-regular fa-calendar-check"></i></div>
+                            <div class="profile-list-content">
+                                <span class="profile-list-label" data-i18n="opening_date">Date d'ouverture</span>
+                                <span class="profile-list-value" id="account-created">--</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </button>
-        </div>
 
-        <div class="vc-info-grid premium-grid">
-            <div class="vc-info-item">
-                <div class="vc-info-icon icon-blue"><i class="fa-solid fa-chart-line"></i></div>
-                <div>
-                    <div class="vc-info-label" data-i18n="monthly_limit">Plafond mensuel</div>
-                    <div class="vc-info-value" id="card-limit">--</div>
+                <!-- Settings Actions -->
+                <div class="profile-section-card">
+                    <button class="profile-action-btn" onclick="showToast('Modification du profil', 'info')">
+                        <div class="profile-action-left">
+                            <div class="profile-action-icon"><i class="fa-solid fa-pen"></i></div>
+                            <span data-i18n="edit_profile">Modifier le profil</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </button>
+                    <button class="profile-action-btn" onclick="showToast('Paramètres de sécurité ouverts', 'info')">
+                        <div class="profile-action-left">
+                            <div class="profile-action-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <span data-i18n="security">Sécurité</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </button>
+                    <button class="profile-action-btn" onclick="showToast('Préférences de notifications', 'info')" style="border-bottom: none;">
+                        <div class="profile-action-left">
+                            <div class="profile-action-icon"><i class="fa-regular fa-bell"></i></div>
+                            <span data-i18n="notifications">Notifications</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </button>
                 </div>
-            </div>
-            
-            <div class="vc-info-item">
-                <div class="vc-info-icon icon-red"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                <div>
-                    <div class="vc-info-label" data-i18n="monthly_spent">Dépenses du mois</div>
-                    <div class="vc-info-value">0,00</div>
-                </div>
-            </div>
 
-            <div class="vc-info-item">
-                <div class="vc-info-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
-                <div>
-                    <div class="vc-info-label" data-i18n="status">Statut</div>
-                    <div class="vc-info-value" style="color:#03543f;" data-i18n="active">Active</div>
-                </div>
-            </div>
-
-            <div class="vc-info-item">
-                <div class="vc-info-icon icon-cyan"><i class="fa-brands fa-cc-mastercard"></i></div>
-                <div>
-                    <div class="vc-info-label" data-i18n="type">Type</div>
-                    <div class="vc-info-value" data-i18n="visa_premium">Mastercard Premium</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template id="tpl-iban">
-    <div class="dashboard-body">
-        <h1 class="welcome-title" data-i18n="personal_iban">IBAN Personnel</h1>
-
-        <div class="transfer-card" style="padding: 25px;">
-            <div class="card-header-title" style="margin-bottom: 25px;">
-                <i class="fa-solid fa-building-columns"></i> <span data-i18n="bank_details">Coordonnées bancaires</span>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 25px;">
-                <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;" data-i18n="iban_number">Numéro IBAN</label>
-                <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
-                    <span id="client-iban-display" style="flex: 1;">PL00 0000 0000 ••••</span>
-                    <button onclick="copyIbanInfo('iban')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier l'IBAN">
-                        <i class="fa-regular fa-copy"></i>
+                <!-- Logout -->
+                <div style="margin-top: 25px; margin-bottom: 25px;">
+                    <button class="btn-logout-profile" onclick="handleLogout()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span data-i18n="logout">Déconnexion</span>
                     </button>
                 </div>
             </div>
+        </template>
 
-            <div class="form-group" style="margin-bottom: 25px;">
-                <label style="display: block; font-size: 13px; color: #555; margin-bottom: 8px; font-weight: 700;" data-i18n="swift_code">Code SWIFT / BIC</label>
-                <div style="display: flex; align-items: center; gap: 12px; background: #f8f9fa; padding: 16px; border-radius: 8px; border: 2px solid #e8eaee;">
-                    <span id="client-swift-display" style="flex: 1;">--------</span>
-                    <button onclick="copyIbanInfo('swift')" style="background: transparent; border: none; color: #ff7a00; cursor: pointer; font-size: 20px; padding: 8px; flex-shrink: 0;" title="Copier le SWIFT">
-                        <i class="fa-regular fa-copy"></i>
-                    </button>
+        <!-- ============================================= -->
+        <!-- NOUVELLE MODALE : REÇU DE TRANSACTION         -->
+        <!-- ============================================= -->
+        <div class="receipt-modal-overlay" id="receipt-modal">
+            <div class="receipt-card">
+                <div class="receipt-header">
+                    <div class="receipt-logo">
+                        <svg class="receipt-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="swooshGradReceipt" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#E87A00" />
+                                    <stop offset="100%" stop-color="#FFC107" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradReceipt)" stroke-width="14" fill="none" stroke-linecap="round"/>
+                            <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
+                            <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
+                            <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
+                        </svg>
+                        APP PAY
+                    </div>
+                    <div class="receipt-title" id="rcpt-title" data-i18n="receipt_title">REÇU DE TRANSACTION</div>
                 </div>
-            </div>
+                
+                <div class="receipt-divider"></div>
 
-            <div class="vc-actions" style="margin-bottom: 25px;">
-                <button class="action-chip" onclick="toggleIbanVisibility()">
-                    <i class="fa-regular fa-eye"></i> <span id="iban-toggle-label" data-i18n="show_iban">Afficher l'IBAN complet</span>
+                <div class="receipt-body">
+                    <div class="receipt-row">
+                        <span data-i18n="date">Date</span>
+                        <span id="rcpt-date">--</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span data-i18n="type">Type</span>
+                        <span id="rcpt-type">--</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span data-i18n="reference">Référence</span>
+                        <span id="rcpt-ref">--</span>
+                    </div>
+                    
+                    <div class="receipt-divider"></div>
+
+                    <div class="receipt-row">
+                        <span id="rcpt-party-label" data-i18n="beneficiary">Bénéficiaire</span>
+                        <span id="rcpt-party">--</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span data-i18n="bank_name">Banque</span>
+                        <span id="rcpt-bank">--</span>
+                    </div>
+                    <!-- Ligne IBAN (ajoutée pour le virement envoyé) -->
+                    <div class="receipt-row" id="rcpt-iban-row" style="display: none;">
+                        <span data-i18n="iban">IBAN</span>
+                        <span id="rcpt-iban">--</span>
+                    </div>
+
+                    <div class="receipt-divider"></div>
+
+                    <div class="receipt-row receipt-total">
+                        <span data-i18n="amount">Montant</span>
+                        <span id="rcpt-amount">--</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span data-i18n="status">Statut</span>
+                        <span id="rcpt-status" style="color: #00a04a; font-weight: bold;">Réalisé</span>
+                    </div>
+                </div>
+
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-footer">
+                    <p data-i18n="receipt_thank_you_1">Merci d'avoir utilisé APP PAY.</p>
+                    <p data-i18n="receipt_thank_you_2">Ce reçu est généré automatiquement.</p>
+                </div>
+
+                <button class="receipt-close-btn" onclick="closeReceipt()">
+                    <i class="fa-solid fa-xmark"></i> <span data-i18n="close">Fermer</span>
                 </button>
             </div>
-
-            <div style="background: #f0f7ff; border: 1px solid #c5d8f5; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #1a73e8; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;">
-                <i class="fa-solid fa-circle-info" style="margin-top: 2px; font-size: 14px;"></i>
-                <span data-i18n="iban_info_note">Utilisez ces coordonnées pour recevoir des virements. Les 4 derniers chiffres de l'IBAN sont masqués pour des raisons de sécurité.</span>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template id="tpl-account">
-    <div class="dashboard-body profile-page">
-        <h1 class="welcome-title" data-i18n="profile">Profil</h1>
-
-        <!-- Premium Profile Header -->
-        <div class="profile-header-card">
-            <div class="profile-avatar-large" id="account-initials">--</div>
-            <div class="profile-header-text">
-                <h2 id="account-fullname">--</h2>
-                <span class="profile-badge"><i class="fa-solid fa-check-circle"></i> <span data-i18n="verified">Vérifié</span></span>
-            </div>
         </div>
 
-        <!-- Personal Info Section -->
-        <div class="profile-section-card">
-            <h3 class="profile-section-title"><i class="fa-regular fa-id-card"></i> <span data-i18n="personal_info">Informations personnelles</span></h3>
-            <div class="profile-list">
-                <div class="profile-list-item">
-                    <div class="profile-list-icon blue"><i class="fa-solid fa-signature"></i></div>
-                    <div class="profile-list-content">
-                        <span class="profile-list-label" data-i18n="full_name">Nom complet</span>
-                        <span class="profile-list-value" id="account-name">--</span>
-                    </div>
+        <!-- ============================================= -->
+        <!-- NOUVELLE MODALE : CONFIRMATION PERSONNALISÉE  -->
+        <!-- ============================================= -->
+        <div class="confirm-modal-overlay" id="confirm-modal">
+            <div class="confirm-card">
+                <div class="confirm-icon-wrapper">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
-                <div class="profile-list-item">
-                    <div class="profile-list-icon purple"><i class="fa-regular fa-envelope"></i></div>
-                    <div class="profile-list-content">
-                        <span class="profile-list-label" data-i18n="email_address">Adresse e-mail</span>
-                        <span class="profile-list-value" id="account-email">--</span>
-                    </div>
-                </div>
-                <div class="profile-list-item">
-                    <div class="profile-list-icon green"><i class="fa-solid fa-phone"></i></div>
-                    <div class="profile-list-content">
-                        <span class="profile-list-label" data-i18n="phone_number">Numéro de téléphone</span>
-                        <span class="profile-list-value" id="account-phone">--</span>
-                    </div>
-                </div>
-                <div class="profile-list-item">
-                    <div class="profile-list-icon orange"><i class="fa-solid fa-earth-africa"></i></div>
-                    <div class="profile-list-content">
-                        <span class="profile-list-label" data-i18n="country">Pays de résidence</span>
-                        <span class="profile-list-value" id="account-country">--</span>
-                    </div>
+                <h2 class="confirm-title" id="confirm-title" data-i18n="confirm_title_warning">Attention</h2>
+                <p class="confirm-message" id="confirm-message">Message par défaut</p>
+                <div class="confirm-actions">
+                    <button class="confirm-btn-cancel" id="confirm-btn-cancel" data-i18n="confirm_btn_cancel">Annuler</button>
+                    <button class="confirm-btn-ok" id="confirm-btn-ok" data-i18n="confirm_btn_ok">Confirmer</button>
                 </div>
             </div>
         </div>
 
-        <!-- Account Details Section -->
-        <div class="profile-section-card">
-            <h3 class="profile-section-title"><i class="fa-solid fa-building-columns"></i> <span data-i18n="account_details">Détails du compte</span></h3>
-            <div class="profile-list">
-                <div class="profile-list-item">
-                    <div class="profile-list-icon dark"><i class="fa-solid fa-fingerprint"></i></div>
-                    <div class="profile-list-content">
-                        <span class="profile-list-label" data-i18n="account_id">Identifiant unique</span>
-                        <span class="profile-list-value" id="account-id">--</span>
-                    </div>
-                </div>
-                <div class="profile-list-item">
-                    <div class="profile-list-icon dark"><i class="fa-regular fa-calendar-check"></i></div>
-                    <div class="profile-list-content">
-                        <span class="profile-list-label" data-i18n="opening_date">Date d'ouverture</span>
-                        <span class="profile-list-value" id="account-created">--</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div> <!-- FIN DU WRAPPER ANTI-FOUC -->
 
-        <!-- Settings Actions -->
-        <div class="profile-section-card">
-            <button class="profile-action-btn" onclick="showToast('Modification du profil', 'info')">
-                <div class="profile-action-left">
-                    <div class="profile-action-icon"><i class="fa-solid fa-pen"></i></div>
-                    <span data-i18n="edit_profile">Modifier le profil</span>
-                </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </button>
-            <button class="profile-action-btn" onclick="showToast('Paramètres de sécurité ouverts', 'info')">
-                <div class="profile-action-left">
-                    <div class="profile-action-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <span data-i18n="security">Sécurité</span>
-                </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </button>
-            <button class="profile-action-btn" onclick="showToast('Préférences de notifications', 'info')" style="border-bottom: none;">
-                <div class="profile-action-left">
-                    <div class="profile-action-icon"><i class="fa-regular fa-bell"></i></div>
-                    <span data-i18n="notifications">Notifications</span>
-                </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </button>
-        </div>
+    <!-- 🆕 SCRIPT POUR AFFICHER LA PAGE EN DOUCEUR UNE FOIS CHARGÉE -->
+    <script>
+        window.addEventListener('load', function() {
+            const wrapper = document.getElementById('app-wrapper');
+            if (wrapper) {
+                wrapper.style.visibility = 'visible';
+                wrapper.style.opacity = '1';
+            }
+        });
+    </script>
 
-        <!-- Logout -->
-        <div style="margin-top: 25px; margin-bottom: 25px;">
-            <button class="btn-logout-profile" onclick="handleLogout()">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span data-i18n="logout">Déconnexion</span>
-            </button>
-        </div>
-    </div>
-</template>
-
-<!-- ============================================= -->
-<!-- NOUVELLE MODALE : REÇU DE TRANSACTION         -->
-<!-- ============================================= -->
-<div class="receipt-modal-overlay" id="receipt-modal">
-    <div class="receipt-card">
-        <div class="receipt-header">
-            <div class="receipt-logo">
-                <svg class="receipt-logo-svg" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="swooshGradReceipt" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#E87A00" />
-                            <stop offset="100%" stop-color="#FFC107" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M 15 80 C 60 105, 140 100, 175 20" stroke="url(#swooshGradReceipt)" stroke-width="14" fill="none" stroke-linecap="round"/>
-                    <path d="M 20 85 L 50 10 L 68 10 L 88 85 L 68 85 L 54 45 L 40 85 Z" fill="#00246B"/>
-                    <path d="M 70 85 L 80 10 L 125 10 C 160 10 160 60 125 60 L 100 60 L 95 85 Z M 100 28 L 97 42 L 125 42 C 140 42 140 28 125 28 Z" fill="#2D6BCC"/>
-                    <path d="M 195 15 L 195 85" stroke="#1F2D54" stroke-width="5" stroke-linecap="round"/>
-                </svg>
-                APP PAY
-            </div>
-            <div class="receipt-title" id="rcpt-title" data-i18n="receipt_title">REÇU DE TRANSACTION</div>
-        </div>
-        
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-body">
-            <div class="receipt-row">
-                <span data-i18n="date">Date</span>
-                <span id="rcpt-date">--</span>
-            </div>
-            <div class="receipt-row">
-                <span data-i18n="type">Type</span>
-                <span id="rcpt-type">--</span>
-            </div>
-            <div class="receipt-row">
-                <span data-i18n="reference">Référence</span>
-                <span id="rcpt-ref">--</span>
-            </div>
-            
-            <div class="receipt-divider"></div>
-
-            <div class="receipt-row">
-                <span id="rcpt-party-label" data-i18n="beneficiary">Bénéficiaire</span>
-                <span id="rcpt-party">--</span>
-            </div>
-            <div class="receipt-row">
-                <span data-i18n="bank_name">Banque</span>
-                <span id="rcpt-bank">--</span>
-            </div>
-            <!-- Ligne IBAN (ajoutée pour le virement envoyé) -->
-            <div class="receipt-row" id="rcpt-iban-row" style="display: none;">
-                <span data-i18n="iban">IBAN</span>
-                <span id="rcpt-iban">--</span>
-            </div>
-
-            <div class="receipt-divider"></div>
-
-            <div class="receipt-row receipt-total">
-                <span data-i18n="amount">Montant</span>
-                <span id="rcpt-amount">--</span>
-            </div>
-            <div class="receipt-row">
-                <span data-i18n="status">Statut</span>
-                <span id="rcpt-status" style="color: #00a04a; font-weight: bold;">Réalisé</span>
-            </div>
-        </div>
-
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-footer">
-            <p data-i18n="receipt_thank_you_1">Merci d'avoir utilisé APP PAY.</p>
-            <p data-i18n="receipt_thank_you_2">Ce reçu est généré automatiquement.</p>
-        </div>
-
-        <button class="receipt-close-btn" onclick="closeReceipt()">
-            <i class="fa-solid fa-xmark"></i> <span data-i18n="close">Fermer</span>
-        </button>
-    </div>
-</div>
-
-<!-- ============================================= -->
-<!-- NOUVELLE MODALE : CONFIRMATION PERSONNALISÉE  -->
-<!-- ============================================= -->
-<div class="confirm-modal-overlay" id="confirm-modal">
-    <div class="confirm-card">
-        <div class="confirm-icon-wrapper">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
-        <h2 class="confirm-title" id="confirm-title" data-i18n="confirm_title_warning">Attention</h2>
-        <p class="confirm-message" id="confirm-message">Message par défaut</p>
-        <div class="confirm-actions">
-            <button class="confirm-btn-cancel" id="confirm-btn-cancel" data-i18n="confirm_btn_cancel">Annuler</button>
-            <button class="confirm-btn-ok" id="confirm-btn-ok" data-i18n="confirm_btn_ok">Confirmer</button>
-        </div>
-    </div>
-</div>
-
-<script type="module" src="js/script.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>
