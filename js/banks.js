@@ -299,13 +299,37 @@ export const BANKS_BY_COUNTRY = {
     ]
 };
 
-// ✅ LOGOS SPÉCIFIQUES HAUTE QUALITÉ (Liens corrigés pour éviter les lettres)
+// ✅ LOGOS DIRECTS HAUTE QUALITÉ (Garantis sans avatars ni lettres)
 const CUSTOM_BANK_LOGOS = {
+    // Banques Israéliennes
     'leumi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bank_Leumi_logo.svg/512px-Bank_Leumi_logo.svg.png',
     'bankhapoalim.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Bank_Hapoalim_Logo.svg/512px-Bank_Hapoalim_Logo.svg.png',
-    'discountbank.co.il': 'https://logowik.com/content/uploads/images/israel-discount-bank1557.jpg',
-    'mizrahi-tefahot.co.il': 'https://logowik.com/content/uploads/images/mizrahi-tefahot-bank5643.jpg',
-    'fibi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/First_International_Bank_of_Israel_logo.svg/512px-First_International_Bank_of_Israel_logo.svg.png'
+    'discountbank.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Israel_Discount_Bank_logo.svg/512px-Israel_Discount_Bank_logo.svg.png',
+    'mizrahi-tefahot.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Mizrahi_Tefahot_Bank_logo.svg/512px-Mizrahi_Tefahot_Bank_logo.svg.png',
+    'fibi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/First_International_Bank_of_Israel_logo.svg/512px-First_International_Bank_of_Israel_logo.svg.png',
+    
+    // Banques Polonaises
+    'ing.pl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/ING_Bank_%C5%9Al%C4%85ski_logo.svg/512px-ING_Bank_%C5%9Al%C4%85ski_logo.svg.png',
+    'pkobp.pl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/PKO_Bank_Polski_logo.svg/512px-PKO_Bank_Polski_logo.svg.png',
+    'pekao.com.pl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Polska_Kasa_Opieki_logo.svg/512px-Bank_Polska_Kasa_Opieki_logo.svg.png',
+    'mbank.pl': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/MBank_logo.svg/512px-MBank_logo.svg.png',
+    
+    // Banques Africaines & Internationales
+    'ecobank.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Ecobank_Logo.svg/512px-Ecobank_Logo.svg.png',
+    'bank-of-africa.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Bank_of_Africa_logo.svg/512px-Bank_of_Africa_logo.svg.png',
+    'ubagroup.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/United_Bank_for_Africa_logo.svg/512px-United_Bank_for_Africa_logo.svg.png',
+    'orabank.net': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Orabank_logo.svg/512px-Orabank_logo.svg.png',
+    'societegenerale.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Soci%C3%A9t%C3%A9_G%C3%A9n%C3%A9rale_logo.svg/512px-Soci%C3%A9t%C3%A9_G%C3%A9n%C3%A9rale_logo.svg.png',
+    'bnpparibas.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/BNP_Paribas_logo.svg/512px-BNP_Paribas_logo.svg.png',
+    'credit-agricole.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Cr%C3%A9dit_Agricole_Logo.svg/512px-Cr%C3%A9dit_Agricole_Logo.svg.png',
+    'santander.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Banco_Santander_Logotipo.svg/512px-Banco_Santander_Logotipo.svg.png',
+    'hsbc.co.uk': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/HSBC_logo_%282018%29.svg/512px-HSBC_logo_%282018%29.svg.png',
+    'barclays.co.uk': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Barclays_logo.svg/512px-Barclays_logo.svg.png',
+    'accessbankplc.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Access_Bank_Logo.svg/512px-Access_Bank_Logo.svg.png',
+    'zenithbank.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Zenith_Bank_Logo.svg/512px-Zenith_Bank_Logo.svg.png',
+    'gtbank.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Guaranty_Trust_Bank_Logo.svg/512px-Guaranty_Trust_Bank_Logo.svg.png',
+    'firstbanknigeria.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/First_Bank_of_Nigeria_Logo.svg/512px-First_Bank_of_Nigeria_Logo.svg.png',
+    'nsiabanque.com': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/NSIA_Banque_logo.svg/512px-NSIA_Banque_logo.svg.png'
 };
 
 function cleanDomain(domain) {
@@ -328,21 +352,20 @@ export function getBankLogoUrls(domain) {
     const d = cleanDomain(domain);
     if (!d) return [];
 
-    // Si on a un logo haute qualité spécifique
+    // Si on a un logo spécifique direct
     if (CUSTOM_BANK_LOGOS[d]) {
         return [
             CUSTOM_BANK_LOGOS[d],
-            `https://logo.clearbit.com/${d}`,
-            `https://icon.horse/icon/${d}`,
-            `https://www.google.com/s2/favicons?domain=${d}&sz=128`
+            `https://logo.clearbit.com/${d}`, // Fallback 1
+            `https://icon.horse/icon/${d}`    // Fallback 2
         ];
     }
 
-    // Sinon, fonctionnement normal
+    // Sinon, on utilise uniquement Clearbit et IconHorse.
+    // On a SUPPRIMÉ Google Favicons et Unavatar qui créaient les lettres.
     return [
         `https://logo.clearbit.com/${d}`,
         `https://icon.horse/icon/${d}`,
-        `https://www.google.com/s2/favicons?domain=${d}&sz=128`,
         `https://icons.duckduckgo.com/ip3/${d}.ico`
     ];
 }
