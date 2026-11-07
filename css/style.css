@@ -819,25 +819,25 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* 🆕 LIGNE AU-DESSUS DES BOUTONS RACCOURCIE */
+/* 🆕 LIGNE AU-DESSUS DES BOUTONS RACCOURCIE ET PLUS VISIBLE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 20px;
     position: relative;
-    border-top: none; /* Suppression de la bordure pleine largeur */
+    border-top: none;
 }
 
-/* Création d'une ligne plus courte et centrée */
 .bcn-actions::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 15%; /* Raccourcie à gauche */
-    right: 15%; /* Raccourcie à droite */
-    height: 2px;
-    background-color: rgba(128, 128, 128, 0.6);
+    left: 15%;
+    right: 15%;
+    height: 3px; /* Épaisseur augmentée */
+    background-color: rgba(255, 255, 255, 0.9); /* Blanc bien visible */
+    border-radius: 2px;
 }
 
 /* ✅ BOUTONS (Sans cadre) */
@@ -861,19 +861,19 @@ body {
     width: 60px; 
     height: 60px; 
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.15); /* Fond un peu transparent */
-    color: #ffffff; /* Icône en blanc pour bien ressortir */
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff; 
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px; 
-    border: 2px solid #ffffff; /* Bordure blanche bien propre et forte */
+    border: 2px solid #ffffff; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: background 0.2s;
 }
 
 .bcn-icon-circle:hover {
-    background-color: rgba(255, 255, 255, 0.25); /* Effet au survol */
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 .bcn-action-btn span {
@@ -882,11 +882,11 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* LIGNE VERTICALE ENTRE LES BOUTONS */
+/* 🆕 LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
 .bcn-divider {
-    width: 1px; 
-    height: 40px; 
-    background-color: rgba(128, 128, 128, 0.4); 
+    width: 2px; /* Épaisseur augmentée */
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9); /* Blanc bien visible */
     margin: 0 5px;
 }
 
@@ -977,7 +977,7 @@ body {
 }
 
 /* ============================================================
-   ANCIENS STYLES RESTANTS (AUTRES PAGES - Textes Réduits)
+   ANCIENS STYLES RESTANTS (AUTRES PAGES - Textes Agrandis)
    ============================================================ */
 .history-card {
     background: var(--card-bg);
@@ -1210,7 +1210,7 @@ body {
     font-weight: 500;
 }
 
-/* --- AUTRES PAGES (Textes Réduits) --- */
+/* --- AUTRES PAGES (Textes Agrandis) --- */
 .transfer-card {
     background: #ffffff;
     border-radius: 6px; 
@@ -1233,7 +1233,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 16px; /* Augmenté */
     color: #000;
     margin-bottom: 15px;
     font-weight: 500;
@@ -1241,7 +1241,7 @@ body {
 
 .transfer-info-top i {
     color: #1a73e8;
-    font-size: 16px;
+    font-size: 18px; /* Augmenté */
 }
 
 .transfer-info-top strong {
@@ -1252,7 +1252,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 13px;
+    font-size: 15px; /* Augmenté */
     font-weight: 500;
     color: #000;
     margin-bottom: 25px;
@@ -1275,7 +1275,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 13px;
+    font-size: 15px; /* Augmenté */
     color: #000;
     margin-bottom: 8px;
     font-weight: 700; 
@@ -1306,7 +1306,7 @@ body {
     border: none;
     outline: none;
     padding: 14px 15px;
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 700; 
     color: #000;
     background: transparent;
@@ -1323,7 +1323,7 @@ body {
     font-weight: 700; 
     color: #000;
     background-color: #f8f9fa;
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     flex-shrink: 0;
     border-left: 1px solid #dcdfe6;
 }
@@ -1333,7 +1333,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 14px 15px;
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 700; 
     color: #000;
     outline: none;
@@ -1352,7 +1352,7 @@ body {
     color: #b45309;
     padding: 12px 15px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 15px; /* Augmenté */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1374,7 +1374,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 16px;
-    font-size: 16px;
+    font-size: 17px; /* Augmenté */
     font-weight: 700; 
     cursor: pointer;
     margin-top: 10px;
@@ -1408,7 +1408,7 @@ body {
 .card-header-title {
     display: flex;
     align-items: center;
-    font-size: 17px;
+    font-size: 18px; /* Augmenté */
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px;
@@ -1444,13 +1444,13 @@ body {
 }
 
 .verification-details-grey-box .detail-label {
-    font-size: 14px;
+    font-size: 16px; /* Augmenté */
     color: #000 !important; 
     font-weight: 500; 
 }
 
 .verification-details-grey-box .detail-value {
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 700; 
     color: #000 !important; 
     word-break: break-all;
@@ -1463,7 +1463,7 @@ body {
     border: none;
     border-radius: 6px;
     padding: 10px 18px;
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -1478,7 +1478,7 @@ body {
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 16px; /* Augmenté */
     font-weight: 500 !important; 
     color: #000;
     margin-bottom: 15px;
@@ -1518,7 +1518,7 @@ body {
 .success-message-title {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 17px; /* Augmenté */
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px; 
@@ -1533,7 +1533,7 @@ body {
 }
 
 .progress-desc {
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     color: #000; 
     margin-bottom: 35px; 
     line-height: 1.5;
@@ -1572,7 +1572,7 @@ body {
 .details-section-title {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 17px; /* Augmenté */
     font-weight: 700; 
     color: #000;
     margin-bottom: 15px;
@@ -1606,13 +1606,13 @@ body {
 }
 
 .detail-label-new {
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     color: #000;
     font-weight: 500; 
 }
 
 .detail-value-new {
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 700; 
     color: #000;
     word-break: break-all;
@@ -1649,14 +1649,14 @@ body {
 }
 
 .success-main-title {
-    font-size: 17px;
+    font-size: 18px; /* Augmenté */
     font-weight: 700;
     color: #1e293b;
     margin-bottom: 6px;
 }
 
 .success-subtitle {
-    font-size: 12px;
+    font-size: 14px; /* Augmenté */
     color: #64748b;
     line-height: 1.4;
     max-width: 90%;
@@ -1696,7 +1696,7 @@ body {
 }
 
 .success-amount-label {
-    font-size: 11px;
+    font-size: 13px; /* Augmenté */
     font-weight: 700;
     color: #166534;
     text-transform: uppercase;
@@ -1704,7 +1704,7 @@ body {
 }
 
 .success-amount-value {
-    font-size: 22px;
+    font-size: 24px; /* Augmenté */
     font-weight: 800;
     color: #000000;
 }
@@ -1748,14 +1748,14 @@ body {
 
 .sd-label {
     flex: 0 0 50%; 
-    font-size: 12px;
+    font-size: 14px; /* Augmenté */
     color: #000000;
     font-weight: 500;
 }
 
 .sd-value {
     flex: 1;
-    font-size: 12px;
+    font-size: 14px; /* Augmenté */
     color: #000000;
     font-weight: 700;
     text-align: left;
@@ -1785,13 +1785,13 @@ body {
 }
 
 .ss-text strong {
-    font-size: 12px;
+    font-size: 14px; /* Augmenté */
     font-weight: 700;
     color: #166534;
 }
 
 .ss-text small {
-    font-size: 10px;
+    font-size: 12px; /* Augmenté */
     color: #15803d;
 }
 
@@ -1810,7 +1810,7 @@ body {
     gap: 6px;
     padding: 12px;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 14px; /* Augmenté */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -1969,7 +1969,7 @@ body {
 
 .vc-number {
     font-family: 'Courier New', monospace;
-    font-size: 19px;
+    font-size: 20px; /* Augmenté */
     letter-spacing: 2px;
     font-weight: 700;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -2005,7 +2005,7 @@ body {
 }
 
 .vc-label {
-    font-size: 10px;
+    font-size: 12px; /* Augmenté */
     opacity: 0.7;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -2014,7 +2014,7 @@ body {
 }
 
 .vc-value {
-    font-size: 14px;
+    font-size: 16px; /* Augmenté */
     font-weight: 700;
     letter-spacing: 1px;
     color: #ffffff;
@@ -2058,21 +2058,21 @@ body {
 }
 
 .vc-cvv-label {
-    font-size: 13px; 
+    font-size: 15px; /* Augmenté */
     font-weight: 600;
     color: #000;
 }
 
 .vc-cvv {
     font-family: 'Courier New', monospace;
-    font-size: 19px; 
+    font-size: 20px; /* Augmenté */
     font-weight: 700;
     letter-spacing: 2px;
     color: #000;
 }
 
 .vc-back-text {
-    font-size: 11px; 
+    font-size: 13px; /* Augmenté */
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.4;
     padding: 0 25px;
@@ -2099,7 +2099,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 10px;
     padding: 14px 20px;
-    font-size: 16px; 
+    font-size: 17px; /* Augmenté */
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -2125,7 +2125,7 @@ body {
     border: 1px solid #e8eaee;
     padding: 15px;
     border-radius: 10px;
-    font-size: 14px; 
+    font-size: 15px; /* Augmenté */
     color: #000;
     display: flex;
     align-items: center;
@@ -2194,13 +2194,13 @@ body {
 }
 
 .btn-premium-text strong {
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 600;
     color: #000;
 }
 
 .btn-premium-text small {
-    font-size: 13px;
+    font-size: 14px; /* Augmenté */
     color: #000;
     font-weight: 500;
 }
@@ -2240,14 +2240,14 @@ body {
 .icon-cyan { background: #e0f2fe; color: #0284c7; }
 
 .vc-info-label {
-    font-size: 12px;
+    font-size: 14px; /* Augmenté */
     color: #000;
     margin-bottom: 2px;
     font-weight: 500;
 }
 
 .vc-info-value {
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 600;
     color: #000;
 }
@@ -2357,7 +2357,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 26px; 
+    font-size: 28px; /* Augmenté */
     flex-shrink: 0;
     border: 3px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
@@ -2374,7 +2374,7 @@ body {
 }
 
 .profile-header-text h2 {
-    font-size: 20px;
+    font-size: 22px; /* Augmenté */
     font-weight: 700;
     color: #ffffff;
     margin: 0;
@@ -2388,7 +2388,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px; 
+    font-size: 14px; /* Augmenté */
     background-color: rgba(16, 185, 129, 0.15);
     color: #34d399;
     padding: 5px 12px;
@@ -2409,7 +2409,7 @@ body {
 }
 
 .profile-section-title {
-    font-size: 15px;
+    font-size: 17px; /* Augmenté */
     color: #000;
     font-weight: 700; 
     letter-spacing: 0.3px;
@@ -2470,13 +2470,13 @@ body {
 }
 
 .profile-list-label {
-    font-size: 13px;
+    font-size: 15px; /* Augmenté */
     color: #000;
     font-weight: 500;
 }
 
 .profile-list-value {
-    font-size: 16px;
+    font-size: 18px; /* Augmenté */
     color: #000;
     font-weight: 600;
     word-break: break-word;
@@ -2522,7 +2522,7 @@ body {
 }
 
 .profile-action-btn span {
-    font-size: 16px;
+    font-size: 18px; /* Augmenté */
     font-weight: 500;
     color: #000;
 }
@@ -2545,7 +2545,7 @@ body {
     border: 2px solid #fde8e8;
     border-radius: 8px;
     padding: 16px;
-    font-size: 15px;
+    font-size: 16px; /* Augmenté */
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -2641,7 +2641,7 @@ body {
 }
 
 .receipt-title {
-    font-size: 12px; 
+    font-size: 14px; /* Augmenté */
     color: #000;
     letter-spacing: 2px;
     font-weight: 600;
@@ -2654,7 +2654,7 @@ body {
 }
 
 .receipt-body {
-    font-size: 14px; 
+    font-size: 15px; /* Augmenté */
     color: #000;
     line-height: 1.5; 
 }
@@ -2678,7 +2678,7 @@ body {
 }
 
 .receipt-total {
-    font-size: 17px; 
+    font-size: 18px; /* Augmenté */
     font-weight: 700;
     color: #000;
     margin-top: 20px; 
@@ -2687,12 +2687,12 @@ body {
 
 .receipt-total span:last-child {
     color: var(--primary-color);
-    font-size: 19px; 
+    font-size: 20px; /* Augmenté */
 }
 
 .receipt-footer {
     text-align: center;
-    font-size: 12px; 
+    font-size: 13px; /* Augmenté */
     color: #000;
     margin-top: 25px; 
     line-height: 1.5;
@@ -2705,7 +2705,7 @@ body {
     border: none;
     border-radius: 6px;
     padding: 14px;
-    font-size: 15px; 
+    font-size: 16px; /* Augmenté */
     font-weight: 600;
     font-family: 'Titillium Web', sans-serif;
     cursor: pointer;
@@ -2750,14 +2750,14 @@ body {
 }
 
 .confirm-title {
-    font-size: 21px; 
+    font-size: 22px; /* Augmenté */
     font-weight: 700;
     color: #000;
     margin-bottom: 12px;
 }
 
 .confirm-message {
-    font-size: 15px; 
+    font-size: 16px; /* Augmenté */
     color: #000;
     line-height: 1.5;
     margin-bottom: 25px;
@@ -2774,7 +2774,7 @@ body {
     flex: 1;
     padding: 12px;
     border-radius: 6px;
-    font-size: 15px; 
+    font-size: 16px; /* Augmenté */
     font-weight: 600;
     cursor: pointer;
     border: none;
