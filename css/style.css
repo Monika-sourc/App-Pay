@@ -722,7 +722,7 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE - DESIGN SOYEUX ET PREMIUM */
+/* NOUVELLE CARTE DE SOLDE - DESIGN SOYEUX ET LUMINEUX */
 .balance-card-new {
     background: var(--big-card-color);
     border-radius: 10px; 
@@ -735,7 +735,7 @@ body {
     z-index: 1;
 }
 
-/* 🆕 VAGUE 1 : Couleur principale douce et transparente */
+/* 🆕 VAGUE 1 : Bordure lumineuse ajoutée */
 .balance-card-new::before {
     content: '';
     position: absolute;
@@ -747,9 +747,10 @@ body {
     z-index: 0;
     pointer-events: none;
     animation: waveMove 8s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)); /* Effet de bordure lumineuse */
 }
 
-/* 🆕 VAGUE 2 : Reflet de couleur (Orange) subtil et élégant */
+/* 🆕 VAGUE 2 : Bordure lumineuse colorée ajoutée */
 .balance-card-new::after {
     content: '';
     position: absolute;
@@ -761,6 +762,7 @@ body {
     z-index: 0;
     pointer-events: none;
     animation: waveMoveReverse 10s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 8px var(--primary-color)); /* Effet de bordure lumineuse colorée */
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -844,12 +846,12 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* LIGNE AU-DESSUS DES BOUTONS PLUS VISIBLE */
+/* 🆕 LIGNE AU-DESSUS DES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(128, 128, 128, 0.6); 
+    border-top: 2px solid rgba(255, 255, 255, 0.8); /* Ligne blanche, épaisse et très visible */
     padding-top: 20px;
 }
 
@@ -887,11 +889,11 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
+/* 🆕 LIGNE VERTICALE ENTRE LES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
 .bcn-divider {
-    width: 1px;
+    width: 2px; /* Plus épaisse */
     height: 50px;
-    background-color: rgba(128, 128, 128, 0.6); 
+    background-color: rgba(255, 255, 255, 0.8); /* Blanche et très visible */
     margin: 0 15px;
 }
 
