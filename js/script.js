@@ -79,7 +79,7 @@ function getCurrencyCode(symbol) {
         'HKD': 'HKD', 'TWD': 'TWD', 'MOP': 'MOP', 'KRW': 'KRW', 'KHR': 'KHR',
         'LAK': 'LAK', 'BND': 'BND', 'MVR': 'MVR', 'MNT': 'MNT', 'KZT': 'KZT',
         'UZS': 'UZS', 'SAR': 'SAR', 'AED': 'AED', 'QAR': 'QAR', 'KWD': 'KWD',
-        'BHD': 'BHD', 'OMR': 'OMR', 'JOD': 'JOD', 'LBP': 'LBP', 'ILS': 'ILS',
+        'BHD': 'BHD', 'OMR': 'OMR', 'JOD': 'JOD', 'LBP': 'LBP', 'ILS': 'ILS', '₪': 'ILS',
         'IQD': 'IQD', 'SYP': 'SYP', 'YER': 'YER', 'IRR': 'IRR', 'AFN': 'AFN',
         'ETB': 'ETB', 'UGX': 'UGX', 'TZS': 'TZS', 'RWF': 'RWF', 'BIF': 'BIF',
         'CDF': 'CDF', 'AOA': 'AOA', 'MZN': 'MZN', 'ZMW': 'ZMW', 'ZWL': 'ZWL',
@@ -155,7 +155,27 @@ function formatBalanceHTML(amount) {
     const parts = formatted.split(',');
     const intPart = parts[0];
     const decPart = parts[1] || '00';
-    return `<span class="balance-int">${intPart}</span><span class="balance-dec">,${decPart}</span> <span class="balance-curr">${appState.currency}</span>`;
+    
+    // ✅ MODIFICATION : Mapping pour afficher le symbole (ex: ₪) sur la grande carte
+    let displayCurrency = appState.currency;
+    const currencySymbols = {
+        'ILS': '₪',
+        'USD': '$',
+        'EUR': '€',
+        'GBP': '£',
+        'PLN': 'zł',
+        'CNY': '¥',
+        'JPY': '¥',
+        'CHF': 'CHF',
+        'CAD': 'CAD',
+        'AUD': 'AUD',
+        'NZD': 'NZD'
+    };
+    if (currencySymbols[displayCurrency]) {
+        displayCurrency = currencySymbols[displayCurrency];
+    }
+    
+    return `<span class="balance-int">${intPart}</span><span class="balance-dec">,${decPart}</span> <span class="balance-curr">${displayCurrency}</span>`;
 }
 
 function showToast(message, type = 'info') {
