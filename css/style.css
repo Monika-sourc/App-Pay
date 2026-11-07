@@ -819,12 +819,12 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* LIGNE AU-DESSUS DES BOUTONS PLUS VISIBLE */
+/* 🆕 LIGNE AU-DESSUS DES BOUTONS PLUS VISIBLE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(128, 128, 128, 0.4); 
+    border-top: 2px solid rgba(128, 128, 128, 0.8); /* Épaisseur 2px et opacité 0.8 */
     padding-top: 20px;
 }
 
@@ -862,11 +862,11 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
+/* 🆕 LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
 .bcn-divider {
-    width: 1px; 
+    width: 2px; /* Épaisseur 2px */
     height: 50px;
-    background-color: rgba(128, 128, 128, 0.4); 
+    background-color: rgba(128, 128, 128, 0.8); /* Opacité 0.8 */
     margin: 0 15px;
 }
 
