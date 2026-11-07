@@ -130,8 +130,9 @@ function applyClientColor(color) {
         }
         document.documentElement.style.setProperty('--big-card-text-color', textColor);
     } else {
-        document.documentElement.style.setProperty('--big-card-color', 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)');
-        document.documentElement.style.setProperty('--big-card-text-color', '#111111');
+        // 🆕 COULEUR PAR DÉFAUT : NOIR AVEC TEXTE BLANC
+        document.documentElement.style.setProperty('--big-card-color', 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)');
+        document.documentElement.style.setProperty('--big-card-text-color', '#ffffff');
     }
 }
 
