@@ -722,9 +722,9 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE - FOND PUR ET FORT, BALLONS ÉPAIS */
+/* NOUVELLE CARTE DE SOLDE - FOND PUR ET FORT, BOULES RONDES EN CSS */
 .balance-card-new {
-    /* 🆕 LE FOND EST PLUS PUR ET FORT (utilisation de la couleur principale foncée) */
+    /* Fond très pur et intense */
     background: linear-gradient(135deg, var(--primary-color-dark) 0%, #111111 100%);
     border-radius: 10px; 
     padding: 20px 20px; 
@@ -732,38 +732,43 @@ body {
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
-/* 🆕 BALLON 1 (Blanc, épais, rond) */
+/* 🆕 BOULES BLANCHES (CSS PUR, SANS SVG) */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Ccircle cx='10%25' cy='110%25' r='60%25' fill='%23ffffff' fill-opacity='0.08'/%3E%3Ccircle cx='40%25' cy='120%25' r='80%25' fill='%23ffffff' fill-opacity='0.12'/%3E%3Ccircle cx='0%25' cy='120%25' r='70%25' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
+    /* Création de plusieurs boules lumineuses avec radial-gradient */
+    background-image: 
+        radial-gradient(circle at 10% 110%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) 20%, transparent 20.1%),
+        radial-gradient(circle at 40% 120%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 30%, transparent 30.1%),
+        radial-gradient(circle at 0% 130%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 25%, transparent 25.1%);
     background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: balloonFloat 6s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+    animation: floatBalls 8s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
 }
 
-/* 🆕 BALLON 2 (Couleur, épais, rond) */
+/* 🆕 BOULES COLORÉES (CSS PUR, SANS SVG) */
 .balance-card-new::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Ccircle cx='70%25' cy='110%25' r='70%25' fill='%23ff7a00' fill-opacity='0.15'/%3E%3Ccircle cx='90%25' cy='120%25' r='60%25' fill='%23ffaa5c' fill-opacity='0.1'/%3E%3Ccircle cx='50%25' cy='130%25' r='90%25' fill='%23ff7a00' fill-opacity='0.08'/%3E%3C/svg%3E");
+    /* Boules avec la couleur principale */
+    background-image: 
+        radial-gradient(circle at 80% 110%, var(--primary-color) 0%, var(--primary-color) 25%, transparent 25.1%),
+        radial-gradient(circle at 100% 130%, var(--primary-color-light) 0%, var(--primary-color-light) 35%, transparent 35.1%),
+        radial-gradient(circle at 60% 120%, var(--primary-color) 0%, var(--primary-color) 20%, transparent 20.1%);
     background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: balloonFloatReverse 8s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 12px var(--primary-color));
+    animation: floatBallsReverse 10s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 15px var(--primary-color));
+    opacity: 0.6;
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -898,15 +903,15 @@ body {
     margin: 0 15px;
 }
 
-/* ANIMATIONS BALLONS */
-@keyframes balloonFloat {
-    0% { background-size: 100% 100%; transform: scale(1); }
-    100% { background-size: 110% 110%; transform: scale(1.05); }
+/* ANIMATIONS BOULES */
+@keyframes floatBalls {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-20px) scale(1.05); }
 }
 
-@keyframes balloonFloatReverse {
-    0% { background-size: 100% 100%; transform: scale(1); }
-    100% { background-size: 115% 115%; transform: scale(1.02); }
+@keyframes floatBallsReverse {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-15px) scale(1.08); }
 }
 
 @keyframes lampPulse {
