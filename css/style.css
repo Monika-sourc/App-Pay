@@ -722,53 +722,51 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE - FOND PUR ET FORT, BOULES RONDES EN CSS */
+/* NOUVELLE CARTE DE SOLDE - DESIGN SOFT LIGHT PROFESSIONNEL */
 .balance-card-new {
-    /* Fond très pur et intense */
-    background: linear-gradient(135deg, var(--primary-color-dark) 0%, #111111 100%);
-    border-radius: 10px; 
+    /* ✅ UTILISATION DE LA COULEUR CHOISIE PAR L'ADMIN */
+    background: var(--big-card-color);
+    border-radius: 12px; 
     padding: 20px 20px; 
-    color: #ffffff;
+    color: var(--big-card-text-color);
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 40px rgba(255, 255, 255, 0.05);
     z-index: 1;
 }
 
-/* 🆕 BOULES BLANCHES (CSS PUR, SANS SVG) */
+/* ✅ HALO DE LUMIÈRE DOUX (SOFT LIGHT) EN HAUT À DROITE */
 .balance-card-new::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* Création de plusieurs boules lumineuses avec radial-gradient */
-    background-image: 
-        radial-gradient(circle at 10% 110%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) 20%, transparent 20.1%),
-        radial-gradient(circle at 40% 120%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 30%, transparent 30.1%),
-        radial-gradient(circle at 0% 130%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 25%, transparent 25.1%);
-    background-size: 100% 100%;
+    top: -50px;
+    right: -50px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+    border-radius: 50%;
+    filter: blur(40px);
     z-index: 0;
     pointer-events: none;
-    animation: floatBalls 8s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    animation: softGlow 8s ease-in-out infinite alternate;
 }
 
-/* 🆕 BOULES COLORÉES (CSS PUR, SANS SVG) */
+/* ✅ HALO DE COULEUR DOUX EN BAS À GAUCHE */
 .balance-card-new::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /* Boules avec la couleur principale */
-    background-image: 
-        radial-gradient(circle at 80% 110%, var(--primary-color) 0%, var(--primary-color) 25%, transparent 25.1%),
-        radial-gradient(circle at 100% 130%, var(--primary-color-light) 0%, var(--primary-color-light) 35%, transparent 35.1%),
-        radial-gradient(circle at 60% 120%, var(--primary-color) 0%, var(--primary-color) 20%, transparent 20.1%);
-    background-size: 100% 100%;
+    bottom: -50px;
+    left: -50px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, var(--primary-color) 0%, transparent 60%);
+    border-radius: 50%;
+    filter: blur(50px);
     z-index: 0;
     pointer-events: none;
-    animation: floatBallsReverse 10s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 15px var(--primary-color));
-    opacity: 0.6;
+    opacity: 0.4;
+    animation: softGlowReverse 10s ease-in-out infinite alternate;
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -784,7 +782,7 @@ body {
     height: 20px;
     background: radial-gradient(circle, #ffffff 0%, #ffffff 40%, transparent 70%);
     border-radius: 50%;
-    box-shadow: 0 0 15px 5px rgba(255,255,255,0.5);
+    box-shadow: 0 0 15px 5px rgba(255,255,255,0.3);
     z-index: 3;
     animation: lampPulse 2s ease-in-out infinite alternate;
 }
@@ -794,9 +792,9 @@ body {
     z-index: 2;
 }
 
-/* Ombre du texte pour la lisibilité sur fond fort */
+/* Ombre du texte pour la lisibilité */
 .bcn-title, .bcn-amount, .bcn-subtitle, .bcn-action-btn span {
-    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .bcn-top {
@@ -811,7 +809,7 @@ body {
     gap: 10px;
     font-size: 17px; 
     font-weight: 500;
-    color: #ffffff;
+    color: var(--big-card-text-color);
 }
 
 .bcn-bank-icon {
@@ -820,7 +818,7 @@ body {
     position: absolute;
     top: 15px;
     right: 20px;
-    color: #ffffff;
+    color: var(--big-card-text-color);
 }
 
 /* TAILLE DU SOLDE AUGMENTÉE */
@@ -830,7 +828,7 @@ body {
     text-align: center;
     margin: 10px 0 5px 0;
     letter-spacing: 0.5px;
-    color: #ffffff;
+    color: var(--big-card-text-color);
 }
 
 .bcn-amount .balance-dec {
@@ -849,15 +847,15 @@ body {
     opacity: 0.9;
     margin-bottom: 20px;
     font-weight: 500;
-    color: #ffffff;
+    color: var(--big-card-text-color);
 }
 
-/* LIGNE AU-DESSUS DES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
+/* LIGNE AU-DESSUS DES BOUTONS PLUS VISIBLE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid rgba(255, 255, 255, 0.4); 
+    border-top: 1px solid rgba(128, 128, 128, 0.4); 
     padding-top: 20px;
 }
 
@@ -892,31 +890,31 @@ body {
 .bcn-action-btn span {
     font-size: 17px; 
     font-weight: 600;
-    color: #ffffff;
+    color: var(--big-card-text-color);
 }
 
-/* LIGNE VERTICALE ENTRE LES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
+/* LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
 .bcn-divider {
-    width: 2px; 
+    width: 1px; 
     height: 50px;
-    background-color: rgba(255, 255, 255, 0.4); 
+    background-color: rgba(128, 128, 128, 0.4); 
     margin: 0 15px;
 }
 
-/* ANIMATIONS BOULES */
-@keyframes floatBalls {
-    0% { transform: translateY(0) scale(1); }
-    100% { transform: translateY(-20px) scale(1.05); }
+/* ANIMATIONS SOFT LIGHT */
+@keyframes softGlow {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+    100% { transform: scale(1.2) translate(-10px, 10px); opacity: 1; }
 }
 
-@keyframes floatBallsReverse {
-    0% { transform: translateY(0) scale(1); }
-    100% { transform: translateY(-15px) scale(1.08); }
+@keyframes softGlowReverse {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+    100% { transform: scale(1.3) translate(10px, -10px); opacity: 0.6; }
 }
 
 @keyframes lampPulse {
-    0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 10px 3px rgba(255,255,255,0.4); }
-    100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px 8px rgba(255,255,255,0.7); }
+    0% { transform: scale(0.9); opacity: 0.8; }
+    100% { transform: scale(1.1); opacity: 1; }
 }
 
 /* NOUVELLES MINI CARTES */
