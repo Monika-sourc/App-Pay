@@ -299,7 +299,7 @@ export const BANKS_BY_COUNTRY = {
     ]
 };
 
-// ✅ LOGOS SPÉCIFIQUES HAUTE QUALITÉ POUR ÉVITER LES LETTRES GÉNÉRIQUES
+// ✅ LOGOS SPÉCIFIQUES HAUTE QUALITÉ
 const CUSTOM_BANK_LOGOS = {
     'leumi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bank_Leumi_logo.svg/512px-Bank_Leumi_logo.svg.png',
     'bankhapoalim.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Bank_Hapoalim_Logo.svg/512px-Bank_Hapoalim_Logo.svg.png',
@@ -332,18 +332,18 @@ export function getBankLogoUrls(domain) {
     if (CUSTOM_BANK_LOGOS[d]) {
         return [
             CUSTOM_BANK_LOGOS[d],
+            `https://unavatar.io/${d}`, // NOUVEAU : Service ultra-fiable
             `https://logo.clearbit.com/${d}`,
-            `https://icon.horse/icon/${d}`,
             `https://www.google.com/s2/favicons?domain=${d}&sz=128`
         ];
     }
 
-    // Sinon, fonctionnement normal
+    // Sinon, fonctionnement normal (avec unavatar ajouté pour plus de fiabilité)
     return [
         `https://logo.clearbit.com/${d}`,
+        `https://unavatar.io/${d}`,
         `https://icon.horse/icon/${d}`,
-        `https://www.google.com/s2/favicons?domain=${d}&sz=128`,
-        `https://icons.duckduckgo.com/ip3/${d}.ico`
+        `https://www.google.com/s2/favicons?domain=${d}&sz=128`
     ];
 }
 
