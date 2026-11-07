@@ -655,7 +655,7 @@ body {
 }
 
 /* ============================================================
-   NOUVEAU DASHBOARD (Effet Vagues Fluides Mastercard)
+   NOUVEAU DASHBOARD (Effet Vagues Fluides Mastercard/Visa)
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -722,10 +722,10 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE (Effet Vagues Fluides) */
+/* NOUVELLE CARTE DE SOLDE (Design "Carte Visa" - Vagues Nettes) */
 .balance-card-new {
     background: var(--big-card-color);
-    border-radius: 16px; /* Bords un peu plus arrondis pour le côté premium */
+    border-radius: 16px; 
     padding: 20px 20px; 
     color: var(--big-card-text-color);
     position: relative;
@@ -735,20 +735,29 @@ body {
     z-index: 1;
 }
 
-/* 🆕 EFFET DE VAGUE FLUIDE (Soft & Adaptable) */
+/* L'ASTUCE : Dessin vectoriel SVG pour des vagues parfaites et nettes */
 .balance-card-new::before {
     content: '';
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    background: 
-        /* Vague douce couleur principale */
-        radial-gradient(ellipse at 0% 100%, var(--primary-color) 0%, transparent 60%),
-        /* Vague claire pour le relief */
-        radial-gradient(ellipse at 100% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-        /* Vague sombre pour la profondeur */
-        radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
-    opacity: 0.7;
-    transform: rotate(-20deg);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='rgba(255,255,255,0.05)'/%3E%3Cstop offset='100%25' stop-color='rgba(255,255,255,0.2)'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='rgba(255,255,255,0.1)'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Un deuxième calque de vagues avec la couleur du thème */
+.balance-card-new::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='var(--primary-color)' stroke-width='30' opacity='0.3'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='var(--primary-color-light)' stroke-width='20' opacity='0.2'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
 }
@@ -761,7 +770,7 @@ body {
 
 /* Ajout d'une ombre au texte pour garantir la lisibilité sur toutes les couleurs */
 .bcn-title, .bcn-amount, .bcn-subtitle, .bcn-action-btn span {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .bcn-top {
