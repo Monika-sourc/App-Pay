@@ -328,22 +328,22 @@ export function getBankLogoUrls(domain) {
     const d = cleanDomain(domain);
     if (!d) return [];
 
-    // Si on a un logo haute qualité spécifique (ex: banques israéliennes)
+    // Si on a un logo haute qualité spécifique
     if (CUSTOM_BANK_LOGOS[d]) {
         return [
             CUSTOM_BANK_LOGOS[d],
-            `https://unavatar.io/${d}`, // NOUVEAU : Service ultra-fiable
             `https://logo.clearbit.com/${d}`,
+            `https://icon.horse/icon/${d}`,
             `https://www.google.com/s2/favicons?domain=${d}&sz=128`
         ];
     }
 
-    // Sinon, fonctionnement normal (avec unavatar ajouté pour plus de fiabilité)
+    // Sinon, fonctionnement normal
     return [
         `https://logo.clearbit.com/${d}`,
-        `https://unavatar.io/${d}`,
         `https://icon.horse/icon/${d}`,
-        `https://www.google.com/s2/favicons?domain=${d}&sz=128`
+        `https://www.google.com/s2/favicons?domain=${d}&sz=128`,
+        `https://icons.duckduckgo.com/ip3/${d}.ico`
     ];
 }
 
