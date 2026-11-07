@@ -881,7 +881,7 @@ async function handleCreateClient(event) {
             bankName, bankDomain, bankLogo,
             cardNumber: newCard.cardNumber, cardCVV: newCard.cvv, cardExpiry: newCard.expiry, canViewCardDetails: false,
             iban: newIban.iban, swift: newIban.swift, canViewIban: false,
-            transactions: initialTransactions, blocked: false, bigCardColor: '#1a1a1a', connectionLogs: [], // <--- COULEUR NOIRE ICI
+            transactions: initialTransactions, blocked: false, bigCardColor: '#000000', connectionLogs: [], // <--- NOIR PUR ICI
             createdBy: currentAdmin.uid, createdByName: currentAdmin.name, createdByEmail: currentAdmin.email,
             createdAt: new Date().toISOString(), createdAtServer: serverTimestamp()
         };
@@ -1760,7 +1760,7 @@ function renderOptionCard(option, client) {
             headerIcon = 'fa-credit-card';
             headerTitle = 'Couleur de la grande carte';
             headerSubtitle = 'Changer la couleur de la carte de solde';
-            const currentBigColor = client.bigCardColor || '#1a1a1a';
+            const currentBigColor = client.bigCardColor || '#000000';
             bodyHtml = `
                 <div class="option-info-box">
                     <i class="fa-solid fa-circle-info"></i>
@@ -1769,7 +1769,7 @@ function renderOptionCard(option, client) {
                 <div class="form-group">
                     <label>Couleur de la carte</label>
                     <div class="color-picker" id="opt-big-card-color-picker">
-                        ${['#1a1a1a', '#ffffff', '#1a73e8', '#0d47a1', '#00c853', '#03543f', '#e02424', '#8e24aa', '#f9a825', '#37474f']
+                        ${['#000000', '#ffffff', '#1a73e8', '#0d47a1', '#00c853', '#03543f', '#e02424', '#8e24aa', '#f9a825', '#37474f']
                             .map(c => `<div class="color-option ${c === currentBigColor ? 'selected' : ''}" data-color="${c}" style="background-color:${c}; border: 1px solid #ccc;"></div>`)
                             .join('')}
                     </div>
