@@ -122,6 +122,13 @@ export const BANKS_BY_COUNTRY = {
         { name: "QNB Alahli", domain: "qnbalahli.com" },
         { name: "HSBC Egypt", domain: "hsbc.com.eg" }
     ],
+    "Israël": [
+        { name: "Bank Leumi", domain: "leumi.co.il" },
+        { name: "Bank Hapoalim", domain: "bankhapoalim.co.il" },
+        { name: "Israel Discount Bank", domain: "discountbank.co.il" },
+        { name: "Mizrahi Tefahot Bank", domain: "mizrahi-tefahot.co.il" },
+        { name: "First International Bank of Israel", domain: "fibi.co.il" }
+    ],
     "Kenya": [
         { name: "KCB Bank", domain: "kcbgroup.com" },
         { name: "Equity Bank", domain: "equitygroupholdings.com" },
