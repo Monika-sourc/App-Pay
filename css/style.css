@@ -722,7 +722,7 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE */
+/* NOUVELLE CARTE DE SOLDE - DESIGN SOYEUX ET PREMIUM */
 .balance-card-new {
     background: var(--big-card-color);
     border-radius: 10px; 
@@ -735,34 +735,32 @@ body {
     z-index: 1;
 }
 
-/* 🆕 VAGUE 1 : Très visible, blanc éclatant */
+/* 🆕 VAGUE 1 : Couleur principale douce et transparente */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff' stop-opacity='0.9'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='0.4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='%23ffffff' fill-opacity='0.5'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='%23ffffff' fill-opacity='0.7'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff' stop-opacity='0.05'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='0.15'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='%23ffffff' fill-opacity='0.08'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='%23ffffff' fill-opacity='0.12'/%3E%3C/svg%3E");
     background-size: 130% 130%; 
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: waveMove 6s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); /* Effet de brillance */
+    animation: waveMove 8s ease-in-out infinite alternate;
 }
 
-/* 🆕 VAGUE 2 : Couleurs fortes (Orange vif) */
+/* 🆕 VAGUE 2 : Reflet de couleur (Orange) subtil et élégant */
 .balance-card-new::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='%23ff7a00' stroke-width='25' stroke-opacity='0.9'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='%23ffaa5c' stroke-width='15' stroke-opacity='0.9'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='%23ff7a00' stroke-width='25' stroke-opacity='0.15'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='%23ffaa5c' stroke-width='15' stroke-opacity='0.1'/%3E%3C/svg%3E");
     background-size: 130% 130%;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: waveMoveReverse 7s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 8px rgba(255, 122, 0, 0.6)); /* Effet de brillance coloré */
+    animation: waveMoveReverse 10s ease-in-out infinite alternate;
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -778,7 +776,7 @@ body {
     height: 20px;
     background: radial-gradient(circle, #ffffff 0%, #ffffff 40%, transparent 70%);
     border-radius: 50%;
-    box-shadow: 0 0 15px 5px rgba(255,255,255,0.6);
+    box-shadow: 0 0 15px 5px rgba(255,255,255,0.4);
     z-index: 3;
     animation: lampPulse 2s ease-in-out infinite alternate;
 }
@@ -788,9 +786,9 @@ body {
     z-index: 2;
 }
 
-/* On renforce l'ombre du texte pour qu'il reste lisible sur les vagues blanches */
+/* Ombre du texte pour la lisibilité */
 .bcn-title, .bcn-amount, .bcn-subtitle, .bcn-action-btn span {
-    text-shadow: 0 3px 6px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .bcn-top {
@@ -900,17 +898,17 @@ body {
 /* ANIMATIONS */
 @keyframes waveMove {
     0% { background-position: 0% 0%; transform: scale(1); }
-    100% { background-position: 100% 100%; transform: scale(1.3); }
+    100% { background-position: 100% 100%; transform: scale(1.1); }
 }
 
 @keyframes waveMoveReverse {
     0% { background-position: 100% 0%; transform: scale(1); }
-    100% { background-position: 0% 100%; transform: scale(1.3); }
+    100% { background-position: 0% 100%; transform: scale(1.1); }
 }
 
 @keyframes lampPulse {
-    0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 10px 3px rgba(255,255,255,0.5); }
-    100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px 8px rgba(255,255,255,0.8); }
+    0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 10px 3px rgba(255,255,255,0.3); }
+    100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px 8px rgba(255,255,255,0.6); }
 }
 
 /* NOUVELLES MINI CARTES */
