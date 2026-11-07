@@ -747,7 +747,6 @@ body {
     z-index: 0;
     pointer-events: none;
     opacity: 0.8;
-    /* Augmentation de l'amplitude du mouvement */
     animation: waveMove 8s ease-in-out infinite alternate;
 }
 
@@ -765,22 +764,23 @@ body {
     animation: waveMoveReverse 10s ease-in-out infinite alternate;
 }
 
-/* Ampoule : SUPPRIMÉE */
-/* Faisceau de lumière animé */
+/* Faisceau de lumière animé (Sommet fixe, balayage fluide) */
+.bcn-top {
+    position: relative;
+}
 .bcn-top::after {
     content: '';
     position: absolute;
-    top: 35px;
-    right: 45px;
-    width: 120px; /* Faisceau plus large */
-    height: 180px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, transparent 100%);
-    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
+    top: 0; /* Fixé tout en haut */
+    right: 30px;
+    width: 120px;
+    height: 280px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 80%);
+    clip-path: polygon(30% 0, 70% 0, 100% 100%, 0% 100%);
     transform-origin: top center;
     z-index: 1;
     pointer-events: none;
-    /* Animation de balayage */
-    animation: beamSweep 6s ease-in-out infinite alternate;
+    animation: beamSweep 6s ease-in-out infinite alternate; /* Balayage fluide sans pression */
 }
 
 .balance-card-new > * {
@@ -817,7 +817,7 @@ body {
 }
 
 .bcn-amount {
-    font-size: 38px; 
+    font-size: 44px; /* Augmenté */
     font-weight: 600; 
     text-align: center;
     margin: 10px 0 5px 0;
@@ -826,12 +826,12 @@ body {
 }
 
 .bcn-amount .balance-dec {
-    font-size: 20px;
+    font-size: 24px; /* Augmenté */
     font-weight: 500;
 }
 
 .bcn-amount .balance-curr {
-    font-size: 20px;
+    font-size: 24px; /* Augmenté */
     font-weight: 500;
 }
 
@@ -904,11 +904,9 @@ body {
     100% { background-position: 0% 70%; transform: scale(1.1); }
 }
 
-/* Animation de balayage du faisceau (le sommet reste fixe, la base bouge) */
 @keyframes beamSweep {
-    0% { transform: rotate(-35deg); opacity: 0.3; }
-    50% { transform: rotate(35deg); opacity: 0.7; }
-    100% { transform: rotate(-35deg); opacity: 0.3; }
+    0% { transform: rotate(-25deg); opacity: 0.15; }
+    100% { transform: rotate(25deg); opacity: 0.6; }
 }
 
 /* NOUVELLES MINI CARTES */
@@ -992,7 +990,7 @@ body {
 }
 
 /* ============================================================
-   ANCIENS STYLES RESTANTS
+   ANCIENS STYLES RESTANTS (AUTRES PAGES - Textes Réduits)
    ============================================================ */
 .history-card {
     background: var(--card-bg);
@@ -1225,7 +1223,7 @@ body {
     font-weight: 500;
 }
 
-/* --- AUTRES PAGES --- */
+/* --- AUTRES PAGES (Textes Réduits) --- */
 .transfer-card {
     background: #ffffff;
     border-radius: 6px; 
@@ -1248,7 +1246,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 16px; 
+    font-size: 14px; /* Réduit */
     color: #000;
     margin-bottom: 15px;
     font-weight: 500;
@@ -1256,7 +1254,7 @@ body {
 
 .transfer-info-top i {
     color: #1a73e8;
-    font-size: 19px;
+    font-size: 16px; /* Réduit */
 }
 
 .transfer-info-top strong {
@@ -1267,7 +1265,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 15px; 
+    font-size: 13px; /* Réduit */
     font-weight: 500;
     color: #000;
     margin-bottom: 25px;
@@ -1290,7 +1288,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 14px; 
+    font-size: 13px; /* Réduit */
     color: #000;
     margin-bottom: 8px;
     font-weight: 700; 
@@ -1321,7 +1319,7 @@ body {
     border: none;
     outline: none;
     padding: 14px 15px;
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 700; 
     color: #000;
     background: transparent;
@@ -1338,7 +1336,7 @@ body {
     font-weight: 700; 
     color: #000;
     background-color: #f8f9fa;
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     flex-shrink: 0;
     border-left: 1px solid #dcdfe6;
 }
@@ -1348,7 +1346,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 14px 15px;
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 700; 
     color: #000;
     outline: none;
@@ -1367,7 +1365,7 @@ body {
     color: #b45309;
     padding: 12px 15px;
     border-radius: 6px;
-    font-size: 14px; 
+    font-size: 13px; /* Réduit */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1389,7 +1387,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 16px;
-    font-size: 17px; 
+    font-size: 16px; /* Réduit */
     font-weight: 700; 
     cursor: pointer;
     margin-top: 10px;
@@ -1459,13 +1457,13 @@ body {
 }
 
 .verification-details-grey-box .detail-label {
-    font-size: 15px; 
+    font-size: 14px; /* Réduit */
     color: #000 !important; 
     font-weight: 500; 
 }
 
 .verification-details-grey-box .detail-value {
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 700; 
     color: #000 !important; 
     word-break: break-all;
@@ -1478,7 +1476,7 @@ body {
     border: none;
     border-radius: 6px;
     padding: 10px 18px;
-    font-size: 15px; 
+    font-size: 14px; /* Réduit */
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -1493,7 +1491,7 @@ body {
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 16px; 
+    font-size: 14px; /* Réduit */
     font-weight: 500 !important; 
     color: #000;
     margin-bottom: 15px;
@@ -1533,7 +1531,7 @@ body {
 .success-message-title {
     display: flex;
     align-items: center;
-    font-size: 17px; 
+    font-size: 16px; /* Réduit */
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px; 
@@ -1548,7 +1546,7 @@ body {
 }
 
 .progress-desc {
-    font-size: 15px; 
+    font-size: 14px; /* Réduit */
     color: #000; 
     margin-bottom: 35px; 
     line-height: 1.5;
@@ -1587,7 +1585,7 @@ body {
 .details-section-title {
     display: flex;
     align-items: center;
-    font-size: 17px; 
+    font-size: 16px; /* Réduit */
     font-weight: 700; 
     color: #000;
     margin-bottom: 15px;
@@ -1621,13 +1619,13 @@ body {
 }
 
 .detail-label-new {
-    font-size: 15px; 
+    font-size: 14px; /* Réduit */
     color: #000;
     font-weight: 500; 
 }
 
 .detail-value-new {
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 700; 
     color: #000;
     word-break: break-all;
@@ -1664,14 +1662,14 @@ body {
 }
 
 .success-main-title {
-    font-size: 19px; 
+    font-size: 17px; /* Réduit */
     font-weight: 700;
     color: #1e293b;
     margin-bottom: 6px;
 }
 
 .success-subtitle {
-    font-size: 13px; 
+    font-size: 12px; /* Réduit */
     color: #64748b;
     line-height: 1.4;
     max-width: 90%;
@@ -1711,7 +1709,7 @@ body {
 }
 
 .success-amount-label {
-    font-size: 11px; 
+    font-size: 11px; /* Réduit */
     font-weight: 700;
     color: #166534;
     text-transform: uppercase;
@@ -1719,7 +1717,7 @@ body {
 }
 
 .success-amount-value {
-    font-size: 22px; 
+    font-size: 22px; /* Réduit */
     font-weight: 800;
     color: #000000;
 }
@@ -1763,14 +1761,14 @@ body {
 
 .sd-label {
     flex: 0 0 50%; 
-    font-size: 13px; 
+    font-size: 12px; /* Réduit */
     color: #000000;
     font-weight: 500;
 }
 
 .sd-value {
     flex: 1;
-    font-size: 13px; 
+    font-size: 12px; /* Réduit */
     color: #000000;
     font-weight: 700;
     text-align: left;
@@ -1800,13 +1798,13 @@ body {
 }
 
 .ss-text strong {
-    font-size: 13px; 
+    font-size: 12px; /* Réduit */
     font-weight: 700;
     color: #166534;
 }
 
 .ss-text small {
-    font-size: 11px; 
+    font-size: 10px; /* Réduit */
     color: #15803d;
 }
 
@@ -1825,7 +1823,7 @@ body {
     gap: 6px;
     padding: 12px;
     border-radius: 8px;
-    font-size: 13px; 
+    font-size: 12px; /* Réduit */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -1984,7 +1982,7 @@ body {
 
 .vc-number {
     font-family: 'Courier New', monospace;
-    font-size: 21px; 
+    font-size: 19px; /* Réduit */
     letter-spacing: 2px;
     font-weight: 700;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -2020,7 +2018,7 @@ body {
 }
 
 .vc-label {
-    font-size: 11px; 
+    font-size: 10px; /* Réduit */
     opacity: 0.7;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -2029,7 +2027,7 @@ body {
 }
 
 .vc-value {
-    font-size: 15px; 
+    font-size: 14px; /* Réduit */
     font-weight: 700;
     letter-spacing: 1px;
     color: #ffffff;
@@ -2209,13 +2207,13 @@ body {
 }
 
 .btn-premium-text strong {
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 600;
     color: #000;
 }
 
 .btn-premium-text small {
-    font-size: 14px; 
+    font-size: 13px; /* Réduit */
     color: #000;
     font-weight: 500;
 }
@@ -2255,14 +2253,14 @@ body {
 .icon-cyan { background: #e0f2fe; color: #0284c7; }
 
 .vc-info-label {
-    font-size: 13px; 
+    font-size: 12px; /* Réduit */
     color: #000;
     margin-bottom: 2px;
     font-weight: 500;
 }
 
 .vc-info-value {
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 600;
     color: #000;
 }
@@ -2389,7 +2387,7 @@ body {
 }
 
 .profile-header-text h2 {
-    font-size: 22px; 
+    font-size: 20px; /* Réduit */
     font-weight: 700;
     color: #ffffff;
     margin: 0;
@@ -2424,7 +2422,7 @@ body {
 }
 
 .profile-section-title {
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     color: #000;
     font-weight: 700; 
     letter-spacing: 0.3px;
@@ -2485,13 +2483,13 @@ body {
 }
 
 .profile-list-label {
-    font-size: 14px; 
+    font-size: 13px; /* Réduit */
     color: #000;
     font-weight: 500;
 }
 
 .profile-list-value {
-    font-size: 17px; 
+    font-size: 16px; /* Réduit */
     color: #000;
     font-weight: 600;
     word-break: break-word;
@@ -2537,7 +2535,7 @@ body {
 }
 
 .profile-action-btn span {
-    font-size: 17px; 
+    font-size: 16px; /* Réduit */
     font-weight: 500;
     color: #000;
 }
@@ -2560,7 +2558,7 @@ body {
     border: 2px solid #fde8e8;
     border-radius: 8px;
     padding: 16px;
-    font-size: 16px; 
+    font-size: 15px; /* Réduit */
     font-weight: 600;
     cursor: pointer;
     display: flex;
