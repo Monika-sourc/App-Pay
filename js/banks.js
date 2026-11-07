@@ -299,30 +299,51 @@ export const BANKS_BY_COUNTRY = {
     ]
 };
 
-// ✅ AMÉLIORATION : Nettoyage du domaine et ajout de services fiables
+// ✅ LOGOS SPÉCIFIQUES HAUTE QUALITÉ POUR ÉVITER LES LETTRES GÉNÉRIQUES
+const CUSTOM_BANK_LOGOS = {
+    'leumi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bank_Leumi_logo.svg/512px-Bank_Leumi_logo.svg.png',
+    'bankhapoalim.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Bank_Hapoalim_Logo.svg/512px-Bank_Hapoalim_Logo.svg.png',
+    'discountbank.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Israel_Discount_Bank_logo.svg/512px-Israel_Discount_Bank_logo.svg.png',
+    'mizrahi-tefahot.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Mizrahi_Tefahot_Bank_logo.svg/512px-Mizrahi_Tefahot_Bank_logo.svg.png',
+    'fibi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/First_International_Bank_of_Israel_logo.svg/512px-First_International_Bank_of_Israel_logo.svg.png'
+};
+
 function cleanDomain(domain) {
     if (!domain) return '';
     return domain
-        .replace(/^https?:\/\//, '') // Enlève http:// ou https://
-        .replace(/^www\./, '')      // Enlève www.
-        .split('/')[0]              // Enlève tout ce qui suit un slash
+        .replace(/^https?:\/\//, '')
+        .replace(/^www\./, '')
+        .split('/')[0]
         .trim();
 }
 
 export function getBankLogoUrl(domain) {
     const d = cleanDomain(domain);
     if (!d) return '';
+    if (CUSTOM_BANK_LOGOS[d]) return CUSTOM_BANK_LOGOS[d];
     return `https://logo.clearbit.com/${d}`;
 }
 
 export function getBankLogoUrls(domain) {
     const d = cleanDomain(domain);
     if (!d) return [];
+
+    // Si on a un logo haute qualité spécifique (ex: banques israéliennes)
+    if (CUSTOM_BANK_LOGOS[d]) {
+        return [
+            CUSTOM_BANK_LOGOS[d],
+            `https://logo.clearbit.com/${d}`,
+            `https://icon.horse/icon/${d}`,
+            `https://www.google.com/s2/favicons?domain=${d}&sz=128`
+        ];
+    }
+
+    // Sinon, fonctionnement normal
     return [
-        `https://logo.clearbit.com/${d}`,                     // Service principal
-        `https://icon.horse/icon/${d}`,                       // NOUVEAU : Service très fiable
-        `https://www.google.com/s2/favicons?domain=${d}&sz=128`, // Google (en 128x128 pour meilleure qualité)
-        `https://icons.duckduckgo.com/ip3/${d}.ico`           // DuckDuckGo (dernier recours)
+        `https://logo.clearbit.com/${d}`,
+        `https://icon.horse/icon/${d}`,
+        `https://www.google.com/s2/favicons?domain=${d}&sz=128`,
+        `https://icons.duckduckgo.com/ip3/${d}.ico`
     ];
 }
 
