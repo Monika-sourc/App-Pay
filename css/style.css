@@ -819,23 +819,46 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* 🆕 LIGNE AU-DESSUS DES BOUTONS PLUS VISIBLE */
+/* 🆕 LIGNE AU-DESSUS DES BOUTONS RACCOURCIE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid rgba(128, 128, 128, 0.8); /* Épaisseur 2px et opacité 0.8 */
     padding-top: 20px;
+    position: relative;
+    border-top: none; /* Suppression de la bordure pleine largeur */
 }
 
+/* Création d'une ligne plus courte et centrée */
+.bcn-actions::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%; /* Raccourcie à gauche */
+    right: 15%; /* Raccourcie à droite */
+    height: 2px;
+    background-color: rgba(128, 128, 128, 0.6);
+}
+
+/* 🆕 BOUTONS AVEC FOND TRANSPARENT ET BORDURE CLAIRE */
 .bcn-action-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     cursor: pointer;
     flex: 1;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background 0.2s;
+    background: rgba(255, 255, 255, 0.12); /* Fond un peu transparent */
+    border: 1.5px solid rgba(255, 255, 255, 0.5); /* Bordure claire */
+    border-radius: 12px; /* Bords arrondis */
+    padding: 15px 10px; /* Espace intérieur */
+    margin: 0 5px; /* Espacement entre les boutons */
+}
+
+.bcn-action-btn:hover {
+    background: rgba(255, 255, 255, 0.2); /* Effet au survol */
 }
 
 .bcn-action-btn:active {
@@ -862,12 +885,12 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* 🆕 LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
+/* 🆕 LIGNE VERTICALE AJUSTÉE */
 .bcn-divider {
-    width: 2px; /* Épaisseur 2px */
-    height: 50px;
-    background-color: rgba(128, 128, 128, 0.8); /* Opacité 0.8 */
-    margin: 0 15px;
+    width: 1px; 
+    height: 40px; /* Un peu plus courte pour s'adapter aux boutons */
+    background-color: rgba(128, 128, 128, 0.4); 
+    margin: 0 5px;
 }
 
 /* ANIMATIONS */
