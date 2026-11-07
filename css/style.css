@@ -724,18 +724,20 @@ body {
 
 /* NOUVELLE CARTE DE SOLDE - DESIGN SOYEUX ET LUMINEUX */
 .balance-card-new {
-    background: var(--big-card-color);
+    /* 🆕 AJOUT DE LUMIÈRE AU FOND ET À L'INTÉRIEUR */
+    background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.3) 0%, transparent 70%), var(--big-card-color);
     border-radius: 10px; 
     padding: 20px 20px; 
     color: var(--big-card-text-color);
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    /* Inset shadow pour éclairer l'intérieur */
+    box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0, 0, 0, 0.15);
     z-index: 1;
 }
 
-/* 🆕 VAGUE 1 : Bordure lumineuse ajoutée */
+/* VAGUE 1 : Bordure lumineuse */
 .balance-card-new::before {
     content: '';
     position: absolute;
@@ -747,10 +749,10 @@ body {
     z-index: 0;
     pointer-events: none;
     animation: waveMove 8s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)); /* Effet de bordure lumineuse */
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
 }
 
-/* 🆕 VAGUE 2 : Bordure lumineuse colorée ajoutée */
+/* VAGUE 2 : Bordure lumineuse colorée */
 .balance-card-new::after {
     content: '';
     position: absolute;
@@ -762,7 +764,7 @@ body {
     z-index: 0;
     pointer-events: none;
     animation: waveMoveReverse 10s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 8px var(--primary-color)); /* Effet de bordure lumineuse colorée */
+    filter: drop-shadow(0 0 8px var(--primary-color));
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -846,12 +848,12 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* 🆕 LIGNE AU-DESSUS DES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
+/* LIGNE AU-DESSUS DES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid rgba(255, 255, 255, 0.8); /* Ligne blanche, épaisse et très visible */
+    border-top: 2px solid rgba(255, 255, 255, 0.8); 
     padding-top: 20px;
 }
 
@@ -889,11 +891,11 @@ body {
     color: var(--big-card-text-color);
 }
 
-/* 🆕 LIGNE VERTICALE ENTRE LES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
+/* LIGNE VERTICALE ENTRE LES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
 .bcn-divider {
-    width: 2px; /* Plus épaisse */
+    width: 2px; 
     height: 50px;
-    background-color: rgba(255, 255, 255, 0.8); /* Blanche et très visible */
+    background-color: rgba(255, 255, 255, 0.8); 
     margin: 0 15px;
 }
 
