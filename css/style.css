@@ -826,18 +826,18 @@ body {
     align-items: center;
     padding-top: 20px;
     position: relative;
-    border-top: none;
+    border-top: none; 
 }
 
+/* Ligne plus courte, légèrement plus visible (sans être épaisse) */
 .bcn-actions::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 15%;
-    right: 15%;
-    height: 3px; /* Épaisseur augmentée */
-    background-color: rgba(255, 255, 255, 0.9); /* Blanc bien visible */
-    border-radius: 2px;
+    left: 15%; 
+    right: 15%; 
+    height: 1.5px; /* Épaisseur légèrement augmentée */
+    background-color: rgba(128, 128, 128, 0.8); /* Visibilité augmentée */
 }
 
 /* ✅ BOUTONS (Sans cadre) */
@@ -861,7 +861,7 @@ body {
     width: 60px; 
     height: 60px; 
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.15); 
     color: #ffffff; 
     display: flex;
     align-items: center;
@@ -873,7 +873,7 @@ body {
 }
 
 .bcn-icon-circle:hover {
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.25); 
 }
 
 .bcn-action-btn span {
@@ -884,9 +884,9 @@ body {
 
 /* 🆕 LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
 .bcn-divider {
-    width: 2px; /* Épaisseur augmentée */
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.9); /* Blanc bien visible */
+    width: 1px; 
+    height: 40px; 
+    background-color: rgba(128, 128, 128, 0.8); /* Visibilité augmentée */
     margin: 0 5px;
 }
 
@@ -977,7 +977,7 @@ body {
 }
 
 /* ============================================================
-   ANCIENS STYLES RESTANTS (AUTRES PAGES - Textes Agrandis)
+   ANCIENS STYLES RESTANTS (AUTRES PAGES - Textes Augmentés)
    ============================================================ */
 .history-card {
     background: var(--card-bg);
@@ -1210,7 +1210,7 @@ body {
     font-weight: 500;
 }
 
-/* --- AUTRES PAGES (Textes Agrandis) --- */
+/* --- AUTRES PAGES (Textes Augmentés) --- */
 .transfer-card {
     background: #ffffff;
     border-radius: 6px; 
@@ -1233,7 +1233,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 16px; /* Augmenté */
+    font-size: 15px; /* Augmenté */
     color: #000;
     margin-bottom: 15px;
     font-weight: 500;
@@ -1241,7 +1241,7 @@ body {
 
 .transfer-info-top i {
     color: #1a73e8;
-    font-size: 18px; /* Augmenté */
+    font-size: 17px; /* Augmenté */
 }
 
 .transfer-info-top strong {
@@ -1252,7 +1252,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 15px; /* Augmenté */
+    font-size: 14px; /* Augmenté */
     font-weight: 500;
     color: #000;
     margin-bottom: 25px;
@@ -1275,7 +1275,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 15px; /* Augmenté */
+    font-size: 14px; /* Augmenté */
     color: #000;
     margin-bottom: 8px;
     font-weight: 700; 
@@ -1352,7 +1352,7 @@ body {
     color: #b45309;
     padding: 12px 15px;
     border-radius: 6px;
-    font-size: 15px; /* Augmenté */
+    font-size: 14px; /* Augmenté */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1444,7 +1444,7 @@ body {
 }
 
 .verification-details-grey-box .detail-label {
-    font-size: 16px; /* Augmenté */
+    font-size: 15px; /* Augmenté */
     color: #000 !important; 
     font-weight: 500; 
 }
@@ -1478,7 +1478,7 @@ body {
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 16px; /* Augmenté */
+    font-size: 15px; /* Augmenté */
     font-weight: 500 !important; 
     color: #000;
     margin-bottom: 15px;
@@ -2014,7 +2014,7 @@ body {
 }
 
 .vc-value {
-    font-size: 16px; /* Augmenté */
+    font-size: 15px; /* Augmenté */
     font-weight: 700;
     letter-spacing: 1px;
     color: #ffffff;
@@ -2058,7 +2058,7 @@ body {
 }
 
 .vc-cvv-label {
-    font-size: 15px; /* Augmenté */
+    font-size: 14px; /* Augmenté */
     font-weight: 600;
     color: #000;
 }
@@ -2072,7 +2072,7 @@ body {
 }
 
 .vc-back-text {
-    font-size: 13px; /* Augmenté */
+    font-size: 12px; /* Augmenté */
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.4;
     padding: 0 25px;
@@ -2357,7 +2357,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 28px; /* Augmenté */
+    font-size: 26px; 
     flex-shrink: 0;
     border: 3px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
@@ -2374,7 +2374,7 @@ body {
 }
 
 .profile-header-text h2 {
-    font-size: 22px; /* Augmenté */
+    font-size: 20px;
     font-weight: 700;
     color: #ffffff;
     margin: 0;
@@ -2388,7 +2388,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 14px; /* Augmenté */
+    font-size: 13px; 
     background-color: rgba(16, 185, 129, 0.15);
     color: #34d399;
     padding: 5px 12px;
@@ -2409,7 +2409,7 @@ body {
 }
 
 .profile-section-title {
-    font-size: 17px; /* Augmenté */
+    font-size: 15px;
     color: #000;
     font-weight: 700; 
     letter-spacing: 0.3px;
@@ -2470,13 +2470,13 @@ body {
 }
 
 .profile-list-label {
-    font-size: 15px; /* Augmenté */
+    font-size: 14px; /* Augmenté */
     color: #000;
     font-weight: 500;
 }
 
 .profile-list-value {
-    font-size: 18px; /* Augmenté */
+    font-size: 17px; /* Augmenté */
     color: #000;
     font-weight: 600;
     word-break: break-word;
@@ -2522,7 +2522,7 @@ body {
 }
 
 .profile-action-btn span {
-    font-size: 18px; /* Augmenté */
+    font-size: 17px; /* Augmenté */
     font-weight: 500;
     color: #000;
 }
@@ -2641,7 +2641,7 @@ body {
 }
 
 .receipt-title {
-    font-size: 14px; /* Augmenté */
+    font-size: 13px; /* Augmenté */
     color: #000;
     letter-spacing: 2px;
     font-weight: 600;
