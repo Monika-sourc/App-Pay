@@ -655,7 +655,7 @@ body {
 }
 
 /* ============================================================
-   NOUVEAU DASHBOARD (Style Premium avec Vagues Lumineuses)
+   NOUVEAU DASHBOARD (Style Mastercard - Bandes Épaisses)
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -722,7 +722,7 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE (Effet Mastercard Premium) */
+/* NOUVELLE CARTE DE SOLDE (Effet Bandes Épaisses) */
 .balance-card-new {
     background: var(--big-card-color);
     border-radius: 12px; 
@@ -735,39 +735,70 @@ body {
     z-index: 1;
 }
 
-/* Vague de couleur lumineuse (S'adapte à toutes les couleurs) */
+/* 🆕 EFFET DE BANDES ÉPAISSES (Multi-couleurs) */
 .balance-card-new::before {
     content: '';
     position: absolute;
-    top: -20%;
-    right: -30%;
-    width: 160%;
-    height: 160%;
-    background: radial-gradient(circle at 70% 30%, var(--primary-color) 0%, transparent 60%);
-    opacity: 0.3;
-    filter: blur(25px);
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: 
+        /* Bande de couleur Foncée (Épaisse) */
+        repeating-radial-gradient(
+            ellipse at 0% 100%,
+            var(--primary-color-dark) 0px,
+            var(--primary-color-dark) 25px,
+            transparent 25px,
+            transparent 60px
+        ),
+        /* Bande de couleur Claire (Épaisse) */
+        repeating-radial-gradient(
+            ellipse at 100% 0%,
+            var(--primary-color-light) 0px,
+            var(--primary-color-light) 35px,
+            transparent 35px,
+            transparent 80px
+        ),
+        /* Bande de couleur de base (Épaisse) */
+        repeating-radial-gradient(
+            ellipse at 50% 50%,
+            var(--primary-color) 0px,
+            var(--primary-color) 45px,
+            transparent 45px,
+            transparent 100px
+        );
+    transform: rotate(-15deg);
     z-index: 0;
+    opacity: 0.65;
+    mix-blend-mode: overlay; /* S'adapte automatiquement au fond clair ou sombre */
     pointer-events: none;
 }
 
-/* Motif de lignes courbes texturées (Style Mastercard) */
+/* 🆕 LIGNES CLAIRES ET NETTES SUPERPOSÉES */
 .balance-card-new::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1000 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-opacity='0.15'%3E%3Cpath d='M-100,250 C200,500 400,-50 700,250 C900,450 1100,50 1300,250'/%3E%3Cpath d='M-100,260 C200,510 400,-40 700,260 C900,460 1100,60 1300,260'/%3E%3Cpath d='M-100,270 C200,520 400,-30 700,270 C900,470 1100,70 1300,270'/%3E%3Cpath d='M-100,280 C200,530 400,-20 700,280 C900,480 1100,80 1300,280'/%3E%3Cpath d='M-100,290 C200,540 400,-10 700,290 C900,490 1100,90 1300,290'/%3E%3Cpath d='M-100,300 C200,550 400,0 700,300 C900,500 1100,100 1300,300'/%3E%3Cpath d='M-100,310 C200,560 400,10 700,310 C900,510 1100,110 1300,310'/%3E%3Cpath d='M-100,320 C200,570 400,20 700,320 C900,520 1100,120 1300,320'/%3E%3Cpath d='M-100,330 C200,580 400,30 700,330 C900,530 1100,130 1300,330'/%3E%3Cpath d='M-100,340 C200,590 400,40 700,340 C900,540 1100,140 1300,340'/%3E%3Cpath d='M-100,350 C200,600 400,50 700,350 C900,550 1100,150 1300,350'/%3E%3Cpath d='M-100,360 C200,610 400,60 700,360 C900,560 1100,160 1300,360'/%3E%3Cpath d='M-100,370 C200,620 400,70 700,370 C900,570 1100,170 1300,370'/%3E%3Cpath d='M-100,380 C200,630 400,80 700,380 C900,580 1100,180 1300,380'/%3E%3Cpath d='M-100,390 C200,640 400,90 700,390 C900,590 1100,190 1300,390'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 1;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: 
+        repeating-radial-gradient(
+            ellipse at 0% 100%,
+            rgba(255, 255, 255, 0.6) 0px,
+            rgba(255, 255, 255, 0.6) 5px,
+            transparent 5px,
+            transparent 20px
+        ),
+        repeating-radial-gradient(
+            ellipse at 100% 0%,
+            rgba(255, 255, 255, 0.3) 0px,
+            rgba(255, 255, 255, 0.3) 8px,
+            transparent 8px,
+            transparent 30px
+        );
+    transform: rotate(-15deg);
+    z-index: 0;
+    opacity: 0.9;
     pointer-events: none;
-    mix-blend-mode: soft-light; /* Permet un rendu optimal sur fond clair et sombre */
 }
 
-/* Assure que le contenu reste au-dessus des vagues */
+/* Garde le contenu au-dessus des vagues */
 .balance-card-new > * {
     position: relative;
     z-index: 2;
