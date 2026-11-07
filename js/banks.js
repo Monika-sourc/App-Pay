@@ -299,12 +299,12 @@ export const BANKS_BY_COUNTRY = {
     ]
 };
 
-// ✅ LOGOS SPÉCIFIQUES HAUTE QUALITÉ
+// ✅ LOGOS SPÉCIFIQUES HAUTE QUALITÉ (Liens corrigés pour éviter les lettres)
 const CUSTOM_BANK_LOGOS = {
     'leumi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bank_Leumi_logo.svg/512px-Bank_Leumi_logo.svg.png',
     'bankhapoalim.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Bank_Hapoalim_Logo.svg/512px-Bank_Hapoalim_Logo.svg.png',
-    'discountbank.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Israel_Discount_Bank_logo.svg/512px-Israel_Discount_Bank_logo.svg.png',
-    'mizrahi-tefahot.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Mizrahi_Tefahot_Bank_logo.svg/512px-Mizrahi_Tefahot_Bank_logo.svg.png',
+    'discountbank.co.il': 'https://logowik.com/content/uploads/images/israel-discount-bank1557.jpg',
+    'mizrahi-tefahot.co.il': 'https://logowik.com/content/uploads/images/mizrahi-tefahot-bank5643.jpg',
     'fibi.co.il': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/First_International_Bank_of_Israel_logo.svg/512px-First_International_Bank_of_Israel_logo.svg.png'
 };
 
