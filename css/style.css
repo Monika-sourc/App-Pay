@@ -655,7 +655,7 @@ body {
 }
 
 /* ============================================================
-   NOUVEAU DASHBOARD (Effet Vagues Épaisses Mastercard)
+   NOUVEAU DASHBOARD (Effet Vagues Fluides Mastercard)
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -722,10 +722,10 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE (Effet Vagues Épaisses Garanti) */
+/* NOUVELLE CARTE DE SOLDE (Effet Vagues Fluides) */
 .balance-card-new {
     background: var(--big-card-color);
-    border-radius: 12px; 
+    border-radius: 16px; /* Bords un peu plus arrondis pour le côté premium */
     padding: 20px 20px; 
     color: var(--big-card-text-color);
     position: relative;
@@ -735,44 +735,20 @@ body {
     z-index: 1;
 }
 
-/* 🆕 LIGNES ÉPAISSES ET CLAIRES (S'adapte à toutes les couleurs) */
+/* 🆕 EFFET DE VAGUE FLUIDE (Soft & Adaptable) */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: -50%; left: -50%; width: 200%; height: 200%;
-    /* Création de multiples vagues concentriques épaisses */
     background: 
-        /* Vagues très claires */
-        repeating-radial-gradient(
-            ellipse at 100% 0%,
-            transparent 0px,
-            transparent 30px,
-            rgba(255, 255, 255, 0.4) 30px,
-            rgba(255, 255, 255, 0.4) 35px,
-            transparent 35px,
-            transparent 70px
-        ),
-        /* Vagues de couleur (s'adapte au thème) */
-        repeating-radial-gradient(
-            ellipse at 0% 100%,
-            transparent 0px,
-            transparent 40px,
-            var(--primary-color-light) 40px,
-            var(--primary-color-light) 50px,
-            transparent 50px,
-            transparent 90px
-        ),
-        /* Vagues sombres pour le relief */
-        repeating-radial-gradient(
-            ellipse at 50% 50%,
-            transparent 0px,
-            transparent 20px,
-            rgba(0, 0, 0, 0.15) 20px,
-            rgba(0, 0, 0, 0.15) 25px,
-            transparent 25px,
-            transparent 80px
-        );
-    transform: rotate(-15deg);
+        /* Vague douce couleur principale */
+        radial-gradient(ellipse at 0% 100%, var(--primary-color) 0%, transparent 60%),
+        /* Vague claire pour le relief */
+        radial-gradient(ellipse at 100% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+        /* Vague sombre pour la profondeur */
+        radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
+    opacity: 0.7;
+    transform: rotate(-20deg);
     z-index: 0;
     pointer-events: none;
 }
@@ -781,6 +757,11 @@ body {
 .balance-card-new > * {
     position: relative;
     z-index: 2;
+}
+
+/* Ajout d'une ombre au texte pour garantir la lisibilité sur toutes les couleurs */
+.bcn-title, .bcn-amount, .bcn-subtitle, .bcn-action-btn span {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
 }
 
 .bcn-top {
