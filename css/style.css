@@ -735,7 +735,7 @@ body {
     z-index: 1;
 }
 
-/* Vague 1 (Animation plus prononcée) */
+/* Vague 1 */
 .balance-card-new::before {
     content: '';
     position: absolute;
@@ -750,7 +750,7 @@ body {
     animation: waveMove 8s ease-in-out infinite alternate;
 }
 
-/* Vague 2 (Animation plus prononcée inverse) */
+/* Vague 2 */
 .balance-card-new::after {
     content: '';
     position: absolute;
@@ -764,23 +764,39 @@ body {
     animation: waveMoveReverse 10s ease-in-out infinite alternate;
 }
 
-/* Faisceau de lumière animé (Sommet fixe, balayage fluide) */
+/* Lampe (Fixe en haut à droite) */
 .bcn-top {
     position: relative;
 }
+.bcn-top::before {
+    content: '';
+    position: absolute;
+    top: 5px; /* Tout en haut */
+    right: 15px; /* À droite */
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #ffffff 0%, #ffffff 40%, transparent 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px 5px rgba(255,255,255,0.6);
+    z-index: 3;
+    animation: lampPulse 2s ease-in-out infinite alternate;
+}
+
+/* Faisceau de lumière (Balayage bas <-> haut) */
 .bcn-top::after {
     content: '';
     position: absolute;
-    top: 0; /* Fixé tout en haut */
-    right: 30px;
-    width: 120px;
+    top: 15px;
+    right: 15px;
+    width: 180px;
     height: 280px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 80%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
     clip-path: polygon(30% 0, 70% 0, 100% 100%, 0% 100%);
     transform-origin: top center;
     z-index: 1;
     pointer-events: none;
-    animation: beamSweep 6s ease-in-out infinite alternate; /* Balayage fluide sans pression */
+    opacity: 0.5;
+    animation: beamSweep 6s ease-in-out infinite alternate;
 }
 
 .balance-card-new > * {
@@ -816,8 +832,9 @@ body {
     color: var(--big-card-text-color);
 }
 
+/* TAILLE DU SOLDE AUGMENTÉE */
 .bcn-amount {
-    font-size: 44px; /* Augmenté */
+    font-size: 48px; 
     font-weight: 600; 
     text-align: center;
     margin: 10px 0 5px 0;
@@ -826,12 +843,12 @@ body {
 }
 
 .bcn-amount .balance-dec {
-    font-size: 24px; /* Augmenté */
+    font-size: 26px; 
     font-weight: 500;
 }
 
 .bcn-amount .balance-curr {
-    font-size: 24px; /* Augmenté */
+    font-size: 26px; 
     font-weight: 500;
 }
 
@@ -844,11 +861,12 @@ body {
     color: var(--big-card-text-color);
 }
 
+/* LIGNE AU-DESSUS DES BOUTONS PLUS VISIBLE */
 .bcn-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(128, 128, 128, 0.3);
+    border-top: 1px solid rgba(128, 128, 128, 0.6); /* Opacité augmentée */
     padding-top: 20px;
 }
 
@@ -886,10 +904,11 @@ body {
     color: var(--big-card-text-color);
 }
 
+/* LIGNE VERTICALE ENTRE LES BOUTONS PLUS VISIBLE */
 .bcn-divider {
     width: 1px;
     height: 50px;
-    background-color: rgba(128, 128, 128, 0.3);
+    background-color: rgba(128, 128, 128, 0.6); /* Opacité augmentée */
     margin: 0 15px;
 }
 
@@ -904,9 +923,15 @@ body {
     100% { background-position: 0% 70%; transform: scale(1.1); }
 }
 
+@keyframes lampPulse {
+    0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 10px 3px rgba(255,255,255,0.5); }
+    100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px 8px rgba(255,255,255,0.8); }
+}
+
+/* Le faisceau balaye du bas vers le haut (vers le texte) */
 @keyframes beamSweep {
-    0% { transform: rotate(-25deg); opacity: 0.15; }
-    100% { transform: rotate(25deg); opacity: 0.6; }
+    0% { transform: rotate(20deg); opacity: 0.2; } /* Pointe vers le bas-droite */
+    100% { transform: rotate(-45deg); opacity: 0.6; } /* Balaye jusqu'en haut à gauche */
 }
 
 /* NOUVELLES MINI CARTES */
