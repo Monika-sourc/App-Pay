@@ -735,44 +735,51 @@ body {
     z-index: 1;
 }
 
-/* 🆕 VAGUE 1 (Remplie avec un dégradé de couleurs) */
+/* 🆕 VAGUE 1 (Couleur Foncée) */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, var(--primary-color-light) 0%, var(--primary-color) 50%, var(--primary-color-dark) 100%);
+    background-color: var(--primary-color-dark);
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='white'/%3E%3C/svg%3E");
     -webkit-mask-size: 130% 130%;
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='white'/%3E%3C/svg%3E");
-    mask-size: 130% 130%;
-    mask-position: center;
-    mask-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.8;
-    animation: waveMove 4s ease-in-out infinite alternate;
+    opacity: 0.6;
+    animation: waveMove 5s ease-in-out infinite alternate;
 }
 
-/* 🆕 VAGUE 2 (Remplie avec un autre dégradé) */
+/* 🆕 VAGUE 2 (Couleur Claire) */
 .balance-card-new::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(45deg, var(--primary-color-dark) 0%, var(--primary-color-light) 100%);
+    background-color: var(--primary-color-light);
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='white'/%3E%3C/svg%3E");
     -webkit-mask-size: 130% 130%;
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='white'/%3E%3C/svg%3E");
-    mask-size: 130% 130%;
-    mask-position: center;
-    mask-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.6;
-    animation: waveMoveReverse 5s ease-in-out infinite alternate;
+    opacity: 0.4;
+    animation: waveMoveReverse 6s ease-in-out infinite alternate;
+}
+
+/* 🆕 VAGUE 3 (Reflet Blanc transparent pour la brillance) */
+.balance-card-new .bcn-actions::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100 L500,300 L0,300 Z' fill='white'/%3E%3C/svg%3E");
+    -webkit-mask-size: 130% 130%;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    z-index: -1;
+    pointer-events: none;
+    animation: waveMove 7s ease-in-out infinite alternate;
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -862,6 +869,7 @@ body {
     align-items: center;
     border-top: 1px solid rgba(128, 128, 128, 0.6); 
     padding-top: 20px;
+    position: relative;
 }
 
 .bcn-action-btn {
@@ -908,13 +916,13 @@ body {
 
 /* ANIMATIONS */
 @keyframes waveMove {
-    0% { -webkit-mask-position: 0% 0%; mask-position: 0% 0%; }
-    100% { -webkit-mask-position: 100% 100%; mask-position: 100% 100%; }
+    0% { -webkit-mask-position: 0% 0%; }
+    100% { -webkit-mask-position: 100% 100%; }
 }
 
 @keyframes waveMoveReverse {
-    0% { -webkit-mask-position: 100% 0%; mask-position: 100% 0%; }
-    100% { -webkit-mask-position: 0% 100%; mask-position: 0% 100%; }
+    0% { -webkit-mask-position: 100% 0%; }
+    100% { -webkit-mask-position: 0% 100%; }
 }
 
 @keyframes lampPulse {
