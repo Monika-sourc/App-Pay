@@ -299,17 +299,30 @@ export const BANKS_BY_COUNTRY = {
     ]
 };
 
-export function getBankLogoUrl(domain) {
+// ✅ AMÉLIORATION : Nettoyage du domaine et ajout de services fiables
+function cleanDomain(domain) {
     if (!domain) return '';
-    return `https://logo.clearbit.com/${domain}`;
+    return domain
+        .replace(/^https?:\/\//, '') // Enlève http:// ou https://
+        .replace(/^www\./, '')      // Enlève www.
+        .split('/')[0]              // Enlève tout ce qui suit un slash
+        .trim();
+}
+
+export function getBankLogoUrl(domain) {
+    const d = cleanDomain(domain);
+    if (!d) return '';
+    return `https://logo.clearbit.com/${d}`;
 }
 
 export function getBankLogoUrls(domain) {
-    if (!domain) return [];
+    const d = cleanDomain(domain);
+    if (!d) return [];
     return [
-        `https://logo.clearbit.com/${domain}`,
-        `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-        `https://icons.duckduckgo.com/ip3/${domain}.ico`
+        `https://logo.clearbit.com/${d}`,                     // Service principal
+        `https://icon.horse/icon/${d}`,                       // NOUVEAU : Service très fiable
+        `https://www.google.com/s2/favicons?domain=${d}&sz=128`, // Google (en 128x128 pour meilleure qualité)
+        `https://icons.duckduckgo.com/ip3/${d}.ico`           // DuckDuckGo (dernier recours)
     ];
 }
 
