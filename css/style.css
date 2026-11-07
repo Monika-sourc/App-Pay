@@ -735,7 +735,7 @@ body {
     z-index: 1;
 }
 
-/* Vague 1 */
+/* Vague 1 (Animation plus prononcée) */
 .balance-card-new::before {
     content: '';
     position: absolute;
@@ -747,10 +747,10 @@ body {
     z-index: 0;
     pointer-events: none;
     opacity: 0.8;
-    animation: waveMove 8s ease-in-out infinite alternate;
+    animation: waveMove 6s ease-in-out infinite alternate; /* Vitesse augmentée */
 }
 
-/* Vague 2 */
+/* Vague 2 (Animation plus prononcée inverse) */
 .balance-card-new::after {
     content: '';
     position: absolute;
@@ -761,18 +761,18 @@ body {
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: waveMoveReverse 10s ease-in-out infinite alternate;
+    animation: waveMoveReverse 7s ease-in-out infinite alternate; /* Vitesse augmentée */
 }
 
-/* Lampe (Fixe en haut à droite) */
+/* Petite lumière brillante (Fixe en haut à droite) */
 .bcn-top {
     position: relative;
 }
 .bcn-top::before {
     content: '';
     position: absolute;
-    top: 5px; /* Tout en haut */
-    right: 15px; /* À droite */
+    top: 5px; 
+    right: 15px; 
     width: 20px;
     height: 20px;
     background: radial-gradient(circle, #ffffff 0%, #ffffff 40%, transparent 70%);
@@ -782,22 +782,7 @@ body {
     animation: lampPulse 2s ease-in-out infinite alternate;
 }
 
-/* Faisceau de lumière (Balayage bas <-> haut) */
-.bcn-top::after {
-    content: '';
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 180px;
-    height: 280px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
-    clip-path: polygon(30% 0, 70% 0, 100% 100%, 0% 100%);
-    transform-origin: top center;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.5;
-    animation: beamSweep 6s ease-in-out infinite alternate;
-}
+/* LE FAISCEAU DE LUMIÈRE A ÉTÉ SUPPRIMÉ */
 
 .balance-card-new > * {
     position: relative;
@@ -866,7 +851,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(128, 128, 128, 0.6); /* Opacité augmentée */
+    border-top: 1px solid rgba(128, 128, 128, 0.6); 
     padding-top: 20px;
 }
 
@@ -908,30 +893,24 @@ body {
 .bcn-divider {
     width: 1px;
     height: 50px;
-    background-color: rgba(128, 128, 128, 0.6); /* Opacité augmentée */
+    background-color: rgba(128, 128, 128, 0.6); 
     margin: 0 15px;
 }
 
 /* ANIMATIONS */
 @keyframes waveMove {
-    0% { background-position: 0% 30%; transform: scale(1); }
-    100% { background-position: 100% 70%; transform: scale(1.1); }
+    0% { background-position: 0% 20%; transform: scale(1); }
+    100% { background-position: 100% 80%; transform: scale(1.2); } /* Augmentation de l'amplitude */
 }
 
 @keyframes waveMoveReverse {
-    0% { background-position: 100% 30%; transform: scale(1); }
-    100% { background-position: 0% 70%; transform: scale(1.1); }
+    0% { background-position: 100% 20%; transform: scale(1); }
+    100% { background-position: 0% 80%; transform: scale(1.2); } /* Augmentation de l'amplitude */
 }
 
 @keyframes lampPulse {
     0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 10px 3px rgba(255,255,255,0.5); }
     100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px 8px rgba(255,255,255,0.8); }
-}
-
-/* Le faisceau balaye du bas vers le haut (vers le texte) */
-@keyframes beamSweep {
-    0% { transform: rotate(20deg); opacity: 0.2; } /* Pointe vers le bas-droite */
-    100% { transform: rotate(-45deg); opacity: 0.6; } /* Balaye jusqu'en haut à gauche */
 }
 
 /* NOUVELLES MINI CARTES */
