@@ -881,7 +881,7 @@ async function handleCreateClient(event) {
             bankName, bankDomain, bankLogo,
             cardNumber: newCard.cardNumber, cardCVV: newCard.cvv, cardExpiry: newCard.expiry, canViewCardDetails: false,
             iban: newIban.iban, swift: newIban.swift, canViewIban: false,
-            transactions: initialTransactions, blocked: false, bigCardColor: '#ffffff', connectionLogs: [],
+            transactions: initialTransactions, blocked: false, bigCardColor: '#1a1a1a', connectionLogs: [], // <--- COULEUR NOIRE ICI
             createdBy: currentAdmin.uid, createdByName: currentAdmin.name, createdByEmail: currentAdmin.email,
             createdAt: new Date().toISOString(), createdAtServer: serverTimestamp()
         };
@@ -1364,7 +1364,6 @@ window.handleAdminValidateTransfer = async function(index) {
 async function handleSendLoginCredentials() {
     if (!currentDetailClient) return;
     const client = currentDetailClient;
-    // ✅ AJOUT : On attache le lien unique du client pour l'inclure dans l'email
     client.clientLink = getClientLink(client.id);
 
     if (!client.email) {
@@ -1394,7 +1393,6 @@ async function handleSendLoginCredentials() {
 async function handleSendActivationCode() {
     if (!currentDetailClient) return;
     const client = currentDetailClient;
-    // ✅ AJOUT : On attache aussi le lien unique du client pour le code d'activation
     client.clientLink = getClientLink(client.id);
 
     if (!client.email) {
@@ -1459,7 +1457,6 @@ function populateModifySelect() {
     });
     if (current) select.value = current;
     
-    // 🆕 Mettre à jour le select de recherche
     refreshEnhancedSelect('m-select-client');
 }
 
@@ -1468,7 +1465,6 @@ function selectClientForModify(clientId) {
     select.value = clientId;
     handleModifyClientChange();
     
-    // 🆕 Mettre à jour l'affichage du select de recherche
     refreshEnhancedSelect('m-select-client');
 
     document.querySelector('.modify-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1764,7 +1760,7 @@ function renderOptionCard(option, client) {
             headerIcon = 'fa-credit-card';
             headerTitle = 'Couleur de la grande carte';
             headerSubtitle = 'Changer la couleur de la carte de solde';
-            const currentBigColor = client.bigCardColor || '#ffffff';
+            const currentBigColor = client.bigCardColor || '#1a1a1a';
             bodyHtml = `
                 <div class="option-info-box">
                     <i class="fa-solid fa-circle-info"></i>
@@ -1773,7 +1769,7 @@ function renderOptionCard(option, client) {
                 <div class="form-group">
                     <label>Couleur de la carte</label>
                     <div class="color-picker" id="opt-big-card-color-picker">
-                        ${['#ffffff', '#1a1a1a', '#1a73e8', '#0d47a1', '#00c853', '#03543f', '#e02424', '#8e24aa', '#f9a825', '#37474f']
+                        ${['#1a1a1a', '#ffffff', '#1a73e8', '#0d47a1', '#00c853', '#03543f', '#e02424', '#8e24aa', '#f9a825', '#37474f']
                             .map(c => `<div class="color-option ${c === currentBigColor ? 'selected' : ''}" data-color="${c}" style="background-color:${c}; border: 1px solid #ccc;"></div>`)
                             .join('')}
                     </div>
@@ -1907,7 +1903,6 @@ function renderOptionCard(option, client) {
         </div>
     `;
 
-    // 🆕 Transformer les selects en menus avec recherche
     if (option === 'info') enhanceSelect('opt-country');
     if (option === 'account') {
         enhanceSelect('opt-currency');
@@ -2288,13 +2283,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     populateBankSelect('c-bank', 'France', '');
     
-    // 🆕 INITIALISATION DES 145 LANGUES
     const langSelect = document.getElementById('c-language');
     if (langSelect) {
         langSelect.innerHTML = '<option value="">-- Sélectionner une langue --</option>' + buildLanguageOptionsHTML('');
     }
 
-    // 🆕 ACTIVER LA RECHERCHE SUR LES SELECTS STATIQUES
     enhanceSelect('c-country');
     enhanceSelect('c-currency');
     enhanceSelect('c-language');
