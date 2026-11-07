@@ -655,7 +655,7 @@ body {
 }
 
 /* ============================================================
-   NOUVEAU DASHBOARD (Effet Vagues Fluides Mastercard/Visa)
+   NOUVEAU DASHBOARD (Effet Vagues Animées & Lumière)
    ============================================================ */
 .dashboard-body {
     padding: 15px 15px 25px 15px;
@@ -722,7 +722,7 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE (Design "Carte Visa" - Vagues Nettes) */
+/* NOUVELLE CARTE DE SOLDE (Effet Vagues Animées & Lumière) */
 .balance-card-new {
     background: var(--big-card-color);
     border-radius: 16px; 
@@ -733,31 +733,61 @@ body {
     margin-bottom: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     z-index: 1;
+    /* Effet de lumière de base en haut à droite */
+    background-image: radial-gradient(circle at 100% 0%, rgba(255,255,255,0.15) 0%, transparent 60%);
 }
 
-/* L'ASTUCE : Dessin vectoriel SVG pour des vagues parfaites et nettes */
+/* Vague 1 (Foncée) */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='rgba(255,255,255,0.05)'/%3E%3Cstop offset='100%25' stop-color='rgba(255,255,255,0.2)'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='rgba(255,255,255,0.1)'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: var(--primary-color-dark);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath d='M0,150 C250,250 750,50 1000,150 L1000,300 L0,300 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 1000px 100%;
+    -webkit-mask-repeat: repeat-x;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath d='M0,150 C250,250 750,50 1000,150 L1000,300 L0,300 Z' fill='black'/%3E%3C/svg%3E");
+    mask-size: 1000px 100%;
+    mask-repeat: repeat-x;
+    animation: waveFlowRight 12s linear infinite;
     z-index: 0;
+    opacity: 0.4;
     pointer-events: none;
-    opacity: 0.8;
 }
 
-/* Un deuxième calque de vagues avec la couleur du thème */
+/* Vague 2 (Claire) */
 .balance-card-new::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='var(--primary-color)' stroke-width='30' opacity='0.3'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='var(--primary-color-light)' stroke-width='20' opacity='0.2'/%3E%3C/svg%3E");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: var(--primary-color-light);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C300,200 700,0 1000,100 L1000,300 L0,300 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 1000px 100%;
+    -webkit-mask-repeat: repeat-x;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C300,200 700,0 1000,100 L1000,300 L0,300 Z' fill='black'/%3E%3C/svg%3E");
+    mask-size: 1000px 100%;
+    mask-repeat: repeat-x;
+    animation: waveFlowLeft 9s linear infinite;
+    z-index: 0;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Effet de lumière brillante en haut à droite */
+.balance-card-new .bcn-top {
+    position: relative;
+}
+.balance-card-new .bcn-top::after {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    animation: pulseLight 4s ease-in-out infinite alternate;
     z-index: 0;
     pointer-events: none;
 }
@@ -872,6 +902,22 @@ body {
     height: 50px;
     background-color: rgba(128, 128, 128, 0.3);
     margin: 0 15px;
+}
+
+/* ANIMATIONS */
+@keyframes waveFlowRight {
+    0% { -webkit-mask-position: 0% 0%; mask-position: 0% 0%; }
+    100% { -webkit-mask-position: -1000px 0%; mask-position: -1000px 0%; }
+}
+
+@keyframes waveFlowLeft {
+    0% { -webkit-mask-position: 0% 0%; mask-position: 0% 0%; }
+    100% { -webkit-mask-position: 1000px 0%; mask-position: 1000px 0%; }
+}
+
+@keyframes pulseLight {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 0.9; transform: scale(1.4); }
 }
 
 /* NOUVELLES MINI CARTES (Rectangulaires, Centrées, Texte noir) */
