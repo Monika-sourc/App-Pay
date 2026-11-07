@@ -106,7 +106,6 @@ function applyClientColor(color) {
     if (appState.client?.bigCardColor) {
         let bgColor = appState.client.bigCardColor;
         
-        // Transformation obligatoire en dégradé si c'est une couleur unie
         if (bgColor.startsWith('#') && bgColor.length === 7) {
             const light = lightenColor(bgColor, 15);
             const dark = darkenColor(bgColor, 25);
@@ -130,7 +129,6 @@ function applyClientColor(color) {
         }
         document.documentElement.style.setProperty('--big-card-text-color', textColor);
     } else {
-        // 🆕 COULEUR PAR DÉFAUT : NOIR AVEC TEXTE BLANC
         document.documentElement.style.setProperty('--big-card-color', 'linear-gradient(135deg, #1a1a1a 0%, #000000 100%)');
         document.documentElement.style.setProperty('--big-card-text-color', '#ffffff');
     }
@@ -148,7 +146,6 @@ function formatMoney(amount) {
     return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
 }
 
-// Nouvelle fonction pour séparer le montant (chiffres plus petits après la virgule)
 function formatBalanceHTML(amount) {
     const num = Number(amount) || 0;
     const formatted = num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -156,20 +153,9 @@ function formatBalanceHTML(amount) {
     const intPart = parts[0];
     const decPart = parts[1] || '00';
     
-    // ✅ MODIFICATION : Mapping pour afficher le symbole (ex: ₪) sur la grande carte
     let displayCurrency = appState.currency;
     const currencySymbols = {
-        'ILS': '₪',
-        'USD': '$',
-        'EUR': '€',
-        'GBP': '£',
-        'PLN': 'zł',
-        'CNY': '¥',
-        'JPY': '¥',
-        'CHF': 'CHF',
-        'CAD': 'CAD',
-        'AUD': 'AUD',
-        'NZD': 'NZD'
+        'ILS': '₪', 'USD': '$', 'EUR': '€', 'GBP': '£', 'PLN': 'zł', 'CNY': '¥', 'JPY': '¥', 'CHF': 'CHF', 'CAD': 'CAD', 'AUD': 'AUD', 'NZD': 'NZD'
     };
     if (currencySymbols[displayCurrency]) {
         displayCurrency = currencySymbols[displayCurrency];
@@ -353,10 +339,28 @@ function showBlockedScreen(client) {
         if (infoSpan) infoSpan.textContent = 'Veuillez contacter l\'administrateur pour rétablir votre accès.';
     }
     showScreen('invalid-screen');
+    
+    // 🆕 ÉCOUTE EN DIRECT DU DÉBLOCAGE
+    if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
+    try {
+        const docRef = doc(db, 'clients', appState.clientId);
+        appState.unsubSnapshot = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.blocked === false) {
+                    if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
+                    showToast("Votre compte a été débloqué. Veuillez vous reconnecter.", "success");
+                    showScreen('login-screen');
+                    const form = document.getElementById('login-form');
+                    if (form) form.reset();
+                }
+            }
+        });
+    } catch (e) { console.error("Erreur listener blocked screen:", e); }
 }
 
 // ============================================================
-// TEMPS RÉEL
+// TEMPS RÉEL (MISES À JOUR DYNAMIQUES)
 // ============================================================
 function startRealtimeListener() {
     if (!appState.clientId) return;
@@ -366,21 +370,52 @@ function startRealtimeListener() {
         appState.unsubSnapshot = onSnapshot(docRef, (docSnap) => {
             if (!docSnap.exists()) { clearSession(); showScreen('invalid-screen'); return; }
             const newData = docSnap.data();
-            if (newData.blocked === true) { clearSession(); showBlockedScreen(newData); return; }
+            if (newData.blocked === true) { 
+                clearSession(); 
+                showBlockedScreen(newData); 
+                return; 
+            }
+            
             const oldTxCount = (appState.transactions || []).length;
-            const oldColor = appState.client?.color, oldLang = appState.lang;
+            const oldColor = appState.client?.color;
+            const oldLang = appState.lang;
+            
             appState.client = newData;
             appState.balance = Number(newData.balance) || 0;
             appState.currency = newData.currency || 'zł';
             appState.transactions = newData.transactions || [];
             appState.lang = newData.language || 'fr';
+            
             if (oldColor !== newData.color) applyClientColor(newData.color);
             if (oldLang !== appState.lang) applyLanguage();
+            
             const appScreen = document.getElementById('app-screen');
             if (appScreen && appScreen.classList.contains('active')) {
+                // Mettre à jour les initiales dans l'en-tête
+                const initials = ((newData.firstName || 'X')[0] + (newData.lastName || 'X')[0]).toUpperCase();
+                const headerAvatar = document.getElementById('header-avatar');
+                if (headerAvatar) headerAvatar.textContent = initials;
+
                 const activeView = document.querySelector('#nav-links li.active');
                 const viewName = activeView ? activeView.dataset.view : 'dashboard';
-                navigateTo(viewName);
+                
+                // Mise à jour intelligente pour ne pas effacer ce que le client tape
+                if (viewName === 'dashboard') {
+                    renderDashboard();
+                } else if (viewName === 'card') {
+                    renderCardView();
+                } else if (viewName === 'iban') {
+                    renderIbanView();
+                } else if (viewName === 'account') {
+                    renderAccountView();
+                } else if (viewName === 'transfer') {
+                    const balEl = document.getElementById('transfer-balance');
+                    if (balEl) balEl.textContent = formatMoney(appState.balance);
+                } else if (viewName === 'verification') {
+                    const tr = appState.pendingTransfer;
+                    if (tr) renderVerificationView(tr);
+                }
+                
                 if (appState.transactions.length > oldTxCount) showToast(t('new_transaction_received'), 'success');
             }
         }, (err) => console.error('Erreur listener:', err));
@@ -624,10 +659,13 @@ function renderDashboard() {
     if (statCurr) statCurr.textContent = getCurrencyCode(appState.currency);
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
+    
+    // 🆕 Utilisation de onclick au lieu de addEventListener pour éviter les doublons lors des mises à jour
     const btnGoTransfer = document.getElementById('btn-go-transfer');
-    if (btnGoTransfer) btnGoTransfer.addEventListener('click', () => navigateTo('transfer'));
+    if (btnGoTransfer) btnGoTransfer.onclick = () => navigateTo('transfer');
     const btnGoCard = document.getElementById('btn-go-card');
-    if (btnGoCard) btnGoCard.addEventListener('click', () => navigateTo('card'));
+    if (btnGoCard) btnGoCard.onclick = () => navigateTo('card');
+    
     const txList = document.getElementById('tx-list');
     if (!txList) return;
     txList.innerHTML = '';
