@@ -722,51 +722,48 @@ body {
     border-radius: 50%;
 }
 
-/* NOUVELLE CARTE DE SOLDE - DESIGN PLUS COLORÉ ET LUMINEUX */
+/* NOUVELLE CARTE DE SOLDE - FOND PUR ET FORT, BALLONS ÉPAIS */
 .balance-card-new {
-    /* 🆕 FOND PLUS COLORÉ : ajout d'une teinte de couleur principale dans le fond */
-    background: 
-        radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.4) 0%, transparent 60%), 
-        linear-gradient(135deg, rgba(255, 122, 0, 0.2) 0%, transparent 100%), /* Teinte orange subtile */
-        var(--big-card-color);
+    /* 🆕 LE FOND EST PLUS PUR ET FORT (utilisation de la couleur principale foncée) */
+    background: linear-gradient(135deg, var(--primary-color-dark) 0%, #111111 100%);
     border-radius: 10px; 
     padding: 20px 20px; 
-    color: var(--big-card-text-color);
+    color: #ffffff;
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
-/* 🆕 VAGUE 1 : Opacité augmentée pour plus de visibilité */
+/* 🆕 BALLON 1 (Blanc, épais, rond) */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff' stop-opacity='0.15'/%3E%3Cstop offset='100%25' stop-color='%23ffffff' stop-opacity='0.3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='%23ffffff' fill-opacity='0.15'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='%23ffffff' fill-opacity='0.25'/%3E%3C/svg%3E");
-    background-size: 130% 130%; 
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Ccircle cx='10%25' cy='110%25' r='60%25' fill='%23ffffff' fill-opacity='0.08'/%3E%3Ccircle cx='40%25' cy='120%25' r='80%25' fill='%23ffffff' fill-opacity='0.12'/%3E%3Ccircle cx='0%25' cy='120%25' r='70%25' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: waveMove 8s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); /* Glow plus fort */
+    animation: balloonFloat 6s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
 }
 
-/* 🆕 VAGUE 2 : Opacité augmentée pour la couleur */
+/* 🆕 BALLON 2 (Couleur, épais, rond) */
 .balance-card-new::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='%23ff7a00' stroke-width='25' stroke-opacity='0.3'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='%23ffaa5c' stroke-width='15' stroke-opacity='0.25'/%3E%3C/svg%3E");
-    background-size: 130% 130%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Ccircle cx='70%25' cy='110%25' r='70%25' fill='%23ff7a00' fill-opacity='0.15'/%3E%3Ccircle cx='90%25' cy='120%25' r='60%25' fill='%23ffaa5c' fill-opacity='0.1'/%3E%3Ccircle cx='50%25' cy='130%25' r='90%25' fill='%23ff7a00' fill-opacity='0.08'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: waveMoveReverse 10s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 10px var(--primary-color)); /* Glow coloré plus fort */
+    animation: balloonFloatReverse 8s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 12px var(--primary-color));
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -792,9 +789,9 @@ body {
     z-index: 2;
 }
 
-/* Ombre du texte pour la lisibilité */
+/* Ombre du texte pour la lisibilité sur fond fort */
 .bcn-title, .bcn-amount, .bcn-subtitle, .bcn-action-btn span {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
 }
 
 .bcn-top {
@@ -809,7 +806,7 @@ body {
     gap: 10px;
     font-size: 17px; 
     font-weight: 500;
-    color: var(--big-card-text-color);
+    color: #ffffff;
 }
 
 .bcn-bank-icon {
@@ -818,7 +815,7 @@ body {
     position: absolute;
     top: 15px;
     right: 20px;
-    color: var(--big-card-text-color);
+    color: #ffffff;
 }
 
 /* TAILLE DU SOLDE AUGMENTÉE */
@@ -828,7 +825,7 @@ body {
     text-align: center;
     margin: 10px 0 5px 0;
     letter-spacing: 0.5px;
-    color: var(--big-card-text-color);
+    color: #ffffff;
 }
 
 .bcn-amount .balance-dec {
@@ -847,7 +844,7 @@ body {
     opacity: 0.9;
     margin-bottom: 20px;
     font-weight: 500;
-    color: var(--big-card-text-color);
+    color: #ffffff;
 }
 
 /* LIGNE AU-DESSUS DES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
@@ -855,7 +852,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid rgba(255, 255, 255, 0.8); 
+    border-top: 2px solid rgba(255, 255, 255, 0.4); 
     padding-top: 20px;
 }
 
@@ -890,26 +887,26 @@ body {
 .bcn-action-btn span {
     font-size: 17px; 
     font-weight: 600;
-    color: var(--big-card-text-color);
+    color: #ffffff;
 }
 
 /* LIGNE VERTICALE ENTRE LES BOUTONS : PLUS ÉPAISSE ET PLUS CLAIRE */
 .bcn-divider {
     width: 2px; 
     height: 50px;
-    background-color: rgba(255, 255, 255, 0.8); 
+    background-color: rgba(255, 255, 255, 0.4); 
     margin: 0 15px;
 }
 
-/* ANIMATIONS */
-@keyframes waveMove {
-    0% { background-position: 0% 0%; transform: scale(1); }
-    100% { background-position: 100% 100%; transform: scale(1.1); }
+/* ANIMATIONS BALLONS */
+@keyframes balloonFloat {
+    0% { background-size: 100% 100%; transform: scale(1); }
+    100% { background-size: 110% 110%; transform: scale(1.05); }
 }
 
-@keyframes waveMoveReverse {
-    0% { background-position: 100% 0%; transform: scale(1); }
-    100% { background-position: 0% 100%; transform: scale(1.1); }
+@keyframes balloonFloatReverse {
+    0% { background-size: 100% 100%; transform: scale(1); }
+    100% { background-size: 115% 115%; transform: scale(1.02); }
 }
 
 @keyframes lampPulse {
