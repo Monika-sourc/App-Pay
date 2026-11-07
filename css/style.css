@@ -735,39 +735,33 @@ body {
     z-index: 1;
 }
 
-/* Vague 1 (Mouvement TRÈS visible) */
+/* 🆕 VAGUE 1 : Visibilité augmentée (Couleurs plus claires et opaques) */
 .balance-card-new::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='rgba(255,255,255,0.05)'/%3E%3Cstop offset='100%25' stop-color='rgba(255,255,255,0.2)'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='rgba(255,255,255,0.1)'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='rgba(255,255,255,0.15)'/%3E%3Cstop offset='100%25' stop-color='rgba(255,255,255,0.4)'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,150 C150,50 350,250 500,150 L500,300 L0,300 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,200 C200,100 400,300 500,200 L500,300 L0,300 Z' fill='rgba(255,255,255,0.25)'/%3E%3Cpath d='M0,250 C250,150 450,350 500,250 L500,300 L0,300 Z' fill='rgba(255,255,255,0.35)'/%3E%3C/svg%3E");
     background-size: 130% 130%; 
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.8;
-    animation: waveMove 4s ease-in-out infinite alternate; /* Accéléré */
+    opacity: 1; /* Opacité globale à 1 */
+    animation: waveMove 6s ease-in-out infinite alternate;
 }
 
-/* Vague 2 (Mouvement TRÈS visible inverse) */
+/* 🆕 VAGUE 2 : Visibilité augmentée (Traits de couleur plus visibles) */
 .balance-card-new::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='var(--primary-color)' stroke-width='30' opacity='0.3'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='var(--primary-color-light)' stroke-width='20' opacity='0.2'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C150,0 350,200 500,100' fill='none' stroke='var(--primary-color)' stroke-width='30' opacity='0.6'/%3E%3Cpath d='M0,120 C150,20 350,220 500,120' fill='none' stroke='var(--primary-color-light)' stroke-width='20' opacity='0.5'/%3E%3C/svg%3E");
     background-size: 130% 130%;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
     pointer-events: none;
-    animation: waveMoveReverse 5s ease-in-out infinite alternate; /* Accéléré */
-}
-
-/* 🆕 LA LUMIÈRE QUI BALAIE EST FORCÉE À DISPARAÎTRE */
-.bcn-top::after {
-    display: none !important;
-    content: none !important;
+    animation: waveMoveReverse 7s ease-in-out infinite alternate;
 }
 
 /* Petite lumière brillante (Fixe en haut à droite) */
@@ -784,7 +778,7 @@ body {
     background: radial-gradient(circle, #ffffff 0%, #ffffff 40%, transparent 70%);
     border-radius: 50%;
     box-shadow: 0 0 15px 5px rgba(255,255,255,0.6);
-    z-index: 10; /* S'assure d'être au dessus de tout */
+    z-index: 3;
     animation: lampPulse 2s ease-in-out infinite alternate;
 }
 
@@ -904,12 +898,12 @@ body {
 /* ANIMATIONS */
 @keyframes waveMove {
     0% { background-position: 0% 0%; transform: scale(1); }
-    100% { background-position: 100% 100%; transform: scale(1.3); } /* Amplitude augmentée */
+    100% { background-position: 100% 100%; transform: scale(1.3); }
 }
 
 @keyframes waveMoveReverse {
     0% { background-position: 100% 0%; transform: scale(1); }
-    100% { background-position: 0% 100%; transform: scale(1.3); } /* Amplitude augmentée */
+    100% { background-position: 0% 100%; transform: scale(1.3); }
 }
 
 @keyframes lampPulse {
@@ -1254,7 +1248,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     color: #000;
     margin-bottom: 15px;
     font-weight: 500;
@@ -1262,7 +1256,7 @@ body {
 
 .transfer-info-top i {
     color: #1a73e8;
-    font-size: 16px; /* Réduit */
+    font-size: 16px;
 }
 
 .transfer-info-top strong {
@@ -1273,7 +1267,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 13px; /* Réduit */
+    font-size: 13px;
     font-weight: 500;
     color: #000;
     margin-bottom: 25px;
@@ -1296,7 +1290,7 @@ body {
 
 .form-group label {
     display: block;
-    font-size: 13px; /* Réduit */
+    font-size: 13px;
     color: #000;
     margin-bottom: 8px;
     font-weight: 700; 
@@ -1327,7 +1321,7 @@ body {
     border: none;
     outline: none;
     padding: 14px 15px;
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 700; 
     color: #000;
     background: transparent;
@@ -1344,7 +1338,7 @@ body {
     font-weight: 700; 
     color: #000;
     background-color: #f8f9fa;
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     flex-shrink: 0;
     border-left: 1px solid #dcdfe6;
 }
@@ -1354,7 +1348,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 14px 15px;
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 700; 
     color: #000;
     outline: none;
@@ -1373,7 +1367,7 @@ body {
     color: #b45309;
     padding: 12px 15px;
     border-radius: 6px;
-    font-size: 13px; /* Réduit */
+    font-size: 13px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1395,7 +1389,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 16px;
-    font-size: 16px; /* Réduit */
+    font-size: 16px;
     font-weight: 700; 
     cursor: pointer;
     margin-top: 10px;
@@ -1429,7 +1423,7 @@ body {
 .card-header-title {
     display: flex;
     align-items: center;
-    font-size: 17px; 
+    font-size: 17px;
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px;
@@ -1465,13 +1459,13 @@ body {
 }
 
 .verification-details-grey-box .detail-label {
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     color: #000 !important; 
     font-weight: 500; 
 }
 
 .verification-details-grey-box .detail-value {
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 700; 
     color: #000 !important; 
     word-break: break-all;
@@ -1484,7 +1478,7 @@ body {
     border: none;
     border-radius: 6px;
     padding: 10px 18px;
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -1499,7 +1493,7 @@ body {
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     font-weight: 500 !important; 
     color: #000;
     margin-bottom: 15px;
@@ -1539,7 +1533,7 @@ body {
 .success-message-title {
     display: flex;
     align-items: center;
-    font-size: 16px; /* Réduit */
+    font-size: 16px;
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px; 
@@ -1554,7 +1548,7 @@ body {
 }
 
 .progress-desc {
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     color: #000; 
     margin-bottom: 35px; 
     line-height: 1.5;
@@ -1593,7 +1587,7 @@ body {
 .details-section-title {
     display: flex;
     align-items: center;
-    font-size: 16px; /* Réduit */
+    font-size: 16px;
     font-weight: 700; 
     color: #000;
     margin-bottom: 15px;
@@ -1627,13 +1621,13 @@ body {
 }
 
 .detail-label-new {
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     color: #000;
     font-weight: 500; 
 }
 
 .detail-value-new {
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 700; 
     color: #000;
     word-break: break-all;
@@ -1670,14 +1664,14 @@ body {
 }
 
 .success-main-title {
-    font-size: 17px; /* Réduit */
+    font-size: 17px;
     font-weight: 700;
     color: #1e293b;
     margin-bottom: 6px;
 }
 
 .success-subtitle {
-    font-size: 12px; /* Réduit */
+    font-size: 12px;
     color: #64748b;
     line-height: 1.4;
     max-width: 90%;
@@ -1717,7 +1711,7 @@ body {
 }
 
 .success-amount-label {
-    font-size: 11px; /* Réduit */
+    font-size: 11px;
     font-weight: 700;
     color: #166534;
     text-transform: uppercase;
@@ -1725,7 +1719,7 @@ body {
 }
 
 .success-amount-value {
-    font-size: 22px; /* Réduit */
+    font-size: 22px;
     font-weight: 800;
     color: #000000;
 }
@@ -1769,14 +1763,14 @@ body {
 
 .sd-label {
     flex: 0 0 50%; 
-    font-size: 12px; /* Réduit */
+    font-size: 12px;
     color: #000000;
     font-weight: 500;
 }
 
 .sd-value {
     flex: 1;
-    font-size: 12px; /* Réduit */
+    font-size: 12px;
     color: #000000;
     font-weight: 700;
     text-align: left;
@@ -1806,13 +1800,13 @@ body {
 }
 
 .ss-text strong {
-    font-size: 12px; /* Réduit */
+    font-size: 12px;
     font-weight: 700;
     color: #166534;
 }
 
 .ss-text small {
-    font-size: 10px; /* Réduit */
+    font-size: 10px;
     color: #15803d;
 }
 
@@ -1831,7 +1825,7 @@ body {
     gap: 6px;
     padding: 12px;
     border-radius: 8px;
-    font-size: 12px; /* Réduit */
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -1990,7 +1984,7 @@ body {
 
 .vc-number {
     font-family: 'Courier New', monospace;
-    font-size: 19px; /* Réduit */
+    font-size: 19px;
     letter-spacing: 2px;
     font-weight: 700;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
@@ -2026,7 +2020,7 @@ body {
 }
 
 .vc-label {
-    font-size: 10px; /* Réduit */
+    font-size: 10px;
     opacity: 0.7;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -2035,7 +2029,7 @@ body {
 }
 
 .vc-value {
-    font-size: 14px; /* Réduit */
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 1px;
     color: #ffffff;
@@ -2215,13 +2209,13 @@ body {
 }
 
 .btn-premium-text strong {
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 600;
     color: #000;
 }
 
 .btn-premium-text small {
-    font-size: 13px; /* Réduit */
+    font-size: 13px;
     color: #000;
     font-weight: 500;
 }
@@ -2261,14 +2255,14 @@ body {
 .icon-cyan { background: #e0f2fe; color: #0284c7; }
 
 .vc-info-label {
-    font-size: 12px; /* Réduit */
+    font-size: 12px;
     color: #000;
     margin-bottom: 2px;
     font-weight: 500;
 }
 
 .vc-info-value {
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 600;
     color: #000;
 }
@@ -2395,7 +2389,7 @@ body {
 }
 
 .profile-header-text h2 {
-    font-size: 20px; /* Réduit */
+    font-size: 20px;
     font-weight: 700;
     color: #ffffff;
     margin: 0;
@@ -2430,7 +2424,7 @@ body {
 }
 
 .profile-section-title {
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     color: #000;
     font-weight: 700; 
     letter-spacing: 0.3px;
@@ -2491,13 +2485,13 @@ body {
 }
 
 .profile-list-label {
-    font-size: 13px; /* Réduit */
+    font-size: 13px;
     color: #000;
     font-weight: 500;
 }
 
 .profile-list-value {
-    font-size: 16px; /* Réduit */
+    font-size: 16px;
     color: #000;
     font-weight: 600;
     word-break: break-word;
@@ -2543,7 +2537,7 @@ body {
 }
 
 .profile-action-btn span {
-    font-size: 16px; /* Réduit */
+    font-size: 16px;
     font-weight: 500;
     color: #000;
 }
@@ -2566,7 +2560,7 @@ body {
     border: 2px solid #fde8e8;
     border-radius: 8px;
     padding: 16px;
-    font-size: 15px; /* Réduit */
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
