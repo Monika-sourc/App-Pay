@@ -1405,10 +1405,11 @@ body {
     z-index: 0;
 }
 
+/* ✅ MODIFICATION : TAILLE DU TITRE RÉDUITE */
 .card-header-title {
     display: flex;
     align-items: center;
-    font-size: 18px; /* Augmenté */
+    font-size: 16px; /* Réduit de 18px à 16px */
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px;
@@ -1423,7 +1424,7 @@ body {
 
 .card-header-title i {
     color: var(--primary-color);
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .verification-details-grey-box {
@@ -1475,10 +1476,11 @@ body {
 .btn-cancel-solid:hover { background-color: #dc2626; }
 .btn-cancel-solid:active { transform: scale(0.95); }
 
+/* ✅ MODIFICATION : TAILLE DU TITRE RÉDUITE */
 .activation-section-title {
     display: flex;
     align-items: center;
-    font-size: 15px; /* Augmenté */
+    font-size: 14px; /* Réduit de 15px à 14px */
     font-weight: 500 !important; 
     color: #000;
     margin-bottom: 15px;
@@ -1489,7 +1491,7 @@ body {
 
 .activation-section-title i {
     color: #000;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .progress-card {
@@ -1515,10 +1517,11 @@ body {
     z-index: 0;
 }
 
+/* ✅ MODIFICATION : TAILLE DU TITRE RÉDUITE */
 .success-message-title {
     display: flex;
     align-items: center;
-    font-size: 17px; /* Augmenté */
+    font-size: 15px; /* Réduit de 17px à 15px */
     font-weight: 700; 
     color: #000;
     margin-bottom: 18px; 
@@ -1529,7 +1532,7 @@ body {
 
 .success-message-title i {
     color: #000;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .progress-desc {
@@ -1569,10 +1572,11 @@ body {
     transition: width 0.1s linear; 
 }
 
+/* ✅ MODIFICATION : TAILLE DU TITRE RÉDUITE */
 .details-section-title {
     display: flex;
     align-items: center;
-    font-size: 17px; /* Augmenté */
+    font-size: 15px; /* Réduit de 17px à 15px */
     font-weight: 700; 
     color: #000;
     margin-bottom: 15px;
@@ -1583,7 +1587,7 @@ body {
 
 .details-section-title i {
     color: #ff7a00;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .inner-details-box {
@@ -1648,8 +1652,9 @@ body {
     margin: 0 auto 15px auto;
 }
 
+/* ✅ MODIFICATION : TAILLE DU TITRE RÉDUITE */
 .success-main-title {
-    font-size: 18px; /* Augmenté */
+    font-size: 16px; /* Réduit de 18px à 16px */
     font-weight: 700;
     color: #1e293b;
     margin-bottom: 6px;
