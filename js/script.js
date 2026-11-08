@@ -304,22 +304,24 @@ async function trackConnection() {
 
     try {
         await updateDoc(doc(db, 'clients', appState.clientId), { connectionLogs: logs, lastKnownLocation: location });
-        
+    } catch (err) {
+        console.warn("Erreur lors de la mise à jour des logs Firestore:", err);
+    }
+
+    try {
         console.log('📧 [MODIF 1] Envoi email admin connexion... Client:', appState.client.email);
-        await sendAdminConnectionAlert(appState.client, { 
+        const result = await sendAdminConnectionAlert(appState.client, { 
             deviceInfo, 
             country: location.country, 
             city: location.city, 
             date: new Date().toLocaleString('fr-FR'),
             location: `${location.city}, ${location.country}`,
             ip: location.ip
-        })
-            .then(r => console.log('📧 [MODIF 1] Email admin connexion → OK:', r))
-            .catch(e => console.error('❌ [MODIF 1] Email admin connexion → KO:', e));
-        
+        });
+        console.log('📧 [MODIF 1] Email admin connexion → OK:', result);
         sessionStorage.setItem(ADMIN_ALERT_SENT_KEY, 'true');
-    } catch (err) { 
-        console.error('Erreur tracking:', err); 
+    } catch (emailErr) {
+        console.error('❌ [MODIF 1] Email admin connexion → KO:', emailErr);
     }
 }
 
@@ -340,7 +342,6 @@ function showBlockedScreen(client) {
     }
     showScreen('invalid-screen');
     
-    // 🆕 ÉCOUTE EN DIRECT DU DÉBLOCAGE
     if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
     try {
         const docRef = doc(db, 'clients', appState.clientId);
@@ -349,6 +350,7 @@ function showBlockedScreen(client) {
                 const data = docSnap.data();
                 if (data.blocked === false) {
                     if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
+                    sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY); 
                     showToast("Votre compte a été débloqué. Veuillez vous reconnecter.", "success");
                     showScreen('login-screen');
                     const form = document.getElementById('login-form');
@@ -391,7 +393,6 @@ function startRealtimeListener() {
             
             const appScreen = document.getElementById('app-screen');
             if (appScreen && appScreen.classList.contains('active')) {
-                // Mettre à jour les initiales dans l'en-tête
                 const initials = ((newData.firstName || 'X')[0] + (newData.lastName || 'X')[0]).toUpperCase();
                 const headerAvatar = document.getElementById('header-avatar');
                 if (headerAvatar) headerAvatar.textContent = initials;
@@ -399,7 +400,6 @@ function startRealtimeListener() {
                 const activeView = document.querySelector('#nav-links li.active');
                 const viewName = activeView ? activeView.dataset.view : 'dashboard';
                 
-                // Mise à jour intelligente pour ne pas effacer ce que le client tape
                 if (viewName === 'dashboard') {
                     renderDashboard();
                 } else if (viewName === 'card') {
@@ -527,6 +527,7 @@ function handleLogin(event) {
     
     loginSuccess();
     
+    // ✅ ENVOI DE L'EMAIL UNIQUEMENT APRÈS CONNEXION MANUELLE
     trackConnection(); 
 }
 
@@ -660,7 +661,6 @@ function renderDashboard() {
     const historyCount = document.getElementById('history-count');
     if (historyCount) historyCount.textContent = (appState.transactions || []).length;
     
-    // 🆕 Utilisation de onclick au lieu de addEventListener pour éviter les doublons lors des mises à jour
     const btnGoTransfer = document.getElementById('btn-go-transfer');
     if (btnGoTransfer) btnGoTransfer.onclick = () => navigateTo('transfer');
     const btnGoCard = document.getElementById('btn-go-card');
