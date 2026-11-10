@@ -130,6 +130,20 @@
                 </svg>
                 <span translate="no">APP PAY</span>
             </div>
+
+            <!-- 🆕 BARRE DE RECHERCHE GLOBALE -->
+            <div class="header-search-container">
+                <div class="header-search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="global-search-input" placeholder="Rechercher..." data-i18n-placeholder="search_placeholder" autocomplete="off">
+                    <button type="button" class="search-clear-btn" id="search-clear-btn" style="display: none;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <!-- Dropdown des résultats -->
+                <div class="search-results-dropdown" id="search-results-dropdown"></div>
+            </div>
+
             <div class="header-icons">
                 <button class="icon-btn" id="notif-btn">
                     <i class="fa-regular fa-bell"></i>
