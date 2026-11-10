@@ -437,40 +437,41 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 18px 20px; /* Augmenté */
     background-color: var(--card-bg);
     border-bottom: 1px solid #e8eaee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 85px; 
-    gap: 15px; /* Espace entre logo, recherche et icônes */
+    min-height: 95px; /* Augmenté */
+    gap: 15px;
 }
 
 .header-logo {
-    font-size: 28px; 
+    font-size: 32px; /* Augmenté */
     font-weight: 900; 
     color: var(--primary-color);
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-shrink: 0; /* Empêche le logo de rétrécir */
+    gap: 10px;
+    flex-shrink: 0;
 }
 
 .header-logo span {
     white-space: nowrap;
+    font-style: italic; /* Ajouté : Italique */
 }
 
 .header-logo-svg {
-    height: 36px; 
+    height: 42px; /* Augmenté */
     width: auto;
 }
 
 /* 🆕 BARRE DE RECHERCHE DANS LE HEADER */
 .header-search-container {
-    flex: 1; /* Prend l'espace disponible au milieu */
-    max-width: 500px; /* Limite la largeur pour ne pas tout écraser */
-    margin: 0 auto; /* Centre la barre */
+    flex: 1;
+    max-width: 500px;
+    margin: 0 auto;
     position: relative;
     display: flex;
     align-items: center;
@@ -480,13 +481,13 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: #ffffff; /* Fond blanc pour la visibilité */
-    border: 1.5px solid #e2e8f0; /* Bordure visible */
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
     border-radius: 30px;
     padding: 0 15px;
-    height: 46px;
+    height: 48px; /* Ajusté pour équilibrer */
     transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.04); /* Ombre légère */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
 }
 
 .header-search-box:focus-within {
@@ -537,7 +538,7 @@ body {
 /* Dropdown des résultats de recherche */
 .search-results-dropdown {
     position: absolute;
-    top: 55px;
+    top: 58px;
     left: 0;
     right: 0;
     background: #ffffff;
@@ -635,12 +636,12 @@ body {
     align-items: center;
     gap: 15px;
     position: relative;
-    flex-shrink: 0; /* Empêche les icônes de rétrécir */
+    flex-shrink: 0;
 }
 
 .icon-btn {
-    width: 46px; 
-    height: 46px; 
+    width: 52px; /* Augmenté */
+    height: 52px; /* Augmenté */
     border-radius: 50%;
     background-color: #e4e6eb;
     display: flex;
@@ -649,7 +650,7 @@ body {
     color: #000;
     cursor: pointer;
     border: none;
-    font-size: 18px; 
+    font-size: 20px; /* Augmenté */
     position: relative;
     transition: background 0.2s, transform 0.1s;
 }
@@ -660,16 +661,16 @@ body {
     position: absolute;
     top: 10px; 
     right: 10px; 
-    width: 10px;
-    height: 10px;
+    width: 12px; /* Ajusté */
+    height: 12px; /* Ajusté */
     background-color: #e02424;
     border-radius: 50%;
     border: 2px solid #ffffff;
 }
 
 .user-avatar {
-    width: 46px; 
-    height: 46px; 
+    width: 52px; /* Augmenté */
+    height: 52px; /* Augmenté */
     border-radius: 50%;
     background-color: var(--primary-color);
     color: white;
@@ -677,7 +678,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 20px; /* Augmenté */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
 }
@@ -685,7 +686,7 @@ body {
 
 .notif-dropdown {
     position: absolute;
-    top: 55px; 
+    top: 60px; 
     right: 0;
     width: 280px;
     background: var(--card-bg);
@@ -2945,47 +2946,48 @@ body {
 }
 
 /* ============================================================
-   RESPONSIVE DESIGN (Ajustements pour la barre de recherche)
+   RESPONSIVE DESIGN (Ajustements)
    ============================================================ */
 @media (max-width: 768px) {
     .header {
-        padding: 10px 15px;
+        padding: 12px 15px;
         gap: 10px;
-        min-height: 70px;
+        min-height: 80px;
     }
     
-    /* On réduit la taille du texte APP PAY pour laisser de la place à la recherche */
+    /* On réduit légèrement la taille pour que tout rentre */
     .header-logo span {
-        font-size: 20px; 
+        font-size: 22px; 
+        font-style: italic;
     }
     
     .header-logo-svg {
-        height: 30px;
+        height: 34px;
     }
 
     .header-search-container {
         margin: 0 10px;
-        max-width: 350px; /* La recherche ne prend pas toute la place */
+        max-width: 350px;
     }
 
     .header-search-box {
-        height: 40px;
+        height: 44px;
         padding: 0 12px;
     }
 
     .search-icon {
-        font-size: 15px;
+        font-size: 16px;
         margin-right: 8px;
     }
 
     #global-search-input {
-        font-size: 13.5px;
+        font-size: 14px;
     }
 
     .icon-btn, .user-avatar {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+        width: 46px;
+        height: 46px;
+        font-size: 18px;
     }
 
     .notif-dropdown {
@@ -2996,7 +2998,10 @@ body {
 
 @media (max-width: 400px) {
     .header-logo span {
-        font-size: 17px; /* Encore plus petit sur très petits écrans */
+        font-size: 19px;
+    }
+    .header-logo-svg {
+        height: 30px;
     }
     .header-search-container {
         margin: 0 5px;
@@ -3005,8 +3010,11 @@ body {
         gap: 8px;
     }
     .icon-btn, .user-avatar {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    .header-search-box {
+        height: 40px;
     }
 }
