@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + temps réel)
+// APP PAY - Logique client (Firebase + i18n + temps réel + Recherche Globale)
 // ============================================================
 
 import {
@@ -1165,6 +1165,174 @@ window.togglePasswordVisibility = function() {
 };
 
 // ============================================================
+// 🆕 RECHERCHE GLOBALE
+// ============================================================
+let searchResults = [];
+const searchableViews = [
+    { view: 'dashboard', labelKey: 'dashboard', icon: 'fa-wallet' },
+    { view: 'transfer', labelKey: 'transfer_menu', icon: 'fa-arrow-right-arrow-left' },
+    { view: 'card', labelKey: 'my_virtual_card', icon: 'fa-credit-card' },
+    { view: 'iban', labelKey: 'personal_iban', icon: 'fa-barcode' },
+    { view: 'account', labelKey: 'profile', icon: 'fa-user' }
+];
+
+function normalizeString(str) {
+    if (!str) return '';
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+function performSearch(query) {
+    if (!query.trim()) {
+        hideSearchResults();
+        return;
+    }
+    const normalizedQuery = normalizeString(query);
+    searchResults = [];
+
+    // 1. Recherche dans les pages
+    const matchedViews = searchableViews.filter(v => normalizeString(t(v.labelKey)).includes(normalizedQuery));
+    matchedViews.forEach(v => {
+        searchResults.push({
+            type: 'view',
+            view: v.view,
+            title: t(v.labelKey),
+            subtitle: '',
+            icon: v.icon
+        });
+    });
+
+    // 2. Recherche dans les transactions
+    if (appState.transactions) {
+        appState.transactions.forEach(tx => {
+            const searchStr = normalizeString(`${tx.title || ''} ${tx.bankName || ''} ${tx.date || ''} ${tx.reason || ''} ${tx.iban || ''} ${tx.amount}`);
+            if (searchStr.includes(normalizedQuery)) {
+                searchResults.push({
+                    type: 'transaction',
+                    tx: tx,
+                    title: tx.title || t('transfer_sent'),
+                    subtitle: `${tx.bankName || ''} • ${formatMoney(tx.amount)}`,
+                    icon: tx.amount < 0 ? 'fa-arrow-up' : 'fa-arrow-down'
+                });
+            }
+        });
+    }
+
+    renderSearchResults();
+}
+
+function renderSearchResults() {
+    const dropdown = document.getElementById('search-results-dropdown');
+    if (!dropdown) return;
+
+    if (searchResults.length === 0) {
+        const noRes = t('no_results_found');
+        const text = noRes === 'no_results_found' ? 'Aucun résultat trouvé' : noRes;
+        dropdown.innerHTML = `<div class="search-no-results">${text}</div>`;
+        dropdown.classList.add('show');
+        return;
+    }
+
+    let html = '';
+    let lastType = null;
+    searchResults.forEach((res, index) => {
+        if (res.type !== lastType) {
+            if (res.type === 'view') html += `<div class="search-section-title">Pages</div>`;
+            if (res.type === 'transaction') html += `<div class="search-section-title">Transactions</div>`;
+            lastType = res.type;
+        }
+        html += `
+            <div class="search-result-item" onclick="handleSearchResultClick(${index})">
+                <div class="search-result-icon"><i class="fa-solid ${res.icon}"></i></div>
+                <div class="search-result-text">
+                    <div class="search-result-title">${res.title}</div>
+                    ${res.subtitle ? `<div class="search-result-subtitle">${res.subtitle}</div>` : ''}
+                </div>
+            </div>
+        `;
+    });
+    dropdown.innerHTML = html;
+    dropdown.classList.add('show');
+}
+
+window.handleSearchResultClick = function(index) {
+    const res = searchResults[index];
+    if (!res) return;
+    
+    closeSearchDropdown();
+    
+    if (res.type === 'view') {
+        navigateTo(res.view);
+    } else if (res.type === 'transaction') {
+        openReceipt(res.tx);
+    }
+};
+
+function closeSearchDropdown() {
+    const input = document.getElementById('global-search-input');
+    const dropdown = document.getElementById('search-results-dropdown');
+    const clearBtn = document.getElementById('search-clear-btn');
+    if (input) input.value = '';
+    if (dropdown) {
+        dropdown.classList.remove('show');
+        dropdown.innerHTML = '';
+    }
+    if (clearBtn) clearBtn.style.display = 'none';
+    searchResults = [];
+}
+
+function hideSearchResults() {
+    const dropdown = document.getElementById('search-results-dropdown');
+    if (dropdown) dropdown.classList.remove('show');
+}
+
+function initGlobalSearch() {
+    const input = document.getElementById('global-search-input');
+    const clearBtn = document.getElementById('search-clear-btn');
+    if (!input || !clearBtn) return;
+
+    // Traduction du placeholder
+    const placeholderKey = t('search_placeholder');
+    input.placeholder = placeholderKey === 'search_placeholder' ? 'Rechercher...' : placeholderKey;
+
+    input.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.length > 0) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+            hideSearchResults();
+        }
+        performSearch(val);
+    });
+
+    clearBtn.addEventListener('click', () => {
+        closeSearchDropdown();
+        input.focus();
+    });
+
+    // Cacher le dropdown au clic ailleurs
+    document.addEventListener('click', (e) => {
+        const container = document.querySelector('.header-search-container');
+        if (container && !container.contains(e.target)) {
+            hideSearchResults();
+        }
+    });
+
+    // Navigation au clavier
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (searchResults.length > 0) {
+                handleSearchResultClick(0);
+            }
+        }
+        if (e.key === 'Escape') {
+            closeSearchDropdown();
+        }
+    });
+}
+
+// ============================================================
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1182,6 +1350,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.target.id === 'transfer-form') handleTransferSubmit(e);
         else if (e.target.id === 'verify-form') handleVerifySubmit(e);
     });
+
+    // Initialisation de la recherche globale
+    initGlobalSearch();
+
     await loadClientFromFirestore();
 });
 
