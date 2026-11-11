@@ -1,8 +1,11 @@
 // ============================================================
-// APP PAY - Logique de l'Assistant IA (Avec Persistance Firebase)
+// APP PAY - Logique de l'Assistant IA (Connecté à l'API)
 // ============================================================
 
-import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from './firebase-config.js';
+import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc } from './firebase-config.js';
+
+// ⚠️ URL EXACTE DE TON SERVEUR CLOUDFLARE
+const CLOUD_FUNCTION_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
 
 document.addEventListener('DOMContentLoaded', () => {
     const aiInput = document.getElementById('ai-chat-input');
@@ -25,10 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let unsubscribeMessages = null;
 
     // ============================================================
-    // 1. CHARGER L'HISTORIQUE EN TEMPS RÉEL
+    // 1. CHARGER L'HISTORIQUE EN TEMPS RÉEL (Firebase)
     // ============================================================
     function initChatHistory() {
-        // On écoute la sous-collection spécifique à ce client
         const messagesRef = collection(db, 'ai_conversations', clientId, 'messages');
         const q = query(messagesRef, orderBy('timestamp', 'asc'));
 
@@ -36,14 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
             chatBody.innerHTML = ''; // On vide pour recharger proprement
 
             if (snapshot.empty && isFirstLoad) {
-                // Si c'est la première fois qu'il ouvre le chat
+                // Message d'accueil si l'historique est vide
                 appendMessageToUI('assistant', "Bonjour ! Je suis l'assistant virtuel d'APP PAY. Comment puis-je vous aider aujourd'hui ?");
                 return;
             }
 
             snapshot.forEach((doc) => {
                 const msg = doc.data();
-                // On n'affiche que si le contenu existe
                 if (msg.content) {
                     appendMessageToUI(msg.role, msg.content);
                 }
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Démarrer l'écoute dès que la page est prête
+    // Démarrer l'écoute
     initChatHistory();
 
     // ============================================================
@@ -93,31 +94,47 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Afficher l'indicateur de frappe
             showTyping();
 
-            // 3. SIMULATION DE LA RÉPONSE (Sera remplacé à l'Étape 4)
-            setTimeout(async () => {
-                removeTyping();
-                
-                const dummyResponse = "Je comprends votre demande. Pour effectuer un virement, cliquez sur le bouton **Effectuer un virement** dans votre tableau de bord. (Mode démonstration : la vraie IA sera connectée à l'étape suivante).";
-                
-                // Sauvegarder la réponse de l'IA dans Firebase
+            // 3. Récupérer le prénom du client pour le contexte
+            let firstName = "Client";
+            const clientDoc = await getDoc(doc(db, 'clients', clientId));
+            if (clientDoc.exists()) {
+                firstName = clientDoc.data().firstName || "Client";
+            }
+
+            // 4. Appeler notre serveur sécurisé Cloudflare
+            const response = await fetch(CLOUD_FUNCTION_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: text,
+                    clientContext: { firstName: firstName }
+                })
+            });
+
+            const data = await response.json();
+            removeTyping();
+
+            // 5. Sauvegarder la réponse de l'IA
+            if (data.reply) {
                 await addDoc(messagesRef, {
                     role: 'assistant',
-                    content: dummyResponse,
+                    content: data.reply,
                     timestamp: serverTimestamp()
                 });
-
-                // Réactiver l'input
-                aiInput.disabled = false;
-                aiSendBtn.disabled = false;
-                aiInput.focus();
-            }, 1500);
+            } else {
+                throw new Error("Pas de réponse de l'IA");
+            }
 
         } catch (error) {
-            console.error("Erreur lors de l'envoi du message :", error);
+            console.error("Erreur IA:", error);
             removeTyping();
+            // Message de secours pour ne jamais laisser le client sans réponse
+            appendMessageToUI('assistant', "Je suis désolé, une petite difficulté technique m'empêche de répondre pour le moment. Notre service client est disponible pour vous accompagner.");
+        } finally {
+            // Réactiver l'input
             aiInput.disabled = false;
             aiSendBtn.disabled = false;
-            alert("Une erreur est survenue lors de la connexion au serveur.");
+            aiInput.focus();
         }
     }
 
@@ -128,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `ai-message ${role}`;
         
-        // Formater le texte (surligner les boutons avec **)
+        // Formater le texte (Surligner les boutons avec **)
         let formattedText = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\n/g, '<br>');
