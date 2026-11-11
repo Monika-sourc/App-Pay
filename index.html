@@ -11,6 +11,9 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 🆕 CSS DE L'ASSISTANT IA -->
+    <link rel="stylesheet" href="css/ai-assistant.css">
 </head>
 <body>
 
@@ -1022,6 +1025,68 @@
             <button class="confirm-btn-cancel" id="confirm-btn-cancel" data-i18n="confirm_btn_cancel">Annuler</button>
             <button class="confirm-btn-ok" id="confirm-btn-ok" data-i18n="confirm_btn_ok">Confirmer</button>
         </div>
+    </div>
+</div>
+
+<!-- ============================================= -->
+<!-- ASSISTANT IA APP PAY                          -->
+<!-- ============================================= -->
+<div class="ai-fab" id="ai-fab" onclick="document.getElementById('ai-chat-window').classList.toggle('open')">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="aiGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#c855ff" />
+                <stop offset="100%" stop-color="#6e44ff" />
+            </linearGradient>
+            <linearGradient id="aiGrad2" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#a382ff" />
+                <stop offset="100%" stop-color="#5c2bff" />
+            </linearGradient>
+        </defs>
+        <rect x="5" y="5" width="90" height="90" rx="25" fill="#ffffff" stroke="#e8eaee" stroke-width="2"/>
+        <g transform="translate(50, 50)">
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(0)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(45)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(90)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(135)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(180)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(225)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(270)" />
+            <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(315)" />
+        </g>
+    </svg>
+</div>
+
+<div class="ai-chat-window" id="ai-chat-window">
+    <div class="ai-chat-header">
+        <div class="ai-chat-header-info">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <g transform="translate(50, 50)">
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(0)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(45)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(90)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(135)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(180)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(225)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad1)" transform="rotate(270)" />
+                    <ellipse cx="0" cy="-22" rx="7" ry="12" fill="url(#aiGrad2)" transform="rotate(315)" />
+                </g>
+            </svg>
+            <div>
+                <h3>Assistant APP PAY</h3>
+                <p><span style="display:inline-block;width:6px;height:6px;background:#34d399;border-radius:50%;"></span> En ligne</p>
+            </div>
+        </div>
+        <button class="ai-chat-close" onclick="document.getElementById('ai-chat-window').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ai-chat-body" id="ai-chat-body">
+        <div style="text-align: center; color: #888; font-size: 13px; margin-top: 20px;">
+            L'assistant intelligent arrive...
+        </div>
+    </div>
+    <div class="ai-chat-footer">
+        <input type="text" id="ai-chat-input" placeholder="Posez votre question...">
+        <button id="ai-chat-send"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
 </div>
 
