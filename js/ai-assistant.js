@@ -1,95 +1,59 @@
-const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
-const urlId = new URLSearchParams(window.location.search).get('id');
-let db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc;
-let isFirstLoad = true;
-
-import('./firebase-config.js').then(fb => {
-    db = fb.db; collection = fb.collection; addDoc = fb.addDoc;
-    query = fb.query; orderBy = fb.orderBy; onSnapshot = fb.onSnapshot;
-    serverTimestamp = fb.serverTimestamp; doc = fb.doc; getDoc = fb.getDoc;
-    initFirebase();
-}).catch(err => {
-    console.warn("Firebase non chargé, l'IA marchera sans historique.", err);
-    initChat();
-});
-
-function initFirebase() {
-    if (!urlId) return initChat();
-    try {
-        const q = query(collection(db, 'ai_conversations', urlId, 'messages'), orderBy('timestamp', 'asc'));
-        onSnapshot(q, (snap) => {
-            const body = document.getElementById('ai-chat-body');
-            if (!body) return;
-            if (snap.empty && isFirstLoad) {
-                addMsg('assistant', "Bonjour ! Je suis l'assistant virtuel d'APP PAY. Comment puis-je vous aider aujourd'hui ?");
-                return;
-            }
-            body.innerHTML = '';
-            snap.forEach(d => {
-                const m = d.data();
-                if (m.content) addMsg(m.role, m.content);
-            });
-            isFirstLoad = false;
-        });
-    } catch(e) {
-        console.error("Firebase error:", e);
-        initChat();
-    }
-}
-
-function initChat() {
-    const body = document.getElementById('ai-chat-body');
-    if (body && isFirstLoad) {
-        body.innerHTML = '';
-        addMsg('assistant', "Bonjour ! Je suis l'assistant virtuel d'APP PAY. Comment puis-je vous aider aujourd'hui ?");
-        isFirstLoad = false;
-    }
-}
+// Ta nouvelle clé API Gemini
+const GEMINI_API_KEY = "AQ.Ab8RN6KPexBjY6HalJereMMDDgwIg-ro8t4TveEK0rzKVjRS6Q"; 
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('ai-chat-input');
     const btn = document.getElementById('ai-chat-send');
-    if (!input || !btn) return;
+    const body = document.getElementById('ai-chat-body');
+    
+    if (!input || !btn || !body) return;
+
+    // Message de bienvenue
+    body.innerHTML = '<div class="ai-message assistant"><div class="ai-message-bubble">Bonjour ! Je suis l\'assistant APP PAY. Comment puis-je vous aider aujourd\'hui ?</div></div>';
 
     const send = async () => {
         const txt = input.value.trim();
         if (!txt) return;
         input.value = '';
         input.disabled = btn.disabled = true;
-        
-        const body = document.getElementById('ai-chat-body');
-        if (body) body.innerHTML = ''; // Efface le texte d'attente
 
         addMsg('user', txt);
-
-        let ref = null;
-        if (urlId && typeof collection !== 'undefined') {
-            try { ref = collection(db, 'ai_conversations', urlId, 'messages'); await addDoc(ref, { role: 'user', content: txt, timestamp: serverTimestamp() }); } catch(e){}
-        }
-
         showTyping();
 
         try {
-            let fn = "Client";
-            if (urlId && typeof doc !== 'undefined') {
-                try { const cDoc = await getDoc(doc(db, 'clients', urlId)); if(cDoc.exists()) fn = cDoc.data().firstName || "Client"; } catch(e){}
-            }
-
-            const res = await fetch(CLOUD_URL, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ message: txt, clientContext: { firstName: fn } })
+            // Appel à Google Gemini avec la clé dans le Header (Méthode officielle)
+            const res = await fetch(GEMINI_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY // <-- La clé passe par ici maintenant
+                },
+                body: JSON.stringify({
+                    system_instruction: {
+                        parts: [{
+                            text: "Tu es l'Assistant Virtuel Intelligent d'APP PAY. Ton rôle est d'accompagner les clients avec honnêteté, professionnalisme et bienveillance. Ne décourage JAMAIS un client. Réponds TOUJOURS dans la langue du client. Ne demande JAMAIS de mot de passe. Mets TOUJOURS les noms des boutons en gras avec des doubles astérisques (ex: **Effectuer un virement**). L'application a 5 boutons : **Portefeuille**, **Virement**, **Carte virtuelle**, **IBAN Personnel**, **Profil**. Virement : cliquer sur **Effectuer un virement**, remplir les champs, puis **Continuer**. Code d'activation : contacter le service client. Virement en attente ou annulé : expliquer que c'est une vérification de sécurité administrative normale et orienter vers le service client."
+                        }]
+                    },
+                    contents: [{role: "user", parts: [{text: txt}]}]
+                })
             });
+            
             const data = await res.json();
             removeTyping();
 
-            if (data.reply) {
-                addMsg('assistant', data.reply);
-                if (ref) { try { await addDoc(ref, { role: 'assistant', content: data.reply, timestamp: serverTimestamp() }); } catch(e){} }
-            } else throw new Error("No reply");
+            // Si Google renvoie une erreur, on l'affiche
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+
+            // Afficher la réponse de l'IA
+            const reply = data.candidates[0].content.parts[0].text;
+            addMsg('assistant', reply);
 
         } catch (e) {
             removeTyping();
-            addMsg('assistant', "Je suis désolé, une petite difficulté technique m'empêche de répondre. Veuillez contacter le service client.");
+            addMsg('assistant', "⚠️ ERREUR : " + e.message);
         } finally {
             input.disabled = btn.disabled = false;
             input.focus();
@@ -97,7 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     btn.onclick = send;
-    input.onkeypress = (e) => { if(e.key === 'Enter') { e.preventDefault(); send(); } };
+    input.onkeypress = (e) => { 
+        if(e.key === 'Enter') { 
+            e.preventDefault(); 
+            send(); 
+        } 
+    };
 });
 
 function addMsg(role, text) {
@@ -114,7 +83,8 @@ function showTyping() {
     const body = document.getElementById('ai-chat-body');
     if (!body) return;
     const d = document.createElement('div');
-    d.id = 'typing'; d.className = 'ai-message assistant';
+    d.id = 'typing'; 
+    d.className = 'ai-message assistant';
     d.innerHTML = `<div class="ai-typing"><span></span><span></span><span></span></div>`;
     body.appendChild(d);
     body.scrollTop = body.scrollHeight;
