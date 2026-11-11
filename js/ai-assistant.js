@@ -1,24 +1,67 @@
 // ============================================================
-// APP PAY - Logique de l'Assistant IA (Interface)
+// APP PAY - Logique de l'Assistant IA (Avec Persistance Firebase)
 // ============================================================
+
+import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const aiInput = document.getElementById('ai-chat-input');
     const aiSendBtn = document.getElementById('ai-chat-send');
     const chatBody = document.getElementById('ai-chat-body');
 
-    // Si les éléments n'existent pas (ex: page admin), on s'arrête là
+    // Si les éléments n'existent pas, on s'arrête là
     if (!aiInput || !aiSendBtn || !chatBody) return;
 
-    // Nettoyer le message d'attente
-    chatBody.innerHTML = '';
+    // Récupérer l'ID unique du client depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientId = urlParams.get('id');
 
-    // Message de bienvenue au démarrage
-    setTimeout(() => {
-        appendMessage('assistant', "Bonjour ! Je suis l'assistant virtuel d'APP PAY. Comment puis-je vous aider aujourd'hui ?");
-    }, 500);
+    if (!clientId) {
+        console.warn("Assistant IA : Aucun ID client trouvé dans l'URL.");
+        return;
+    }
 
-    // Envoyer le message avec la touche "Entrée"
+    let isFirstLoad = true;
+    let unsubscribeMessages = null;
+
+    // ============================================================
+    // 1. CHARGER L'HISTORIQUE EN TEMPS RÉEL
+    // ============================================================
+    function initChatHistory() {
+        // On écoute la sous-collection spécifique à ce client
+        const messagesRef = collection(db, 'ai_conversations', clientId, 'messages');
+        const q = query(messagesRef, orderBy('timestamp', 'asc'));
+
+        unsubscribeMessages = onSnapshot(q, (snapshot) => {
+            chatBody.innerHTML = ''; // On vide pour recharger proprement
+
+            if (snapshot.empty && isFirstLoad) {
+                // Si c'est la première fois qu'il ouvre le chat
+                appendMessageToUI('assistant', "Bonjour ! Je suis l'assistant virtuel d'APP PAY. Comment puis-je vous aider aujourd'hui ?");
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const msg = doc.data();
+                // On n'affiche que si le contenu existe
+                if (msg.content) {
+                    appendMessageToUI(msg.role, msg.content);
+                }
+            });
+            
+            isFirstLoad = false;
+            scrollToBottom();
+        }, (error) => {
+            console.error("Erreur de chargement de l'historique IA :", error);
+        });
+    }
+
+    // Démarrer l'écoute dès que la page est prête
+    initChatHistory();
+
+    // ============================================================
+    // 2. ENVOYER UN MESSAGE
+    // ============================================================
     aiInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -26,46 +69,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Envoyer le message avec le bouton
     aiSendBtn.addEventListener('click', sendMessage);
 
-    function sendMessage() {
+    async function sendMessage() {
         const text = aiInput.value.trim();
         if (!text) return;
 
-        // 1. Afficher le message du client
-        appendMessage('user', text);
+        // Vider l'input et désactiver temporairement
         aiInput.value = '';
-        
-        // 2. Désactiver l'input en attendant la réponse
         aiInput.disabled = true;
         aiSendBtn.disabled = true;
 
-        // 3. Afficher l'indicateur de frappe (les 3 points)
-        showTyping();
+        const messagesRef = collection(db, 'ai_conversations', clientId, 'messages');
 
-        // 4. SIMULATION (Sera remplacé par la vraie IA à l'Étape 4)
-        setTimeout(() => {
+        try {
+            // 1. Sauvegarder le message du client dans Firebase
+            await addDoc(messagesRef, {
+                role: 'user',
+                content: text,
+                timestamp: serverTimestamp()
+            });
+
+            // 2. Afficher l'indicateur de frappe
+            showTyping();
+
+            // 3. SIMULATION DE LA RÉPONSE (Sera remplacé à l'Étape 4)
+            setTimeout(async () => {
+                removeTyping();
+                
+                const dummyResponse = "Je comprends votre demande. Pour effectuer un virement, cliquez sur le bouton **Effectuer un virement** dans votre tableau de bord. (Mode démonstration : la vraie IA sera connectée à l'étape suivante).";
+                
+                // Sauvegarder la réponse de l'IA dans Firebase
+                await addDoc(messagesRef, {
+                    role: 'assistant',
+                    content: dummyResponse,
+                    timestamp: serverTimestamp()
+                });
+
+                // Réactiver l'input
+                aiInput.disabled = false;
+                aiSendBtn.disabled = false;
+                aiInput.focus();
+            }, 1500);
+
+        } catch (error) {
+            console.error("Erreur lors de l'envoi du message :", error);
             removeTyping();
-            
-            // Exemple de réponse avec un bouton surligné en gras (** **)
-            const dummyResponse = "Je comprends votre demande. Pour effectuer un virement, cliquez sur le bouton **Effectuer un virement** dans votre tableau de bord. (Note: Je suis actuellement en mode démonstration, l'intelligence artificielle sera connectée à la prochaine étape).";
-            
-            appendMessage('assistant', dummyResponse);
-            
-            // Réactiver l'input
             aiInput.disabled = false;
             aiSendBtn.disabled = false;
-            aiInput.focus();
-        }, 1500);
+            alert("Une erreur est survenue lors de la connexion au serveur.");
+        }
     }
 
-    // Fonction pour ajouter un message à l'écran
-    function appendMessage(role, text) {
+    // ============================================================
+    // 3. FONCTIONS D'AFFICHAGE (UI)
+    // ============================================================
+    function appendMessageToUI(role, text) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `ai-message ${role}`;
         
-        // Formater le texte (transforme **texte** en <strong>texte</strong>)
+        // Formater le texte (surligner les boutons avec **)
         let formattedText = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\n/g, '<br>');
@@ -75,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
 
-    // Afficher les 3 points de frappe
     function showTyping() {
         const typingDiv = document.createElement('div');
         typingDiv.id = 'ai-typing-indicator';
@@ -89,13 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
 
-    // Retirer les 3 points de frappe
     function removeTyping() {
         const typing = document.getElementById('ai-typing-indicator');
         if (typing) typing.remove();
     }
 
-    // Faire défiler vers le bas
     function scrollToBottom() {
         chatBody.scrollTop = chatBody.scrollHeight;
     }
