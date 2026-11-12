@@ -122,13 +122,21 @@
 }
 
 /* ============================================================
-   🆕 CORPS DU CHAT (Fond rose pâle)
+   🆕 CORPS DU CHAT (Fond rose pâle + Bulles vertes)
    ============================================================ */
 .ai-chat-body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background-color: #fff1f2; /* Modifié ici : Fond rose très pâle */
+    /* Fond rose très pâle avec des bulles vertes dessinées en CSS */
+    background-color: #fff1f2; 
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(167, 243, 208, 0.4) 0%, transparent 30%),  /* Grosse bulle haut gauche */
+        radial-gradient(circle at 85% 30%, rgba(167, 243, 208, 0.3) 0%, transparent 20%),  /* Petite bulle haut droit */
+        radial-gradient(circle at 25% 75%, rgba(167, 243, 208, 0.3) 0%, transparent 25%),  /* Moyenne bulle bas gauche */
+        radial-gradient(circle at 75% 90%, rgba(167, 243, 208, 0.4) 0%, transparent 35%);  /* Grosse bulle bas droit */
+    background-attachment: local; /* Les bulles défilent avec les messages */
+    
     display: flex;
     flex-direction: column;
     gap: 15px;
