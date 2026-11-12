@@ -45,8 +45,7 @@
     bottom: 180px;
     right: 20px;
     width: 350px;
-    height: 600px; /* 🆕 Hauteur augmentée de 500 à 600 */
-    max-height: 75vh; /* 🆕 Pour ne pas dépasser l'écran sur mobile */
+    height: calc(100vh - 220px); /* 🆕 Hauteur maximale calculée */
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
@@ -233,7 +232,7 @@
     white-space: nowrap;
 }
 
-/* 🆕 INDICATEUR DE FRAPPE (3 petits points améliorés) */
+/* 🆕 INDICATEUR DE FRAPPE (3 petits points) */
 .ai-typing {
     display: flex;
     gap: 6px;
@@ -249,7 +248,7 @@
 .ai-typing span {
     width: 8px;
     height: 8px;
-    background-color: #6e44ff; /* Couleur violette pour bien les voir */
+    background-color: #6e44ff;
     border-radius: 50%;
     animation: typingBounce 1.4s infinite ease-in-out both;
 }
@@ -319,8 +318,8 @@
     .ai-chat-window {
         width: calc(100% - 30px);
         right: 15px;
-        bottom: 160px;
-        height: 65vh; /* Hauteur adaptée pour mobile */
+        bottom: 100px; /* Rapproché du bas pour prendre plus de place */
+        height: calc(100vh - 130px); /* 🆕 Prend toute la hauteur disponible au-dessus du menu */
     }
     .ai-fab {
         bottom: 95px;
