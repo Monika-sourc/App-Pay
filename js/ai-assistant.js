@@ -1,6 +1,7 @@
+import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from './firebase-config.js';
+
 const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
-const urlId = new URLSearchParams(window.location.search).get('id') || 'default';
-const STORAGE_KEY = 'app_pay_chat_history_' + urlId;
+const urlId = new URLSearchParams(window.location.search).get('id');
 
 // Dictionnaire de salutations
 const GREETINGS = {
@@ -17,30 +18,41 @@ const GREETINGS = {
     'tr': "Merhaba! Ben senin asistanınım. Yardıma hazırım?"
 };
 
-let currentGreetingText = "Bonjour ! Je suis votre assistante. Prête à vous aider ?";
-
 // Détecter la langue du téléphone
 const browserLang = (navigator.language || 'fr').split('-')[0].toLowerCase();
+const currentGreetingText = GREETINGS[browserLang] || GREETINGS['fr'];
 
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('ai-chat-input');
     const btn = document.getElementById('ai-chat-send');
     const body = document.getElementById('ai-chat-body');
     
-    if (!input || !btn || !body) return;
+    if (!input || !btn || !body || !urlId) return;
 
-    // 1. On remplace immédiatement le texte d'attente par le message de bienvenue
-    currentGreetingText = GREETINGS[browserLang] || GREETINGS['fr'];
-    body.innerHTML = '';
+    // 1. On vide le texte d'attente pour afficher le chat immédiatement
+    body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">${currentGreetingText}</div></div>`;
 
-    // 2. Charger l'historique depuis la mémoire du téléphone
-    const savedHistory = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    
-    if (savedHistory.length === 0) {
-        afficherMessage('assistant', currentGreetingText);
-    } else {
-        savedHistory.forEach(msg => afficherMessage(msg.role, msg.content));
-    }
+    // 2. Connexion à Firebase pour l'historique en temps réel
+    let isFirstLoad = true;
+    const messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
+    const q = query(messagesRef, orderBy('timestamp', 'asc'));
+
+    // On écoute les changements (si un message est ajouté depuis un autre appareil, il apparaîtra ici)
+    onSnapshot(q, (snapshot) => {
+        if (snapshot.empty && isFirstLoad) {
+            isFirstLoad = false;
+            return; // On garde le message de bienvenue
+        }
+
+        body.innerHTML = ''; // On nettoie pour réafficher l'historique complet
+        snapshot.forEach((doc) => {
+            const msg = doc.data();
+            if (msg.content) afficherMessage(msg.role, msg.content);
+        });
+        isFirstLoad = false;
+    }, (error) => {
+        console.error("Erreur de synchronisation Firebase :", error);
+    });
 
     // 3. Envoi de message
     const send = async () => {
@@ -49,10 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
         input.disabled = btn.disabled = true;
 
+        // On affiche le message immédiatement (sans attendre la base de données)
         afficherMessage('user', txt);
         showTyping();
 
         try {
+            // Sauvegarde du message du client dans Firebase
+            await addDoc(messagesRef, { 
+                role: 'user', 
+                content: txt, 
+                timestamp: serverTimestamp() 
+            });
+
+            // Appel à l'IA
             const res = await fetch(CLOUD_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -63,10 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
             removeTyping();
 
             if (data.reply) {
-                afficherMessage('assistant', data.reply);
-                // Sauvegarder dans la mémoire du téléphone
-                sauvegarderMessage('user', txt);
-                sauvegarderMessage('assistant', data.reply);
+                // Sauvegarde de la réponse de l'IA dans Firebase
+                await addDoc(messagesRef, { 
+                    role: 'assistant', 
+                    content: data.reply, 
+                    timestamp: serverTimestamp() 
+                });
             } else {
                 throw new Error("Pas de réponse");
             }
@@ -93,13 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewsContainer = document.getElementById('views-container');
     if (viewsContainer) observer.observe(viewsContainer, { childList: true, subtree: true });
 });
-
-// Fonction pour sauvegarder dans le téléphone
-function sauvegarderMessage(role, content) {
-    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    history.push({ role, content });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-}
 
 function afficherBulleBienvenue(text) {
     const existing = document.querySelector('.ai-greeting-bubble');
