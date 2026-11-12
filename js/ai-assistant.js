@@ -1,14 +1,10 @@
-import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from './firebase-config.js';
-
 const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
-const urlId = new URLSearchParams(window.location.search).get('id');
+const urlId = new URLSearchParams(window.location.search).get('id') || 'default';
+const STORAGE_KEY = 'app_pay_chat_history_' + urlId;
 
-// Message de base
-const BASE_GREETING = "Bonjour ! Je suis votre assistante. Prête à vous aider ?";
-
-// Dictionnaire de salutations pour les langues les plus courantes
-const LOCAL_GREETINGS = {
-    'fr': BASE_GREETING,
+// Dictionnaire de salutations
+const GREETINGS = {
+    'fr': "Bonjour ! Je suis votre assistante. Prête à vous aider ?",
     'en': "Hello! I am your assistant. Ready to help?",
     'pl': "Witam! Jestem Twoim asystentem. Gotowy do pomocy?",
     'es': "¡Hola! Soy tu asistente. ¿Listo para ayudarte?",
@@ -18,16 +14,12 @@ const LOCAL_GREETINGS = {
     'ar': "مرحبا! أنا مساعدك. جاهز لمساعدتك؟",
     'zh': "你好！我是您的助手。随时准备为您服务！",
     'ru': "Привет! Я ваш помощник. Готов помочь!",
-    'tr': "Merhaba! Ben senin asistanınım. Yardıma hazırım?",
-    'nl': "Hallo! Ik ben je assistent. Klaar om te helpen?",
-    'sv': "Hej! Jag är din assistent. Redo att hjälpa till?",
-    'ha': "Sannu! Ni ne mataimakin ku. A shirye nake in taimaka?",
-    'yo': "Bawo! Emi ni oluranlowo re. Setan lati ran o lowo?"
+    'tr': "Merhaba! Ben senin asistanınım. Yardıma hazırım?"
 };
 
-let currentGreetingText = BASE_GREETING;
+let currentGreetingText = "Bonjour ! Je suis votre assistante. Prête à vous aider ?";
 
-// Détecter la langue du téléphone (ex: "pl-PL" devient "pl")
+// Détecter la langue du téléphone
 const browserLang = (navigator.language || 'fr').split('-')[0].toLowerCase();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,43 +27,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('ai-chat-send');
     const body = document.getElementById('ai-chat-body');
     
-    if (!input || !btn || !body || !urlId) return;
+    if (!input || !btn || !body) return;
 
-    // Initialiser le message de bienvenue
-    currentGreetingText = LOCAL_GREETINGS[browserLang] || BASE_GREETING;
+    // 1. On remplace immédiatement le texte d'attente par le message de bienvenue
+    currentGreetingText = GREETINGS[browserLang] || GREETINGS['fr'];
+    body.innerHTML = '';
 
-    // 1. Logique de l'historique du chat
-    let isFirstLoad = true;
-    const messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
+    // 2. Charger l'historique depuis la mémoire du téléphone
+    const savedHistory = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    
+    if (savedHistory.length === 0) {
+        afficherMessage('assistant', currentGreetingText);
+    } else {
+        savedHistory.forEach(msg => afficherMessage(msg.role, msg.content));
+    }
 
-    const q = query(messagesRef, orderBy('timestamp', 'asc'));
-    onSnapshot(q, (snapshot) => {
-        body.innerHTML = ''; 
-
-        if (snapshot.empty && isFirstLoad) {
-            body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">${currentGreetingText}</div></div>`;
-            return;
-        }
-
-        snapshot.forEach((doc) => {
-            const msg = doc.data();
-            if (msg.content) afficherMessage(msg.role, msg.content);
-        });
-        isFirstLoad = false;
-    });
-
-    // 2. Envoi de message
+    // 3. Envoi de message
     const send = async () => {
         const txt = input.value.trim();
         if (!txt) return;
         input.value = '';
         input.disabled = btn.disabled = true;
 
+        afficherMessage('user', txt);
         showTyping();
 
         try {
-            await addDoc(messagesRef, { role: 'user', content: txt, timestamp: serverTimestamp() });
-
             const res = await fetch(CLOUD_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -82,7 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
             removeTyping();
 
             if (data.reply) {
-                await addDoc(messagesRef, { role: 'assistant', content: data.reply, timestamp: serverTimestamp() });
+                afficherMessage('assistant', data.reply);
+                // Sauvegarder dans la mémoire du téléphone
+                sauvegarderMessage('user', txt);
+                sauvegarderMessage('assistant', data.reply);
             } else {
                 throw new Error("Pas de réponse");
             }
@@ -99,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.onclick = send;
     input.onkeypress = (e) => { if(e.key === 'Enter') { e.preventDefault(); send(); } };
 
-    // 3. Affichage de la bulle sur la page d'accueil
+    // 4. Bulle de bienvenue sur le tableau de bord
     const observer = new MutationObserver(() => {
         if (document.getElementById('balance-display')) {
             afficherBulleBienvenue(currentGreetingText);
@@ -109,6 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewsContainer = document.getElementById('views-container');
     if (viewsContainer) observer.observe(viewsContainer, { childList: true, subtree: true });
 });
+
+// Fonction pour sauvegarder dans le téléphone
+function sauvegarderMessage(role, content) {
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    history.push({ role, content });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
 
 function afficherBulleBienvenue(text) {
     const existing = document.querySelector('.ai-greeting-bubble');
