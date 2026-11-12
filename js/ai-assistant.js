@@ -1,6 +1,4 @@
-// Ta clé OpenRouter est déjà intégrée ici
-const OPENROUTER_API_KEY = "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"; 
-const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
 
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('ai-chat-input');
@@ -9,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!input || !btn || !body) return;
 
-    // Message de bienvenue
     body.innerHTML = '<div class="ai-message assistant"><div class="ai-message-bubble">Bonjour ! Je suis l\'assistant APP PAY. Comment puis-je vous aider aujourd\'hui ?</div></div>';
 
     const send = async () => {
@@ -22,33 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
         showTyping();
 
         try {
-            const res = await fetch(API_URL, {
+            const res = await fetch(CLOUD_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + OPENROUTER_API_KEY
-                },
-                body: JSON.stringify({
-                    model: "meta-llama/llama-3-8b-instruct:free",
-                    messages: [
-                        {
-                            role: "system",
-                            content: "Tu es l'Assistant Virtuel Intelligent d'APP PAY. Ton rôle est d'accompagner les clients avec honnêteté, professionnalisme et bienveillance. Ne décourage JAMAIS un client. Réponds TOUJOURS dans la langue du client. Ne demande JAMAIS de mot de passe. Mets TOUJOURS les noms des boutons en gras avec des doubles astérisques (ex: **Effectuer un virement**). L'application a 5 boutons : **Portefeuille**, **Virement**, **Carte virtuelle**, **IBAN Personnel**, **Profil**. Virement : cliquer sur **Effectuer un virement**, remplir les champs, puis **Continuer**. Code d'activation : contacter le service client. Virement en attente ou annulé : expliquer que c'est une vérification de sécurité administrative normale et orienter vers le service client."
-                        },
-                        { role: "user", content: txt }
-                    ]
-                })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message: txt })
             });
             
             const data = await res.json();
             removeTyping();
 
-            if (data.error) {
-                throw new Error(data.error.message);
+            if (data.reply) {
+                addMsg('assistant', data.reply);
+            } else {
+                throw new Error("Format invalide");
             }
-
-            const reply = data.choices[0].message.content;
-            addMsg('assistant', reply);
 
         } catch (e) {
             removeTyping();
