@@ -1,5 +1,5 @@
 // Ta clé OpenRouter est déjà intégrée ici
-const OPENROUTER_API_KEY = "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"; 
+const OPENROUTER_API_KEY = "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"; 
 const API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 document.addEventListener('DOMContentLoaded', () => {
