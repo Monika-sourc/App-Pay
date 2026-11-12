@@ -1,6 +1,7 @@
 // Ta nouvelle clé API Gemini
 const GEMINI_API_KEY = "AQ.Ab8RN6KPexBjY6HalJereMMDDgwIg-ro8t4TveEK0rzKVjRS6Q"; 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+// On ajoute "-latest" à la fin du nom du modèle pour que Google le reconnaisse
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('ai-chat-input');
@@ -22,12 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
         showTyping();
 
         try {
-            // Appel à Google Gemini avec la clé dans le Header (Méthode officielle)
+            // Appel à Google Gemini
             const res = await fetch(GEMINI_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-goog-api-key': GEMINI_API_KEY // <-- La clé passe par ici maintenant
+                    'x-goog-api-key': GEMINI_API_KEY 
                 },
                 body: JSON.stringify({
                     system_instruction: {
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             removeTyping();
 
-            // Si Google renvoie une erreur, on l'affiche
+            // Si Google renvoie une erreur
             if (data.error) {
                 throw new Error(data.error.message);
             }
