@@ -38,14 +38,14 @@
 }
 
 /* ============================================================
-   2. LA FENÊTRE DE CHAT (Hauteur augmentée)
+   2. LA FENÊTRE DE CHAT
    ============================================================ */
 .ai-chat-window {
     position: fixed;
     bottom: 180px;
     right: 20px;
     width: 350px;
-    height: calc(100vh - 220px); /* 🆕 Hauteur maximale calculée */
+    height: calc(100vh - 220px);
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
@@ -121,12 +121,14 @@
     opacity: 1;
 }
 
-/* Corps du Chat (Zone des messages) */
+/* ============================================================
+   🆕 CORPS DU CHAT (Fond rose pâle)
+   ============================================================ */
 .ai-chat-body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background-color: #f8f9fc;
+    background-color: #fff1f2; /* Modifié ici : Fond rose très pâle */
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -232,7 +234,7 @@
     white-space: nowrap;
 }
 
-/* 🆕 INDICATEUR DE FRAPPE (3 petits points) */
+/* INDICATEUR DE FRAPPE (3 petits points) */
 .ai-typing {
     display: flex;
     gap: 6px;
@@ -318,8 +320,8 @@
     .ai-chat-window {
         width: calc(100% - 30px);
         right: 15px;
-        bottom: 100px; /* Rapproché du bas pour prendre plus de place */
-        height: calc(100vh - 130px); /* 🆕 Prend toute la hauteur disponible au-dessus du menu */
+        bottom: 100px; 
+        height: calc(100vh - 130px); 
     }
     .ai-fab {
         bottom: 95px;
