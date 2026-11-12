@@ -27,25 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!input || !btn || !body || !urlId) return;
 
-    // 1. On affiche immédiatement le message de bienvenue pour ne pas bloquer l'écran
+    // Message de bienvenue immédiat
     body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">${currentGreetingText}</div></div>`;
 
-    // 2. Initialisation de Firebase (on attend que la connexion soit prête)
     let messagesRef = null;
     
+    // Chargement de l'historique
     authPromise.then(() => {
         messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
         
-        // Écoute en temps réel (synchronisation entre appareils)
         onSnapshot(messagesRef, (snapshot) => {
-            if (snapshot.empty) return; // Si vide, on laisse le message de bienvenue
+            if (snapshot.empty) return;
             
-            body.innerHTML = ''; // On nettoie l'écran pour afficher l'historique
+            body.innerHTML = ''; 
             let messages = [];
             
             snapshot.forEach(d => messages.push(d.data()));
             
-            // On trie les messages par date (puisque orderBy n'est pas dans ton fichier config)
             messages.sort((a, b) => {
                 const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
                 const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }).catch(e => console.error("Erreur auth :", e));
 
-    // 3. Envoi de message
+    // Envoi de message
     const send = async () => {
         const txt = input.value.trim();
         if (!txt) return;
@@ -68,10 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
         input.disabled = btn.disabled = true;
 
         afficherMessage('user', txt);
+        
+        // 🆕 Affichage des 3 petits points
         showTyping();
 
         try {
-            // Sauvegarde locale immédiate dans Firebase
             if (messagesRef) {
                 const newMsgRef = doc(messagesRef);
                 await setDoc(newMsgRef, { 
@@ -81,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            // Appel à l'IA via Cloudflare
             const res = await fetch(CLOUD_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -89,12 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             const data = await res.json();
+            
+            // 🆕 On enlève les 3 petits points dès que la réponse arrive
             removeTyping();
 
             if (data.reply) {
                 afficherMessage('assistant', data.reply);
                 
-                // Sauvegarde de la réponse de l'IA
                 if (messagesRef) {
                     const newReplyRef = doc(messagesRef);
                     await setDoc(newReplyRef, { 
@@ -119,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.onclick = send;
     input.onkeypress = (e) => { if(e.key === 'Enter') { e.preventDefault(); send(); } };
 
-    // 4. Bulle de bienvenue sur la page d'accueil
+    // Bulle de bienvenue
     const observer = new MutationObserver(() => {
         if (document.getElementById('balance-display')) {
             afficherBulleBienvenue(currentGreetingText);
@@ -159,8 +158,14 @@ function afficherMessage(role, text) {
 function showTyping() {
     const body = document.getElementById('ai-chat-body');
     if (!body) return;
+    // Supprimer un éventuel indicateur existant
+    const existing = document.getElementById('typing');
+    if (existing) existing.remove();
+
     const d = document.createElement('div');
-    d.id = 'typing'; d.className = 'ai-message assistant';
+    d.id = 'typing'; 
+    d.className = 'ai-message assistant';
+    // 3 petits points animés
     d.innerHTML = `<div class="ai-typing"><span></span><span></span><span></span></div>`;
     body.appendChild(d);
     body.scrollTop = body.scrollHeight;
