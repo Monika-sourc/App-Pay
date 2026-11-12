@@ -1,4 +1,4 @@
-import { db, collection, doc, setDoc, onSnapshot, serverTimestamp, authPromise } from './firebase-config.js';
+import { db, collection, doc, setDoc, onSnapshot, serverTimestamp, authPromise, getDoc } from './firebase-config.js';
 
 const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
 const urlId = new URLSearchParams(window.location.search).get('id');
@@ -17,29 +17,44 @@ const GREETINGS = {
     'tr': "Merhaba! Ben senin asistanınım. Yardıma hazırım?"
 };
 
-const browserLang = (navigator.language || 'fr').split('-')[0].toLowerCase();
-const currentGreetingText = GREETINGS[browserLang] || GREETINGS['fr'];
+let isTyping = false;
+let currentGreetingText = GREETINGS['fr']; // Par défaut
 
-let isTyping = false; // 🆕 Variable pour savoir si l'IA écrit
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const input = document.getElementById('ai-chat-input');
     const btn = document.getElementById('ai-chat-send');
     const body = document.getElementById('ai-chat-body');
     
     if (!input || !btn || !body || !urlId) return;
 
-    body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">${currentGreetingText}</div></div>`;
+    // 1. On affiche un message d'attente immédiat
+    body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">...</div></div>`;
 
     let messagesRef = null;
     
-    authPromise.then(() => {
+    // 2. On attend Firebase pour récupérer la vraie langue du client
+    authPromise.then(async () => {
+        try {
+            // 🆕 On lit la langue directement sur la fiche du client dans Firebase
+            const clientDoc = await getDoc(doc(db, 'clients', urlId));
+            if (clientDoc.exists() && clientDoc.data().language) {
+                const clientLang = clientDoc.data().language;
+                currentGreetingText = GREETINGS[clientLang] || GREETINGS['fr'];
+            }
+        } catch(e) {
+            console.warn("Impossible de lire la langue du client, utilisation du français.");
+        }
+
+        // 3. On affiche le bon message
+        body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">${currentGreetingText}</div></div>`;
+
+        // 4. On charge l'historique
         messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
         
         onSnapshot(messagesRef, (snapshot) => {
             if (snapshot.empty) return;
             
-            body.innerHTML = ''; // On efface tout
+            body.innerHTML = ''; 
             let messages = [];
             
             snapshot.forEach(d => messages.push(d.data()));
@@ -54,15 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (msg.content) afficherMessage(msg.role, msg.content);
             });
 
-            // 🆕 Si l'IA est en train d'écrire, on remet les 3 points après la mise à jour de Firebase
-            if (isTyping) {
-                afficherTroisPoints();
-            }
+            if (isTyping) afficherTroisPoints();
         }, (error) => {
             console.error("Erreur de synchronisation Firebase :", error);
         });
     }).catch(e => console.error("Erreur auth :", e));
 
+    // 5. Envoi de message
     const send = async () => {
         const txt = input.value.trim();
         if (!txt) return;
@@ -70,8 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         input.disabled = btn.disabled = true;
 
         afficherMessage('user', txt);
-        
-        // 🆕 On active l'indicateur de frappe
         isTyping = true;
         afficherTroisPoints();
 
@@ -89,13 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const data = await res.json();
             
-            // 🆕 On désactive l'indicateur de frappe
             isTyping = false;
             retirerTroisPoints();
 
             if (data.reply) {
                 afficherMessage('assistant', data.reply);
-                
                 if (messagesRef) {
                     const newReplyRef = doc(messagesRef);
                     await setDoc(newReplyRef, { role: 'assistant', content: data.reply, timestamp: serverTimestamp() });
@@ -117,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.onclick = send;
     input.onkeypress = (e) => { if(e.key === 'Enter') { e.preventDefault(); send(); } };
 
+    // 6. Bulle de bienvenue
     const observer = new MutationObserver(() => {
         if (document.getElementById('balance-display')) {
             afficherBulleBienvenue(currentGreetingText);
@@ -153,11 +163,10 @@ function afficherMessage(role, text) {
     body.scrollTop = body.scrollHeight;
 }
 
-// 🆕 Fonction pour afficher les 3 points
 function afficherTroisPoints() {
     const body = document.getElementById('ai-chat-body');
     if (!body) return;
-    if (document.getElementById('typing')) return; // S'ils sont déjà là, on ne les duplique pas
+    if (document.getElementById('typing')) return;
 
     const d = document.createElement('div');
     d.id = 'typing'; 
@@ -167,7 +176,6 @@ function afficherTroisPoints() {
     body.scrollTop = body.scrollHeight;
 }
 
-// 🆕 Fonction pour retirer les 3 points
 function retirerTroisPoints() {
     const t = document.getElementById('typing');
     if (t) t.remove();
