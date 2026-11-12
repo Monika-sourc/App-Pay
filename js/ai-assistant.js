@@ -1,7 +1,8 @@
-// Ta nouvelle clé API Gemini
+// Importation du SDK officiel de Google
+import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai";
+
 const GEMINI_API_KEY = "AQ.Ab8RN6KPexBjY6HalJereMMDDgwIg-ro8t4TveEK0rzKVjRS6Q"; 
-// On ajoute "-latest" à la fin du nom du modèle pour que Google le reconnaisse
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('ai-chat-input');
@@ -23,33 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
         showTyping();
 
         try {
-            // Appel à Google Gemini
-            const res = await fetch(GEMINI_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-goog-api-key': GEMINI_API_KEY 
-                },
-                body: JSON.stringify({
-                    system_instruction: {
-                        parts: [{
-                            text: "Tu es l'Assistant Virtuel Intelligent d'APP PAY. Ton rôle est d'accompagner les clients avec honnêteté, professionnalisme et bienveillance. Ne décourage JAMAIS un client. Réponds TOUJOURS dans la langue du client. Ne demande JAMAIS de mot de passe. Mets TOUJOURS les noms des boutons en gras avec des doubles astérisques (ex: **Effectuer un virement**). L'application a 5 boutons : **Portefeuille**, **Virement**, **Carte virtuelle**, **IBAN Personnel**, **Profil**. Virement : cliquer sur **Effectuer un virement**, remplir les champs, puis **Continuer**. Code d'activation : contacter le service client. Virement en attente ou annulé : expliquer que c'est une vérification de sécurité administrative normale et orienter vers le service client."
-                        }]
-                    },
-                    contents: [{role: "user", parts: [{text: txt}]}]
-                })
+            // On utilise le modèle officiel via le SDK
+            const model = genAI.getGenerativeModel({ 
+                model: "gemini-1.5-flash",
+                systemInstruction: "Tu es l'Assistant Virtuel Intelligent d'APP PAY. Ton rôle est d'accompagner les clients avec honnêteté, professionnalisme et bienveillance. Ne décourage JAMAIS un client. Réponds TOUJOURS dans la langue du client. Ne demande JAMAIS de mot de passe. Mets TOUJOURS les noms des boutons en gras avec des doubles astérisques (ex: **Effectuer un virement**). L'application a 5 boutons : **Portefeuille**, **Virement**, **Carte virtuelle**, **IBAN Personnel**, **Profil**. Virement : cliquer sur **Effectuer un virement**, remplir les champs, puis **Continuer**. Code d'activation : contacter le service client. Virement en attente ou annulé : expliquer que c'est une vérification de sécurité administrative normale et orienter vers le service client."
             });
+
+            // Envoi du message
+            const result = await model.generateContent(txt);
+            const response = await result.response;
+            const reply = response.text();
             
-            const data = await res.json();
             removeTyping();
-
-            // Si Google renvoie une erreur
-            if (data.error) {
-                throw new Error(data.error.message);
-            }
-
-            // Afficher la réponse de l'IA
-            const reply = data.candidates[0].content.parts[0].text;
             addMsg('assistant', reply);
 
         } catch (e) {
