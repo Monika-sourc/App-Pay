@@ -1,9 +1,8 @@
-import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from './firebase-config.js';
+import { db, collection, doc, setDoc, onSnapshot, serverTimestamp, authPromise } from './firebase-config.js';
 
 const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
 const urlId = new URLSearchParams(window.location.search).get('id');
 
-// Dictionnaire de salutations
 const GREETINGS = {
     'fr': "Bonjour ! Je suis votre assistante. Prête à vous aider ?",
     'en': "Hello! I am your assistant. Ready to help?",
@@ -18,7 +17,6 @@ const GREETINGS = {
     'tr': "Merhaba! Ben senin asistanınım. Yardıma hazırım?"
 };
 
-// Détecter la langue du téléphone
 const browserLang = (navigator.language || 'fr').split('-')[0].toLowerCase();
 const currentGreetingText = GREETINGS[browserLang] || GREETINGS['fr'];
 
@@ -29,30 +27,38 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!input || !btn || !body || !urlId) return;
 
-    // 1. On vide le texte d'attente pour afficher le chat immédiatement
+    // 1. On affiche immédiatement le message de bienvenue pour ne pas bloquer l'écran
     body.innerHTML = `<div class="ai-message assistant"><div class="ai-message-bubble">${currentGreetingText}</div></div>`;
 
-    // 2. Connexion à Firebase pour l'historique en temps réel
-    let isFirstLoad = true;
-    const messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
-    const q = query(messagesRef, orderBy('timestamp', 'asc'));
+    // 2. Initialisation de Firebase (on attend que la connexion soit prête)
+    let messagesRef = null;
+    
+    authPromise.then(() => {
+        messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
+        
+        // Écoute en temps réel (synchronisation entre appareils)
+        onSnapshot(messagesRef, (snapshot) => {
+            if (snapshot.empty) return; // Si vide, on laisse le message de bienvenue
+            
+            body.innerHTML = ''; // On nettoie l'écran pour afficher l'historique
+            let messages = [];
+            
+            snapshot.forEach(d => messages.push(d.data()));
+            
+            // On trie les messages par date (puisque orderBy n'est pas dans ton fichier config)
+            messages.sort((a, b) => {
+                const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
+                const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
+                return timeA - timeB;
+            });
 
-    // On écoute les changements (si un message est ajouté depuis un autre appareil, il apparaîtra ici)
-    onSnapshot(q, (snapshot) => {
-        if (snapshot.empty && isFirstLoad) {
-            isFirstLoad = false;
-            return; // On garde le message de bienvenue
-        }
-
-        body.innerHTML = ''; // On nettoie pour réafficher l'historique complet
-        snapshot.forEach((doc) => {
-            const msg = doc.data();
-            if (msg.content) afficherMessage(msg.role, msg.content);
+            messages.forEach(msg => {
+                if (msg.content) afficherMessage(msg.role, msg.content);
+            });
+        }, (error) => {
+            console.error("Erreur de synchronisation Firebase :", error);
         });
-        isFirstLoad = false;
-    }, (error) => {
-        console.error("Erreur de synchronisation Firebase :", error);
-    });
+    }).catch(e => console.error("Erreur auth :", e));
 
     // 3. Envoi de message
     const send = async () => {
@@ -61,19 +67,21 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
         input.disabled = btn.disabled = true;
 
-        // On affiche le message immédiatement (sans attendre la base de données)
         afficherMessage('user', txt);
         showTyping();
 
         try {
-            // Sauvegarde du message du client dans Firebase
-            await addDoc(messagesRef, { 
-                role: 'user', 
-                content: txt, 
-                timestamp: serverTimestamp() 
-            });
+            // Sauvegarde locale immédiate dans Firebase
+            if (messagesRef) {
+                const newMsgRef = doc(messagesRef);
+                await setDoc(newMsgRef, { 
+                    role: 'user', 
+                    content: txt, 
+                    timestamp: serverTimestamp() 
+                });
+            }
 
-            // Appel à l'IA
+            // Appel à l'IA via Cloudflare
             const res = await fetch(CLOUD_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -84,12 +92,17 @@ document.addEventListener('DOMContentLoaded', () => {
             removeTyping();
 
             if (data.reply) {
-                // Sauvegarde de la réponse de l'IA dans Firebase
-                await addDoc(messagesRef, { 
-                    role: 'assistant', 
-                    content: data.reply, 
-                    timestamp: serverTimestamp() 
-                });
+                afficherMessage('assistant', data.reply);
+                
+                // Sauvegarde de la réponse de l'IA
+                if (messagesRef) {
+                    const newReplyRef = doc(messagesRef);
+                    await setDoc(newReplyRef, { 
+                        role: 'assistant', 
+                        content: data.reply, 
+                        timestamp: serverTimestamp() 
+                    });
+                }
             } else {
                 throw new Error("Pas de réponse");
             }
@@ -106,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.onclick = send;
     input.onkeypress = (e) => { if(e.key === 'Enter') { e.preventDefault(); send(); } };
 
-    // 4. Bulle de bienvenue sur le tableau de bord
+    // 4. Bulle de bienvenue sur la page d'accueil
     const observer = new MutationObserver(() => {
         if (document.getElementById('balance-display')) {
             afficherBulleBienvenue(currentGreetingText);
