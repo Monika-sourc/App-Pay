@@ -1,12 +1,12 @@
-import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc } from './firebase-config.js';
+import { db, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from './firebase-config.js';
 
 const CLOUD_URL = "https://orange-disk-17b1.avogofidelia604.workers.dev";
 const urlId = new URLSearchParams(window.location.search).get('id');
 
-// Message de base en français
+// Message de base
 const BASE_GREETING = "Bonjour ! Je suis votre assistante. Prête à vous aider ?";
 
-// Traductions instantanées pour les langues les plus courantes
+// Dictionnaire de salutations pour les langues les plus courantes
 const LOCAL_GREETINGS = {
     'fr': BASE_GREETING,
     'en': "Hello! I am your assistant. Ready to help?",
@@ -25,28 +25,22 @@ const LOCAL_GREETINGS = {
     'yo': "Bawo! Emi ni oluranlowo re. Setan lati ran o lowo?"
 };
 
-let clientLanguage = 'fr';
 let currentGreetingText = BASE_GREETING;
 
-document.addEventListener('DOMContentLoaded', async () => {
+// Détecter la langue du téléphone (ex: "pl-PL" devient "pl")
+const browserLang = (navigator.language || 'fr').split('-')[0].toLowerCase();
+
+document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('ai-chat-input');
     const btn = document.getElementById('ai-chat-send');
     const body = document.getElementById('ai-chat-body');
     
     if (!input || !btn || !body || !urlId) return;
 
-    // 1. Récupérer la langue du client et préparer la traduction
-    try {
-        const clientDoc = await getDoc(doc(db, 'clients', urlId));
-        if (clientDoc.exists()) {
-            clientLanguage = clientDoc.data().language || 'fr';
-        }
-    } catch(e) { console.warn("Langue non trouvée."); }
+    // Initialiser le message de bienvenue
+    currentGreetingText = LOCAL_GREETINGS[browserLang] || BASE_GREETING;
 
-    // Traduction du message de bienvenue
-    currentGreetingText = await getGreeting(clientLanguage);
-
-    // 2. Logique de l'historique du chat
+    // 1. Logique de l'historique du chat
     let isFirstLoad = true;
     const messagesRef = collection(db, 'ai_conversations', urlId, 'messages');
 
@@ -66,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         isFirstLoad = false;
     });
 
-    // 3. Envoi de message
+    // 2. Envoi de message
     const send = async () => {
         const txt = input.value.trim();
         if (!txt) return;
@@ -105,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     btn.onclick = send;
     input.onkeypress = (e) => { if(e.key === 'Enter') { e.preventDefault(); send(); } };
 
-    // 4. Affichage de la bulle sur la page d'accueil
+    // 3. Affichage de la bulle sur la page d'accueil
     const observer = new MutationObserver(() => {
         if (document.getElementById('balance-display')) {
             afficherBulleBienvenue(currentGreetingText);
@@ -115,29 +109,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const viewsContainer = document.getElementById('views-container');
     if (viewsContainer) observer.observe(viewsContainer, { childList: true, subtree: true });
 });
-
-// Fonction pour traduire intelligemment le message (avec mémoire locale)
-async function getGreeting(lang) {
-    if (LOCAL_GREETINGS[lang]) return LOCAL_GREETINGS[lang];
-
-    // Vérifier si on a déjà la traduction en mémoire
-    const cached = localStorage.getItem('ai_greet_' + lang);
-    if (cached) return cached;
-
-    try {
-        // Demander à une API gratuite de traduire si ce n'est pas dans notre liste
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(BASE_GREETING)}&langpair=fr|${lang}`);
-        const data = await res.json();
-        
-        if (data.responseData && data.responseData.translatedText) {
-            const translated = data.responseData.translatedText;
-            localStorage.setItem('ai_greet_' + lang, translated); // Sauvegarder pour la prochaine fois
-            return translated;
-        }
-    } catch(e) { console.warn("API traduction indisponible."); }
-
-    return "Hello! I am your assistant. Ready to help?"; // Message par défaut si tout échoue
-}
 
 function afficherBulleBienvenue(text) {
     const existing = document.querySelector('.ai-greeting-bubble');
@@ -152,7 +123,7 @@ function afficherBulleBienvenue(text) {
     setTimeout(() => {
         bubble.classList.remove('show');
         setTimeout(() => bubble.remove(), 400);
-    }, 4000); // Disparaît après 4 secondes
+    }, 4000); 
 }
 
 function afficherMessage(role, text) {
