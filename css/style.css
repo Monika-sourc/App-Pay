@@ -37,7 +37,7 @@ body {
     background-color: #eef0f2; 
     color: #000;
     overflow-x: hidden;
-    /* Le zoom a été définitivement supprimé pour garantir la même taille sur tous les téléphones */
+    zoom: 0.7; 
 }
 
 .screen {
@@ -437,18 +437,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 20px;
+    padding: 18px 20px; /* Augmenté */
     background-color: var(--card-bg);
     border-bottom: 1px solid #e8eaee;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 95px;
+    min-height: 95px; /* Augmenté */
     gap: 15px;
 }
 
 .header-logo {
-    font-size: 32px;
+    font-size: 32px; /* Augmenté */
     font-weight: 900; 
     color: var(--primary-color);
     display: flex;
@@ -459,11 +459,11 @@ body {
 
 .header-logo span {
     white-space: nowrap;
-    font-style: italic;
+    font-style: italic; /* Ajouté : Italique */
 }
 
 .header-logo-svg {
-    height: 42px;
+    height: 42px; /* Augmenté */
     width: auto;
 }
 
@@ -485,7 +485,7 @@ body {
     border: 1.5px solid #e2e8f0;
     border-radius: 30px;
     padding: 0 15px;
-    height: 48px;
+    height: 48px; /* Ajusté pour équilibrer */
     transition: all 0.2s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.04);
 }
@@ -629,6 +629,8 @@ body {
     background-color: #fafbfc;
 }
 
+/* --- FIN BARRE DE RECHERCHE --- */
+
 .header-icons {
     display: flex;
     align-items: center;
@@ -638,8 +640,8 @@ body {
 }
 
 .icon-btn {
-    width: 52px;
-    height: 52px;
+    width: 52px; /* Augmenté */
+    height: 52px; /* Augmenté */
     border-radius: 50%;
     background-color: #e4e6eb;
     display: flex;
@@ -648,7 +650,7 @@ body {
     color: #000;
     cursor: pointer;
     border: none;
-    font-size: 20px;
+    font-size: 20px; /* Augmenté */
     position: relative;
     transition: background 0.2s, transform 0.1s;
 }
@@ -659,16 +661,16 @@ body {
     position: absolute;
     top: 10px; 
     right: 10px; 
-    width: 12px;
-    height: 12px;
+    width: 12px; /* Ajusté */
+    height: 12px; /* Ajusté */
     background-color: #e02424;
     border-radius: 50%;
     border: 2px solid #ffffff;
 }
 
 .user-avatar {
-    width: 52px;
-    height: 52px;
+    width: 52px; /* Augmenté */
+    height: 52px; /* Augmenté */
     border-radius: 50%;
     background-color: var(--primary-color);
     color: white;
@@ -676,7 +678,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 20px; /* Augmenté */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
 }
@@ -843,6 +845,7 @@ body {
     padding-bottom: 0px; 
 }
 
+/* NOUVEAU HEADER DASHBOARD */
 .dashboard-new-header {
     display: flex;
     align-items: center;
@@ -2952,6 +2955,7 @@ body {
         min-height: 80px;
     }
     
+    /* On réduit légèrement la taille pour que tout rentre */
     .header-logo span {
         font-size: 22px; 
         font-style: italic;
@@ -3013,47 +3017,4 @@ body {
     .header-search-box {
         height: 40px;
     }
-}
-
-/* ============================================================
-   AJUSTEMENT POUR LES GRANDS ÉCRANS (Ordinateur) - On réduit un peu les tailles 
-   pour que ce ne soit pas géant, sans centrer l'application.
-   ============================================================ */
-@media (min-width: 1024px) {
-    .header { padding: 15px 30px; min-height: 85px; }
-    .header-logo span { font-size: 28px; }
-    .header-logo-svg { height: 38px; }
-    .header-search-box { height: 42px; }
-    
-    .dashboard-body { padding: 20px 30px 30px 30px; }
-    
-    .dnh-title { font-size: 22px; }
-    .dnh-avatar { width: 55px; height: 55px; font-size: 24px; }
-    
-    .bcn-amount { font-size: 42px; }
-    .bcn-title { font-size: 16px; }
-    .bcn-subtitle { font-size: 14px; }
-    .bcn-icon-circle { width: 50px; height: 50px; font-size: 20px; }
-    .bcn-action-btn span { font-size: 15px; }
-    
-    .stat-card-new { padding: 15px 10px; }
-    .scn-value { font-size: 15px; }
-    .scn-label { font-size: 12px; }
-    
-    .history-card-header span { font-size: 18px; }
-    .tx-details h4 { font-size: 16px; }
-    .tx-amount { font-size: 16px; }
-    
-    .bottom-nav {
-        bottom: 20px;
-        left: 10%;
-        right: 10%;
-        height: 70px;
-        border-radius: 15px;
-    }
-    .nav-links li i { font-size: 20px; }
-    .nav-links li span { font-size: 13px; }
-    
-    .login-card { padding: 50px 40px; }
-    .login-app-title { font-size: 42px; }
 }
