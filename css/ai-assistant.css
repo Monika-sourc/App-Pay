@@ -16,11 +16,19 @@
     box-shadow: 0 8px 25px rgba(110, 68, 255, 0.3);
     cursor: pointer;
     z-index: 9999;
-    display: flex;
+    
+    /* 🆕 CACHÉ PAR DÉFAUT (Si le compte est bloqué, l'IA n'apparaît pas) */
+    display: none; 
+    
     align-items: center;
     justify-content: center;
     transition: transform 0.2s, box-shadow 0.2s;
     border: 2px solid #f0f0f0;
+}
+
+/* 🆕 ON L'AFFICHE UNIQUEMENT SI L'ÉCRAN APP EST ACTIF (Client connecté) */
+#app-screen.active ~ .ai-fab {
+    display: flex;
 }
 
 .ai-fab:hover {
@@ -50,7 +58,6 @@
     border-radius: 16px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     z-index: 9999;
-    display: flex;
     flex-direction: column;
     overflow: hidden;
     opacity: 0;
@@ -58,6 +65,14 @@
     transform: translateY(20px);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid #e8eaee;
+
+    /* 🆕 CACHÉE PAR DÉFAUT */
+    display: none;
+}
+
+/* 🆕 ON L'AFFICHE UNIQUEMENT SI L'ÉCRAN APP EST ACTIF */
+#app-screen.active ~ .ai-chat-window {
+    display: flex;
 }
 
 .ai-chat-window.open {
@@ -121,22 +136,18 @@
     opacity: 1;
 }
 
-/* ============================================================
-   🆕 CORPS DU CHAT (Fond rose pâle + Bulles vertes)
-   ============================================================ */
+/* Corps du Chat (Fond rose pâle + Bulles vertes) */
 .ai-chat-body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    /* Fond rose très pâle avec des bulles vertes dessinées en CSS */
     background-color: #fff1f2; 
     background-image: 
-        radial-gradient(circle at 10% 20%, rgba(167, 243, 208, 0.4) 0%, transparent 30%),  /* Grosse bulle haut gauche */
-        radial-gradient(circle at 85% 30%, rgba(167, 243, 208, 0.3) 0%, transparent 20%),  /* Petite bulle haut droit */
-        radial-gradient(circle at 25% 75%, rgba(167, 243, 208, 0.3) 0%, transparent 25%),  /* Moyenne bulle bas gauche */
-        radial-gradient(circle at 75% 90%, rgba(167, 243, 208, 0.4) 0%, transparent 35%);  /* Grosse bulle bas droit */
-    background-attachment: local; /* Les bulles défilent avec les messages */
-    
+        radial-gradient(circle at 10% 20%, rgba(167, 243, 208, 0.4) 0%, transparent 30%),
+        radial-gradient(circle at 85% 30%, rgba(167, 243, 208, 0.3) 0%, transparent 20%),
+        radial-gradient(circle at 25% 75%, rgba(167, 243, 208, 0.3) 0%, transparent 25%),
+        radial-gradient(circle at 75% 90%, rgba(167, 243, 208, 0.4) 0%, transparent 35%);
+    background-attachment: local;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -216,14 +227,12 @@
     font-weight: 500;
 }
 
-/* Message du client (bulle violette) */
 .ai-message.user .ai-message-bubble {
     background-color: #6e44ff;
     color: #ffffff;
     border-bottom-right-radius: 4px;
 }
 
-/* Message de l'assistant (bulle blanche) */
 .ai-message.assistant .ai-message-bubble {
     background-color: #ffffff;
     color: #111;
@@ -232,7 +241,6 @@
     border: 1px solid #e8eaee;
 }
 
-/* SURLIGNAGE DES BOUTONS */
 .ai-message.assistant .ai-message-bubble strong {
     color: #ff7a00;
     font-weight: 700;
@@ -242,7 +250,6 @@
     white-space: nowrap;
 }
 
-/* INDICATEUR DE FRAPPE (3 petits points) */
 .ai-typing {
     display: flex;
     gap: 6px;
