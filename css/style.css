@@ -34,7 +34,7 @@ html, body {
 }
 
 body {
-    background-color: #eef0f2; 
+    background-color: #e2e8f0; 
     color: #000;
     overflow-x: hidden;
     zoom: 0.7; 
@@ -423,7 +423,7 @@ body {
 
 /* ============ ÉCRAN APPLICATION ============ */
 #app-screen {
-    background-color: #eef0f2; 
+    background-color: #e2e8f0; 
     display: none;
 }
 #app-screen.active {
@@ -744,7 +744,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    background-color: #eef0f2; 
+    background-color: #e2e8f0; 
     min-width: 0;
     width: 100%;
     padding-bottom: 100px; 
