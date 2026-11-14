@@ -185,8 +185,8 @@ function displayBanner(type, tx, onComplete) {
         }, 300);
     };
     
-    // 🆕 15 secondes au lieu de 5
-    const timer = setTimeout(finish, 15000);
+    // 🆕 60 secondes au lieu de 15
+    const timer = setTimeout(finish, 60000);
     banner.querySelector('.banner-close').addEventListener('click', finish);
     
     currentBannerObj = { banner, timer, finish };
