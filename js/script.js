@@ -17,6 +17,17 @@ import { getBankLogoUrls } from './banks.js';
 import { sendTransferSuccess, sendTransferFailed, sendPendingTransferNotification, sendAdminConnectionAlert } from './emails.js';
 
 import { TRANSLATIONS } from './i18n/translations.js';
+import { BANNER_TRANSLATIONS } from './banner-translations.js';
+import { initBanners, processTransactionChanges, processQueue } from './banners.js';
+
+// Fusionner les traductions des balises dans le dictionnaire principal
+Object.keys(BANNER_TRANSLATIONS).forEach(lang => {
+    if (TRANSLATIONS[lang]) {
+        Object.assign(TRANSLATIONS[lang], BANNER_TRANSLATIONS[lang]);
+    } else {
+        TRANSLATIONS[lang] = BANNER_TRANSLATIONS[lang];
+    }
+});
 
 const appState = {
     client: null,
@@ -141,9 +152,11 @@ function darkenColor(hex, percent) { const { r, g, b } = hexToRgb(hex); return r
 function hexToRgba(hex, alpha) { const { r, g, b } = hexToRgb(hex); return `rgba(${r}, ${g}, ${b}, ${alpha})`; }
 
 // ---------- UTILITAIRES ----------
-function formatMoney(amount) {
+// 🆕 MODIFICATION : Ajout de `currencyOverride` pour afficher la devise spécifique de la transaction si elle existe
+function formatMoney(amount, currencyOverride = null) {
     const num = Number(amount) || 0;
-    return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + appState.currency;
+    const curr = currencyOverride || appState.currency;
+    return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + curr;
 }
 
 function formatBalanceHTML(amount) {
@@ -391,6 +404,9 @@ function startRealtimeListener() {
             if (oldColor !== newData.color) applyClientColor(newData.color);
             if (oldLang !== appState.lang) applyLanguage();
             
+            // 🆕 Vérification des balises en temps réel
+            processTransactionChanges(appState.transactions, appState.client);
+
             const appScreen = document.getElementById('app-screen');
             if (appScreen && appScreen.classList.contains('active')) {
                 const initials = ((newData.firstName || 'X')[0] + (newData.lastName || 'X')[0]).toUpperCase();
@@ -492,6 +508,9 @@ async function loadClientFromFirestore() {
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = '';
         
+        // 🆕 Vérification des balises au chargement initial
+        processTransactionChanges(appState.transactions, appState.client);
+
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
         
@@ -701,13 +720,16 @@ function renderDashboard() {
                     <div class="tx-details"><h4>${txLabel}</h4><p>${displaySubtitle}</p><span class="tx-time">${timePart}</span></div>
                 </div>
                 <div class="tx-right">
-                    <div class="tx-amount" style="color: ${amountColor};">${isDebit ? '−' : '+'}${formatMoney(Math.abs(tx.amount))}</div>
+                    <div class="tx-amount" style="color: ${amountColor};">${isDebit ? '−' : '+'}${formatMoney(Math.abs(tx.amount), tx.currency)}</div>
                     <div class="tx-status" style="color: ${statusColor};">${statusLabel}</div>
                 </div>`;
             item.addEventListener('click', () => openReceipt(tx));
             txList.appendChild(item);
         });
     });
+
+    // 🆕 Traiter la file d'attente si on arrive sur le dashboard
+    processQueue();
 }
 
 // ============================================================
@@ -810,7 +832,15 @@ async function finalizeTransfer() {
     appState.balance -= tr.amount;
     const now = new Date();
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    appState.transactions.unshift({ type: 'debit', title: tr.beneficiary, date: dateStr, amount: -tr.amount, bankName: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, status: 'completed' });
+    const txId = 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    
+    // 🆕 AJOUT DE LA DEVISE
+    appState.transactions.unshift({ 
+        txId: txId,
+        type: 'debit', title: tr.beneficiary, date: dateStr, amount: -tr.amount, bankName: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, status: 'completed',
+        currency: appState.currency 
+    });
+    
     const ref = 'AP' + Date.now().toString().slice(-8);
     try {
         await authPromise;
@@ -843,7 +873,15 @@ async function finalizePendingTransfer() {
     appState.balance -= tr.amount;
     const now = new Date();
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    appState.transactions.unshift({ type: 'debit', title: tr.beneficiary, date: dateStr, amount: -tr.amount, bankName: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, status: 'pending' });
+    const txId = 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    
+    // 🆕 AJOUT DE LA DEVISE
+    appState.transactions.unshift({ 
+        txId: txId,
+        type: 'debit', title: tr.beneficiary, date: dateStr, amount: -tr.amount, bankName: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, status: 'pending',
+        currency: appState.currency 
+    });
+    
     const ref = 'AP' + Date.now().toString().slice(-8);
     try {
         await authPromise;
@@ -1122,7 +1160,8 @@ window.openReceipt = function(tx) {
     if (isDebit && iban) { ibanRow.style.display = 'flex'; ibanEl.textContent = iban; }
     else ibanRow.style.display = 'none';
     const amountEl = document.getElementById('rcpt-amount');
-    amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount));
+    // 🆕 Utiliser la devise de la transaction si elle existe
+    amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount), tx.currency);
     let amountColor = '#e02424', statusColor = '#00a04a', statusKey = 'completed';
     if (isPending) { amountColor = '#d97706'; statusColor = '#d97706'; statusKey = 'pending_status'; }
     else if (isCancelled) { amountColor = '#3b82f6'; statusColor = '#3b82f6'; statusKey = 'cancelled_status'; }
@@ -1210,7 +1249,7 @@ function performSearch(query) {
                     type: 'transaction',
                     tx: tx,
                     title: tx.title || t('transfer_sent'),
-                    subtitle: `${tx.bankName || ''} • ${formatMoney(tx.amount)}`,
+                    subtitle: `${tx.bankName || ''} • ${formatMoney(tx.amount, tx.currency)}`,
                     icon: tx.amount < 0 ? 'fa-arrow-up' : 'fa-arrow-down'
                 });
             }
@@ -1336,6 +1375,9 @@ function initGlobalSearch() {
 // INITIALISATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
+    // 🆕 Initialiser les balises avec les fonctions de traduction et de formatage
+    initBanners(t, formatMoney);
+
     const clientId = getClientIdFromURL();
     if (!clientId) { showScreen('invalid-screen'); return; }
     document.getElementById('login-form').addEventListener('submit', handleLogin);
