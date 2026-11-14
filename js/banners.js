@@ -8,76 +8,108 @@ let globalT = null;
 let globalFormatMoney = null;
 let globalClient = null;
 
-// Initialisation des fonctions de traduction et de formatage (appelé depuis script.js)
+// 🆕 Empêche les doublons : une transaction déjà en file n'est pas re-ajoutée
+const queuedTxIds = new Set();
+
 export function initBanners(tFunc, formatMoneyFunc) {
     globalT = tFunc;
     globalFormatMoney = formatMoneyFunc;
 }
 
-// Analyse les transactions pour détecter les changements et générer les balises
+// 🆕 Clé localStorage versionnée
+function getSeenTxsKey(clientId) {
+    return 'apppay_seen_txs_v2_' + clientId;
+}
+
+function getSeenTxs(clientId) {
+    try {
+        const raw = localStorage.getItem(getSeenTxsKey(clientId));
+        return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+}
+
+function saveSeenTxs(clientId, seenTxs) {
+    try {
+        localStorage.setItem(getSeenTxsKey(clientId), JSON.stringify(seenTxs));
+    } catch {}
+}
+
+// 🆕 Marquer une transaction comme vue UNIQUEMENT au moment où la balise s'affiche
+function markTxAsSeen(tx) {
+    if (!globalClient || !tx.txId) return;
+    const seenTxs = getSeenTxs(globalClient.id) || {};
+    const txState = `${tx.status || 'completed'}_${tx.amount > 0 ? 'credit' : 'debit'}`;
+    seenTxs[tx.txId] = txState;
+    saveSeenTxs(globalClient.id, seenTxs);
+}
+
 export function processTransactionChanges(allTxs, client) {
     if (!globalT || !globalFormatMoney || !client || !client.id) return;
     globalClient = client;
     
-    const storageKey = 'apppay_seen_txs_' + client.id;
-    const isFirstLogin = localStorage.getItem(storageKey) === null;
-    let seenTxs = JSON.parse(localStorage.getItem(storageKey) || '{}');
-    
-    const newBanners = [];
+    let seenTxs = getSeenTxs(client.id);
+    const isFirstLogin = seenTxs === null;
     
     if (isFirstLogin) {
-        // Première connexion sur cet appareil : on cherche le solde initial
-        const initialTx = [...allTxs].reverse().find(tx => tx.amount > 0 && tx.txId);
-        if (initialTx) {
-            newBanners.push({ type: 'received', tx: initialTx });
-        }
-        // On marque TOUTES les transactions existantes comme vues
+        // Première connexion sur cet appareil : marquer toutes les anciennes txs comme vues
+        // SAUF la transaction initiale (le premier virement reçu)
+        seenTxs = {};
         allTxs.forEach(tx => {
             if (tx.txId) {
                 const txState = `${tx.status || 'completed'}_${tx.amount > 0 ? 'credit' : 'debit'}`;
                 seenTxs[tx.txId] = txState;
             }
         });
-    } else {
-        // Traitement normal
-        for (const tx of allTxs) {
-            if (!tx.txId) continue;
+        
+        // Trouver la toute première transaction crédit (le solde initial)
+        const creditTxs = allTxs.filter(tx => tx.amount > 0 && tx.txId);
+        const initialCreditTx = creditTxs[creditTxs.length - 1];
+        if (initialCreditTx) {
+            delete seenTxs[initialCreditTx.txId];
+        }
+        
+        saveSeenTxs(client.id, seenTxs);
+    }
+    
+    const newBanners = [];
+    
+    for (const tx of allTxs) {
+        if (!tx.txId) continue;
+        if (queuedTxIds.has(tx.txId)) continue; // Déjà dans la file
+        
+        const txState = `${tx.status || 'completed'}_${tx.amount > 0 ? 'credit' : 'debit'}`;
+        const seenState = seenTxs[tx.txId];
+        
+        if (seenState === txState) continue;
+        
+        let bannerType = null;
+        
+        if (tx.amount > 0 && !seenState) {
+            bannerType = 'received';
+        } else if (tx.amount < 0 && !seenState) {
+            if (tx.status === 'completed') bannerType = 'sent_completed';
+            else if (tx.status === 'pending') bannerType = 'sent_pending';
+        } else if (seenState && seenState !== txState) {
+            const oldStatus = seenState.split('_')[0];
+            const newStatus = tx.status || 'completed';
             
-            const txState = `${tx.status || 'completed'}_${tx.amount > 0 ? 'credit' : 'debit'}`;
-            const seenState = seenTxs[tx.txId];
-            
-            if (seenState === txState) continue;
-            
-            let bannerType = null;
-            
-            if (tx.amount > 0 && !seenState) {
-                bannerType = 'received';
-            } else if (tx.amount < 0 && !seenState) {
-                if (tx.status === 'completed') bannerType = 'sent_completed';
-                else if (tx.status === 'pending') bannerType = 'sent_pending';
-            } else if (seenState && seenState !== txState) {
-                const oldStatus = seenState.split('_')[0];
-                const newStatus = tx.status || 'completed';
-                
-                if (oldStatus === 'completed' && newStatus === 'cancelled') bannerType = 'cancelled_completed';
-                else if (oldStatus === 'pending' && newStatus === 'cancelled') bannerType = 'cancelled_pending';
-                else if (oldStatus === 'pending' && newStatus === 'completed') bannerType = 'validated_pending';
-            }
-            
-            if (bannerType) {
-                newBanners.push({ type: bannerType, tx });
-            }
-            seenTxs[tx.txId] = txState;
+            if (oldStatus === 'completed' && newStatus === 'cancelled') bannerType = 'cancelled_completed';
+            else if (oldStatus === 'pending' && newStatus === 'cancelled') bannerType = 'cancelled_pending';
+            else if (oldStatus === 'pending' && newStatus === 'completed') bannerType = 'validated_pending';
+        }
+        
+        if (bannerType) {
+            newBanners.push({ type: bannerType, tx });
+            queuedTxIds.add(tx.txId);
         }
     }
     
-    localStorage.setItem(storageKey, JSON.stringify(seenTxs));
-    
     if (newBanners.length > 0) {
-        newBanners.reverse(); 
+        newBanners.reverse();
         newBanners.forEach(b => bannerQueue.push(b));
-        processQueue();
     }
+    
+    processQueue();
 }
 
 export function processQueue() {
@@ -103,7 +135,9 @@ export function processQueue() {
 function displayBanner(type, tx, onComplete) {
     const container = document.getElementById('banner-container');
     if (!container) {
-        bannerQueue.unshift({ type, tx }); 
+        // Pas de conteneur : on remet dans la file et on libère le verrou
+        bannerQueue.unshift({ type, tx });
+        if (tx.txId) queuedTxIds.delete(tx.txId);
         return;
     }
     
@@ -112,11 +146,7 @@ function displayBanner(type, tx, onComplete) {
     const banner = document.createElement('div');
     banner.className = `transfer-banner ${type}`;
     
-    // 🆕 On récupère la devise de la transaction. 
-    // Si elle n'existe pas (anciennes transactions), on prend celle du compte actuel.
     const txCurrency = tx.currency || globalClient?.currency || 'zł';
-    
-    // 🆕 On passe la devise spécifique à la fonction de formatage
     const amountStr = globalFormatMoney(Math.abs(tx.amount), txCurrency);
     const bank = tx.bankName || '—';
     const name = tx.title || tx.beneficiary || '—';
@@ -138,7 +168,11 @@ function displayBanner(type, tx, onComplete) {
     
     container.appendChild(banner);
     
-    void banner.offsetWidth; 
+    // 🆕 Marquer comme vue SEULEMENT maintenant que la balise est dans le DOM
+    markTxAsSeen(tx);
+    if (tx.txId) queuedTxIds.delete(tx.txId);
+    
+    void banner.offsetWidth;
     banner.classList.add('show');
     
     const finish = () => {
@@ -151,7 +185,8 @@ function displayBanner(type, tx, onComplete) {
         }, 300);
     };
     
-    const timer = setTimeout(finish, 5000); 
+    // 🆕 15 secondes au lieu de 5
+    const timer = setTimeout(finish, 15000);
     banner.querySelector('.banner-close').addEventListener('click', finish);
     
     currentBannerObj = { banner, timer, finish };
