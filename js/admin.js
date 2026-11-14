@@ -872,7 +872,12 @@ async function handleCreateClient(event) {
         if (balance > 0) {
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            initialTransactions.push({ type: 'credit', title: 'Solde initial', date: dateStr, amount: balance, bankName, bankDomain, bankLogo });
+            // 🆕 Ajout du txId et de la currency pour identifier le virement initial
+            initialTransactions.push({ 
+                txId: 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+                type: 'credit', title: 'Solde initial', date: dateStr, amount: balance, bankName, bankDomain, bankLogo,
+                currency: currency // <--- AJOUT IMPORTANT
+            });
         }
 
         const clientData = {
@@ -2104,9 +2109,12 @@ async function saveOption(option, client) {
                 const finalAmount = type === 'credit' ? amount : -amount;
                 const now = new Date();
                 const dateStr = dateInput || (now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
+                // 🆕 Ajout du txId et de la currency pour identifier le virement
                 const newTx = {
+                    txId: 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
                     type: type, title: bankName, date: dateStr, amount: finalAmount,
-                    bankName: bankName, bankDomain: bankDomain, bankLogo: getBankLogoUrl(bankDomain)
+                    bankName: bankName, bankDomain: bankDomain, bankLogo: getBankLogoUrl(bankDomain),
+                    currency: client.currency // <--- AJOUT IMPORTANT
                 };
                 const transactions = (client.transactions || []).slice();
                 transactions.unshift(newTx);
