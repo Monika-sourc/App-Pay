@@ -3018,3 +3018,81 @@ body {
         height: 40px;
     }
 }
+
+/* ============================================================
+   🆕 BALISES DE NOTIFICATION (TRANSFER BANNERS)
+   ============================================================ */
+.transfer-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.transfer-banner.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Vert clair (Reçu, envoyé complété, validé) */
+.transfer-banner.received,
+.transfer-banner.sent_completed,
+.transfer-banner.validated_pending {
+    background-color: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Orange clair (En attente, annulé en attente) */
+.transfer-banner.sent_pending,
+.transfer-banner.cancelled_pending {
+    background-color: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fef08a;
+}
+
+/* Rouge clair (Annulé complété) */
+.transfer-banner.cancelled_completed {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.banner-text {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.banner-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0.6;
+    transition: opacity 0.2s, background-color 0.2s;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.banner-close:hover {
+    opacity: 1;
+    background-color: rgba(0,0,0,0.05);
+}
