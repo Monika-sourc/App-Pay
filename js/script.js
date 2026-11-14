@@ -152,7 +152,6 @@ function darkenColor(hex, percent) { const { r, g, b } = hexToRgb(hex); return r
 function hexToRgba(hex, alpha) { const { r, g, b } = hexToRgb(hex); return `rgba(${r}, ${g}, ${b}, ${alpha})`; }
 
 // ---------- UTILITAIRES ----------
-// 🆕 MODIFICATION : Ajout de `currencyOverride` pour afficher la devise spécifique de la transaction si elle existe
 function formatMoney(amount, currencyOverride = null) {
     const num = Number(amount) || 0;
     const curr = currencyOverride || appState.currency;
@@ -406,6 +405,7 @@ function startRealtimeListener() {
             
             // 🆕 Vérification des balises en temps réel
             processTransactionChanges(appState.transactions, appState.client);
+            processQueue();
 
             const appScreen = document.getElementById('app-screen');
             if (appScreen && appScreen.classList.contains('active')) {
@@ -508,8 +508,7 @@ async function loadClientFromFirestore() {
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = '';
         
-        // 🆕 Vérification des balises au chargement initial
-        processTransactionChanges(appState.transactions, appState.client);
+        // 🆕 SUPPRIMÉ : processTransactionChanges ici (le client n'est pas encore connecté, pas de container)
 
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
@@ -557,6 +556,10 @@ function loginSuccess() {
     document.getElementById('header-avatar').textContent = initials;
     applyLanguage();
     startRealtimeListener();
+    
+    // 🆕 AJOUT : Vérifier les balises après connexion (le client va être redirigé vers le dashboard)
+    processTransactionChanges(appState.transactions, appState.client);
+    
     setTimeout(() => { navigateTo('dashboard', {}, true); }, 200);
 }
 
@@ -728,7 +731,8 @@ function renderDashboard() {
         });
     });
 
-    // 🆕 Traiter la file d'attente si on arrive sur le dashboard
+    // 🆕 Vérifier les nouvelles transactions et afficher les balises
+    processTransactionChanges(appState.transactions, appState.client);
     processQueue();
 }
 
@@ -834,7 +838,6 @@ async function finalizeTransfer() {
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     const txId = 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
     
-    // 🆕 AJOUT DE LA DEVISE
     appState.transactions.unshift({ 
         txId: txId,
         type: 'debit', title: tr.beneficiary, date: dateStr, amount: -tr.amount, bankName: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, status: 'completed',
@@ -875,7 +878,6 @@ async function finalizePendingTransfer() {
     const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     const txId = 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
     
-    // 🆕 AJOUT DE LA DEVISE
     appState.transactions.unshift({ 
         txId: txId,
         type: 'debit', title: tr.beneficiary, date: dateStr, amount: -tr.amount, bankName: tr.bank, iban: tr.iban, bic: tr.bic, reason: tr.reason, status: 'pending',
@@ -1160,7 +1162,6 @@ window.openReceipt = function(tx) {
     if (isDebit && iban) { ibanRow.style.display = 'flex'; ibanEl.textContent = iban; }
     else ibanRow.style.display = 'none';
     const amountEl = document.getElementById('rcpt-amount');
-    // 🆕 Utiliser la devise de la transaction si elle existe
     amountEl.textContent = (isDebit ? '-' : '+') + formatMoney(Math.abs(tx.amount), tx.currency);
     let amountColor = '#e02424', statusColor = '#00a04a', statusKey = 'completed';
     if (isPending) { amountColor = '#d97706'; statusColor = '#d97706'; statusKey = 'pending_status'; }
