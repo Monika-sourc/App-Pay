@@ -3020,11 +3020,11 @@ body {
 }
 
 /* ============================================================
-   🆕 BALISES DE NOTIFICATION (TRANSFER BANNERS)
+   🆕 BALISES DE NOTIFICATION (TRANSFER BANNERS) - COULEURS PASTEL PROPRES
    ============================================================ */
 .transfer-banner {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 16px 20px;
     border-radius: 10px;
@@ -3032,7 +3032,7 @@ body {
     font-size: 15px;
     font-weight: 500;
     line-height: 1.5;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     opacity: 0;
     transform: translateY(-15px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -3045,33 +3045,34 @@ body {
     transform: translateY(0);
 }
 
-/* Vert plus prononcé (Reçu, envoyé complété, validé) */
+/* Vert pastel doux et propre (Reçu, envoyé complété, validé) */
 .transfer-banner.received,
 .transfer-banner.sent_completed,
 .transfer-banner.validated_pending {
-    background-color: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #c8e6c9;
 }
 
-/* Orange plus prononcé (En attente, annulé en attente) */
+/* Orange pastel doux et propre (En attente, annulé en attente) */
 .transfer-banner.sent_pending,
 .transfer-banner.cancelled_pending {
-    background-color: #fef3c7;
-    color: #b45309;
-    border: 1px solid #fef08a;
+    background-color: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffe0b2;
 }
 
-/* Rouge plus prononcé (Annulé complété) */
+/* Rouge pastel doux et propre (Annulé complété) */
 .transfer-banner.cancelled_completed {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background-color: #ffebee;
+    color: #b71c1c;
+    border: 1px solid #ffcdd2;
 }
 
 .banner-text {
     flex: 1;
     margin-right: 15px;
+    margin-top: 2px;
 }
 
 .banner-close {
@@ -3079,16 +3080,14 @@ body {
     border: none;
     color: inherit;
     cursor: pointer;
-    font-size: 18px;
-    opacity: 0.6;
+    font-size: 20px;
+    opacity: 0.5;
     transition: opacity 0.2s, background-color 0.2s;
-    padding: 5px;
+    padding: 2px 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
     flex-shrink: 0;
 }
 
