@@ -1983,19 +1983,25 @@ body {
 #client-detail-modal {
     padding: 50px 0px 0px 0px !important; 
     align-items: flex-start !important; 
-    height: 100vh !important; /* Fallback */
-    height: 100dvh !important; /* Prend tout l'écran */
-    /* 🆕 AJOUT POUR CACHER L'ARRIÈRE PLAN (FOND SOMBRE ET FLOU) */
+    
+    /* 🆕 REMPLACEMENT DE HEIGHT POUR CORRIGER LE BUG DU ZOOM ET COUVRIR LE FOND */
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+
+    /* 🆕 FOND SOMBRE ET FLOU POUR CACHER L'ARRIÈRE-PLAN */
     background: rgba(0, 0, 0, 0.85) !important;
     backdrop-filter: blur(12px) !important;
     -webkit-backdrop-filter: blur(12px) !important;
 }
 
 #client-detail-modal .modal-client-card {
-    /* 🆕 Largeur à 98% CONSERVÉE ET CENTRÉE */
+    /* 🆕 Largeur à 98% INCHANGÉE */
     width: 98% !important; 
     max-width: 98% !important;
-    /* 🆕 Prend 100% de la hauteur restante */
+    /* 🆕 Utilise 100% de la hauteur disponible */
     height: 100% !important; 
     max-height: 100% !important;
     border-radius: 16px 16px 0 0 !important; 
