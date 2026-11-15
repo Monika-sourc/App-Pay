@@ -13,7 +13,8 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.75;
+    font-size: 16px; /* Taille de base saine */
+    /* J'AI SUPPRIMÉ LE ZOOM: 0.75 QUI CASSAIT TOUT L'ALIGNEMENT SUR MOBILE */
 }
 
 /* ============================================================
@@ -2001,7 +2002,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    padding: 20px;
+    padding: 15px;
     animation: fadeIn 0.2s ease;
 }
 
@@ -2291,7 +2292,7 @@ body {
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     padding: 14px 16px;
-    font-size: 18px;
+    font-size: 16px;
     color: #333;
     cursor: pointer;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -2357,7 +2358,7 @@ body {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 18px;
+    font-size: 16px;
     padding: 4px;
     color: #333;
     font-family: inherit;
@@ -2382,7 +2383,7 @@ body {
 
 .searchable-option {
     padding: 12px 14px;
-    font-size: 18px;
+    font-size: 16px;
     color: #333;
     cursor: pointer;
     border-radius: 6px;
@@ -2561,12 +2562,12 @@ body {
    🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT (STYLE PRO & POLICE RÉDUITE)
    ============================================================ */
 .modal-client-card {
-    max-width: 650px; /* Légèrement plus large pour accommoder les textes plus grands */
+    max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
-    max-height: 92vh; /* Hauteur augmentée */
-    min-height: 85vh; /* Hauteur minimale pour que ça prenne bien l'écran */
+    max-height: 95vh; /* Hauteur augmentée pour bien remplir l'écran */
+    min-height: 85vh; 
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2578,12 +2579,13 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 25px; /* Plus d'espace */
+    padding: 20px 25px;
     border-bottom: 1px solid #e8eaee;
+    background-color: #fff;
 }
 
 .cd-modal-header h2 {
-    font-size: 18px; /* Augmenté */
+    font-size: 20px;
     font-weight: 700;
     color: #000;
     margin: 0;
@@ -2593,12 +2595,13 @@ body {
     position: relative;
     top: auto;
     right: auto;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     background: #f0f2f5;
     border-radius: 8px;
     color: #333;
     font-size: 18px;
+    border: 1px solid #dcdfe6;
 }
 
 .cd-modal-header .modal-close-btn:hover {
@@ -2607,32 +2610,35 @@ body {
 }
 
 .cd-modal-body {
-    padding: 25px; /* Plus d'espace */
+    padding: 25px;
     overflow-y: auto;
-    font-size: 16px; /* Taille de police augmentée */
-    color: #111; /* Couleur noire bien appliquée */
+    font-size: 16px;
+    color: #111; /* Texte bien noir */
 }
 
 /* Boîte grise supérieure */
 .cd-grey-box {
     background-color: #f1f2f5;
     border-radius: 10px;
-    padding: 20px; /* Augmenté */
+    padding: 20px;
     margin-bottom: 25px;
 }
 
 .cd-grey-box p {
-    font-size: 15px; /* Augmenté */
-    color: #222; /* Plus sombre */
-    margin-bottom: 16px;
+    font-size: 15px;
+    color: #222;
+    margin-bottom: 20px;
     line-height: 1.5;
+    font-weight: 500;
 }
 
 .cd-grey-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 16px; /* Espacement augmenté */
+    justify-content: space-between; /* Aligne le texte et le bouton */
+    gap: 15px;
+    margin-bottom: 16px;
+    background: transparent;
 }
 
 .cd-grey-row:last-child {
@@ -2640,11 +2646,10 @@ body {
 }
 
 .cd-grey-label {
-    color: #000; /* Noir */
+    color: #000;
     font-weight: 600;
-    width: 150px; /* Ajusté pour la nouvelle taille de police */
-    flex-shrink: 0;
     font-size: 15px;
+    flex-shrink: 0;
 }
 
 .cd-grey-value {
@@ -2652,14 +2657,19 @@ body {
     word-break: break-all;
     color: #000;
     font-size: 15px;
+    text-align: right; /* Aligne le texte de valeur à droite comme sur l'image */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .cd-copy-btn {
-    background: #a0aab8;
+    background: #6b7280; /* Gris foncé comme sur la capture */
     border: none;
     color: white;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -2671,102 +2681,96 @@ body {
 }
 
 .cd-copy-btn:hover {
-    background: #8892a0;
+    background: #4b5563;
 }
 
 /* Boutons d'action (Bleu et Jaune) */
 .cd-btn-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.cd-btn-blue,
+.cd-btn-yellow {
+    border: none;
+    border-radius: 8px;
+    padding: 18px 15px; /* Plus grand et mieux espacé */
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    transition: all 0.2s;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .cd-btn-blue {
     background-color: #007bff;
     color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 14px 10px; /* Plus grand */
-    font-size: 15px; /* Plus grand */
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-align: center;
-    transition: background 0.2s;
 }
-
-.cd-btn-blue:hover { background-color: #0069d9; }
+.cd-btn-blue:hover { background-color: #0069d9; transform: translateY(-1px); }
 
 .cd-btn-yellow {
     background-color: #ffecb5;
     color: #856404;
-    border: none;
-    border-radius: 8px;
-    padding: 14px 10px; /* Plus grand */
-    font-size: 15px; /* Plus grand */
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-align: center;
-    transition: background 0.2s;
+    border: 1px solid #ffe8a1;
 }
-
-.cd-btn-yellow:hover { background-color: #ffe8a1; }
+.cd-btn-yellow:hover { background-color: #ffe8a1; transform: translateY(-1px); }
 
 /* Sections d'informations */
 .cd-section {
-    margin-bottom: 30px; /* Plus d'espace entre les sections */
+    margin-bottom: 35px; /* Bien séparer les blocs */
 }
 
 .cd-section-title {
-    font-size: 16px; /* Augmenté */
+    font-size: 17px;
     font-weight: 700;
-    color: #000; /* Noir */
-    margin-bottom: 15px;
+    color: #000;
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding-bottom: 8px;
+    gap: 10px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #e8eaee;
 }
 
 .cd-section-title i {
     color: #ff7a00;
-    font-size: 18px; /* Augmenté */
+    font-size: 18px;
 }
 
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Plus d'espace */
+    gap: 16px; /* Espacement propre entre chaque ligne */
 }
 
 .cd-info-row {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    line-height: 1.6;
-    font-size: 15px;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
 .cd-info-row span {
-    color: #333; /* Plus foncé */
+    color: #333;
     font-weight: 500;
-    min-width: 220px; /* Augmenté pour éviter que le texte soit trop serré */
-    flex-shrink: 0;
+    flex: 1; /* Prend la place dispo */
+    min-width: 200px;
 }
 
 .cd-info-row strong {
-    color: #000; /* Noir complet */
+    color: #000;
     font-weight: 700;
-    word-break: break-word;
+    flex: 1;
+    text-align: left;
 }
 
 /* Badges */
@@ -2774,9 +2778,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 12px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
 }
 
@@ -2797,80 +2801,91 @@ body {
 
 .cd-footer-time {
     font-size: 14px;
-    color: #333;
-    margin-top: 20px;
-    padding-top: 15px;
+    color: #444;
+    margin-top: 25px;
+    padding-top: 20px;
     border-top: 1px solid #e8eaee;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-/* 🆕 Styles pour les boutons manquants (Virements et Connexion) */
-.cd-functional-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding: 20px;
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-}
-
-/* Remplacement des styles inline par une classe propre pour les boutons d'action */
+/* 🆕 Boutons d'action du bas (Connexion, Virements...) */
 .cd-action-btn {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    padding: 16px 20px !important; /* Force la hauteur */
-    border-radius: 8px !important;
+    padding: 16px 20px !important;
+    border-radius: 10px !important;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #000 !important;
-    font-size: 16px !important; /* Force la taille du texte */
-    font-weight: 600;
+    font-size: 16px !important;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
-    gap: 12px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
 }
 
 .cd-action-btn:hover {
     background: #f1f5f9;
     border-color: #94a3b8;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 .cd-action-btn i {
     color: #ff7a00;
-    font-size: 18px !important;
+    font-size: 20px !important;
 }
 
 /* Couleurs spécifiques pour les boutons d'action du bas */
 .cd-action-btn.btn-conn {
-    background: #e8f0fe;
-    color: #1a73e8 !important;
-    border-color: #c5d8f5;
+    background: #eff6ff;
+    color: #1d4ed8 !important;
+    border-color: #bfdbfe;
 }
-.cd-action-btn.btn-conn i { color: #1a73e8; }
+.cd-action-btn.btn-conn i { color: #1d4ed8; }
 
 .cd-action-btn.btn-comp {
-    background: #def7ec;
-    color: #03543f !important;
-    border-color: #c3e6cb;
+    background: #f0fdf4;
+    color: #15803d !important;
+    border-color: #bbf7d0;
 }
-.cd-action-btn.btn-comp i { color: #03543f; }
+.cd-action-btn.btn-comp i { color: #15803d; }
 
 .cd-action-btn.btn-pend {
     background: #fffbeb;
-    color: #d97706 !important;
-    border-color: #fef08a;
+    color: #b45309 !important;
+    border-color: #fde68a;
 }
-.cd-action-btn.btn-pend i { color: #d97706; }
+.cd-action-btn.btn-pend i { color: #b45309; }
 
 .cd-action-btn.btn-canc {
     background: #f5f3ff;
-    color: #8b5cf6 !important;
+    color: #6d28d9 !important;
     border-color: #ddd6fe;
 }
-.cd-action-btn.btn-canc i { color: #8b5cf6; }
+.cd-action-btn.btn-canc i { color: #6d28d9; }
+
+/* Ajustement pour mobile */
+@media (max-width: 640px) {
+    .cd-info-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .cd-info-row span {
+        min-width: 100%;
+    }
+    .cd-grey-row {
+        flex-wrap: wrap;
+    }
+    .cd-grey-value {
+        text-align: left;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    .cd-btn-grid {
+        grid-template-columns: 1fr;
+    }
+}
