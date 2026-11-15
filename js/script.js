@@ -44,6 +44,8 @@ const SESSION_KEY = 'apppay_session_v2';
 const DEVICE_ID_KEY = 'apppay_device_id';
 const ADMIN_ALERT_SENT_KEY = 'apppay_admin_alert_sent';
 
+let heartbeatInterval = null; // 🆕 Intervalle pour le statut En ligne
+
 // ============================================================
 // TRADUCTION
 // ============================================================
@@ -265,7 +267,7 @@ function getSession() {
 function clearSession() { try { localStorage.removeItem(SESSION_KEY); } catch {} }
 
 // ============================================================
-// TRACKING DE CONNEXION (ALERTE ADMIN)
+// TRACKING DE CONNEXION (ALERTE ADMIN + HEARTBEAT)
 // ============================================================
 function getDeviceInfo() {
     const ua = navigator.userAgent;
@@ -337,6 +339,50 @@ async function trackConnection() {
     }
 }
 
+// 🆕 BATTEMENT DE CŒUR (HEARTBEAT) POUR LE STATUT "EN LIGNE"
+function startHeartbeat() {
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    
+    const updateHeartbeat = async () => {
+        if (!appState.client || !appState.clientId) return;
+        const deviceId = getDeviceId();
+        const now = new Date().toISOString();
+        
+        try {
+            const docRef = doc(db, 'clients', appState.clientId);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) return;
+            
+            const data = docSnap.data();
+            const logs = data.connectionLogs || [];
+            const idx = logs.findIndex(l => l.deviceId === deviceId);
+            
+            if (idx !== -1) {
+                logs[idx].lastSeen = now;
+            } else {
+                const loc = appState.client.lastKnownLocation || { country: "Inconnu", city: "Inconnue", ip: "Inconnue" };
+                logs.push({ deviceId, deviceInfo: getDeviceInfo(), country: loc.country, city: loc.city, ip: loc.ip, firstSeen: now, lastSeen: now });
+            }
+            
+            await updateDoc(docRef, { connectionLogs: logs });
+            // Mettre à jour le state local pour éviter de relire Firestore
+            appState.client.connectionLogs = logs;
+        } catch (e) {
+            // Ignorer les erreurs de connexion réseau silencieusement
+        }
+    };
+
+    updateHeartbeat(); // Exécution immédiate
+    heartbeatInterval = setInterval(updateHeartbeat, 45000); // Puis toutes les 45 secondes
+}
+
+function stopHeartbeat() {
+    if (heartbeatInterval) {
+        clearInterval(heartbeatInterval);
+        heartbeatInterval = null;
+    }
+}
+
 // ============================================================
 // ÉCRAN DE BLOCAGE
 // ============================================================
@@ -403,7 +449,6 @@ function startRealtimeListener() {
             if (oldColor !== newData.color) applyClientColor(newData.color);
             if (oldLang !== appState.lang) applyLanguage();
             
-            // 🆕 Vérification des balises en temps réel
             processTransactionChanges(appState.transactions, appState.client);
             processQueue();
 
@@ -508,8 +553,6 @@ async function loadClientFromFirestore() {
         const emailInput = document.getElementById('login-email');
         if (emailInput) emailInput.value = '';
         
-        // 🆕 SUPPRIMÉ : processTransactionChanges ici (le client n'est pas encore connecté, pas de container)
-
         const session = getSession();
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
         
@@ -544,9 +587,6 @@ function handleLogin(event) {
     sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
     
     loginSuccess();
-    
-    // ✅ ENVOI DE L'EMAIL UNIQUEMENT APRÈS CONNEXION MANUELLE
-    trackConnection(); 
 }
 
 function loginSuccess() {
@@ -557,16 +597,23 @@ function loginSuccess() {
     applyLanguage();
     startRealtimeListener();
     
-    // 🆕 AJOUT : Vérifier les balises après connexion (le client va être redirigé vers le dashboard)
     processTransactionChanges(appState.transactions, appState.client);
     
     setTimeout(() => { navigateTo('dashboard', {}, true); }, 200);
+    
+    // 🆕 Activer le statut "En ligne" pour l'admin
+    trackConnection(); 
+    startHeartbeat();  
 }
 
 async function handleLogout() {
     const isConfirmed = await showConfirmModal({ title: t('logout'), message: 'Voulez-vous vraiment vous déconnecter ?', confirmText: t('logout'), type: 'primary' });
     if (!isConfirmed) return;
     if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
+    
+    // 🆕 Arrêter le heartbeat
+    stopHeartbeat();
+    
     clearSession();
     sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
     
@@ -731,7 +778,6 @@ function renderDashboard() {
         });
     });
 
-    // 🆕 Vérifier les nouvelles transactions et afficher les balises
     processTransactionChanges(appState.transactions, appState.client);
     processQueue();
 }
@@ -1402,4 +1448,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 window.addEventListener('beforeunload', () => {
     if (appState.unsubSnapshot) appState.unsubSnapshot();
+    stopHeartbeat(); // Arrêter proprement le heartbeat
 });
