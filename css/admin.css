@@ -13,8 +13,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    font-size: 16px; /* Taille de base saine */
-    /* J'AI SUPPRIMÉ LE ZOOM: 0.75 QUI CASSAIT TOUT L'ALIGNEMENT SUR MOBILE */
+    font-size: 16px;
 }
 
 /* ============================================================
@@ -760,9 +759,11 @@ body {
 .btn-create:hover {
     background-color: #e66d00;
 }
+
 .btn-create:active {
     transform: scale(0.99);
 }
+
 .btn-create:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -1258,6 +1259,7 @@ body {
     gap: 6px;
     transition: background 0.2s;
 }
+
 .btn-clear:hover {
     background-color: #fff5f5;
 }
@@ -1711,7 +1713,7 @@ body {
 }
 
 /* ============================================================
-   🆕 BOUTONS ET MODALE DE GESTION DES VIREMENTS
+   BOUTONS ET MODALE DE GESTION DES VIREMENTS
    ============================================================ */
 .admin-transfer-buttons-grid {
     display: flex;
@@ -1739,6 +1741,7 @@ body {
     color: #03543f;
     border-color: #c3e6cb;
 }
+
 .admin-transfer-buttons-grid .admin-btn-validate:hover {
     background-color: #c3e6cb;
 }
@@ -1880,6 +1883,7 @@ body {
     background-color: #def7ec;
     color: #03543f;
 }
+
 .admin-btn-validate:hover {
     background-color: #00c853;
     color: white;
@@ -1889,6 +1893,7 @@ body {
     background-color: #fde8e8;
     color: #e02424;
 }
+
 .admin-btn-cancel:hover {
     background-color: #e02424;
     color: white;
@@ -2002,7 +2007,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    padding: 15px;
+    padding: 20px;
     animation: fadeIn 0.2s ease;
 }
 
@@ -2111,6 +2116,7 @@ body {
     background-color: #ff7a00;
     color: white;
 }
+
 .btn-primary:hover {
     background-color: #e66d00;
 }
@@ -2119,6 +2125,7 @@ body {
     background-color: #f1f2f5;
     color: #333;
 }
+
 .btn-secondary:hover {
     background-color: #e4e6eb;
 }
@@ -2130,6 +2137,7 @@ body {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
 @keyframes popIn {
     from { transform: scale(0.85); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
@@ -2275,7 +2283,7 @@ body {
 }
 
 /* ============================================================
-   🆕 RECHERCHE DANS LES SELECTS
+   RECHERCHE DANS LES SELECTS
    ============================================================ */
 .searchable-select-container {
     position: relative;
@@ -2412,13 +2420,14 @@ body {
     border-color: #1a73e8;
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
 }
+
 .modify-section .searchable-option.selected {
     background: #e8f0fe;
     color: #1a73e8;
 }
 
 /* ============================================================
-   🆕 NOUVELLE LISTE DES CLIENTS (DESIGN COMPACT & PRO)
+   NOUVELLE LISTE DES CLIENTS (DESIGN COMPACT & PRO)
    ============================================================ */
 .client-list-item {
     display: flex;
@@ -2559,15 +2568,15 @@ body {
 }
 
 /* ============================================================
-   🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT (STYLE PRO & POLICE RÉDUITE)
+   NOUVEAU DESIGN MODAL DÉTAILS CLIENT (STYLE PRO & POLICE RÉDUITE)
    ============================================================ */
 .modal-client-card {
     max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
-    max-height: 95vh; /* Hauteur augmentée pour bien remplir l'écran */
-    min-height: 85vh; 
+    max-height: 95vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2585,7 +2594,7 @@ body {
 }
 
 .cd-modal-header h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #000;
     margin: 0;
@@ -2595,12 +2604,12 @@ body {
     position: relative;
     top: auto;
     right: auto;
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     background: #f0f2f5;
     border-radius: 8px;
     color: #333;
-    font-size: 18px;
+    font-size: 16px;
     border: 1px solid #dcdfe6;
 }
 
@@ -2610,35 +2619,32 @@ body {
 }
 
 .cd-modal-body {
-    padding: 25px;
+    padding: 20px;
     overflow-y: auto;
-    font-size: 16px;
-    color: #111; /* Texte bien noir */
+    font-size: 15px;
+    color: #111;
 }
 
 /* Boîte grise supérieure */
 .cd-grey-box {
     background-color: #f1f2f5;
     border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 25px;
+    padding: 18px;
+    margin-bottom: 20px;
 }
 
 .cd-grey-box p {
-    font-size: 15px;
+    font-size: 14.5px;
     color: #222;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     line-height: 1.5;
-    font-weight: 500;
 }
 
 .cd-grey-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between; /* Aligne le texte et le bouton */
-    gap: 15px;
+    flex-direction: column;
+    gap: 6px;
     margin-bottom: 16px;
-    background: transparent;
 }
 
 .cd-grey-row:last-child {
@@ -2646,30 +2652,33 @@ body {
 }
 
 .cd-grey-label {
-    color: #000;
+    color: #333;
     font-weight: 600;
-    font-size: 15px;
-    flex-shrink: 0;
+    font-size: 14px;
 }
 
 .cd-grey-value {
-    flex: 1;
-    word-break: break-all;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid #dcdfe6;
     color: #000;
-    font-size: 15px;
-    text-align: right; /* Aligne le texte de valeur à droite comme sur l'image */
+    font-size: 14.5px;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 10px;
+    word-break: break-word;
 }
 
 .cd-copy-btn {
-    background: #6b7280; /* Gris foncé comme sur la capture */
+    background: #6b7280;
     border: none;
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -2687,17 +2696,17 @@ body {
 /* Boutons d'action (Bleu et Jaune) */
 .cd-btn-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 12px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .cd-btn-blue,
 .cd-btn-yellow {
     border: none;
     border-radius: 8px;
-    padding: 18px 15px; /* Plus grand et mieux espacé */
-    font-size: 15px;
+    padding: 16px 20px;
+    font-size: 14.5px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -2707,35 +2716,40 @@ body {
     text-align: center;
     transition: all 0.2s;
     line-height: 1.4;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .cd-btn-blue {
     background-color: #007bff;
     color: white;
 }
-.cd-btn-blue:hover { background-color: #0069d9; transform: translateY(-1px); }
+
+.cd-btn-blue:hover {
+    background-color: #0069d9;
+}
 
 .cd-btn-yellow {
     background-color: #ffecb5;
     color: #856404;
     border: 1px solid #ffe8a1;
 }
-.cd-btn-yellow:hover { background-color: #ffe8a1; transform: translateY(-1px); }
+
+.cd-btn-yellow:hover {
+    background-color: #ffe8a1;
+}
 
 /* Sections d'informations */
 .cd-section {
-    margin-bottom: 35px; /* Bien séparer les blocs */
+    margin-bottom: 25px;
 }
 
 .cd-section-title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
     color: #000;
-    margin-bottom: 18px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     padding-bottom: 10px;
     border-bottom: 1px solid #e8eaee;
 }
@@ -2748,39 +2762,40 @@ body {
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Espacement propre entre chaque ligne */
+    gap: 12px;
 }
 
 .cd-info-row {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    flex-direction: column;
+    gap: 4px;
     line-height: 1.5;
-    font-size: 16px;
+    font-size: 14.5px;
 }
 
 .cd-info-row span {
-    color: #333;
+    color: #555;
     font-weight: 500;
-    flex: 1; /* Prend la place dispo */
-    min-width: 200px;
 }
 
 .cd-info-row strong {
     color: #000;
     font-weight: 700;
-    flex: 1;
-    text-align: left;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #f0f0f0;
+    word-break: break-word;
 }
 
 /* Badges */
 .cd-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
+    gap: 4px;
+    padding: 4px 10px;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -2800,43 +2815,43 @@ body {
 }
 
 .cd-footer-time {
-    font-size: 14px;
-    color: #444;
-    margin-top: 25px;
-    padding-top: 20px;
+    font-size: 13px;
+    color: #333;
+    margin-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid #e8eaee;
-    font-weight: 600;
+    font-weight: 500;
 }
 
-/* 🆕 Boutons d'action du bas (Connexion, Virements...) */
+/* Boutons d'action du bas (Connexion, Virements...) */
 .cd-action-btn {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
     padding: 16px 20px !important;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #000 !important;
-    font-size: 16px !important;
-    font-weight: 700;
+    font-size: 15px !important;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     gap: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    margin-bottom: 12px;
 }
 
 .cd-action-btn:hover {
     background: #f1f5f9;
     border-color: #94a3b8;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
 }
 
 .cd-action-btn i {
     color: #ff7a00;
-    font-size: 20px !important;
+    font-size: 18px !important;
 }
 
 /* Couleurs spécifiques pour les boutons d'action du bas */
@@ -2845,47 +2860,94 @@ body {
     color: #1d4ed8 !important;
     border-color: #bfdbfe;
 }
-.cd-action-btn.btn-conn i { color: #1d4ed8; }
+
+.cd-action-btn.btn-conn i {
+    color: #1d4ed8;
+}
 
 .cd-action-btn.btn-comp {
     background: #f0fdf4;
     color: #15803d !important;
     border-color: #bbf7d0;
 }
-.cd-action-btn.btn-comp i { color: #15803d; }
+
+.cd-action-btn.btn-comp i {
+    color: #15803d;
+}
 
 .cd-action-btn.btn-pend {
     background: #fffbeb;
     color: #b45309 !important;
     border-color: #fde68a;
 }
-.cd-action-btn.btn-pend i { color: #b45309; }
+
+.cd-action-btn.btn-pend i {
+    color: #b45309;
+}
 
 .cd-action-btn.btn-canc {
     background: #f5f3ff;
     color: #6d28d9 !important;
     border-color: #ddd6fe;
 }
-.cd-action-btn.btn-canc i { color: #6d28d9; }
+
+.cd-action-btn.btn-canc i {
+    color: #6d28d9;
+}
 
 /* Ajustement pour mobile */
 @media (max-width: 640px) {
-    .cd-info-row {
-        flex-direction: column;
-        gap: 4px;
+    .form-row {
+        grid-template-columns: 1fr;
     }
-    .cd-info-row span {
-        min-width: 100%;
+    .color-picker {
+        grid-template-columns: repeat(5, 1fr);
     }
-    .cd-grey-row {
+    .percentage-row {
         flex-wrap: wrap;
     }
-    .cd-grey-value {
-        text-align: left;
-        justify-content: flex-start;
-        width: 100%;
+    .percentage-row input {
+        max-width: 100%;
+    }
+    .access-buttons {
+        grid-template-columns: 1fr;
+    }
+    .client-detail-header {
+        padding: 20px;
+        padding-right: 55px;
+    }
+    .client-detail-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+    .client-detail-name {
+        font-size: 18px;
+    }
+    .client-detail-body {
+        padding: 20px;
+    }
+    .client-detail-footer {
+        padding: 15px 20px;
+        flex-direction: column;
     }
     .cd-btn-grid {
         grid-template-columns: 1fr;
+    }
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .admin-header-right {
+        justify-content: space-between;
+    }
+    .admin-user-name, .admin-user-email {
+        max-width: 100px;
+    }
+    .email-actions-grid {
+        grid-template-columns: 1fr;
+    }
+    .admin-transfer-tabs {
+        flex-direction: column;
     }
 }
