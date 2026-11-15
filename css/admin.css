@@ -2,14 +2,13 @@
    APP PAY ADMIN - Styles
    ============================================================ */
 
-/* 🆕 IMPORTATION DE LA POLICE INTER */
+/* IMPORTATION DE LA POLICE INTER */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* 🆕 APPLICATION DE LA POLICE INTER PARTOUT */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -17,7 +16,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.75; /* Garde l'interface compacte comme à l'origine */
+    zoom: 0.75;
 }
 
 /* ============================================================
@@ -1977,16 +1976,16 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (STYLE IMAGE 2 - AÉRÉ ET LISIBLE)
+   MODAL DÉTAILS CLIENT (CORRECTION FINALE)
    ============================================================ */
 .modal-client-card {
     max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
-    /* 🆕 AUGMENTATION DE LA HAUTEUR DE LA FENÊTRE */
-    height: 90vh; 
-    max-height: 95vh;
+    /* 🆕 Hauteur globale de la fenêtre augmentée */
+    height: 85vh; 
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2035,7 +2034,7 @@ body {
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto;
-    /* 🆕 AUGMENTATION DE LA TAILLE DE TEXTE ET DE L'ESPACEMENT DES LIGNES */
+    /* 🆕 Taille du texte et interligne augmentés */
     font-size: 15px; 
     line-height: 1.6; 
     color: #111;
@@ -2056,12 +2055,13 @@ body {
     line-height: 1.5;
 }
 
+/* 🆕 CORRECTION MAJEURE : Remis sur une seule ligne */
 .cd-grey-row {
     display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap; /* 🆕 Empêche le débordement */
+    align-items: center; /* Aligne verticalement au centre */
+    flex-wrap: wrap; /* Permet de passer à la ligne si c'est trop long, sans casser */
     gap: 8px;
-    margin-bottom: 18px; /* 🆕 Espacement des lignes augmenté */
+    margin-bottom: 16px; /* Espacement des lignes augmenté */
     font-size: 15px;
 }
 
@@ -2069,21 +2069,25 @@ body {
     margin-bottom: 0;
 }
 
+/* 🆕 Le libellé reste sur la même ligne */
 .cd-grey-label {
     color: #333;
     font-weight: 600;
-    min-width: 140px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
+/* 🆕 La valeur prend le reste de la place */
 .cd-grey-value {
     flex: 1;
     color: #000;
     font-weight: 700;
-    word-break: break-word; /* 🆕 Coupe le texte proprement */
+    word-break: break-word;
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Pousse le bouton copier tout à droite */
     gap: 10px;
-    min-width: 0; /* 🆕 Assure que le texte reste dans le cadre */
+    min-width: 0;
 }
 
 .cd-copy-btn {
@@ -2150,7 +2154,7 @@ body {
 
 /* Sections d'informations */
 .cd-section {
-    margin-bottom: 30px; /* 🆕 Plus d'espace entre les sections */
+    margin-bottom: 30px;
 }
 
 .cd-section-title {
@@ -2173,13 +2177,13 @@ body {
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* 🆕 Plus d'espace entre les lignes */
+    gap: 16px; /* Plus d'espace entre les lignes */
 }
 
 .cd-info-row {
     display: flex;
     align-items: flex-start;
-    flex-wrap: wrap; /* 🆕 Empêche le débordement */
+    flex-wrap: wrap;
     gap: 6px;
     line-height: 1.6;
     font-size: 15px;
@@ -2194,7 +2198,7 @@ body {
 .cd-info-row strong {
     color: #000;
     font-weight: 700;
-    word-break: break-word; /* 🆕 Coupe le texte proprement */
+    word-break: break-word;
     flex: 1;
 }
 
@@ -2369,17 +2373,14 @@ body {
     border-color: #c0c4cc;
 }
 
-/* Ajustement pour mobile */
+/* 🆕 CORRECTION FINALE POUR LE MOBILE : NE FORCE PLUS L'AFFICHAGE EN COLONNE */
 @media (max-width: 640px) {
     .cd-grey-row {
-        flex-direction: column; /* Sur mobile, le titre passe au dessus de la valeur */
-        gap: 4px;
+        flex-direction: row !important; /* Force l'alignement sur une ligne sur mobile aussi */
+        align-items: flex-start !important;
     }
-    .cd-info-row {
-        flex-direction: column;
-        gap: 4px;
-    }
-    .cd-info-row span {
-        min-width: 100%;
+    .cd-grey-value {
+        flex-direction: row !important;
+        flex-wrap: wrap; /* Permet au texte de passer à la ligne proprement */
     }
 }
