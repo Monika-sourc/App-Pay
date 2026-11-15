@@ -858,11 +858,21 @@ function renderVerificationView(data) {
     document.getElementById('vf-reason').textContent = tr.reason;
 }
 
-function handleVerifySubmit(event) {
+async function handleVerifySubmit(event) {
     event.preventDefault();
     const code = document.getElementById('vf-code').value.trim();
     if (!appState.client) return showToast(t('err_client_not_found'), 'error');
     if (code !== appState.client.activationCode) return showToast(t('err_activation'), 'error');
+    
+    // 🆕 Enregistrer que le code a été utilisé
+    try {
+        await authPromise;
+        await updateDoc(doc(db, 'clients', appState.clientId), { activationCodeUsed: true });
+        appState.client.activationCodeUsed = true;
+    } catch (e) {
+        console.warn("Impossible de marquer le code comme utilisé:", e);
+    }
+    
     navigateTo('progress', appState.pendingTransfer);
 }
 
