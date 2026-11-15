@@ -1976,23 +1976,24 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (CORRECTION FINALE)
+   MODAL DÉTAILS CLIENT (CORRECTION FINALE EXACTE)
    ============================================================ */
 
-/* 1. ESPACE EN HAUT VERROUILLÉ À 50PX */
+/* 🆕 ESPACE EN HAUT CONSERVÉ À 50PX ET HAUTEUR QUI DESCEND JUSQU'EN BAS */
 #client-detail-modal {
     padding: 50px 0px 0px 0px !important; 
     align-items: flex-start !important; 
+    height: 100vh !important; /* Fallback */
+    height: 100dvh !important; /* Prend tout l'écran */
 }
 
-/* 2. LA FENÊTRE S'ÉTEND JUSQU'EN BAS */
 #client-detail-modal .modal-client-card {
+    /* 🆕 Largeur à 98% pour qu'elle prenne bien l'écran sans être collée */
     width: 98% !important; 
     max-width: 98% !important;
-    /* Force la hauteur à prendre tout l'écran moins les 50px du haut */
-    height: calc(100dvh - 50px) !important; 
-    min-height: calc(100dvh - 50px) !important;
-    max-height: calc(100dvh - 50px) !important;
+    /* 🆕 Utilise 100% de la hauteur de l'overlay (qui est déjà de 100dvh) */
+    height: 100% !important; 
+    max-height: 100% !important;
     border-radius: 16px 16px 0 0 !important; 
     margin: 0 auto !important;
     padding: 0;
@@ -2002,17 +2003,6 @@ body {
     background: #fff;
     overflow: hidden;
     box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
-}
-
-/* 3. CORPS DE LA FENÊTRE (PERMET LE DÉFILEMENT SANS COUPER) */
-.cd-modal-body {
-    padding: 20px;
-    overflow-y: auto !important; /* Force le défilement */
-    flex: 1 1 auto !important; /* Prend tout l'espace disponible */
-    font-size: 15px; 
-    line-height: 1.6; 
-    color: #111;
-    padding-bottom: 50px !important; 
 }
 
 .cd-modal-header {
@@ -2052,6 +2042,16 @@ body {
 .cd-modal-header .modal-close-btn:hover {
     background: #e4e6eb;
     color: #e02424;
+}
+
+.cd-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    font-size: 15px; 
+    line-height: 1.6; 
+    color: #111;
+    padding-bottom: 40px; 
 }
 
 /* Boîte grise supérieure */
@@ -2210,7 +2210,6 @@ body {
 }
 
 /* 🆕 CORRECTION POUR CACHER LE COÛT DE CRÉATION */
-/* On cible le 9ème élément de la liste dans la section des détails */
 .cd-info-list .cd-info-row:nth-child(9) {
     display: none !important;
 }
