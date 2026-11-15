@@ -3020,19 +3020,19 @@ body {
 }
 
 /* ============================================================
-   🆕 BALISES DE NOTIFICATION (TRANSFER BANNERS) - COULEURS PASTEL PROPRES
+   🆕 BALISES DE NOTIFICATION (TRANSFER BANNERS) - COULEURS PROPRES & STANDARD
    ============================================================ */
 .transfer-banner {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 16px 20px;
-    border-radius: 10px;
+    padding: 18px 20px;
+    border-radius: 12px;
     margin-bottom: 20px;
     font-size: 15px;
     font-weight: 500;
-    line-height: 1.5;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    line-height: 1.6;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     opacity: 0;
     transform: translateY(-15px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -3045,28 +3045,28 @@ body {
     transform: translateY(0);
 }
 
-/* Vert pastel doux et propre (Reçu, envoyé complété, validé) */
+/* Vert menthe standard (Reçu, envoyé complété, validé) */
 .transfer-banner.received,
 .transfer-banner.sent_completed,
 .transfer-banner.validated_pending {
-    background-color: #e8f5e9;
-    color: #1b5e20;
-    border: 1px solid #c8e6c9;
+    background-color: #d1e7dd; /* Vert pastel plus soutenu */
+    color: #0f5132; /* Texte vert très foncé pour lisibilité */
+    border: 1px solid #badbcc;
 }
 
-/* Orange pastel doux et propre (En attente, annulé en attente) */
+/* Orange ambré standard (En attente, annulé en attente) */
 .transfer-banner.sent_pending,
 .transfer-banner.cancelled_pending {
-    background-color: #fff3e0;
-    color: #e65100;
-    border: 1px solid #ffe0b2;
+    background-color: #fff3cd; /* Jaune/orange pastel plus soutenu */
+    color: #664d03;
+    border: 1px solid #ffecb5;
 }
 
-/* Rouge pastel doux et propre (Annulé complété) */
+/* Rouge pastel standard (Annulé complété) */
 .transfer-banner.cancelled_completed {
-    background-color: #ffebee;
-    color: #b71c1c;
-    border: 1px solid #ffcdd2;
+    background-color: #f8d7da; /* Rouge pastel plus soutenu */
+    color: #842029;
+    border: 1px solid #f5c2c7;
 }
 
 .banner-text {
@@ -3081,9 +3081,9 @@ body {
     color: inherit;
     cursor: pointer;
     font-size: 20px;
-    opacity: 0.5;
+    opacity: 0.6;
     transition: opacity 0.2s, background-color 0.2s;
-    padding: 2px 6px;
+    padding: 4px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3093,5 +3093,5 @@ body {
 
 .banner-close:hover {
     opacity: 1;
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0,0,0,0.08);
 }
