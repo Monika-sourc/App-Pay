@@ -155,8 +155,15 @@ function displayBanner(type, tx, onComplete) {
     let message = '';
     const tKey = `banner_${type}`;
     
+    // 🆕 Ajout de la phrase d'aide uniquement pour les virements reçus
     if (type === 'received') {
-        message = globalT(tKey, { name: clientName, amount: amountStr, bank: bank });
+        const mainMsg = globalT(tKey, { name: clientName, amount: amountStr, bank: bank });
+        const hintMsg = globalT('banner_received_hint');
+        if (hintMsg && hintMsg !== 'banner_received_hint') {
+            message = `${mainMsg}<br><span style="font-size: 0.85em; opacity: 0.8; display: inline-block; margin-top: 4px;">${hintMsg}</span>`;
+        } else {
+            message = mainMsg;
+        }
     } else {
         message = globalT(tKey, { amount: amountStr, name: name, bank: bank });
     }
@@ -185,7 +192,7 @@ function displayBanner(type, tx, onComplete) {
         }, 300);
     };
     
-    // 🆕 60 secondes au lieu de 15
+    // 🆕 60 secondes
     const timer = setTimeout(finish, 60000);
     banner.querySelector('.banner-close').addEventListener('click', finish);
     
