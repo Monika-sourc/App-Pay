@@ -2561,11 +2561,12 @@ body {
    🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT (STYLE PRO & POLICE RÉDUITE)
    ============================================================ */
 .modal-client-card {
-    max-width: 500px;
+    max-width: 650px; /* Légèrement plus large pour accommoder les textes plus grands */
     padding: 0;
     text-align: left;
     position: relative;
-    max-height: 95vh; /* Augmenté à 95vh */
+    max-height: 92vh; /* Hauteur augmentée */
+    min-height: 85vh; /* Hauteur minimale pour que ça prenne bien l'écran */
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2577,14 +2578,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    padding: 20px 25px; /* Plus d'espace */
     border-bottom: 1px solid #e8eaee;
 }
 
 .cd-modal-header h2 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
+    font-size: 18px; /* Augmenté */
+    font-weight: 700;
+    color: #000;
     margin: 0;
 }
 
@@ -2592,11 +2593,12 @@ body {
     position: relative;
     top: auto;
     right: auto;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     background: #f0f2f5;
-    border-radius: 6px;
-    color: #666;
+    border-radius: 8px;
+    color: #333;
+    font-size: 18px;
 }
 
 .cd-modal-header .modal-close-btn:hover {
@@ -2605,59 +2607,65 @@ body {
 }
 
 .cd-modal-body {
-    padding: 20px;
+    padding: 25px; /* Plus d'espace */
     overflow-y: auto;
-    font-size: 14.5px; /* Taille de police augmentée */
-    color: #444;
+    font-size: 16px; /* Taille de police augmentée */
+    color: #111; /* Couleur noire bien appliquée */
 }
 
 /* Boîte grise supérieure */
 .cd-grey-box {
     background-color: #f1f2f5;
     border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 20px; /* Augmenté */
+    margin-bottom: 25px;
 }
 
 .cd-grey-box p {
-    font-size: 13px; /* Augmenté */
-    color: #555;
-    margin-bottom: 12px;
-    line-height: 1.4;
+    font-size: 15px; /* Augmenté */
+    color: #222; /* Plus sombre */
+    margin-bottom: 16px;
+    line-height: 1.5;
 }
 
 .cd-grey-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 16px; /* Espacement augmenté */
+}
+
+.cd-grey-row:last-child {
+    margin-bottom: 0;
 }
 
 .cd-grey-label {
-    color: #666;
-    font-weight: 500;
-    width: 140px; /* Légèrement plus large pour accommoder le texte plus grand */
+    color: #000; /* Noir */
+    font-weight: 600;
+    width: 150px; /* Ajusté pour la nouvelle taille de police */
     flex-shrink: 0;
+    font-size: 15px;
 }
 
 .cd-grey-value {
     flex: 1;
     word-break: break-all;
-    color: #111;
+    color: #000;
+    font-size: 15px;
 }
 
 .cd-copy-btn {
     background: #a0aab8;
     border: none;
     color: white;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
     transition: background 0.2s;
     flex-shrink: 0;
 }
@@ -2670,8 +2678,8 @@ body {
 .cd-btn-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
 .cd-btn-blue {
@@ -2679,14 +2687,14 @@ body {
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 10px;
-    font-size: 13px; /* Augmenté */
-    font-weight: 500;
+    padding: 14px 10px; /* Plus grand */
+    font-size: 15px; /* Plus grand */
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     text-align: center;
     transition: background 0.2s;
 }
@@ -2698,14 +2706,14 @@ body {
     color: #856404;
     border: none;
     border-radius: 8px;
-    padding: 10px;
-    font-size: 13px; /* Augmenté */
-    font-weight: 500;
+    padding: 14px 10px; /* Plus grand */
+    font-size: 15px; /* Plus grand */
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     text-align: center;
     transition: background 0.2s;
 }
@@ -2714,46 +2722,50 @@ body {
 
 /* Sections d'informations */
 .cd-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Plus d'espace entre les sections */
 }
 
 .cd-section-title {
-    font-size: 15px; /* Augmenté */
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 10px;
+    font-size: 16px; /* Augmenté */
+    font-weight: 700;
+    color: #000; /* Noir */
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8eaee;
 }
 
 .cd-section-title i {
     color: #ff7a00;
-    font-size: 15px; /* Augmenté */
+    font-size: 18px; /* Augmenté */
 }
 
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px; /* Plus d'espace */
 }
 
 .cd-info-row {
     display: flex;
-    align-items: center;
-    gap: 5px;
-    line-height: 1.4;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.6;
+    font-size: 15px;
 }
 
 .cd-info-row span {
-    color: #666;
-    min-width: 170px; /* Ajusté */
+    color: #333; /* Plus foncé */
+    font-weight: 500;
+    min-width: 220px; /* Augmenté pour éviter que le texte soit trop serré */
     flex-shrink: 0;
 }
 
 .cd-info-row strong {
-    color: #111;
-    font-weight: 600;
+    color: #000; /* Noir complet */
+    font-weight: 700;
     word-break: break-word;
 }
 
@@ -2761,11 +2773,11 @@ body {
 .cd-badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
+    gap: 6px;
+    padding: 4px 10px;
     border-radius: 12px;
-    font-size: 12px; /* Augmenté */
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .cd-badge-green {
@@ -2784,47 +2796,81 @@ body {
 }
 
 .cd-footer-time {
-    font-size: 12px; /* Augmenté */
-    color: #999;
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #333;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e8eaee;
+    font-weight: 500;
 }
 
 /* 🆕 Styles pour les boutons manquants (Virements et Connexion) */
 .cd-functional-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 20px;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
-.cd-func-btn {
+/* Remplacement des styles inline par une classe propre pour les boutons d'action */
+.cd-action-btn {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
-    padding: 12px 15px;
-    border-radius: 6px;
+    padding: 16px 20px !important; /* Force la hauteur */
+    border-radius: 8px !important;
     border: 1px solid #cbd5e1;
     background: #ffffff;
-    color: #334155;
-    font-size: 14px;
+    color: #000 !important;
+    font-size: 16px !important; /* Force la taille du texte */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    gap: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-.cd-func-btn:hover {
+.cd-action-btn:hover {
     background: #f1f5f9;
     border-color: #94a3b8;
+    transform: translateY(-1px);
 }
 
-.cd-func-btn i {
+.cd-action-btn i {
     color: #ff7a00;
-    font-size: 16px;
+    font-size: 18px !important;
 }
+
+/* Couleurs spécifiques pour les boutons d'action du bas */
+.cd-action-btn.btn-conn {
+    background: #e8f0fe;
+    color: #1a73e8 !important;
+    border-color: #c5d8f5;
+}
+.cd-action-btn.btn-conn i { color: #1a73e8; }
+
+.cd-action-btn.btn-comp {
+    background: #def7ec;
+    color: #03543f !important;
+    border-color: #c3e6cb;
+}
+.cd-action-btn.btn-comp i { color: #03543f; }
+
+.cd-action-btn.btn-pend {
+    background: #fffbeb;
+    color: #d97706 !important;
+    border-color: #fef08a;
+}
+.cd-action-btn.btn-pend i { color: #d97706; }
+
+.cd-action-btn.btn-canc {
+    background: #f5f3ff;
+    color: #8b5cf6 !important;
+    border-color: #ddd6fe;
+}
+.cd-action-btn.btn-canc i { color: #8b5cf6; }
