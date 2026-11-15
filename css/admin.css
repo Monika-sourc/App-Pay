@@ -1219,7 +1219,7 @@ body {
 }
 
 /* ============================================================
-   LISTE DES CLIENTS
+   LISTE DES CLIENTS (ANCIENNE VERSION - CONSERVÉE)
    ============================================================ */
 .section-header-flex {
     display: flex;
@@ -2415,4 +2415,145 @@ body {
 .modify-section .searchable-option.selected {
     background: #e8f0fe;
     color: #1a73e8;
+}
+
+/* ============================================================
+   🆕 NOUVELLE LISTE DES CLIENTS (DESIGN COMPACT & PRO)
+   ============================================================ */
+.client-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #e8eaee;
+    transition: background-color 0.2s;
+}
+
+.client-list-item:hover {
+    background-color: #f8f9fa;
+}
+
+.client-list-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.client-list-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.client-list-email {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+}
+
+.client-list-date {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.client-list-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.badge i {
+    font-size: 10px;
+}
+
+.badge-active {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.badge-blocked {
+    background-color: #fde8e8;
+    color: #e02424;
+}
+
+.badge-online {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.badge-offline {
+    background-color: #f8f9fa;
+    color: #888;
+    border: 1px solid #e8eaee;
+}
+
+.client-list-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: 15px;
+}
+
+.btn-toggle-access {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.btn-toggle-access.btn-block {
+    background-color: #fff;
+    border-color: #f5c6cb;
+    color: #e02424;
+}
+
+.btn-toggle-access.btn-block:hover {
+    background-color: #fff5f5;
+}
+
+.btn-toggle-access.btn-unblock {
+    background-color: #fff;
+    border-color: #c3e6cb;
+    color: #03543f;
+}
+
+.btn-toggle-access.btn-unblock:hover {
+    background-color: #f0fdf4;
+}
+
+.btn-delete-client {
+    background-color: transparent;
+    border: none;
+    color: #e02424;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.btn-delete-client:hover {
+    background-color: #fde8e8;
 }
