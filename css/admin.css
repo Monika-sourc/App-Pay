@@ -1419,7 +1419,7 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT
+   MODAL DÉTAILS CLIENT (ANCIENNE VERSION - CONSERVÉE)
    ============================================================ */
 .modal-client-card {
     max-width: 600px;
@@ -2290,13 +2290,13 @@ body {
     background-color: #fff;
     border: 1px solid #dcdfe6;
     border-radius: 6px;
-    padding: 14px 16px; /* MODIFIÉ: augmenté */
-    font-size: 18px; /* MODIFIÉ: augmenté */
+    padding: 14px 16px;
+    font-size: 18px;
     color: #333;
     cursor: pointer;
     transition: border-color 0.2s, box-shadow 0.2s;
     text-align: left;
-    min-height: 50px; /* MODIFIÉ: augmenté */
+    min-height: 50px;
 }
 
 .searchable-select-trigger:hover {
@@ -2321,8 +2321,8 @@ body {
 .searchable-select-dropdown {
     position: absolute;
     top: calc(100% + 4px);
-    left: -10px; /* MODIFIÉ: Élargir légèrement */
-    right: -10px; /* MODIFIÉ: Élargir légèrement */
+    left: -10px;
+    right: -10px;
     background: #fff;
     border: 1px solid #e8eaee;
     border-radius: 8px;
@@ -2330,7 +2330,7 @@ body {
     z-index: 999;
     display: none;
     flex-direction: column;
-    max-height: 450px; /* MODIFIÉ: allongé */
+    max-height: 450px;
 }
 
 .searchable-select-dropdown.open {
@@ -2338,7 +2338,7 @@ body {
 }
 
 .searchable-select-search {
-    padding: 12px; /* MODIFIÉ: augmenté */
+    padding: 12px;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     align-items: center;
@@ -2349,7 +2349,7 @@ body {
 
 .searchable-select-search i {
     color: #aaa;
-    font-size: 18px; /* MODIFIÉ: augmenté */
+    font-size: 18px;
 }
 
 .searchable-select-search input {
@@ -2357,7 +2357,7 @@ body {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 18px; /* MODIFIÉ: augmenté */
+    font-size: 18px;
     padding: 4px;
     color: #333;
     font-family: inherit;
@@ -2365,24 +2365,24 @@ body {
 
 .searchable-select-options {
     overflow-y: auto;
-    padding: 8px; /* MODIFIÉ: augmenté */
+    padding: 8px;
     flex: 1;
 }
 
 .searchable-optgroup {
-    font-size: 14px; /* MODIFIÉ: augmenté */
+    font-size: 14px;
     font-weight: 700;
     color: #888;
     text-transform: uppercase;
-    padding: 10px 12px 6px 12px; /* MODIFIÉ: augmenté */
+    padding: 10px 12px 6px 12px;
     margin-top: 4px;
     background: #fafbfc;
     border-radius: 4px;
 }
 
 .searchable-option {
-    padding: 12px 14px; /* MODIFIÉ: augmenté */
-    font-size: 18px; /* MODIFIÉ: augmenté */
+    padding: 12px 14px;
+    font-size: 18px;
     color: #333;
     cursor: pointer;
     border-radius: 6px;
@@ -2404,10 +2404,9 @@ body {
     padding: 20px;
     text-align: center;
     color: #888;
-    font-size: 16px; /* MODIFIÉ: augmenté */
+    font-size: 16px;
 }
 
-/* Fix pour la section modifier */
 .modify-section .searchable-select-container.open .searchable-select-trigger {
     border-color: #1a73e8;
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
@@ -2556,4 +2555,238 @@ body {
 
 .btn-delete-client:hover {
     background-color: #fde8e8;
+}
+
+/* ============================================================
+   🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT (STYLE PRO & POLICE RÉDUITE)
+   ============================================================ */
+.modal-client-card {
+    max-width: 500px;
+    padding: 0;
+    text-align: left;
+    position: relative;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.cd-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e8eaee;
+}
+
+.cd-modal-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.cd-modal-header .modal-close-btn {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 30px;
+    height: 30px;
+    background: #f0f2f5;
+    border-radius: 6px;
+    color: #666;
+}
+
+.cd-modal-header .modal-close-btn:hover {
+    background: #e4e6eb;
+    color: #e02424;
+}
+
+.cd-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    font-size: 13px; /* Réduction de la police globale de la modale */
+    color: #444;
+}
+
+/* Boîte grise supérieure */
+.cd-grey-box {
+    background-color: #f1f2f5;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.cd-grey-box p {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.cd-grey-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.cd-grey-label {
+    color: #666;
+    font-weight: 500;
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.cd-grey-value {
+    flex: 1;
+    word-break: break-all;
+    color: #111;
+}
+
+.cd-copy-btn {
+    background: #a0aab8;
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.cd-copy-btn:hover {
+    background: #8892a0;
+}
+
+/* Boutons d'action (Bleu et Jaune) */
+.cd-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.cd-btn-blue {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.cd-btn-blue:hover { background-color: #0069d9; }
+
+.cd-btn-yellow {
+    background-color: #ffecb5;
+    color: #856404;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.cd-btn-yellow:hover { background-color: #ffe8a1; }
+
+/* Sections d'informations */
+.cd-section {
+    margin-bottom: 20px;
+}
+
+.cd-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cd-section-title i {
+    color: #ff7a00;
+    font-size: 14px;
+}
+
+.cd-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cd-info-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.4;
+}
+
+.cd-info-row span {
+    color: #666;
+    min-width: 150px; /* Aligne les deux points */
+    flex-shrink: 0;
+}
+
+.cd-info-row strong {
+    color: #111;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* Badges */
+.cd-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.cd-badge-green {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+.cd-badge-red {
+    background-color: #fde8e8;
+    color: #e02424;
+}
+
+.cd-badge-purple {
+    background-color: #8b5cf6;
+    color: white;
+}
+
+.cd-footer-time {
+    font-size: 11px;
+    color: #999;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
 }
