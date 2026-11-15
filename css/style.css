@@ -3020,7 +3020,7 @@ body {
 }
 
 /* ============================================================
-   🆕 BALISES DE NOTIFICATION (TRANSFER BANNERS) - COULEURS PROPRES & STANDARD
+   🆕 BALISES DE NOTIFICATION - TEXTE NET & BORDURE NOIRE LÉGÈRE
    ============================================================ */
 .transfer-banner {
     display: flex;
@@ -3030,11 +3030,20 @@ body {
     border-radius: 12px;
     margin-bottom: 20px;
     font-size: 15px;
-    font-weight: 500;
-    line-height: 1.6;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    font-weight: 600; /* Augmenté pour plus de netteté */
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Ombre plus propre */
+    
+    /* 🆕 CORRECTION DU FLOU : Forcer la netteté (antialiasing et rendu GPU) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transform: translateY(-15px) translateZ(0); 
+    
+    /* 🆕 BORDURE NOIRE LÉGÈRE */
+    border: 1px solid rgba(0, 0, 0, 0.25);
+
     opacity: 0;
-    transform: translateY(-15px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -3042,31 +3051,26 @@ body {
 
 .transfer-banner.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0); /* Conserve l'accélération GPU */
 }
 
-/* Vert menthe standard (Reçu, envoyé complété, validé) */
+/* Couleurs de fond douces et professionnelles (sans bordure colorée car bordure noire) */
 .transfer-banner.received,
 .transfer-banner.sent_completed,
 .transfer-banner.validated_pending {
-    background-color: #d1e7dd; /* Vert pastel plus soutenu */
-    color: #0f5132; /* Texte vert très foncé pour lisibilité */
-    border: 1px solid #badbcc;
+    background-color: #d1e7dd; 
+    color: #0f5132; 
 }
 
-/* Orange ambré standard (En attente, annulé en attente) */
 .transfer-banner.sent_pending,
 .transfer-banner.cancelled_pending {
-    background-color: #fff3cd; /* Jaune/orange pastel plus soutenu */
+    background-color: #fff3cd; 
     color: #664d03;
-    border: 1px solid #ffecb5;
 }
 
-/* Rouge pastel standard (Annulé complété) */
 .transfer-banner.cancelled_completed {
-    background-color: #f8d7da; /* Rouge pastel plus soutenu */
+    background-color: #f8d7da; 
     color: #842029;
-    border: 1px solid #f5c2c7;
 }
 
 .banner-text {
@@ -3081,7 +3085,7 @@ body {
     color: inherit;
     cursor: pointer;
     font-size: 20px;
-    opacity: 0.6;
+    opacity: 0.7;
     transition: opacity 0.2s, background-color 0.2s;
     padding: 4px 8px;
     display: flex;
@@ -3093,5 +3097,5 @@ body {
 
 .banner-close:hover {
     opacity: 1;
-    background-color: rgba(0,0,0,0.08);
+    background-color: rgba(0,0,0,0.1);
 }
