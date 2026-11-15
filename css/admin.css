@@ -2,21 +2,22 @@
    APP PAY ADMIN - Styles
    ============================================================ */
 
-/* IMPORTATION DE LA POLICE INTER */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* 🆕 IMPORTATION DE LA POLICE CABIN */
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap');
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* 🆕 APPLICATION DE LA POLICE CABIN PARTOUT */
+    font-family: 'Cabin', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.75;
+    zoom: 0.75; /* Garde l'interface compacte comme à l'origine */
 }
 
 /* ============================================================
@@ -1976,16 +1977,16 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (CORRECTION HAUTEUR)
+   MODAL DÉTAILS CLIENT (PLEIN ÉCRAN)
    ============================================================ */
 .modal-client-card {
     max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
-    /* 🆕 Hauteur augmentée à 92% de l'écran (presque plein écran) */
-    height: 92vh; 
-    max-height: 95vh;
+    /* 🆕 HAUTEUR PRINCIPALE (Pour ordinateur) */
+    height: 95vh; 
+    max-height: 98vh;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2034,7 +2035,6 @@ body {
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto;
-    /* 🆕 flex: 1 permet de prendre tout l'espace restant */
     flex: 1; 
     font-size: 15px; 
     line-height: 1.6; 
@@ -2371,8 +2371,34 @@ body {
     border-color: #c0c4cc;
 }
 
-/* Ajustement pour mobile */
-@media (max-width: 640px) {
+/* ============================================================
+   🆕 AFFICHAGE PLEIN ÉCRAN STRICT SUR MOBILE 
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Supprime les marges de l'arrière-plan pour coller la fenêtre aux bords */
+    .modal-overlay {
+        padding: 0 !important;
+    }
+
+    /* Force la fenêtre à prendre 100% de l'écran */
+    .modal-client-card {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100vh !important; /* Fallback pour les anciens navigateurs */
+        height: 100dvh !important; /* Prend en compte les barres du navigateur mobile */
+        max-height: 100dvh !important;
+        border-radius: 0 !important; /* Bords carrés pour le vrai plein écran */
+    }
+
+    /* Ajuste l'en-tête et le corps pour le plein écran */
+    .cd-modal-header {
+        padding: 20px 20px 15px 20px;
+    }
+    
+    .cd-modal-body {
+        padding: 15px 20px 30px 20px;
+    }
+    
     .cd-grey-row {
         flex-direction: row !important; 
         align-items: flex-start !important;
