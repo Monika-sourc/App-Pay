@@ -1221,7 +1221,7 @@ body {
 }
 
 /* ============================================================
-   LISTE DES CLIENTS (ANCIENNE VERSION - CONSERVÉE)
+   LISTE DES CLIENTS
    ============================================================ */
 .section-header-flex {
     display: flex;
@@ -1419,581 +1419,6 @@ body {
 .client-row:hover .client-row-arrow {
     color: #ff7a00;
     transform: translateX(3px);
-}
-
-/* ============================================================
-   MODAL DÉTAILS CLIENT (ANCIENNE VERSION - CONSERVÉE)
-   ============================================================ */
-.modal-client-card {
-    max-width: 600px;
-    padding: 0;
-    text-align: left;
-    position: relative;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.modal-close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: none;
-    color: #666;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    z-index: 10;
-    transition: background 0.2s, color 0.2s;
-}
-
-.modal-close-btn:hover {
-    background-color: #fff;
-    color: #e02424;
-}
-
-.client-detail-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 25px 30px;
-    background: linear-gradient(135deg, #ff7a00 0%, #ff9533 100%);
-    color: white;
-    position: relative;
-    flex-shrink: 0;
-    padding-right: 60px;
-}
-
-.client-detail-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.25);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 22px;
-    flex-shrink: 0;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-.client-detail-header > div:nth-child(2) {
-    flex: 1;
-    min-width: 0;
-}
-
-.client-detail-name {
-    font-size: 20px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.client-detail-meta {
-    font-size: 14px;
-    opacity: 0.9;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.client-detail-status {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    background-color: rgba(255, 255, 255, 0.25);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    flex-shrink: 0;
-}
-
-.client-detail-status.active {
-    background-color: rgba(255, 255, 255, 0.95);
-    color: #03543f;
-}
-
-.client-detail-status.blocked {
-    background-color: rgba(255, 255, 255, 0.95);
-    color: #e02424;
-}
-
-.client-detail-body {
-    padding: 25px 30px;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.cd-section {
-    margin-bottom: 22px;
-}
-
-.cd-section:last-child {
-    margin-bottom: 0;
-}
-
-.cd-section-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #ff7a00;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.cd-section-title i {
-    font-size: 14px;
-}
-
-.cd-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    padding: 9px 0;
-    font-size: 15px;
-    border-bottom: 1px solid #f8f8f8;
-}
-
-.cd-row:last-child {
-    border-bottom: none;
-}
-
-.cd-label {
-    color: #888;
-    font-weight: 500;
-    flex-shrink: 0;
-}
-
-.cd-value {
-    color: #111;
-    font-weight: 600;
-    text-align: right;
-    word-break: break-word;
-    min-width: 0;
-}
-
-.cd-value-copy {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #111;
-    font-weight: 600;
-    text-align: right;
-    min-width: 0;
-}
-
-.cd-value-copy span {
-    word-break: break-all;
-    text-align: right;
-}
-
-.cd-code {
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-    background-color: #f8f9fa;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 15px;
-    color: #111;
-    font-weight: 700;
-}
-
-.copy-btn {
-    background-color: #f0f2f5;
-    border: none;
-    color: #555;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.copy-btn:hover {
-    background-color: #ff7a00;
-    color: white;
-}
-
-.copy-btn.copied {
-    background-color: #00c853;
-    color: white;
-}
-
-.copy-btn-primary {
-    width: auto;
-    padding: 0 16px;
-    height: 38px;
-    gap: 6px;
-    background-color: #ff7a00;
-    color: white;
-    font-weight: 600;
-    font-size: 15px;
-}
-
-.copy-btn-primary:hover {
-    background-color: #e66d00;
-}
-
-.cd-link-box {
-    display: flex;
-    gap: 8px;
-    background-color: #f8f9fa;
-    padding: 6px;
-    border-radius: 8px;
-    border: 1px solid #e8eaee;
-    align-items: center;
-}
-
-.cd-link-box input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    padding: 8px 10px;
-    font-size: 13px;
-    color: #333;
-    font-family: 'Courier New', monospace;
-    min-width: 0;
-}
-
-.cd-hint {
-    display: block;
-    font-size: 13px;
-    color: #909399;
-    margin-top: 8px;
-    line-height: 1.4;
-}
-
-.client-detail-footer {
-    display: flex;
-    gap: 10px;
-    padding: 18px 30px;
-    border-top: 1px solid #f0f0f0;
-    background-color: #fafbfc;
-    flex-shrink: 0;
-}
-
-.client-detail-footer button {
-    flex: 1;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-}
-
-/* ============================================================
-   🆕 BOUTONS ET MODALE DE GESTION DES VIREMENTS
-   ============================================================ */
-.admin-transfer-buttons-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.admin-transfer-buttons-grid button {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid transparent;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.2s;
-}
-
-.admin-transfer-buttons-grid .admin-btn-validate {
-    background-color: #def7ec;
-    color: #03543f;
-    border-color: #c3e6cb;
-}
-
-.admin-transfer-buttons-grid .admin-btn-validate:hover {
-    background-color: #c3e6cb;
-}
-
-.admin-transfer-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e8eaee;
-    padding-bottom: 15px;
-}
-
-.admin-tab-btn {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #e8eaee;
-    background: #fff;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    color: #555;
-}
-
-.admin-tab-btn:hover {
-    background: #f8f9fa;
-}
-
-.admin-tab-btn.active {
-    background: #e8f0fe;
-    border-color: #1a73e8;
-    color: #1a73e8;
-}
-
-.admin-transfer-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.admin-transfer-empty {
-    text-align: center;
-    color: #999;
-    font-size: 16px;
-    padding: 30px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px dashed #dcdfe6;
-}
-
-.admin-transfer-item {
-    background: #ffffff;
-    border: 1px solid #e8eaee;
-    border-radius: 10px;
-    padding: 15px;
-    border-left: 4px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-}
-
-.admin-transfer-item.completed { border-left-color: #00c853; }
-.admin-transfer-item.pending { border-left-color: #f59e0b; }
-.admin-transfer-item.cancelled { border-left-color: #8b5cf6; }
-.admin-transfer-item.failed { border-left-color: #e02424; }
-
-.admin-transfer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.admin-transfer-name {
-    font-size: 17px;
-    font-weight: 700;
-    color: #111;
-    margin-bottom: 4px;
-}
-
-.admin-transfer-date {
-    font-size: 14px;
-    color: #888;
-}
-
-.admin-transfer-amount {
-    font-size: 17px;
-    font-weight: 700;
-    color: #e02424;
-    white-space: nowrap;
-}
-
-.admin-transfer-amount.credit {
-    color: #03543f;
-}
-
-.admin-transfer-details {
-    font-size: 15px;
-    color: #555;
-    line-height: 1.5;
-    background: #f8f9fa;
-    padding: 10px 14px;
-    border-radius: 6px;
-}
-
-.admin-transfer-details strong {
-    color: #111;
-}
-
-.admin-transfer-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 5px;
-}
-
-.admin-btn-action {
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
-}
-
-.admin-btn-validate {
-    background-color: #def7ec;
-    color: #03543f;
-}
-
-.admin-btn-validate:hover {
-    background-color: #00c853;
-    color: white;
-}
-
-.admin-btn-cancel {
-    background-color: #fde8e8;
-    color: #e02424;
-}
-
-.admin-btn-cancel:hover {
-    background-color: #e02424;
-    color: white;
-}
-
-/* ============================================================
-   BOUTONS D'ENVOI D'EMAIL
-   ============================================================ */
-.email-actions-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 15px 0;
-}
-
-.email-action-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: 2px solid;
-    background: #fff;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s;
-    font-family: inherit;
-    min-width: 0;
-}
-
-.email-action-btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.email-action-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.email-action-blue {
-    border-color: #c5d8f5;
-    color: #1a73e8;
-}
-
-.email-action-blue:hover:not(:disabled) {
-    background-color: #e8f0fe;
-}
-
-.email-action-green {
-    border-color: #c3e6cb;
-    color: #03543f;
-}
-
-.email-action-green:hover:not(:disabled) {
-    background-color: #def7ec;
-}
-
-.email-action-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.email-action-blue .email-action-icon {
-    background-color: #e8f0fe;
-}
-
-.email-action-green .email-action-icon {
-    background-color: #def7ec;
-}
-
-.email-action-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.email-action-text strong {
-    font-size: 15px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.email-action-text small {
-    font-size: 13px;
-    opacity: 0.75;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* ============================================================
@@ -2427,7 +1852,7 @@ body {
 }
 
 /* ============================================================
-   NOUVELLE LISTE DES CLIENTS (DESIGN COMPACT & PRO)
+   NOUVELLE LISTE DES CLIENTS
    ============================================================ */
 .client-list-item {
     display: flex;
@@ -2568,20 +1993,19 @@ body {
 }
 
 /* ============================================================
-   🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT (COMPACT, PROPRE ET ALIGNÉ)
+   MODAL DÉTAILS CLIENT (COMPACT, PROPRE ET ALIGNÉ)
    ============================================================ */
 .modal-client-card {
-    max-width: 500px; /* Largeur réduite */
+    max-width: 550px;
     padding: 0;
     text-align: left;
     position: relative;
-    max-height: 90vh; /* Laisse le contenu dicter la hauteur */
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
     overflow: hidden;
     background: #fff;
-    /* J'AI SUPPRIMÉ LE min-height: 85vh QUI FORÇAIT LA FENÊTRE À ÊTRE ÉNORME */
 }
 
 .cd-modal-header {
@@ -2622,9 +2046,9 @@ body {
 }
 
 .cd-modal-body {
-    padding: 15px; /* Padding réduit */
+    padding: 15px;
     overflow-y: auto;
-    font-size: 13px; /* Taille de police réduite */
+    font-size: 13px;
     color: #111;
 }
 
@@ -2637,7 +2061,7 @@ body {
 }
 
 .cd-grey-box p {
-    font-size: 12.5px;
+    font-size: 12px;
     color: #222;
     margin-bottom: 12px;
     line-height: 1.4;
@@ -2657,17 +2081,17 @@ body {
 .cd-grey-label {
     color: #333;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .cd-grey-value {
     width: 100%;
     background-color: #ffffff;
     padding: 8px 10px;
-    border-radius: 6px;
+    border-radius: 4px;
     border: 1px solid #dcdfe6;
     color: #000;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -2680,14 +2104,14 @@ body {
     background: #6b7280;
     border: none;
     color: white;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     transition: background 0.2s;
     flex-shrink: 0;
 }
@@ -2708,8 +2132,8 @@ body {
 .cd-btn-yellow {
     border: none;
     border-radius: 6px;
-    padding: 10px 12px;
-    font-size: 13px;
+    padding: 10px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -2746,38 +2170,38 @@ body {
 }
 
 .cd-section-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: #000;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 6px;
-    padding-bottom: 6px;
+    padding-bottom: 5px;
     border-bottom: 1px solid #e8eaee;
 }
 
 .cd-section-title i {
     color: #ff7a00;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .cd-info-row {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
     line-height: 1.4;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .cd-info-row span {
-    color: #555;
+    color: #444;
     font-weight: 500;
 }
 
@@ -2796,9 +2220,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 8px;
+    padding: 2px 6px;
     border-radius: 10px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
 }
 
@@ -2818,7 +2242,7 @@ body {
 }
 
 .cd-footer-time {
-    font-size: 12px;
+    font-size: 11px;
     color: #333;
     margin-top: 15px;
     padding-top: 10px;
@@ -2832,18 +2256,18 @@ body {
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    padding: 10px 12px !important; /* Réduit */
+    padding: 10px 12px !important;
     border-radius: 6px !important;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #000 !important;
-    font-size: 13px !important; /* Réduit */
+    font-size: 12px !important;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     gap: 10px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    margin-bottom: 8px; /* Espacement réduit */
+    margin-bottom: 6px;
 }
 
 .cd-action-btn:hover {
@@ -2854,7 +2278,7 @@ body {
 
 .cd-action-btn i {
     color: #ff7a00;
-    font-size: 14px !important; /* Réduit */
+    font-size: 13px !important;
 }
 
 /* Couleurs spécifiques pour les boutons d'action du bas */
