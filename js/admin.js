@@ -1031,7 +1031,7 @@ async function handleListBlockToggle(clientId) {
 }
 
 // ============================================================
-// 🆕 MODAL DÉTAILS CLIENT (MIS À JOUR AVEC LES NOUVEAUX IDs)
+// MODAL DÉTAILS CLIENT
 // ============================================================
 function openClientDetail(clientId) {
     const client = allClients.find(c => c.id === clientId);
@@ -1071,8 +1071,11 @@ function openClientDetail(clientId) {
     // Code de déblocage
     document.getElementById('new-cd-unlock').textContent = client.activationCode || '----';
     
-    // Code déjà utilisé (Simulé sur NON pour le moment car pas de suivi dans la BDD)
-    document.getElementById('new-cd-used').textContent = 'NON'; 
+    // 🆕 Code déjà utilisé (Lu depuis la base de données)
+    const isCodeUsed = client.activationCodeUsed === true;
+    const usedBadge = document.getElementById('new-cd-used');
+    usedBadge.textContent = isCodeUsed ? 'OUI' : 'NON';
+    usedBadge.className = isCodeUsed ? 'cd-badge cd-badge-green' : 'cd-badge cd-badge-purple';
 
     // Date de création
     if (client.createdAt) {
@@ -1120,7 +1123,7 @@ window.toggleAdminIbanVisibility = function() {
     
     const ibanEl = document.getElementById('cd-iban');
     const eyeIcon = document.getElementById('admin-iban-eye-icon');
-    if(!ibanEl) return; // Sécurité si l'élément n'existe plus
+    if(!ibanEl) return; 
     
     if (isIbanVisible) {
         ibanEl.textContent = currentDetailClient.iban || '--';
@@ -1140,7 +1143,7 @@ window.toggleAdminCardVisibility = function() {
     const cardNumEl = document.getElementById('cd-card-number');
     const cardCvvEl = document.getElementById('cd-card-cvv');
     const eyeIcon = document.getElementById('admin-eye-icon');
-    if(!cardNumEl || !cardCvvEl) return; // Sécurité
+    if(!cardNumEl || !cardCvvEl) return; 
     
     if (isCardDetailsVisible) {
         cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
@@ -1357,7 +1360,6 @@ window.handleAdminCancelTransfer = async function(index) {
 
         showToast('Virement annulé et montant re-crédité.', 'success');
         
-        // Mettre à jour l'affichage du solde dans la modale si elle est ouverte
         const balEl = document.getElementById('new-cd-balance');
         if (balEl) balEl.textContent = newBalance.toFixed(2).replace('.', ',') + ' ' + (currentDetailClient.currency || 'zł');
         
