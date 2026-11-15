@@ -1976,27 +1976,29 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (FLOU ET JUSQU'EN BAS)
+   MODAL DÉTAILS CLIENT (FLOU ET JUSQU'EN BAS - BLINDÉ)
    ============================================================ */
 
-/* 1. L'arrière-plan devient FLOU et plus sombre */
+/* 1. L'arrière-plan devient FLOU et très sombre */
 #client-detail-modal {
-    backdrop-filter: blur(8px) !important; /* Rend l'arrière-plan flou */
-    -webkit-backdrop-filter: blur(8px) !important; /* Compatibilité Safari */
-    background-color: rgba(0, 0, 0, 0.6) !important; /* Assombrit l'arrière-plan */
-    padding: 50px 0px 0px 0px !important; /* 50px d'espace en haut */
+    backdrop-filter: blur(12px) !important; 
+    -webkit-backdrop-filter: blur(12px) !important; 
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Fond très sombre pour cacher le texte */
+    padding: 50px 0px 0px 0px !important; 
     align-items: flex-start !important; 
+    display: flex !important;
     height: 100vh !important;
     height: 100dvh !important; 
 }
 
-/* 2. La fenêtre s'étend jusqu'en bas */
+/* 2. La fenêtre s'étend mathématiquement jusqu'en bas */
 #client-detail-modal .modal-client-card {
     width: 98% !important; 
     max-width: 98% !important;
-    /* Utilise 100% de la hauteur restante (l'overlay fait 100dvh) */
-    height: 100% !important; 
-    max-height: 100% !important;
+    /* Force la hauteur à prendre tout l'écran MOINS les 50px du haut */
+    height: calc(100dvh - 50px) !important; 
+    min-height: calc(100dvh - 50px) !important;
+    max-height: calc(100dvh - 50px) !important;
     border-radius: 16px 16px 0 0 !important; 
     margin: 0 auto !important;
     padding: 0;
@@ -2005,7 +2007,7 @@ body {
     flex-direction: column;
     background: #fff;
     overflow: hidden;
-    box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.3);
 }
 
 .cd-modal-header {
@@ -2047,7 +2049,7 @@ body {
     color: #e02424;
 }
 
-/* 3. Le corps de la fenêtre remplit l'espace */
+/* 3. Le corps prend l'espace restant */
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto !important;
@@ -2213,12 +2215,12 @@ body {
     word-break: break-word;
 }
 
-/* 🆕 CORRECTION POUR CACHER LE COÛT DE CRÉATION */
+/* CORRECTION POUR CACHER LE COÛT DE CRÉATION */
 .cd-info-list .cd-info-row:nth-child(9) {
     display: none !important;
 }
 
-/* 🆕 CORRECTION POUR LE BADGE VIOLET ET LE FOND NOIR */
+/* CORRECTION POUR LE BADGE VIOLET ET LE FOND NOIR */
 .cd-info-row #new-cd-unlock,
 .cd-info-row .cd-badge {
     flex: none !important; 
