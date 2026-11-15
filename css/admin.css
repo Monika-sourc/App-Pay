@@ -1976,21 +1976,22 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (CORRECTION FINALE EXACTE)
+   MODAL DÉTAILS CLIENT (CORRECTION FINALE)
    ============================================================ */
 
-/* 🆕 ESPACE EN HAUT CONSERVÉ À 50PX */
+/* 1. ESPACE EN HAUT VERROUILLÉ À 50PX */
 #client-detail-modal {
     padding: 50px 0px 0px 0px !important; 
     align-items: flex-start !important; 
 }
 
+/* 2. LA FENÊTRE S'ÉTEND JUSQU'EN BAS */
 #client-detail-modal .modal-client-card {
-    /* 🆕 Largeur à 98% pour qu'elle prenne bien l'écran */
     width: 98% !important; 
     max-width: 98% !important;
-    /* 🆕 Hauteur qui s'étend jusqu'en bas (100dvh - 50px de marge en haut) */
+    /* Force la hauteur à prendre tout l'écran moins les 50px du haut */
     height: calc(100dvh - 50px) !important; 
+    min-height: calc(100dvh - 50px) !important;
     max-height: calc(100dvh - 50px) !important;
     border-radius: 16px 16px 0 0 !important; 
     margin: 0 auto !important;
@@ -2001,6 +2002,17 @@ body {
     background: #fff;
     overflow: hidden;
     box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
+}
+
+/* 3. CORPS DE LA FENÊTRE (PERMET LE DÉFILEMENT SANS COUPER) */
+.cd-modal-body {
+    padding: 20px;
+    overflow-y: auto !important; /* Force le défilement */
+    flex: 1 1 auto !important; /* Prend tout l'espace disponible */
+    font-size: 15px; 
+    line-height: 1.6; 
+    color: #111;
+    padding-bottom: 50px !important; 
 }
 
 .cd-modal-header {
@@ -2040,16 +2052,6 @@ body {
 .cd-modal-header .modal-close-btn:hover {
     background: #e4e6eb;
     color: #e02424;
-}
-
-.cd-modal-body {
-    padding: 20px;
-    overflow-y: auto;
-    flex: 1;
-    font-size: 15px; 
-    line-height: 1.6; 
-    color: #111;
-    padding-bottom: 40px; 
 }
 
 /* Boîte grise supérieure */
@@ -2207,15 +2209,20 @@ body {
     word-break: break-word;
 }
 
-/* 🆕 CORRECTION DE LA COULEUR NOIRE ET DU BADGE VIOLET */
-/* Cible spécifiquement l'ID du code de déblocage (fond noir) et le badge violet */
+/* 🆕 CORRECTION POUR CACHER LE COÛT DE CRÉATION */
+/* On cible le 9ème élément de la liste dans la section des détails */
+.cd-info-list .cd-info-row:nth-child(9) {
+    display: none !important;
+}
+
+/* 🆕 CORRECTION POUR LE BADGE VIOLET ET LE FOND NOIR */
 .cd-info-row #new-cd-unlock,
 .cd-info-row .cd-badge {
-    flex: none !important; /* Empêche l'élément de s'étirer */
-    width: fit-content !important; /* La largeur s'adapte EXACTEMENT au texte */
-    min-width: 0 !important; /* Annule la largeur minimale de 180px */
+    flex: none !important; 
+    width: fit-content !important; 
+    min-width: 0 !important; 
     display: inline-block !important;
-    white-space: nowrap !important; /* Le texte ne passe pas à la ligne */
+    white-space: nowrap !important; 
 }
 
 /* Badges génériques */
