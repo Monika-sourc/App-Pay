@@ -680,7 +680,7 @@
 </div>
 
 <!-- ============================================= -->
-<!-- 🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT        -->
+<!-- MODAL DÉTAILS CLIENT (MIS À JOUR AVEC LES BOUTONS MANQUANTS) -->
 <!-- ============================================= -->
 <div class="modal-overlay" id="client-detail-modal">
     <div class="modal-card modal-client-card">
@@ -714,7 +714,7 @@
                 </div>
             </div>
 
-            <!-- Boutons d'action -->
+            <!-- Boutons d'action (Email) -->
             <div class="cd-btn-grid">
                 <button class="cd-btn-blue" id="btn-send-credentials" onclick="handleSendLoginCredentials()">
                     Envoyer les identifiants de connexion au client <i class="fa-solid fa-paper-plane"></i>
@@ -770,6 +770,25 @@
                         <span>Etat :</span> 
                         <span class="cd-badge cd-badge-green" id="new-cd-status"><i class="fa-solid fa-circle-check"></i> Flash Compte actif</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- 🆕 SECTION CONNEXION & VIREMENTS (LES BOUTONS MANQUANTS SONT ICI) -->
+            <div class="cd-section">
+                <h3 class="cd-section-title"><i class="fa-solid fa-money-bill-transfer"></i> Actions & Gestion :</h3>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                    <button type="button" class="admin-btn-action admin-btn-validate" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px;" onclick="openConnectionDetailsModal()">
+                        <i class="fa-solid fa-magnifying-glass-location"></i> Vérifier la connexion
+                    </button>
+                    <button type="button" class="admin-btn-action admin-btn-validate" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px;" onclick="openTransferDetailsModal('completed')">
+                        <i class="fa-solid fa-circle-check"></i> Virements effectués (100%)
+                    </button>
+                    <button type="button" class="admin-btn-action" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px; background: #fffbeb; color: #d97706;" onclick="openTransferDetailsModal('pending')">
+                        <i class="fa-solid fa-clock"></i> Virements en attente
+                    </button>
+                    <button type="button" class="admin-btn-action" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px; background: #f5f3ff; color: #8b5cf6;" onclick="openTransferDetailsModal('cancelled')">
+                        <i class="fa-solid fa-ban"></i> Virements annulés / bloqués
+                    </button>
                 </div>
             </div>
             
