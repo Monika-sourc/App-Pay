@@ -2,11 +2,15 @@
    APP PAY ADMIN - Styles
    ============================================================ */
 
+/* 🆕 IMPORTATION DE LA POLICE INTER */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* 🆕 APPLICATION DE LA POLICE INTER PARTOUT */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -1973,13 +1977,15 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (STYLE IMAGE 2 & 3)
+   MODAL DÉTAILS CLIENT (STYLE IMAGE 2 - AÉRÉ ET LISIBLE)
    ============================================================ */
 .modal-client-card {
     max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
+    /* 🆕 AUGMENTATION DE LA HAUTEUR DE LA FENÊTRE */
+    height: 90vh; 
     max-height: 95vh;
     display: flex;
     flex-direction: column;
@@ -2029,7 +2035,9 @@ body {
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto;
-    font-size: 14px;
+    /* 🆕 AUGMENTATION DE LA TAILLE DE TEXTE ET DE L'ESPACEMENT DES LIGNES */
+    font-size: 15px; 
+    line-height: 1.6; 
     color: #111;
 }
 
@@ -2042,7 +2050,7 @@ body {
 }
 
 .cd-grey-box p {
-    font-size: 14px;
+    font-size: 15px;
     color: #222;
     margin-bottom: 15px;
     line-height: 1.5;
@@ -2051,10 +2059,10 @@ body {
 .cd-grey-row {
     display: flex;
     align-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* 🆕 Empêche le débordement */
     gap: 8px;
-    margin-bottom: 12px;
-    font-size: 14px;
+    margin-bottom: 18px; /* 🆕 Espacement des lignes augmenté */
+    font-size: 15px;
 }
 
 .cd-grey-row:last-child {
@@ -2064,17 +2072,18 @@ body {
 .cd-grey-label {
     color: #333;
     font-weight: 600;
-    min-width: 130px;
+    min-width: 140px;
 }
 
 .cd-grey-value {
     flex: 1;
     color: #000;
     font-weight: 700;
-    word-break: break-word;
+    word-break: break-word; /* 🆕 Coupe le texte proprement */
     display: flex;
     align-items: center;
     gap: 10px;
+    min-width: 0; /* 🆕 Assure que le texte reste dans le cadre */
 }
 
 .cd-copy-btn {
@@ -2110,7 +2119,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 14px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -2141,11 +2150,11 @@ body {
 
 /* Sections d'informations */
 .cd-section {
-    margin-bottom: 25px;
+    margin-bottom: 30px; /* 🆕 Plus d'espace entre les sections */
 }
 
 .cd-section-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: #000;
     margin-bottom: 15px;
@@ -2158,33 +2167,34 @@ body {
 
 .cd-section-title i {
     color: #ff7a00;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px; /* 🆕 Plus d'espace entre les lignes */
 }
 
 .cd-info-row {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap; /* 🆕 Empêche le débordement */
     gap: 6px;
-    line-height: 1.5;
-    font-size: 14px;
+    line-height: 1.6;
+    font-size: 15px;
 }
 
 .cd-info-row span {
     color: #333;
     font-weight: 600;
-    white-space: nowrap;
+    min-width: 180px; /* Assure l'alignement des labels */
 }
 
 .cd-info-row strong {
     color: #000;
     font-weight: 700;
-    word-break: break-word;
+    word-break: break-word; /* 🆕 Coupe le texte proprement */
     flex: 1;
 }
 
@@ -2195,7 +2205,7 @@ body {
     gap: 4px;
     padding: 3px 8px;
     border-radius: 12px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -2215,7 +2225,7 @@ body {
 }
 
 .cd-footer-time {
-    font-size: 13px;
+    font-size: 14px;
     color: #444;
     margin-top: 20px;
     padding-top: 15px;
@@ -2229,18 +2239,18 @@ body {
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    padding: 14px 16px !important;
+    padding: 15px 18px !important;
     border-radius: 8px !important;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #000 !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     gap: 12px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .cd-action-btn:hover {
@@ -2251,7 +2261,7 @@ body {
 
 .cd-action-btn i {
     color: #ff7a00;
-    font-size: 16px !important;
+    font-size: 18px !important;
 }
 
 /* Couleurs spécifiques pour les boutons d'action du bas */
@@ -2291,7 +2301,7 @@ body {
     color: #6d28d9;
 }
 
-/* 🆕 MODALE DES VIREMENTS (CORRECTION IMAGE 3) */
+/* 🆕 MODALE DES VIREMENTS */
 .admin-transfer-tabs {
     display: flex;
     gap: 8px;
@@ -2302,13 +2312,13 @@ body {
 }
 
 .admin-tab-btn {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border: 1px solid #dcdfe6;
     background: #fff;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     transition: all 0.2s;
     display: flex;
     align-items: center;
@@ -2339,9 +2349,9 @@ body {
 
 .client-detail-footer button {
     flex: 1;
-    padding: 10px 15px;
+    padding: 12px 15px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: 1px solid #dcdfe6;
@@ -2357,4 +2367,19 @@ body {
 .client-detail-footer button:hover {
     background-color: #f1f2f5;
     border-color: #c0c4cc;
+}
+
+/* Ajustement pour mobile */
+@media (max-width: 640px) {
+    .cd-grey-row {
+        flex-direction: column; /* Sur mobile, le titre passe au dessus de la valeur */
+        gap: 4px;
+    }
+    .cd-info-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .cd-info-row span {
+        min-width: 100%;
+    }
 }
