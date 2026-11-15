@@ -13,7 +13,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    font-size: 16px;
+    zoom: 0.75; /* 🆕 RÉTABLI : Rétablit la taille normale de toute l'interface */
 }
 
 /* ============================================================
@@ -1852,7 +1852,7 @@ body {
 }
 
 /* ============================================================
-   NOUVELLE LISTE DES CLIENTS
+   NOUVELLE LISTE DES CLIENTS (DESIGN COMPACT & PRO)
    ============================================================ */
 .client-list-item {
     display: flex;
