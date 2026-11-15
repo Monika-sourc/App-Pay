@@ -20,12 +20,11 @@ import {
     signInWithEmailAndPassword,
     signOut,
     updateProfile,
-    onAuthStateChanged
+    onAuthStateChanged,
+    onSnapshot // 🆕 Import pour le temps réel
 } from './firebase-config.js';
 
 import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
-
-// 🆕 IMPORT POUR LES 145 LANGUES
 import { buildLanguageOptionsHTML } from './i18n/languages.js';
 
 import {
@@ -48,6 +47,7 @@ let currentDetailClient = null;
 let isCardDetailsVisible = false;
 let isIbanVisible = false;
 let currentTransferTab = 'completed';
+let unsubClientsListener = null; // 🆕 Référence pour écouter la liste
 
 const COUNTRY_LIST = [
     { name: "Afghanistan", flag: "🇦🇫" }, { name: "Afrique du Sud", flag: "🇿🇦" },
@@ -301,7 +301,6 @@ const LANGUAGE_LIST = [
     { value: "am", label: "አማርኛ" }, { value: "ha", label: "Hausa" }
 ];
 
-// 🆕 FONCTION POUR SÉPARER LE NOM COMPLET
 function splitFullName(fullName) {
     const parts = fullName.trim().split(/\s+/);
     if (parts.length === 1) return { firstName: parts[0], lastName: '' };
@@ -636,58 +635,44 @@ function resetCustomSelect() {
     }
 }
 
-// 🆕 FONCTION : RENDRE LES SELECTS RECHERCHABLES
 function enhanceSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select || select.dataset.enhanced) return;
     select.dataset.enhanced = 'true';
-    
     select.style.display = 'none';
-    
     const wrapper = document.createElement('div');
     wrapper.className = 'searchable-select-container';
-    
     const trigger = document.createElement('div');
     trigger.className = 'searchable-select-trigger';
     trigger.innerHTML = `<span>${select.options[select.selectedIndex]?.text || 'Sélectionner...'}</span> <i class="fa-solid fa-chevron-down"></i>`;
-    
     const dropdown = document.createElement('div');
     dropdown.className = 'searchable-select-dropdown';
-    
     const searchWrapper = document.createElement('div');
     searchWrapper.className = 'searchable-select-search';
     searchWrapper.innerHTML = '<i class="fa-solid fa-search"></i>';
-    
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.placeholder = 'Rechercher...';
-    
     searchWrapper.appendChild(searchInput);
-    
     const optionsList = document.createElement('div');
     optionsList.className = 'searchable-select-options';
-    
     dropdown.appendChild(searchWrapper);
     dropdown.appendChild(optionsList);
     wrapper.appendChild(trigger);
     wrapper.appendChild(dropdown);
-    
     select.parentNode.insertBefore(wrapper, select.nextSibling);
     
     function renderOptions(filter = '') {
         optionsList.innerHTML = '';
         let hasResults = false;
-        
         Array.from(select.children).forEach(child => {
             if (child.tagName === 'OPTGROUP') {
                 const groupDiv = document.createElement('div');
                 groupDiv.className = 'searchable-optgroup';
                 groupDiv.textContent = child.label;
-                
                 const groupOptions = Array.from(child.children).filter(opt => 
                     opt.text.toLowerCase().includes(filter.toLowerCase())
                 );
-                
                 if (groupOptions.length > 0) {
                     hasResults = true;
                     optionsList.appendChild(groupDiv);
@@ -726,18 +711,15 @@ function enhanceSelect(selectId) {
                 }
             }
         });
-        
         if (!hasResults) {
             optionsList.innerHTML = '<div class="searchable-no-results">Aucun résultat trouvé</div>';
         }
     }
-    
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = dropdown.classList.contains('open');
         document.querySelectorAll('.searchable-select-dropdown').forEach(d => d.classList.remove('open'));
         document.querySelectorAll('.searchable-select-container').forEach(w => w.classList.remove('open'));
-        
         if (!isOpen) {
             dropdown.classList.add('open');
             wrapper.classList.add('open');
@@ -746,18 +728,14 @@ function enhanceSelect(selectId) {
             searchInput.focus();
         }
     });
-    
     searchInput.addEventListener('input', (e) => renderOptions(e.target.value));
-    
     document.addEventListener('click', () => {
         dropdown.classList.remove('open');
         wrapper.classList.remove('open');
     });
-    
     dropdown.addEventListener('click', (e) => e.stopPropagation());
 }
 
-// 🆕 METTRE À JOUR LES SELECTS RECHERCHABLES
 function refreshEnhancedSelect(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return;
@@ -807,7 +785,6 @@ function populateBankSelect(selectId, clientCountry, selectedDomain) {
         });
         select.appendChild(group);
     });
-    // 🆕 Mettre à jour la recherche
     refreshEnhancedSelect(selectId);
 }
 
@@ -872,11 +849,10 @@ async function handleCreateClient(event) {
         if (balance > 0) {
             const now = new Date();
             const dateStr = now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            // 🆕 Ajout du txId et de la currency pour identifier le virement initial
             initialTransactions.push({ 
                 txId: 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
                 type: 'credit', title: 'Solde initial', date: dateStr, amount: balance, bankName, bankDomain, bankLogo,
-                currency: currency // <--- AJOUT IMPORTANT
+                currency: currency 
             });
         }
 
@@ -886,7 +862,7 @@ async function handleCreateClient(event) {
             bankName, bankDomain, bankLogo,
             cardNumber: newCard.cardNumber, cardCVV: newCard.cvv, cardExpiry: newCard.expiry, canViewCardDetails: false,
             iban: newIban.iban, swift: newIban.swift, canViewIban: false,
-            transactions: initialTransactions, blocked: false, bigCardColor: '#000000', connectionLogs: [], // <--- NOIR PUR ICI
+            transactions: initialTransactions, blocked: false, bigCardColor: '#000000', connectionLogs: [],
             createdBy: currentAdmin.uid, createdByName: currentAdmin.name, createdByEmail: currentAdmin.email,
             createdAt: new Date().toISOString(), createdAtServer: serverTimestamp()
         };
@@ -905,13 +881,11 @@ async function handleCreateClient(event) {
         document.getElementById('c-language').value = '';
         document.getElementById('c-percent-value').value = '100';
         
-        // 🆕 Mettre à jour tous les selects après reset
         refreshEnhancedSelect('c-country');
         refreshEnhancedSelect('c-currency');
         refreshEnhancedSelect('c-language');
         populateBankSelect('c-bank', 'France', '');
 
-        await loadClients();
         showToast('Client créé avec succès !', 'success');
     } catch (err) {
         console.error('Erreur création client :', err);
@@ -921,9 +895,19 @@ async function handleCreateClient(event) {
         submitBtn.innerHTML = originalHTML;
     }
 }
+
 // ============================================================
-// CHARGEMENT DES CLIENTS
+// 🆕 CHARGEMENT DES CLIENTS AVEC TEMPS RÉEL (onSnapshot)
 // ============================================================
+function isClientOnline(client) {
+    if (!client.connectionLogs || !Array.isArray(client.connectionLogs) || client.connectionLogs.length === 0) return false;
+    const latestLog = client.connectionLogs.reduce((latest, current) => {
+        return new Date(current.lastSeen) > new Date(latest.lastSeen) ? current : latest;
+    });
+    const diff = new Date() - new Date(latestLog.lastSeen);
+    return diff < 2 * 60 * 1000; // 2 minutes
+}
+
 async function loadClients() {
     const list = document.getElementById('clients-list');
     const countBadge = document.getElementById('client-count');
@@ -933,70 +917,126 @@ async function loadClients() {
         return;
     }
 
+    // Nettoyage de l'ancien listener s'il existe
+    if (unsubClientsListener) {
+        unsubClientsListener();
+        unsubClientsListener = null;
+    }
+
     try {
         const q = query(
             collection(db, COLLECTION_NAME),
             where('createdBy', '==', currentAdmin.uid)
         );
-        const snapshot = await getDocs(q);
-        allClients = snapshot.docs.map(d => d.data());
-        allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        // 🆕 ÉCOUTE EN TEMPS RÉEL
+        unsubClientsListener = onSnapshot(q, (snapshot) => {
+            allClients = snapshot.docs.map(d => d.data());
+            allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        countBadge.textContent = allClients.length;
-        populateModifySelect();
+            countBadge.textContent = allClients.length;
+            populateModifySelect();
 
-        if (allClients.length === 0) {
-            list.innerHTML = '<p class="empty-state">Vous n\'avez créé aucun client pour le moment.</p>';
-            return;
-        }
+            if (allClients.length === 0) {
+                list.innerHTML = '<p class="empty-state">Vous n\'avez créé aucun client pour le moment.</p>';
+                return;
+            }
 
-        list.innerHTML = '';
-        allClients.forEach(client => {
-            const row = document.createElement('div');
-            row.className = 'client-row' + (client.blocked ? ' blocked' : '');
-            row.dataset.clientId = client.id;
+            list.innerHTML = '';
+            allClients.forEach(client => {
+                const row = document.createElement('div');
+                row.className = 'client-list-item';
 
-            const initials = getInitials(client.firstName, client.lastName);
-            const fullName = `${(client.lastName || '').toUpperCase()} ${client.firstName || ''}`;
+                const initials = getInitials(client.firstName, client.lastName);
+                const fullName = `${(client.lastName || '').toUpperCase()} ${client.firstName || ''}`;
+                const createdDate = client.createdAt ? new Date(client.createdAt).toLocaleDateString('fr-FR') : 'Date inconnue';
+                const online = isClientOnline(client);
 
-            row.innerHTML = `
-                <div class="client-row-left">
-                    <div class="client-row-avatar">${initials}</div>
-                    <div class="client-row-info">
-                        <div class="client-row-name">${fullName}</div>
-                        <div class="client-row-email">${client.email || '--'}</div>
+                row.innerHTML = `
+                    <div class="client-list-left">
+                        <div class="client-list-name">${fullName} <span class="client-list-email">(${escapeHtml(client.email || 'Pas d\'email')})</span></div>
+                        <div class="client-list-date">Compte créé le ${createdDate}</div>
+                        <div class="client-list-badges">
+                            <span class="badge ${client.blocked ? 'badge-blocked' : 'badge-active'}">
+                                <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i> 
+                                ${client.blocked ? 'Compte bloqué' : 'Compte actif'}
+                            </span>
+                            <span class="badge ${online ? 'badge-online' : 'badge-offline'}">
+                                <i class="fa-solid ${online ? 'fa-signal' : 'fa-plug'}"></i> 
+                                ${online ? 'Connecté' : 'Hors ligne'}
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="client-row-actions">
-                    <div class="client-row-status ${client.blocked ? 'blocked' : 'active'}">
-                        <i class="fa-solid ${client.blocked ? 'fa-lock' : 'fa-circle-check'}"></i>
-                        ${client.blocked ? 'Bloqué' : 'Actif'}
+                    <div class="client-list-actions">
+                        <button class="btn-toggle-access ${client.blocked ? 'btn-unblock' : 'btn-block'}" data-id="${client.id}">
+                            ${client.blocked ? 'Débloquer' : 'Bloquer'}
+                        </button>
+                        <button class="btn-delete-client" data-id="${client.id}">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>
-                    <button class="client-row-delete" title="Supprimer ce client" data-delete-id="${client.id}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-                <i class="fa-solid fa-chevron-right client-row-arrow"></i>
-            `;
+                `;
 
-            row.addEventListener('click', () => openClientDetail(client.id));
-            row.querySelector('.client-row-delete').addEventListener('click', (e) => {
-                e.stopPropagation();
-                deleteClient(client.id);
+                // Clic pour ouvrir la modale
+                row.addEventListener('click', (e) => {
+                    if (e.target.closest('button')) return; // Ignore si on clique sur un bouton
+                    openClientDetail(client.id);
+                });
+
+                // 🆕 Bouton Bloquer/Débloquer direct
+                row.querySelector('.btn-toggle-access').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleListBlockToggle(client.id);
+                });
+
+                // Bouton Supprimer direct
+                row.querySelector('.btn-delete-client').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteClient(client.id);
+                });
+
+                list.appendChild(row);
             });
-
-            list.appendChild(row);
+        }, (err) => {
+            console.error("Erreur écoute clients:", err);
+            list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement.</p>';
         });
 
     } catch (err) {
-        console.error('Erreur chargement clients :', err);
+        console.error('Erreur démarrage clients :', err);
         list.innerHTML = '<p class="empty-state" style="color:#e02424;">Erreur de chargement.</p>';
     }
 }
 
-// ============================================================
-// MODAL DÉTAILS CLIENT
-// ============================================================
+// 🆕 FONCTION POUR BLOQUER/DÉBLOQUER DEPUIS LA LISTE DIRECTE
+async function handleListBlockToggle(clientId) {
+    const client = allClients.find(c => c.id === clientId);
+    if (!client) return;
+    
+    const willBlock = !client.blocked;
+    const confirmMsg = willBlock
+        ? `Bloquer l'accès de ${client.firstName} ${client.lastName} ?`
+        : `Débloquer l'accès de ${client.firstName} ${client.lastName} ?`;
+
+    const isConfirmed = await showConfirmModal({
+        title: willBlock ? 'Bloquer le client' : 'Débloquer le client',
+        message: confirmMsg,
+        confirmText: willBlock ? 'Bloquer' : 'Débloquer',
+        type: willBlock ? 'danger' : 'primary'
+    });
+
+    if (!isConfirmed) return;
+
+    try {
+        await updateDoc(doc(db, COLLECTION_NAME, clientId), { blocked: willBlock });
+        // L'écouteur onSnapshot va automatiquement mettre à jour l'interface
+        showToast(willBlock ? 'Accès bloqué.' : 'Accès débloqué.', 'success');
+    } catch (err) {
+        console.error(err);
+        showToast('Erreur lors du traitement.', 'error');
+    }
+}
+
 function openClientDetail(clientId) {
     const client = allClients.find(c => c.id === clientId);
     if (!client) return;
@@ -1363,9 +1403,6 @@ window.handleAdminValidateTransfer = async function(index) {
     }
 };
 
-// ============================================================
-// ENVOI DES EMAILS
-// ============================================================
 async function handleSendLoginCredentials() {
     if (!currentDetailClient) return;
     const client = currentDetailClient;
@@ -1447,9 +1484,6 @@ window.copyField = function (elementId, isInput = false) {
     }
 };
 
-// ============================================================
-// SÉLECTEUR DE MODIFICATION
-// ============================================================
 function populateModifySelect() {
     const select = document.getElementById('m-select-client');
     const current = select.value;
@@ -1509,9 +1543,6 @@ function handleOptionChange() {
     renderOptionCard(optionValue, client);
 }
 
-// ============================================================
-// GÉNÉRATION DES CARTES D'OPTIONS
-// ============================================================
 function renderOptionCard(option, client) {
     const container = document.getElementById('option-card-container');
 
@@ -2109,12 +2140,11 @@ async function saveOption(option, client) {
                 const finalAmount = type === 'credit' ? amount : -amount;
                 const now = new Date();
                 const dateStr = dateInput || (now.toLocaleDateString('fr-FR') + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }));
-                // 🆕 Ajout du txId et de la currency pour identifier le virement
                 const newTx = {
                     txId: 'tx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
                     type: type, title: bankName, date: dateStr, amount: finalAmount,
                     bankName: bankName, bankDomain: bankDomain, bankLogo: getBankLogoUrl(bankDomain),
-                    currency: client.currency // <--- AJOUT IMPORTANT
+                    currency: client.currency
                 };
                 const transactions = (client.transactions || []).slice();
                 transactions.unshift(newTx);
@@ -2206,7 +2236,7 @@ async function deleteClient(id) {
             resetCustomSelect();
             refreshEnhancedSelect('m-select-client');
         }
-        await loadClients();
+        // L'écouteur onSnapshot s'occupe de rafraîchir la liste
         showToast('Client supprimé.', 'info');
     } catch (err) {
         console.error('Erreur suppression :', err);
@@ -2230,7 +2260,7 @@ async function clearAllClients() {
         for (const client of allClients) {
             await deleteDoc(doc(db, COLLECTION_NAME, client.id));
         }
-        await loadClients();
+        // L'écouteur onSnapshot s'occupe de rafraîchir la liste
         showToast('Tous vos clients ont été supprimés.', 'info');
     } catch (err) {
         console.error('Erreur suppression totale :', err);
