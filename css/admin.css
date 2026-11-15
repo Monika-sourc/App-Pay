@@ -16,7 +16,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.75;
+    zoom: 0.75; /* Garde l'interface compacte comme à l'origine */
 }
 
 /* ============================================================
@@ -1976,22 +1976,19 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (CORRECTION FINALE EXACTE)
+   MODAL DÉTAILS CLIENT (GRANDE FENÊTRE)
    ============================================================ */
-
-/* Ajoute de l'espace en haut et colle la fenêtre en bas */
 #client-detail-modal {
-    padding: 40px 10px 0px 10px !important; /* Plus d'espace en bas (0px) */
+    padding: 20px 10px 0px 10px !important; /* Remonté un peu pour descendre la fenêtre */
     align-items: flex-start !important; 
 }
 
-/* Force la carte à occuper toute la largeur et la hauteur disponible */
 #client-detail-modal .modal-client-card {
     width: 100% !important;
     max-width: 100% !important;
-    height: calc(100dvh - 40px) !important; /* S'étend jusqu'en bas */
-    max-height: calc(100dvh - 40px) !important;
-    border-radius: 12px 12px 0 0 !important; /* Coins arrondis seulement en haut */
+    height: calc(100dvh - 20px) !important; /* S'étend jusqu'en bas */
+    max-height: calc(100dvh - 20px) !important;
+    border-radius: 12px 12px 0 0 !important; 
     margin: 0 !important;
     padding: 0;
     text-align: left;
@@ -1999,7 +1996,7 @@ body {
     flex-direction: column;
     background: #fff;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
 }
 
 .cd-modal-header {
@@ -2044,11 +2041,11 @@ body {
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto;
-    flex: 1; /* Prend tout l'espace restant */
+    flex: 1;
     font-size: 15px; 
     line-height: 1.6; 
     color: #111;
-    padding-bottom: 30px; /* Un peu d'espace en bas pour le défilement */
+    padding-bottom: 40px; 
 }
 
 /* Boîte grise supérieure */
@@ -2066,12 +2063,11 @@ body {
     line-height: 1.5;
 }
 
-/* 🆕 CORRECTION DU DÉCALAGE DE L'ICÔNE */
 .cd-grey-row {
     display: flex;
     align-items: center; 
-    flex-wrap: wrap; /* Permet au texte et à l'icône de passer à la ligne ensemble */
-    gap: 6px; /* Espace entre le texte et l'icône */
+    flex-wrap: wrap; 
+    gap: 6px; 
     margin-bottom: 16px; 
     font-size: 15px;
 }
@@ -2091,8 +2087,9 @@ body {
     color: #000;
     font-weight: 700;
     word-break: break-word;
-    /* J'AI ENLEVÉ flex: 1, display: flex et justify-content: space-between */
-    /* Le texte prend juste la place dont il a besoin */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .cd-copy-btn {
@@ -2103,14 +2100,12 @@ body {
     height: 28px;
     border-radius: 50%;
     cursor: pointer;
-    display: inline-flex; /* Reste collé au texte */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
     transition: background 0.2s;
     flex-shrink: 0;
-    vertical-align: middle;
-    margin-left: 4px; /* Petit espace avec le texte */
 }
 
 .cd-copy-btn:hover {
@@ -2209,13 +2204,23 @@ body {
     flex: 1;
 }
 
-/* Badges */
+/* 🆕 CORRECTION DE LA COULEUR ET DE LA TAILLE DES BADGES */
+/* Force le badge noir et violet à s'adapter exactement au texte */
+.cd-info-row strong#new-cd-unlock,
+.cd-info-row .cd-badge {
+    flex: none !important; 
+    width: auto !important;
+    display: inline-flex !important;
+    white-space: nowrap !important;
+}
+
+/* Badges génériques */
 .cd-badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 8px;
-    border-radius: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 700;
 }
@@ -2312,70 +2317,209 @@ body {
     color: #6d28d9;
 }
 
-/* 🆕 MODALE DES VIREMENTS */
-.admin-transfer-tabs {
+/* ============================================================
+   🆕 CORRECTION DES SOUS-MODALES (CONNEXION & VIREMENTS)
+   ============================================================ */
+   
+#connection-details-modal .modal-client-card,
+#transfer-details-modal .modal-client-card {
+    width: 95% !important;
+    max-width: 550px !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    border-radius: 12px !important;
+    margin: auto !important;
+    background: #ffffff;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
     display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #e8eaee;
-    padding-bottom: 12px;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.admin-tab-btn {
-    padding: 10px 14px;
-    border: 1px solid #dcdfe6;
-    background: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s;
+/* En-tête des sous-modales */
+#connection-details-modal .client-detail-header,
+#transfer-details-modal .client-detail-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    color: #333;
-    flex: 1;
-}
-
-.admin-tab-btn:hover {
-    background: #f8f9fa;
-}
-
-.admin-tab-btn.active {
-    background: #e8f0fe;
-    border-color: #1a73e8;
-    color: #1a73e8;
-}
-
-.client-detail-footer {
-    display: flex;
-    gap: 10px;
-    padding: 15px 20px;
-    border-top: 1px solid #f0f0f0;
-    background-color: #fafbfc;
+    justify-content: flex-start;
+    padding: 20px 25px !important;
+    border-radius: 12px 12px 0 0;
+    color: white;
+    position: relative;
     flex-shrink: 0;
 }
 
-.client-detail-footer button {
-    flex: 1;
-    padding: 12px 15px;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: 600;
+#connection-details-modal .client-detail-header h2,
+#transfer-details-modal .client-detail-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: white;
+}
+
+#connection-details-modal .client-detail-header .client-detail-meta,
+#transfer-details-modal .client-detail-header .client-detail-meta {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+    color: white;
+}
+
+/* Bouton fermer des sous-modales */
+#connection-details-modal .modal-close-btn,
+#transfer-details-modal .modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    border: 1px solid #dcdfe6;
-    background-color: #fff;
-    color: #333;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+#connection-details-modal .modal-close-btn:hover,
+#transfer-details-modal .modal-close-btn:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+/* Corps des sous-modales */
+#connection-details-modal .client-detail-body,
+#transfer-details-modal .client-detail-body {
+    padding: 20px !important;
+    background: #f8fafc;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Cartes à l'intérieur */
+.admin-transfer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px !important;
+    background: transparent !important;
+    padding: 0 !important;
+    max-height: none !important;
+}
+
+.admin-transfer-item {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    border-left: 4px solid #cbd5e1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
+}
+
+.admin-transfer-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+}
+
+.admin-transfer-name {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #111 !important;
+    margin-bottom: 4px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.admin-transfer-name i {
+    color: #1a73e8;
+    font-size: 18px;
+}
+
+.admin-transfer-date {
+    font-size: 13px !important;
+    color: #64748b !important;
+    font-weight: 500;
+}
+
+.admin-transfer-details {
+    font-size: 14px !important;
+    color: #334155 !important;
+    line-height: 1.6 !important;
+    background: #f1f5f9 !important;
+    padding: 12px 15px !important;
+    border-radius: 8px !important;
+}
+
+.admin-transfer-details strong {
+    color: #0f172a !important;
+}
+
+/* Pied de page des sous-modales */
+#connection-details-modal .client-detail-footer,
+#transfer-details-modal .client-detail-footer {
+    padding: 15px 20px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    flex-shrink: 0;
+}
+
+#connection-details-modal .client-detail-footer button,
+#transfer-details-modal .client-detail-footer button {
+    width: 100% !important;
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: all 0.2s;
+}
+
+#connection-details-modal .client-detail-footer button:hover,
+#transfer-details-modal .client-detail-footer button:hover {
+    background: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+/* Onglets de la modale des virements */
+.admin-transfer-tabs {
+    display: flex !important;
+    gap: 8px !important;
+    margin-bottom: 20px !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.admin-tab-btn {
+    padding: 10px 12px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    background: #f1f5f9 !important;
+    border: 1px solid transparent !important;
+    color: #64748b !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+    flex: 1;
 }
 
-.client-detail-footer button:hover {
-    background-color: #f1f2f5;
-    border-color: #c0c4cc;
+.admin-tab-btn.active {
+    background: #e8f0fe !important;
+    border-color: #bfdbfe !important;
+    color: #1a73e8 !important;
 }
