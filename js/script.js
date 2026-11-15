@@ -300,15 +300,10 @@ async function getLocationInfo() {
     }
 }
 
-async function trackConnection() {
+// 🆕 Ajout de isFreshLogin pour n'envoyer l'email QUE lors d'une vraie connexion
+async function trackConnection(isFreshLogin = false) {
     if (!appState.client || !appState.clientId) return;
     
-    const alertSent = sessionStorage.getItem(ADMIN_ALERT_SENT_KEY);
-    if (alertSent === 'true') {
-        console.log("ℹ️ Alerte admin déjà envoyée pour cette session. Ignoré.");
-        return;
-    }
-
     const deviceId = getDeviceId(), deviceInfo = getDeviceInfo(), location = await getLocationInfo(), now = new Date().toISOString();
     const logs = appState.client.connectionLogs || [];
     const idx = logs.findIndex(l => l.deviceId === deviceId);
@@ -320,6 +315,18 @@ async function trackConnection() {
         await updateDoc(doc(db, 'clients', appState.clientId), { connectionLogs: logs, lastKnownLocation: location });
     } catch (err) {
         console.warn("Erreur lors de la mise à jour des logs Firestore:", err);
+    }
+
+    // 🆕 SI C'EST UNE ACTUALISATION (PAS UNE NOUVELLE CONNEXION), ON S'ARRÊTE LÀ POUR L'EMAIL
+    if (!isFreshLogin) {
+        console.log("ℹ️ Auto-login (actualisation) : pas d'email admin envoyé.");
+        return;
+    }
+
+    const alertSent = sessionStorage.getItem(ADMIN_ALERT_SENT_KEY);
+    if (alertSent === 'true') {
+        console.log("ℹ️ Alerte admin déjà envoyée pour cette session. Ignoré.");
+        return;
     }
 
     try {
@@ -386,7 +393,25 @@ function stopHeartbeat() {
 // ============================================================
 // ÉCRAN DE BLOCAGE
 // ============================================================
-function showBlockedScreen(client) {
+async function showBlockedScreen(client) {
+    // 🆕 Arrêt du heartbeat et mise à jour immédiate du statut hors ligne
+    stopHeartbeat();
+    if (appState.clientId) {
+        try {
+            const deviceId = getDeviceId();
+            const docRef = doc(db, 'clients', appState.clientId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const logs = docSnap.data().connectionLogs || [];
+                const idx = logs.findIndex(l => l.deviceId === deviceId);
+                if (idx !== -1) {
+                    logs[idx].lastSeen = new Date(0).toISOString(); // Date passée pour forcer hors ligne
+                    await updateDoc(docRef, { connectionLogs: logs });
+                }
+            }
+        } catch(e) {}
+    }
+
     const card = document.querySelector('#invalid-screen .invalid-card');
     if (card) {
         const iconBox = card.querySelector('.invalid-icon');
@@ -557,7 +582,7 @@ async function loadClientFromFirestore() {
         const shouldAutoLogin = session && session.loggedIn && session.clientId === clientId;
         
         if (shouldAutoLogin) {
-            loginSuccess();
+            loginSuccess(false); // 🆕 False = Pas d'email admin lors de l'actualisation
         } else {
             applyLanguage(); 
             showScreen('login-screen');
@@ -586,10 +611,10 @@ function handleLogin(event) {
     
     sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
     
-    loginSuccess();
+    loginSuccess(true); // 🆕 True = Envoi de l'email admin car c'est une vraie connexion manuelle
 }
 
-function loginSuccess() {
+function loginSuccess(isFreshLogin = false) {
     const client = appState.client;
     showScreen('app-screen');
     const initials = ((client.firstName || 'X')[0] + (client.lastName || 'X')[0]).toUpperCase();
@@ -601,8 +626,8 @@ function loginSuccess() {
     
     setTimeout(() => { navigateTo('dashboard', {}, true); }, 200);
     
-    // 🆕 Activer le statut "En ligne" pour l'admin
-    trackConnection(); 
+    // 🆕 Transmet isFreshLogin
+    trackConnection(isFreshLogin); 
     startHeartbeat();  
 }
 
@@ -611,8 +636,20 @@ async function handleLogout() {
     if (!isConfirmed) return;
     if (appState.unsubSnapshot) { appState.unsubSnapshot(); appState.unsubSnapshot = null; }
     
-    // 🆕 Arrêter le heartbeat
+    // 🆕 Arrêter le heartbeat et marquer IMMÉDIATEMENT comme hors ligne
     stopHeartbeat();
+    if (appState.clientId && appState.client) {
+        try {
+            const deviceId = getDeviceId();
+            const docRef = doc(db, 'clients', appState.clientId);
+            const logs = appState.client.connectionLogs || [];
+            const idx = logs.findIndex(l => l.deviceId === deviceId);
+            if (idx !== -1) {
+                logs[idx].lastSeen = new Date(0).toISOString(); // Date passée (1970) pour forcer hors ligne
+                await updateDoc(docRef, { connectionLogs: logs });
+            }
+        } catch(e) { console.warn("Erreur marquage hors ligne:", e); }
+    }
     
     clearSession();
     sessionStorage.removeItem(ADMIN_ALERT_SENT_KEY);
