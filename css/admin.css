@@ -16,7 +16,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.75; /* Garde l'interface compacte comme à l'origine */
+    zoom: 0.75;
 }
 
 /* ============================================================
@@ -1978,16 +1978,18 @@ body {
 /* ============================================================
    MODAL DÉTAILS CLIENT (GRANDE FENÊTRE)
    ============================================================ */
+
+/* 🆕 LE PIED DE LA FENÊTRE VERS LE BAS */
 #client-detail-modal {
-    padding: 20px 10px 0px 10px !important; /* Remonté un peu pour descendre la fenêtre */
+    padding: 10px 10px 0px 10px !important; /* Réduit l'espace en haut (10px au lieu de 20px) */
     align-items: flex-start !important; 
 }
 
 #client-detail-modal .modal-client-card {
     width: 100% !important;
     max-width: 100% !important;
-    height: calc(100dvh - 20px) !important; /* S'étend jusqu'en bas */
-    max-height: calc(100dvh - 20px) !important;
+    height: calc(100dvh - 10px) !important; /* Prend TOUTE la hauteur restante (s'étend jusqu'en bas) */
+    max-height: calc(100dvh - 10px) !important;
     border-radius: 12px 12px 0 0 !important; 
     margin: 0 !important;
     padding: 0;
@@ -2204,27 +2206,27 @@ body {
     flex: 1;
 }
 
-/* 🆕 CORRECTION DE LA COULEUR ET DE LA TAILLE DES BADGES */
-/* Force le badge noir et violet à s'adapter exactement au texte */
-.cd-info-row strong#new-cd-unlock,
-.cd-info-row .cd-badge {
-    flex: none !important; 
-    width: auto !important;
+/* 🆕 CORRECTION DES BADGES (CODE DÉJÀ UTILISÉ / ALERTE MAIL PRO) */
+/* Force le badge à s'adapter EXACTEMENT à la taille du texte, sans s'étirer */
+.cd-info-row span.cd-badge {
+    min-width: 0 !important; 
+    width: fit-content !important;
+    flex: none !important;
     display: inline-flex !important;
     white-space: nowrap !important;
-}
-
-/* Badges génériques */
-.cd-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border-radius: 6px;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
     font-size: 13px;
     font-weight: 700;
 }
 
+/* 🆕 SUPPRESSION COMPLÈTE DU TEXTE "COÛT DE CRÉATION" */
+/* Cible le 9ème élément de la liste (qui correspond au Coût de création) */
+.cd-info-row:nth-child(9) {
+    display: none !important;
+}
+
+/* Badges génériques */
 .cd-badge-green {
     background-color: #def7ec;
     color: #03543f;
