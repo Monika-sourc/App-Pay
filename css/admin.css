@@ -13,7 +13,7 @@ body {
     background-color: #f0f2f5;
     color: #333;
     min-height: 100vh;
-    zoom: 0.75; /* 🆕 RÉTABLI : Rétablit la taille normale de toute l'interface */
+    zoom: 0.75; /* Garde l'interface compacte comme à l'origine */
 }
 
 /* ============================================================
@@ -1665,28 +1665,8 @@ body {
         padding: 15px 20px;
         flex-direction: column;
     }
-    .cd-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-    .cd-value, .cd-value-copy {
-        text-align: left;
-        width: 100%;
-        justify-content: flex-start;
-    }
-    .cd-value-copy span {
-        text-align: left;
-    }
-    .option-card {
-        padding: 18px;
-    }
-    .option-card-actions {
-        flex-direction: column;
-    }
-    .option-card-actions button {
-        width: 100%;
-        justify-content: center;
+    .cd-btn-grid {
+        grid-template-columns: 1fr;
     }
     .admin-header {
         flex-direction: column;
@@ -1993,19 +1973,20 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (COMPACT, PROPRE ET ALIGNÉ)
+   MODAL DÉTAILS CLIENT (STYLE IMAGE 2 & 3)
    ============================================================ */
 .modal-client-card {
-    max-width: 550px;
+    max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
-    max-height: 90vh;
+    max-height: 95vh;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
     overflow: hidden;
     background: #fff;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
 .cd-modal-header {
@@ -2018,7 +1999,7 @@ body {
 }
 
 .cd-modal-header h2 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: #000;
     margin: 0;
@@ -2028,12 +2009,12 @@ body {
     position: relative;
     top: auto;
     right: auto;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     background: #f0f2f5;
-    border-radius: 6px;
+    border-radius: 8px;
     color: #333;
-    font-size: 14px;
+    font-size: 16px;
     border: 1px solid #dcdfe6;
     display: flex;
     align-items: center;
@@ -2046,32 +2027,34 @@ body {
 }
 
 .cd-modal-body {
-    padding: 15px;
+    padding: 20px;
     overflow-y: auto;
-    font-size: 13px;
+    font-size: 14px;
     color: #111;
 }
 
 /* Boîte grise supérieure */
 .cd-grey-box {
     background-color: #f1f2f5;
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 15px;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
 }
 
 .cd-grey-box p {
-    font-size: 12px;
+    font-size: 14px;
     color: #222;
-    margin-bottom: 12px;
-    line-height: 1.4;
+    margin-bottom: 15px;
+    line-height: 1.5;
 }
 
 .cd-grey-row {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
 }
 
 .cd-grey-row:last-child {
@@ -2081,37 +2064,31 @@ body {
 .cd-grey-label {
     color: #333;
     font-weight: 600;
-    font-size: 11px;
+    min-width: 130px;
 }
 
 .cd-grey-value {
-    width: 100%;
-    background-color: #ffffff;
-    padding: 8px 10px;
-    border-radius: 4px;
-    border: 1px solid #dcdfe6;
+    flex: 1;
     color: #000;
-    font-size: 12px;
     font-weight: 700;
+    word-break: break-word;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 10px;
-    word-break: break-word;
 }
 
 .cd-copy-btn {
     background: #6b7280;
     border: none;
     color: white;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 12px;
     transition: background 0.2s;
     flex-shrink: 0;
 }
@@ -2123,17 +2100,17 @@ body {
 /* Boutons d'action (Bleu et Jaune) */
 .cd-btn-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin-bottom: 15px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 .cd-btn-blue,
 .cd-btn-yellow {
     border: none;
-    border-radius: 6px;
-    padding: 10px;
-    font-size: 12px;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -2142,14 +2119,13 @@ body {
     gap: 8px;
     text-align: center;
     transition: all 0.2s;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 .cd-btn-blue {
     background-color: #007bff;
     color: white;
 }
-
 .cd-btn-blue:hover {
     background-color: #0069d9;
 }
@@ -2159,60 +2135,57 @@ body {
     color: #856404;
     border: 1px solid #ffe8a1;
 }
-
 .cd-btn-yellow:hover {
     background-color: #ffe8a1;
 }
 
 /* Sections d'informations */
 .cd-section {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .cd-section-title {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     color: #000;
-    margin-bottom: 8px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding-bottom: 5px;
+    gap: 8px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #e8eaee;
 }
 
 .cd-section-title i {
     color: #ff7a00;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 12px;
 }
 
 .cd-info-row {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    line-height: 1.4;
-    font-size: 12px;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.5;
+    font-size: 14px;
 }
 
 .cd-info-row span {
-    color: #444;
-    font-weight: 500;
+    color: #333;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .cd-info-row strong {
     color: #000;
     font-weight: 700;
-    background: #f8f9fa;
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid #f0f0f0;
     word-break: break-word;
+    flex: 1;
 }
 
 /* Badges */
@@ -2220,9 +2193,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -2242,10 +2215,10 @@ body {
 }
 
 .cd-footer-time {
-    font-size: 11px;
-    color: #333;
-    margin-top: 15px;
-    padding-top: 10px;
+    font-size: 13px;
+    color: #444;
+    margin-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid #e8eaee;
     font-weight: 500;
 }
@@ -2256,18 +2229,18 @@ body {
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    padding: 10px 12px !important;
-    border-radius: 6px !important;
+    padding: 14px 16px !important;
+    border-radius: 8px !important;
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #000 !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    gap: 10px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    margin-bottom: 6px;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    margin-bottom: 8px;
 }
 
 .cd-action-btn:hover {
@@ -2278,7 +2251,7 @@ body {
 
 .cd-action-btn i {
     color: #ff7a00;
-    font-size: 13px !important;
+    font-size: 16px !important;
 }
 
 /* Couleurs spécifiques pour les boutons d'action du bas */
@@ -2287,7 +2260,6 @@ body {
     color: #1d4ed8 !important;
     border-color: #bfdbfe;
 }
-
 .cd-action-btn.btn-conn i {
     color: #1d4ed8;
 }
@@ -2297,7 +2269,6 @@ body {
     color: #15803d !important;
     border-color: #bbf7d0;
 }
-
 .cd-action-btn.btn-comp i {
     color: #15803d;
 }
@@ -2307,7 +2278,6 @@ body {
     color: #b45309 !important;
     border-color: #fde68a;
 }
-
 .cd-action-btn.btn-pend i {
     color: #b45309;
 }
@@ -2317,64 +2287,74 @@ body {
     color: #6d28d9 !important;
     border-color: #ddd6fe;
 }
-
 .cd-action-btn.btn-canc i {
     color: #6d28d9;
 }
 
-/* Ajustement pour mobile */
-@media (max-width: 640px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    .color-picker {
-        grid-template-columns: repeat(5, 1fr);
-    }
-    .percentage-row {
-        flex-wrap: wrap;
-    }
-    .percentage-row input {
-        max-width: 100%;
-    }
-    .access-buttons {
-        grid-template-columns: 1fr;
-    }
-    .client-detail-header {
-        padding: 20px;
-        padding-right: 55px;
-    }
-    .client-detail-avatar {
-        width: 50px;
-        height: 50px;
-        font-size: 18px;
-    }
-    .client-detail-name {
-        font-size: 18px;
-    }
-    .client-detail-body {
-        padding: 15px;
-    }
-    .client-detail-footer {
-        padding: 15px 20px;
-        flex-direction: column;
-    }
-    .cd-btn-grid {
-        grid-template-columns: 1fr;
-    }
-    .admin-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .admin-header-right {
-        justify-content: space-between;
-    }
-    .admin-user-name, .admin-user-email {
-        max-width: 100px;
-    }
-    .email-actions-grid {
-        grid-template-columns: 1fr;
-    }
-    .admin-transfer-tabs {
-        flex-direction: column;
-    }
+/* 🆕 MODALE DES VIREMENTS (CORRECTION IMAGE 3) */
+.admin-transfer-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e8eaee;
+    padding-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-tab-btn {
+    padding: 8px 12px;
+    border: 1px solid #dcdfe6;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #333;
+    flex: 1;
+}
+
+.admin-tab-btn:hover {
+    background: #f8f9fa;
+}
+
+.admin-tab-btn.active {
+    background: #e8f0fe;
+    border-color: #1a73e8;
+    color: #1a73e8;
+}
+
+.client-detail-footer {
+    display: flex;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fafbfc;
+    flex-shrink: 0;
+}
+
+.client-detail-footer button {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #dcdfe6;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.client-detail-footer button:hover {
+    background-color: #f1f2f5;
+    border-color: #c0c4cc;
 }
