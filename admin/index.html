@@ -776,17 +776,17 @@
             <!-- 🆕 SECTION CONNEXION & VIREMENTS (LES BOUTONS MANQUANTS SONT ICI) -->
             <div class="cd-section">
                 <h3 class="cd-section-title"><i class="fa-solid fa-money-bill-transfer"></i> Actions & Gestion :</h3>
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-                    <button type="button" class="admin-btn-action admin-btn-validate" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px;" onclick="openConnectionDetailsModal()">
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                    <button type="button" class="cd-action-btn btn-conn" onclick="openConnectionDetailsModal()">
                         <i class="fa-solid fa-magnifying-glass-location"></i> Vérifier la connexion
                     </button>
-                    <button type="button" class="admin-btn-action admin-btn-validate" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px;" onclick="openTransferDetailsModal('completed')">
+                    <button type="button" class="cd-action-btn btn-comp" onclick="openTransferDetailsModal('completed')">
                         <i class="fa-solid fa-circle-check"></i> Virements effectués (100%)
                     </button>
-                    <button type="button" class="admin-btn-action" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px; background: #fffbeb; color: #d97706;" onclick="openTransferDetailsModal('pending')">
+                    <button type="button" class="cd-action-btn btn-pend" onclick="openTransferDetailsModal('pending')">
                         <i class="fa-solid fa-clock"></i> Virements en attente
                     </button>
-                    <button type="button" class="admin-btn-action" style="justify-content: flex-start; padding: 10px 15px; font-size: 13px; background: #f5f3ff; color: #8b5cf6;" onclick="openTransferDetailsModal('cancelled')">
+                    <button type="button" class="cd-action-btn btn-canc" onclick="openTransferDetailsModal('cancelled')">
                         <i class="fa-solid fa-ban"></i> Virements annulés / bloqués
                     </button>
                 </div>
