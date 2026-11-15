@@ -1979,19 +1979,19 @@ body {
    MODAL DÉTAILS CLIENT (CORRECTION FINALE EXACTE)
    ============================================================ */
 
-/* Ajoute de l'espace en haut et sur les côtés de l'écran */
+/* Ajoute de l'espace en haut et colle la fenêtre en bas */
 #client-detail-modal {
-    padding: 40px 10px 20px 10px !important; /* 40px en haut pour descendre la fenêtre */
-    align-items: flex-start !important; /* Aligne la fenêtre en haut */
+    padding: 40px 10px 0px 10px !important; /* Plus d'espace en bas (0px) */
+    align-items: flex-start !important; 
 }
 
-/* Force la carte à occuper toute la largeur disponible */
+/* Force la carte à occuper toute la largeur et la hauteur disponible */
 #client-detail-modal .modal-client-card {
     width: 100% !important;
     max-width: 100% !important;
-    height: calc(100vh - 60px) !important; /* Prend toute la hauteur restante */
-    max-height: calc(100dvh - 60px) !important; /* Gère la barre d'adresse mobile */
-    border-radius: 12px !important; /* Remet les bords arrondis */
+    height: calc(100dvh - 40px) !important; /* S'étend jusqu'en bas */
+    max-height: calc(100dvh - 40px) !important;
+    border-radius: 12px 12px 0 0 !important; /* Coins arrondis seulement en haut */
     margin: 0 !important;
     padding: 0;
     text-align: left;
@@ -2048,6 +2048,7 @@ body {
     font-size: 15px; 
     line-height: 1.6; 
     color: #111;
+    padding-bottom: 30px; /* Un peu d'espace en bas pour le défilement */
 }
 
 /* Boîte grise supérieure */
@@ -2065,11 +2066,12 @@ body {
     line-height: 1.5;
 }
 
+/* 🆕 CORRECTION DU DÉCALAGE DE L'ICÔNE */
 .cd-grey-row {
     display: flex;
     align-items: center; 
-    flex-wrap: wrap; 
-    gap: 8px;
+    flex-wrap: wrap; /* Permet au texte et à l'icône de passer à la ligne ensemble */
+    gap: 6px; /* Espace entre le texte et l'icône */
     margin-bottom: 16px; 
     font-size: 15px;
 }
@@ -2086,15 +2088,11 @@ body {
 }
 
 .cd-grey-value {
-    flex: 1;
     color: #000;
     font-weight: 700;
     word-break: break-word;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    gap: 10px;
-    min-width: 0;
+    /* J'AI ENLEVÉ flex: 1, display: flex et justify-content: space-between */
+    /* Le texte prend juste la place dont il a besoin */
 }
 
 .cd-copy-btn {
@@ -2105,12 +2103,14 @@ body {
     height: 28px;
     border-radius: 50%;
     cursor: pointer;
-    display: flex;
+    display: inline-flex; /* Reste collé au texte */
     align-items: center;
     justify-content: center;
     font-size: 12px;
     transition: background 0.2s;
     flex-shrink: 0;
+    vertical-align: middle;
+    margin-left: 4px; /* Petit espace avec le texte */
 }
 
 .cd-copy-btn:hover {
