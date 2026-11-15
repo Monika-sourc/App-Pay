@@ -1976,16 +1976,16 @@ body {
 }
 
 /* ============================================================
-   MODAL DÉTAILS CLIENT (CORRECTION FINALE)
+   MODAL DÉTAILS CLIENT (CORRECTION HAUTEUR)
    ============================================================ */
 .modal-client-card {
     max-width: 650px;
     padding: 0;
     text-align: left;
     position: relative;
-    /* 🆕 Hauteur globale de la fenêtre augmentée */
-    height: 85vh; 
-    max-height: 90vh;
+    /* 🆕 Hauteur augmentée à 92% de l'écran (presque plein écran) */
+    height: 92vh; 
+    max-height: 95vh;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2034,7 +2034,8 @@ body {
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto;
-    /* 🆕 Taille du texte et interligne augmentés */
+    /* 🆕 flex: 1 permet de prendre tout l'espace restant */
+    flex: 1; 
     font-size: 15px; 
     line-height: 1.6; 
     color: #111;
@@ -2055,13 +2056,12 @@ body {
     line-height: 1.5;
 }
 
-/* 🆕 CORRECTION MAJEURE : Remis sur une seule ligne */
 .cd-grey-row {
     display: flex;
-    align-items: center; /* Aligne verticalement au centre */
-    flex-wrap: wrap; /* Permet de passer à la ligne si c'est trop long, sans casser */
+    align-items: center; 
+    flex-wrap: wrap; 
     gap: 8px;
-    margin-bottom: 16px; /* Espacement des lignes augmenté */
+    margin-bottom: 16px; 
     font-size: 15px;
 }
 
@@ -2069,7 +2069,6 @@ body {
     margin-bottom: 0;
 }
 
-/* 🆕 Le libellé reste sur la même ligne */
 .cd-grey-label {
     color: #333;
     font-weight: 600;
@@ -2077,7 +2076,6 @@ body {
     flex-shrink: 0;
 }
 
-/* 🆕 La valeur prend le reste de la place */
 .cd-grey-value {
     flex: 1;
     color: #000;
@@ -2085,7 +2083,7 @@ body {
     word-break: break-word;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Pousse le bouton copier tout à droite */
+    justify-content: space-between; 
     gap: 10px;
     min-width: 0;
 }
@@ -2177,7 +2175,7 @@ body {
 .cd-info-list {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Plus d'espace entre les lignes */
+    gap: 16px; 
 }
 
 .cd-info-row {
@@ -2192,7 +2190,7 @@ body {
 .cd-info-row span {
     color: #333;
     font-weight: 600;
-    min-width: 180px; /* Assure l'alignement des labels */
+    min-width: 180px; 
 }
 
 .cd-info-row strong {
@@ -2373,14 +2371,14 @@ body {
     border-color: #c0c4cc;
 }
 
-/* 🆕 CORRECTION FINALE POUR LE MOBILE : NE FORCE PLUS L'AFFICHAGE EN COLONNE */
+/* Ajustement pour mobile */
 @media (max-width: 640px) {
     .cd-grey-row {
-        flex-direction: row !important; /* Force l'alignement sur une ligne sur mobile aussi */
+        flex-direction: row !important; 
         align-items: flex-start !important;
     }
     .cd-grey-value {
         flex-direction: row !important;
-        flex-wrap: wrap; /* Permet au texte de passer à la ligne proprement */
+        flex-wrap: wrap; 
     }
 }
