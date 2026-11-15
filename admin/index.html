@@ -115,7 +115,6 @@
             <form id="create-client-form">
                 <h3 class="section-title"><i class="fa-solid fa-user"></i> Informations sur le client :</h3>
 
-                <!-- 🆕 MODIFICATION : UN SEUL CHAMP NOM COMPLET -->
                 <div class="form-group">
                     <label>Nom complet (Nom et Prénom) <span class="required">. requis</span></label>
                     <input type="text" id="c-fullname" required placeholder="Ex: Jean Dupont">
@@ -679,231 +678,106 @@
 
     </div>
 </div>
+
+<!-- ============================================= -->
+<!-- 🆕 NOUVEAU DESIGN MODAL DÉTAILS CLIENT        -->
+<!-- ============================================= -->
 <div class="modal-overlay" id="client-detail-modal">
     <div class="modal-card modal-client-card">
-        <button class="modal-close-btn" onclick="closeClientDetail()">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <div class="client-detail-header">
-            <div class="client-detail-avatar" id="cd-avatar">--</div>
-            <div>
-                <h2 class="client-detail-name" id="cd-name">--</h2>
-                <div class="client-detail-meta" id="cd-meta">--</div>
-            </div>
-            <span class="client-detail-status" id="cd-status">Actif</span>
+        <!-- Header -->
+        <div class="cd-modal-header">
+            <h2>Détails de l'accès client</h2>
+            <button class="modal-close-btn" onclick="closeClientDetail()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <div class="client-detail-body">
-
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-user"></i> Identité
+        
+        <div class="cd-modal-body">
+            <!-- Boîte grise avec lien, email, pin -->
+            <div class="cd-grey-box">
+                <p>Utilisez le <strong>lien de connexion</strong> et les <strong>identifiants</strong> définis ci-dessous pour la connexion à l'accès flash compte client.</p>
+                
+                <div class="cd-grey-row">
+                    <span class="cd-grey-label">Lien de connexion :</span>
+                    <span class="cd-grey-value"><strong id="new-cd-link">Chargement...</strong></span>
+                    <button class="cd-copy-btn" onclick="copyField('new-cd-link')"><i class="fa-regular fa-copy"></i></button>
                 </div>
-                <div class="cd-row">
-                    <div class="cd-label">Nom complet</div>
-                    <div class="cd-value" id="cd-fullname">--</div>
+                
+                <div class="cd-grey-row">
+                    <span class="cd-grey-label">Adresse e-mail :</span>
+                    <span class="cd-grey-value"><strong id="new-cd-email-grey">Chargement...</strong></span>
+                    <button class="cd-copy-btn" onclick="copyField('new-cd-email-grey')"><i class="fa-regular fa-copy"></i></button>
                 </div>
-                <div class="cd-row">
-                    <div class="cd-label">Pays</div>
-                    <div class="cd-value" id="cd-country">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Adresse</div>
-                    <div class="cd-value" id="cd-address">--</div>
-                </div>
-            </div>
-
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-envelope"></i> Contact
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Adresse e-mail</div>
-                    <div class="cd-value-copy">
-                        <span id="cd-email">--</span>
-                        <button class="copy-btn" onclick="copyField('cd-email')" title="Copier">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Téléphone</div>
-                    <div class="cd-value" id="cd-phone">--</div>
+                
+                <div class="cd-grey-row">
+                    <span class="cd-grey-label">Code Pin :</span>
+                    <span class="cd-grey-value"><strong id="new-cd-pin">Chargement...</strong></span>
+                    <button class="cd-copy-btn" onclick="copyField('new-cd-pin')"><i class="fa-regular fa-copy"></i></button>
                 </div>
             </div>
 
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-wallet"></i> Compte
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Solde</div>
-                    <div class="cd-value" id="cd-balance">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Devise</div>
-                    <div class="cd-value" id="cd-currency">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Langue</div>
-                    <div class="cd-value" id="cd-language">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Banque</div>
-                    <div class="cd-value" id="cd-bank">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Pourcentage limite</div>
-                    <div class="cd-value" id="cd-percent">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Virement en attente</div>
-                    <div class="cd-value" id="cd-pending-transfer">--</div>
-                </div>
-            </div>
-
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-wifi"></i> Connexion & Appareils
-                </div>
-                <button type="button" class="admin-btn-action admin-btn-validate" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px; margin-top: 5px;" onclick="openConnectionDetailsModal()">
-                    <i class="fa-solid fa-magnifying-glass-location"></i> Vérifier la connexion
+            <!-- Boutons d'action -->
+            <div class="cd-btn-grid">
+                <button class="cd-btn-blue" id="btn-send-credentials" onclick="handleSendLoginCredentials()">
+                    Envoyer les identifiants de connexion au client <i class="fa-solid fa-paper-plane"></i>
+                </button>
+                <button class="cd-btn-yellow" id="btn-send-activation" onclick="handleSendActivationCode()">
+                    Envoyer le code de déblocage du virement au client <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
 
+            <!-- Section 1 : Informations -->
             <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-money-bill-transfer"></i> Gestion des virements
-                </div>
-                
-                <div class="admin-transfer-buttons-grid">
-                    <button class="admin-btn-action admin-btn-validate" style="justify-content: flex-start; padding: 12px; font-size: 14px;" onclick="openTransferDetailsModal('completed')">
-                        <i class="fa-solid fa-circle-check"></i> Virements effectués (100%)
-                    </button>
-                    <button class="admin-btn-action" style="justify-content: flex-start; padding: 12px; font-size: 14px; background: #fffbeb; color: #d97706;" onclick="openTransferDetailsModal('pending')">
-                        <i class="fa-solid fa-clock"></i> Virements en attente
-                    </button>
-                    <button class="admin-btn-action" style="justify-content: flex-start; padding: 12px; font-size: 14px; background: #f5f3ff; color: #8b5cf6;" onclick="openTransferDetailsModal('cancelled')">
-                        <i class="fa-solid fa-ban"></i> Virements annulés / bloqués
-                    </button>
+                <h3 class="cd-section-title"><i class="fa-solid fa-user-tie"></i> Informations sur le client :</h3>
+                <div class="cd-info-list">
+                    <div class="cd-info-row"><span>Prénom Nom :</span> <strong id="new-cd-fullname">--</strong></div>
+                    <div class="cd-info-row"><span>Adresse e-mail :</span> <strong id="new-cd-email">--</strong></div>
+                    <div class="cd-info-row"><span>Numéro de téléphone :</span> <strong id="new-cd-phone">--</strong></div>
+                    <div class="cd-info-row"><span>Pays :</span> <strong id="new-cd-country">--</strong></div>
+                    <div class="cd-info-row"><span>Adresse de résidence :</span> <strong id="new-cd-address">--</strong></div>
+                    <div class="cd-info-row"><span>Langue du client :</span> <strong id="new-cd-language">--</strong></div>
                 </div>
             </div>
 
+            <!-- Section 2 : Solde et Virement -->
             <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-building-columns"></i> IBAN & SWIFT
-                    <button class="copy-btn" onclick="toggleAdminIbanVisibility()" title="Afficher / Masquer" style="margin-left: auto; background: transparent; border: none; cursor: pointer; color: #ff7a00;">
-                        <i class="fa-regular fa-eye" id="admin-iban-eye-icon" style="font-size: 16px;"></i>
-                    </button>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Numéro IBAN</div>
-                    <div class="cd-value" id="cd-iban">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Code SWIFT / BIC</div>
-                    <div class="cd-value" id="cd-swift">--</div>
-                </div>
-            </div>
-
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-credit-card"></i> Carte Virtuelle
-                    <button class="copy-btn" onclick="toggleAdminCardVisibility()" title="Afficher / Masquer" style="margin-left: auto; background: transparent; border: none; cursor: pointer; color: #ff7a00;">
-                        <i class="fa-regular fa-eye" id="admin-eye-icon" style="font-size: 16px;"></i>
-                    </button>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Numéro de carte</div>
-                    <div class="cd-value" id="cd-card-number">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Date d'expiration</div>
-                    <div class="cd-value" id="cd-card-expiry">--</div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Code CVV</div>
-                    <div class="cd-value" id="cd-card-cvv">--</div>
-                </div>
-            </div>
-
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-shield-halved"></i> Sécurité
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Code PIN</div>
-                    <div class="cd-value-copy">
-                        <span id="cd-pin" class="cd-code">••••</span>
-                        <button class="copy-btn" onclick="copyField('cd-pin')" title="Copier">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
+                <h3 class="cd-section-title"><i class="fa-solid fa-building-columns"></i> Solde du compte et virement :</h3>
+                <div class="cd-info-list">
+                    <div class="cd-info-row"><span>Banque émettrice :</span> <strong id="new-cd-bank">--</strong></div>
+                    <div class="cd-info-row"><span>Solde du compte :</span> <strong id="new-cd-balance">--</strong></div>
+                    <div class="cd-info-row"><span>Pourcentage de départ du virement :</span> <strong id="new-cd-pct-start">0%</strong></div>
+                    <div class="cd-info-row"><span>Pourcentage d'arrêt du virement :</span> <strong id="new-cd-pct-stop">10%</strong></div>
+                    <div class="cd-info-row"><span>Message à afficher :</span> <strong id="new-cd-message">--</strong></div>
+                    
+                    <div class="cd-info-row" style="display: flex; align-items: center; gap: 10px;">
+                        <span>Déblocage du virement :</span> 
+                        <strong id="new-cd-unlock" style="background: #000; color: #fff; padding: 2px 8px; border-radius: 6px; font-family: monospace;">--</strong>
+                        <button class="cd-copy-btn" onclick="copyField('new-cd-unlock')"><i class="fa-regular fa-copy"></i></button>
                     </div>
-                </div>
-                <div class="cd-row">
-                    <div class="cd-label">Code d'activation</div>
-                    <div class="cd-value-copy">
-                        <span id="cd-activation" class="cd-code">••••</span>
-                        <button class="copy-btn" onclick="copyField('cd-activation')" title="Copier">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
+
+                    <div class="cd-info-row">
+                        <span>Code déjà utilisé :</span> 
+                        <span class="cd-badge cd-badge-purple" id="new-cd-used">NON</span>
+                    </div>
+                    
+                    <div class="cd-info-row">
+                        <span>Alerte Mail Pro :</span> 
+                        <span class="cd-badge cd-badge-green"><i class="fa-solid fa-circle-check"></i> Activé</span>
+                    </div>
+                    
+                    <div class="cd-info-row"><span>Coût de création :</span> <strong>5000 Crédits</strong></div>
+                    <div class="cd-info-row"><span>Date de création :</span> <strong id="new-cd-date">--</strong></div>
+                    
+                    <div class="cd-info-row" style="display: flex; align-items: center; gap: 10px;">
+                        <span>Etat :</span> 
+                        <span class="cd-badge cd-badge-green" id="new-cd-status"><i class="fa-solid fa-circle-check"></i> Flash Compte actif</span>
                     </div>
                 </div>
             </div>
-
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-link"></i> Lien d'accès client
-                </div>
-                <div class="cd-link-box">
-                    <input type="text" id="cd-link" readonly>
-                    <button class="copy-btn copy-btn-primary" onclick="copyField('cd-link', true)" title="Copier le lien">
-                        <i class="fa-solid fa-copy"></i> Copier
-                    </button>
-                </div>
-                <small class="cd-hint">Ce lien est unique et personnel. Transmettez-le au client.</small>
+            
+            <!-- Footer avec la dernière connexion -->
+            <div class="cd-footer-time">
+                <span id="new-cd-last-seen">Dernière connexion le --</span>
             </div>
 
-            <div class="cd-section">
-                <div class="cd-section-title">
-                    <i class="fa-solid fa-paper-plane"></i> Envoyer par email
-                </div>
-
-                <div class="email-actions-grid">
-                    <button type="button" class="email-action-btn email-action-blue" id="btn-send-credentials" onclick="handleSendLoginCredentials()">
-                        <span class="email-action-icon">
-                            <i class="fa-solid fa-key"></i>
-                        </span>
-                        <span class="email-action-text">
-                            <strong>Envoyer les identifiants</strong>
-                            <small>Email + code PIN</small>
-                        </span>
-                    </button>
-
-                    <button type="button" class="email-action-btn email-action-green" id="btn-send-activation" onclick="handleSendActivationCode()">
-                        <span class="email-action-icon">
-                            <i class="fa-solid fa-unlock-keyhole"></i>
-                        </span>
-                        <span class="email-action-text">
-                            <strong>Envoyer le code d'activation</strong>
-                            <small>Code de validation</small>
-                        </span>
-                    </button>
-                </div>
-
-                <small class="cd-hint">Les emails seront envoyés dans la langue du client.</small>
-            </div>
-
-        </div>
-
-        <div class="client-detail-footer">
-            <button class="btn-secondary" onclick="closeClientDetail()">
-                <i class="fa-solid fa-xmark"></i> Fermer
-            </button>
-            <button class="btn-primary" onclick="editClientFromDetail()">
-                <i class="fa-solid fa-pen"></i> Modifier ce client
-            </button>
         </div>
     </div>
 </div>
