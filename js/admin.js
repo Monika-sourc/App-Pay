@@ -21,7 +21,7 @@ import {
     signOut,
     updateProfile,
     onAuthStateChanged,
-    onSnapshot // 🆕 Import pour le temps réel
+    onSnapshot 
 } from './firebase-config.js';
 
 import { BANKS_BY_COUNTRY, getBankLogoUrl } from './banks.js';
@@ -47,7 +47,7 @@ let currentDetailClient = null;
 let isCardDetailsVisible = false;
 let isIbanVisible = false;
 let currentTransferTab = 'completed';
-let unsubClientsListener = null; // 🆕 Référence pour écouter la liste
+let unsubClientsListener = null;
 
 const COUNTRY_LIST = [
     { name: "Afghanistan", flag: "🇦🇫" }, { name: "Afrique du Sud", flag: "🇿🇦" },
@@ -897,7 +897,7 @@ async function handleCreateClient(event) {
 }
 
 // ============================================================
-// 🆕 CHARGEMENT DES CLIENTS AVEC TEMPS RÉEL (onSnapshot)
+// CHARGEMENT DES CLIENTS (TEMPS RÉEL)
 // ============================================================
 function isClientOnline(client) {
     if (!client.connectionLogs || !Array.isArray(client.connectionLogs) || client.connectionLogs.length === 0) return false;
@@ -917,7 +917,6 @@ async function loadClients() {
         return;
     }
 
-    // Nettoyage de l'ancien listener s'il existe
     if (unsubClientsListener) {
         unsubClientsListener();
         unsubClientsListener = null;
@@ -929,7 +928,6 @@ async function loadClients() {
             where('createdBy', '==', currentAdmin.uid)
         );
         
-        // 🆕 ÉCOUTE EN TEMPS RÉEL
         unsubClientsListener = onSnapshot(q, (snapshot) => {
             allClients = snapshot.docs.map(d => d.data());
             allClients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -977,19 +975,16 @@ async function loadClients() {
                     </div>
                 `;
 
-                // Clic pour ouvrir la modale
                 row.addEventListener('click', (e) => {
-                    if (e.target.closest('button')) return; // Ignore si on clique sur un bouton
+                    if (e.target.closest('button')) return;
                     openClientDetail(client.id);
                 });
 
-                // 🆕 Bouton Bloquer/Débloquer direct
                 row.querySelector('.btn-toggle-access').addEventListener('click', (e) => {
                     e.stopPropagation();
                     handleListBlockToggle(client.id);
                 });
 
-                // Bouton Supprimer direct
                 row.querySelector('.btn-delete-client').addEventListener('click', (e) => {
                     e.stopPropagation();
                     deleteClient(client.id);
@@ -1008,7 +1003,6 @@ async function loadClients() {
     }
 }
 
-// 🆕 FONCTION POUR BLOQUER/DÉBLOQUER DEPUIS LA LISTE DIRECTE
 async function handleListBlockToggle(clientId) {
     const client = allClients.find(c => c.id === clientId);
     if (!client) return;
@@ -1029,7 +1023,6 @@ async function handleListBlockToggle(clientId) {
 
     try {
         await updateDoc(doc(db, COLLECTION_NAME, clientId), { blocked: willBlock });
-        // L'écouteur onSnapshot va automatiquement mettre à jour l'interface
         showToast(willBlock ? 'Accès bloqué.' : 'Accès débloqué.', 'success');
     } catch (err) {
         console.error(err);
@@ -1037,6 +1030,9 @@ async function handleListBlockToggle(clientId) {
     }
 }
 
+// ============================================================
+// 🆕 MODAL DÉTAILS CLIENT (MIS À JOUR AVEC LES NOUVEAUX IDs)
+// ============================================================
 function openClientDetail(clientId) {
     const client = allClients.find(c => c.id === clientId);
     if (!client) return;
@@ -1045,62 +1041,68 @@ function openClientDetail(clientId) {
     isCardDetailsVisible = false;
     isIbanVisible = false;
 
-    const initials = getInitials(client.firstName, client.lastName);
-    document.getElementById('cd-avatar').textContent = initials;
+    // --- MAPPING DES NOUVELLES DONNÉES ---
 
-    const fullName = `${client.lastName} ${client.firstName}`.toUpperCase();
-    document.getElementById('cd-name').textContent = fullName;
-    document.getElementById('cd-meta').textContent = client.email || '--';
+    // Identifiants (Boîte grise)
+    document.getElementById('new-cd-link').textContent = getClientLink(client.id);
+    document.getElementById('new-cd-email-grey').textContent = client.email || '--';
+    document.getElementById('new-cd-pin').textContent = client.pin || '----';
 
-    const statusEl = document.getElementById('cd-status');
-    if (client.blocked) {
-        statusEl.textContent = 'Bloqué';
-        statusEl.className = 'client-detail-status blocked';
+    // Informations personnelles
+    const fullName = `${client.firstName || ''} ${client.lastName || ''}`.trim().toUpperCase();
+    document.getElementById('new-cd-fullname').textContent = fullName || '--';
+    document.getElementById('new-cd-email').textContent = client.email || '--';
+    document.getElementById('new-cd-phone').textContent = client.phone || '--';
+    document.getElementById('new-cd-country').textContent = (client.country || '--') + ' ' + (client.countryFlag || '');
+    document.getElementById('new-cd-address').textContent = client.address || '--';
+    
+    // Langue (formattée comme "PL (Code ISO)")
+    const langCode = (client.language || 'fr').toUpperCase();
+    document.getElementById('new-cd-language').textContent = `${langCode} (Code ISO)`;
+
+    // Solde et Virement
+    document.getElementById('new-cd-bank').textContent = client.bankName || '--';
+    document.getElementById('new-cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
+    
+    document.getElementById('new-cd-pct-start').textContent = '0%'; // Valeur fixe comme sur l'image
+    document.getElementById('new-cd-pct-stop').textContent = (client.percentValue || 100) + '%';
+    document.getElementById('new-cd-message').textContent = client.messageAfterTransfer || '...';
+    
+    // Code de déblocage
+    document.getElementById('new-cd-unlock').textContent = client.activationCode || '----';
+    
+    // Code déjà utilisé (Simulé sur NON pour le moment car pas de suivi dans la BDD)
+    document.getElementById('new-cd-used').textContent = 'NON'; 
+
+    // Date de création
+    if (client.createdAt) {
+        const date = new Date(client.createdAt);
+        const dateStr = date.toLocaleDateString('fr-FR') + ' à ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' UTC';
+        document.getElementById('new-cd-date').textContent = dateStr;
     } else {
-        statusEl.textContent = 'Actif';
-        statusEl.className = 'client-detail-status active';
+        document.getElementById('new-cd-date').textContent = '--';
     }
 
-    document.getElementById('cd-fullname').textContent = fullName;
-    document.getElementById('cd-country').textContent = (client.country || '--') + ' ' + (client.countryFlag || '');
-    document.getElementById('cd-address').textContent = client.address || '—';
-    document.getElementById('cd-email').textContent = client.email || '--';
-    document.getElementById('cd-phone').textContent = client.phone || '—';
-    document.getElementById('cd-balance').textContent = Number(client.balance || 0).toFixed(2).replace('.', ',') + ' ' + (client.currency || 'zł');
-    document.getElementById('cd-currency').textContent = client.currency || 'zł';
-    document.getElementById('cd-language').textContent = client.language || 'fr';
-    document.getElementById('cd-bank').textContent = client.bankName || '—';
-    document.getElementById('cd-percent').textContent = (client.percentValue || 100) + '%';
-    
-    const pendingEl = document.getElementById('cd-pending-transfer');
-    if (pendingEl) {
-        const isEnabled = client.pendingTransferEnabled === true;
-        pendingEl.textContent = isEnabled ? 'Activé' : 'Désactivé';
-        pendingEl.style.color = isEnabled ? '#03543f' : '#e02424';
-        pendingEl.style.fontWeight = '700';
+    // Etat (Flash Compte actif / bloqué)
+    const statusEl = document.getElementById('new-cd-status');
+    if (client.blocked) {
+        statusEl.className = 'cd-badge cd-badge-red';
+        statusEl.innerHTML = '<i class="fa-solid fa-lock"></i> Flash Compte bloqué';
+    } else {
+        statusEl.className = 'cd-badge cd-badge-green';
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Flash Compte actif';
     }
 
-    document.getElementById('cd-pin').textContent = client.pin || '----';
-    document.getElementById('cd-activation').textContent = client.activationCode || '----';
-    document.getElementById('cd-link').value = getClientLink(client.id);
-
-    const clientIban = client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
-    const ibanParts = clientIban.split(' ');
-    const maskedIban = ibanParts.slice(0, -1).join(' ') + ' ••••';
-    document.getElementById('cd-iban').textContent = maskedIban;
-    document.getElementById('cd-swift').textContent = client.swift || '--';
-    
-    const ibanEyeIcon = document.getElementById('admin-iban-eye-icon');
-    if(ibanEyeIcon) ibanEyeIcon.className = 'fa-regular fa-eye';
-
-    const cardNum = client.cardNumber ? '•••• •••• •••• ' + client.cardNumber.slice(-4) : '--';
-    const cardCvv = client.cardCVV ? '•••' : '--';
-    document.getElementById('cd-card-number').textContent = cardNum;
-    document.getElementById('cd-card-expiry').textContent = client.cardExpiry || '--';
-    document.getElementById('cd-card-cvv').textContent = cardCvv;
-    
-    const eyeIcon = document.getElementById('admin-eye-icon');
-    if(eyeIcon) eyeIcon.className = 'fa-regular fa-eye';
+    // Dernière connexion
+    let lastSeenStr = 'Aucune connexion récente';
+    if (client.connectionLogs && client.connectionLogs.length > 0) {
+        const latestLog = client.connectionLogs.reduce((latest, current) => {
+            return new Date(current.lastSeen) > new Date(latest.lastSeen) ? current : latest;
+        });
+        const lsDate = new Date(latestLog.lastSeen);
+        lastSeenStr = lsDate.toLocaleDateString('fr-FR') + ' à ' + lsDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' UTC';
+    }
+    document.getElementById('new-cd-last-seen').textContent = `Dernière connexion le ${lastSeenStr}`;
 
     document.getElementById('client-detail-modal').classList.add('show');
 }
@@ -1118,6 +1120,7 @@ window.toggleAdminIbanVisibility = function() {
     
     const ibanEl = document.getElementById('cd-iban');
     const eyeIcon = document.getElementById('admin-iban-eye-icon');
+    if(!ibanEl) return; // Sécurité si l'élément n'existe plus
     
     if (isIbanVisible) {
         ibanEl.textContent = currentDetailClient.iban || '--';
@@ -1137,6 +1140,7 @@ window.toggleAdminCardVisibility = function() {
     const cardNumEl = document.getElementById('cd-card-number');
     const cardCvvEl = document.getElementById('cd-card-cvv');
     const eyeIcon = document.getElementById('admin-eye-icon');
+    if(!cardNumEl || !cardCvvEl) return; // Sécurité
     
     if (isCardDetailsVisible) {
         cardNumEl.textContent = currentDetailClient.cardNumber ? currentDetailClient.cardNumber.replace(/(\d{4})/g, '$1 ').trim() : '--';
@@ -1353,7 +1357,10 @@ window.handleAdminCancelTransfer = async function(index) {
 
         showToast('Virement annulé et montant re-crédité.', 'success');
         
-        document.getElementById('cd-balance').textContent = newBalance.toFixed(2).replace('.', ',') + ' ' + (currentDetailClient.currency || 'zł');
+        // Mettre à jour l'affichage du solde dans la modale si elle est ouverte
+        const balEl = document.getElementById('new-cd-balance');
+        if (balEl) balEl.textContent = newBalance.toFixed(2).replace('.', ',') + ' ' + (currentDetailClient.currency || 'zł');
+        
         renderAdminTransfers();
         await loadClients();
     } catch (err) {
@@ -1467,7 +1474,7 @@ window.copyField = function (elementId, isInput = false) {
     const value = isInput ? el.value : el.textContent;
 
     const doCopy = () => {
-        const btn = el.closest('.cd-value-copy, .cd-link-box')?.querySelector('.copy-btn');
+        const btn = el.closest('.cd-value-copy, .cd-link-box, .cd-grey-row')?.querySelector('.copy-btn, .cd-copy-btn');
         if (btn) {
             const original = btn.innerHTML;
             btn.classList.add('copied');
@@ -2236,7 +2243,6 @@ async function deleteClient(id) {
             resetCustomSelect();
             refreshEnhancedSelect('m-select-client');
         }
-        // L'écouteur onSnapshot s'occupe de rafraîchir la liste
         showToast('Client supprimé.', 'info');
     } catch (err) {
         console.error('Erreur suppression :', err);
@@ -2260,7 +2266,6 @@ async function clearAllClients() {
         for (const client of allClients) {
             await deleteDoc(doc(db, COLLECTION_NAME, client.id));
         }
-        // L'écouteur onSnapshot s'occupe de rafraîchir la liste
         showToast('Tous vos clients ont été supprimés.', 'info');
     } catch (err) {
         console.error('Erreur suppression totale :', err);
