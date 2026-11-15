@@ -2565,7 +2565,7 @@ body {
     padding: 0;
     text-align: left;
     position: relative;
-    max-height: 90vh;
+    max-height: 95vh; /* Augmenté à 95vh */
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -2607,7 +2607,7 @@ body {
 .cd-modal-body {
     padding: 20px;
     overflow-y: auto;
-    font-size: 13px; /* Réduction de la police globale de la modale */
+    font-size: 14.5px; /* Taille de police augmentée */
     color: #444;
 }
 
@@ -2620,7 +2620,7 @@ body {
 }
 
 .cd-grey-box p {
-    font-size: 12px;
+    font-size: 13px; /* Augmenté */
     color: #555;
     margin-bottom: 12px;
     line-height: 1.4;
@@ -2636,7 +2636,7 @@ body {
 .cd-grey-label {
     color: #666;
     font-weight: 500;
-    width: 120px;
+    width: 140px; /* Légèrement plus large pour accommoder le texte plus grand */
     flex-shrink: 0;
 }
 
@@ -2680,7 +2680,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 10px;
-    font-size: 12px;
+    font-size: 13px; /* Augmenté */
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -2699,7 +2699,7 @@ body {
     border: none;
     border-radius: 8px;
     padding: 10px;
-    font-size: 12px;
+    font-size: 13px; /* Augmenté */
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -2718,7 +2718,7 @@ body {
 }
 
 .cd-section-title {
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
     font-weight: 600;
     color: #222;
     margin-bottom: 10px;
@@ -2729,7 +2729,7 @@ body {
 
 .cd-section-title i {
     color: #ff7a00;
-    font-size: 14px;
+    font-size: 15px; /* Augmenté */
 }
 
 .cd-info-list {
@@ -2747,7 +2747,7 @@ body {
 
 .cd-info-row span {
     color: #666;
-    min-width: 150px; /* Aligne les deux points */
+    min-width: 170px; /* Ajusté */
     flex-shrink: 0;
 }
 
@@ -2762,9 +2762,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 12px;
-    font-size: 11px;
+    font-size: 12px; /* Augmenté */
     font-weight: 600;
 }
 
@@ -2784,9 +2784,47 @@ body {
 }
 
 .cd-footer-time {
-    font-size: 11px;
+    font-size: 12px; /* Augmenté */
     color: #999;
     margin-top: 15px;
     padding-top: 10px;
     border-top: 1px solid #f0f0f0;
+}
+
+/* 🆕 Styles pour les boutons manquants (Virements et Connexion) */
+.cd-functional-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.cd-func-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cd-func-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.cd-func-btn i {
+    color: #ff7a00;
+    font-size: 16px;
 }
