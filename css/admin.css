@@ -1979,19 +1979,21 @@ body {
    MODAL DÉTAILS CLIENT (CORRECTION FINALE EXACTE)
    ============================================================ */
 
-/* 🆕 ESPACE EN HAUT ET FENÊTRE QUI DESCEND JUSQU'EN BAS */
+/* 🆕 ESPACE EN HAUT CONSERVÉ À 50PX */
 #client-detail-modal {
-    padding: 50px 0px 0px 0px !important; /* 50px d'espace en haut, 0 sur les côtés et en bas */
+    padding: 50px 0px 0px 0px !important; 
     align-items: flex-start !important; 
 }
 
 #client-detail-modal .modal-client-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: calc(100dvh - 50px) !important; /* S'étend jusqu'en bas de l'écran */
+    /* 🆕 Largeur à 98% pour qu'elle prenne bien l'écran */
+    width: 98% !important; 
+    max-width: 98% !important;
+    /* 🆕 Hauteur qui s'étend jusqu'en bas (100dvh - 50px de marge en haut) */
+    height: calc(100dvh - 50px) !important; 
     max-height: calc(100dvh - 50px) !important;
-    border-radius: 16px 16px 0 0 !important; /* Coins arrondis en haut, bords collés en bas */
-    margin: 0 !important;
+    border-radius: 16px 16px 0 0 !important; 
+    margin: 0 auto !important;
     padding: 0;
     text-align: left;
     display: flex;
@@ -2203,7 +2205,6 @@ body {
     color: #000;
     font-weight: 700;
     word-break: break-word;
-    /* Le flex: 1 a été retiré pour empêcher le fond noir de s'étirer */
 }
 
 /* 🆕 CORRECTION DE LA COULEUR NOIRE ET DU BADGE VIOLET */
