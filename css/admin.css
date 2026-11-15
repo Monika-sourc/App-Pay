@@ -1985,15 +1985,21 @@ body {
     align-items: flex-start !important; 
     height: 100vh !important; /* Fallback */
     height: 100dvh !important; /* Prend tout l'écran */
+    /* 🆕 AJOUT : FOND FLOU ET CACHÉ POUR MASQUER L'ARRIÈRE-PLAN */
+    background: rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
 }
 
 #client-detail-modal .modal-client-card {
     /* 🆕 Largeur à 98% pour qu'elle prenne bien l'écran sans être collée */
     width: 98% !important; 
     max-width: 98% !important;
-    /* 🆕 Utilise 100% de la hauteur de l'overlay (qui est déjà de 100dvh) */
-    height: 100% !important; 
-    max-height: 100% !important;
+    /* 🆕 CALCUL POUR ETRE SUR QUE ÇA DESCEND JUSQU'EN BAS */
+    height: calc(100vh - 50px) !important; 
+    max-height: calc(100vh - 50px) !important;
+    height: calc(100dvh - 50px) !important;
+    max-height: calc(100dvh - 50px) !important;
     border-radius: 16px 16px 0 0 !important; 
     margin: 0 auto !important;
     padding: 0;
