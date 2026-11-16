@@ -204,10 +204,9 @@
 <template id="tpl-dashboard">
     <div class="dashboard-body">
         <div class="dashboard-new-header">
-            <div class="dnh-avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <h1 class="dnh-title"><span data-i18n="welcome">Bienvenue</span>, <span id="welcome-name">--</span></h1>
+            <!-- 🆕 MODIFICATION ICI : Remplacement de la bulle avatar par la main de salutation -->
+            <i class="fa-solid fa-hand" style="font-size: 32px; color: #00246B; transform: rotate(-20deg);"></i>
+            <h1 class="dnh-title" style="margin-left: 5px;"><span data-i18n="welcome">Bienvenue</span>, <span id="welcome-name">--</span></h1>
             <div class="dnh-status">
                 <span class="status-dot"></span> <span data-i18n="account_active">Compte actif</span>
             </div>
