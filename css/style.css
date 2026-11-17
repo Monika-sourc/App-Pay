@@ -469,9 +469,11 @@ body {
 
 /* 🆕 BARRE DE RECHERCHE DANS LE HEADER */
 .header-search-container {
-    flex: 1;
-    max-width: 500px;
-    margin: 0 auto;
+    /* Modification ici pour réduire et coller aux icônes */
+    width: 70%; 
+    max-width: 350px;
+    margin-left: auto; /* Pousse la barre vers la droite */
+    margin-right: 15px; /* Espace avant les icônes */
     position: relative;
     display: flex;
     align-items: center;
@@ -2966,8 +2968,10 @@ body {
     }
 
     .header-search-container {
-        margin: 0 10px;
-        max-width: 350px;
+        width: 65%;
+        max-width: 250px;
+        margin-left: auto;
+        margin-right: 10px;
     }
 
     .header-search-box {
@@ -3004,7 +3008,10 @@ body {
         height: 30px;
     }
     .header-search-container {
-        margin: 0 5px;
+        width: 60%;
+        max-width: 180px;
+        margin-left: auto;
+        margin-right: 5px;
     }
     .header-icons {
         gap: 8px;
