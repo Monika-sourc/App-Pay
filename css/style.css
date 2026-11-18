@@ -1100,8 +1100,8 @@ body {
 }
 
 .dash-iban-value {
-    font-size: 17px; /* Légèrement agrandi */
-    font-weight: 800; /* Mis en gras */
+    font-size: 16px; /* Ajusté */
+    font-weight: 600; /* Épaisseur réduite */
     color: #0f172a;
     white-space: nowrap;
     overflow: hidden;
