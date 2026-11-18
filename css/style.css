@@ -10,7 +10,7 @@
     --primary-color-dark: #e66d00;
     --primary-color-soft: rgba(255, 122, 0, 0.1);
     --card-bg: #ffffff;
-    --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); /* Ombre plus douce et diffuse */
     
     --big-card-color: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     --big-card-text-color: #000000;
@@ -33,8 +33,15 @@ html, body {
     font-size: 16px; 
 }
 
+/* 🆕 ARRIÈRE-PLAN GLOBAL DÉGRADÉ ÉLÉGANT (Inspiré de la maquette) */
 body {
-    background-color: #e2e8f0; 
+    background-color: #e0f2fe; /* Fallback */
+    background-image: 
+        radial-gradient(circle at 0% 100%, #1e3a8a 0%, transparent 60%), /* Bleu profond en bas à gauche */
+        radial-gradient(circle at 100% 100%, #10b981 0%, transparent 60%), /* Vert éclatant en bas à droite */
+        radial-gradient(circle at 100% 0%, #60a5fa 0%, transparent 50%), /* Bleu ciel en haut à droite */
+        linear-gradient(135deg, #ffffff 0%, #f0f9ff 40%, #bae6fd 100%); /* Base blanche/bleu clair */
+    background-attachment: fixed;
     color: #000;
     overflow-x: hidden;
     zoom: 0.7; 
@@ -63,7 +70,7 @@ body {
 .invalid-card {
     background: var(--card-bg);
     border-radius: 6px; 
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 480px;
     padding: 40px 30px;
@@ -423,7 +430,7 @@ body {
 
 /* ============ ÉCRAN APPLICATION ============ */
 #app-screen {
-    background-color: #e2e8f0; 
+    background-color: transparent; /* 🆕 Transparent pour laisser voir le dégradé du body */
     display: none;
 }
 #app-screen.active {
@@ -437,18 +444,20 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 20px; /* Augmenté */
-    background-color: var(--card-bg);
-    border-bottom: 1px solid #e8eaee;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    padding: 18px 20px;
+    background-color: rgba(255, 255, 255, 0.85); /* 🆕 Effet verre dépoli */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* 🆕 Ombre douce */
     position: relative;
     z-index: 10;
-    min-height: 105px; /* Augmenté pour faire de la place au nouveau logo */
+    min-height: 105px;
     gap: 15px;
 }
 
 .header-logo {
-    font-size: 38px; /* Taille du texte augmentée */
+    font-size: 38px;
     font-weight: 900; 
     color: var(--primary-color);
     display: flex;
@@ -462,16 +471,15 @@ body {
     font-style: italic;
 }
 
-/* 🆕 REMPLACEMENT DU LOGO PAR CELUI DE L'IMAGE (Bâtiment + Pièce) */
 .header-logo-svg {
-    display: none !important; /* Cache l'ancien logo AP */
+    display: none !important;
 }
 
 .header-logo::before {
     content: '';
     display: inline-block;
-    width: 56px; /* Taille du logo augmentée */
-    height: 56px; /* Taille du logo augmentée */
+    width: 56px;
+    height: 56px;
     background-color: var(--primary-color);
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1L2 7v2h20V7L12 1zM4 10v7h2v-7H4zm5 0v7h2v-7H9zm5 0v7h2v-7h-2zM2 18v2h16v-2H2zm17-7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 1.5l1.5 2.5h-3l1.5-2.5z'/%3E%3C/svg%3E");
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1L2 7v2h20V7L12 1zM4 10v7h2v-7H4zm5 0v7h2v-7H9zm5 0v7h2v-7h-2zM2 18v2h16v-2H2zm17-7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 1.5l1.5 2.5h-3l1.5-2.5z'/%3E%3C/svg%3E");
@@ -499,19 +507,19 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: #ffffff;
-    border: 2px solid #94a3b8;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(148, 163, 184, 0.3);
     border-radius: 30px;
     padding: 0 12px;
     height: 50px; 
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* 🆕 Ombre douce sur la recherche */
 }
 
 .header-search-box:focus-within {
     background-color: #ffffff;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px var(--primary-color-soft);
+    box-shadow: 0 0 0 4px var(--primary-color-soft), 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .search-icon {
@@ -532,7 +540,7 @@ body {
 }
 
 #global-search-input::placeholder {
-    color: #1e293b;
+    color: #64748b;
     font-weight: 600;
 }
 
@@ -562,7 +570,7 @@ body {
     width: 280px; 
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* 🆕 Ombre douce */
     border: 1px solid #e8eaee;
     z-index: 1000;
     display: none;
@@ -662,7 +670,7 @@ body {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background-color: #e4e6eb;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -672,8 +680,9 @@ body {
     font-size: 20px;
     position: relative;
     transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 🆕 Ombre douce */
 }
-.icon-btn:hover { background-color: #d8dade; }
+.icon-btn:hover { background-color: #f8f9fa; }
 .icon-btn:active { transform: scale(0.9); }
 
 .icon-btn .notif-dot {
@@ -700,6 +709,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3); /* 🆕 Ombre douce colorée */
 }
 .user-avatar:active { transform: scale(0.9); }
 
@@ -708,9 +718,9 @@ body {
     top: 60px; 
     right: 0;
     width: 280px;
-    background: var(--card-bg);
+    background: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* 🆕 Ombre douce */
     padding: 8px 0;
     z-index: 100;
     display: none;
@@ -763,7 +773,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    background-color: #e2e8f0; 
+    background-color: transparent; /* 🆕 Transparent pour voir le fond */
     min-width: 0;
     width: 100%;
     padding-bottom: 100px; 
@@ -776,10 +786,11 @@ body {
     left: 15px;
     right: 15px;
     height: 75px; 
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.95); /* 🆕 Légère transparence */
+    backdrop-filter: blur(10px); /* 🆕 Effet verre */
     border-radius: 20px;
-    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.15); 
-    border: 1px solid #dcdfe6; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 20px 40px rgba(0, 0, 0, 0.15); /* 🆕 Ombre très douce et diffuse */
+    border: 1px solid rgba(255, 255, 255, 0.8); 
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -822,7 +833,6 @@ body {
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15)); 
 }
 
-/* 🆕 ICÔNE BANCAIRE OFFICIELLE (1er bouton) */
 .nav-links li:first-child i {
     font-size: 0 !important;
     width: 22px;
@@ -906,6 +916,7 @@ body {
     justify-content: center;
     font-size: 22px; 
     flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 36, 107, 0.3); /* 🆕 Ombre douce */
 }
 
 .dnh-title {
@@ -916,8 +927,10 @@ body {
     flex: 1;
 }
 
+/* 🆕 INDICATEUR COMPTE ACTIF AVEC OMBRE DOUCE */
 .dnh-status {
-    background-color: #e6f4ea;
+    background-color: rgba(230, 244, 234, 0.9); /* Légère transparence */
+    backdrop-filter: blur(5px);
     color: #137333;
     padding: 8px 14px;
     border-radius: 20px;
@@ -927,6 +940,8 @@ body {
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+    box-shadow: 0 6px 20px rgba(19, 115, 51, 0.15); /* Ombre douce verte */
+    border: 1px solid rgba(19, 115, 51, 0.1);
 }
 
 .status-dot {
@@ -947,7 +962,7 @@ body {
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 40px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), inset 0 0 40px rgba(255, 255, 255, 0.1); /* 🆕 Ombre plus diffuse */
     z-index: 1;
 }
 
@@ -1085,7 +1100,7 @@ body {
     transform: scale(0.95);
 }
 
-/* 🆕 FOND PLUS VISIBLE & BORDURE VERTE FORTE */
+/* 🆕 FOND PLUS VISIBLE & BORDURE VERTE FORTE (NON MODIFIÉ) */
 .bcn-icon-circle {
     width: 60px; 
     height: 60px; 
@@ -1119,9 +1134,9 @@ body {
     margin: 0 5px;
 }
 
-/* 🆕 CARTE IBAN DASHBOARD */
+/* 🆕 CARTE IBAN DASHBOARD AVEC OMBRE DOUCE */
 .dash-iban-card {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 10px;
     padding: 15px 20px;
     display: flex;
@@ -1129,9 +1144,10 @@ body {
     justify-content: space-between;
     gap: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-    border: 1px solid #e8eaee;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); /* 🆕 Ombre douce */
+    border: 1px solid rgba(255, 255, 255, 0.6);
     animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .dash-iban-icon {
@@ -1145,6 +1161,7 @@ body {
     justify-content: center;
     font-size: 20px;
     flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(29, 78, 216, 0.1);
 }
 
 .dash-iban-info {
@@ -1189,6 +1206,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
 }
 
 .dash-iban-copy-btn:hover {
@@ -1205,6 +1223,7 @@ body {
     100% { transform: scale(1.1); opacity: 1; }
 }
 
+/* 🆕 CARTES STATISTIQUES AVEC OMBRES DOUCES */
 .stats-grid-new {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1217,13 +1236,19 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     padding: 12px 8px;
     border-radius: 6px; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06); /* 🆕 Ombre douce */
     cursor: pointer;
     position: relative;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.stat-card-new:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card-new:active {
@@ -1280,12 +1305,15 @@ body {
     text-align: center;
 }
 
+/* 🆕 HISTORIQUE DES TRANSACTIONS AVEC OMBRE DOUCE */
 .history-card {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 6px; 
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); /* 🆕 Ombre douce */
     overflow: hidden;
     margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
 }
 
 .history-card-header {
@@ -1512,13 +1540,15 @@ body {
     font-weight: 500;
 }
 
+/* 🆕 CARTE DE TRANSFERT AVEC OMBRE DOUCE */
 .transfer-card {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 6px; 
     padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08); /* 🆕 Ombre douce */
     position: relative;
-    border: 1px solid #f0f0f0;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
 }
 
 .transfer-card-icon-top-right {
@@ -1675,20 +1705,23 @@ body {
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3); /* 🆕 Ombre douce */
 }
 .btn-continue:hover { background-color: var(--primary-color-dark); }
 .btn-continue:active { transform: scale(0.98); }
 .btn-continue:disabled { opacity: 0.6; cursor: not-allowed; }
 
+/* 🆕 CARTE DE VÉRIFICATION AVEC OMBRE DOUCE */
 .verification-card {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 6px; 
     padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08); /* 🆕 Ombre douce */
     margin-bottom: 20px;
     position: relative;
-    border: 1px solid #f0f0f0;
+    border: 1px solid rgba(255, 255, 255, 0.6);
     overflow: hidden;
+    backdrop-filter: blur(10px);
 }
 
 .verification-icon-top-right {
@@ -1767,6 +1800,7 @@ body {
     gap: 8px;
     transition: background 0.2s, transform 0.1s;
     margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); /* 🆕 Ombre douce */
 }
 .btn-cancel-solid:hover { background-color: #dc2626; }
 .btn-cancel-solid:active { transform: scale(0.95); }
@@ -1788,16 +1822,19 @@ body {
     font-size: 18px;
 }
 
+/* 🆕 CARTE DE PROGRESSION AVEC OMBRE DOUCE */
 .progress-card {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 6px; 
     padding: 60px 25px 20px; 
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08); /* 🆕 Ombre douce */
     position: relative;
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
     overflow: hidden; 
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
 }
 
 .progress-watermark {
@@ -1920,7 +1957,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 20px 15px 120px 15px;
-    background-color: #ffffff;
+    background-color: transparent; /* 🆕 Transparent pour voir le fond */
     width: 100%;
     min-height: 100vh;
 }
@@ -1942,6 +1979,7 @@ body {
     justify-content: center;
     font-size: 24px;
     margin: 0 auto 15px auto;
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3); /* 🆕 Ombre douce */
 }
 
 .success-main-title {
@@ -1959,8 +1997,9 @@ body {
     margin: 0 auto;
 }
 
+/* 🆕 CARTES DE SUCCÈS AVEC OMBRES DOUCES */
 .success-amount-card {
-    background-color: #f0fdf4;
+    background-color: rgba(240, 253, 244, 0.95);
     border-radius: 10px;
     padding: 15px 20px;
     width: 100%;
@@ -1969,6 +2008,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 12px;
+    box-shadow: 0 10px 25px rgba(22, 163, 74, 0.08); /* 🆕 Ombre douce */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .success-amount-icon {
@@ -2006,11 +2048,14 @@ body {
 }
 
 .success-details-card {
-    background-color: #f8fafc;
+    background-color: rgba(248, 250, 252, 0.95);
     border-radius: 10px;
     padding: 0 15px;
     width: 100%;
     margin-bottom: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* 🆕 Ombre douce */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .success-detail-row {
@@ -2059,7 +2104,7 @@ body {
 }
 
 .success-status-card {
-    background-color: #f0fdf4;
+    background-color: rgba(240, 253, 244, 0.95);
     border-radius: 10px;
     padding: 12px 15px;
     display: flex;
@@ -2067,6 +2112,9 @@ body {
     width: 100%;
     margin-bottom: 20px;
     gap: 10px;
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.08); /* 🆕 Ombre douce */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .ss-icon, .ss-arrow {
@@ -2117,6 +2165,7 @@ body {
     background-color: #ffffff;
     color: #1a73e8;
     border: 1px solid #1a73e8;
+    box-shadow: 0 4px 15px rgba(26, 115, 232, 0.1);
 }
 .btn-download-receipt:hover {
     background-color: #f0f7ff;
@@ -2126,6 +2175,7 @@ body {
     background-color: #1a73e8;
     color: #ffffff;
     border: 1px solid #1a73e8;
+    box-shadow: 0 6px 20px rgba(26, 115, 232, 0.3);
 }
 .btn-back-dashboard:hover {
     background-color: #1557b0;
@@ -2174,7 +2224,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 15px 35px rgba(10, 17, 40, 0.4);
+    box-shadow: 0 20px 40px rgba(10, 17, 40, 0.4); /* 🆕 Ombre douce */
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
 }
@@ -2397,7 +2447,7 @@ body {
     font-size: 17px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06); /* 🆕 Ombre douce */
     transition: all 0.2s;
     margin-bottom: 20px;
     width: 100%; 
@@ -2416,8 +2466,8 @@ body {
 }
 
 .card-security-note {
-    background-color: #ffffff;
-    border: 1px solid #e8eaee;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     padding: 15px;
     border-radius: 10px;
     font-size: 15px;
@@ -2430,6 +2480,8 @@ body {
     line-height: 1.4;
     justify-content: flex-start;
     font-weight: 500;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04); /* 🆕 Ombre douce */
+    backdrop-filter: blur(10px);
 }
 .card-security-note i {
     color: var(--primary-color);
@@ -2447,21 +2499,22 @@ body {
 .btn-premium {
     display: flex;
     align-items: center;
-    background: #ffffff;
-    border: 1px solid #e8eaee;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 8px;
     padding: 15px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: left;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05); /* 🆕 Ombre douce */
     width: 100%;
+    backdrop-filter: blur(10px);
 }
 
 .btn-premium:hover {
-    background: #f8f9fa;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 .btn-premium:active {
@@ -2508,14 +2561,15 @@ body {
 }
 
 .vc-info-item {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.95);
     padding: 15px;
     border-radius: 8px; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    border: 1px solid #f0f0f0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05); /* 🆕 Ombre douce */
+    border: 1px solid rgba(255, 255, 255, 0.6);
     display: flex;
     align-items: center;
     gap: 12px;
+    backdrop-filter: blur(10px);
 }
 
 .vc-info-icon {
@@ -2559,7 +2613,7 @@ body {
     font-size: 17px; 
     font-weight: 600;
     z-index: 99999;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* 🆕 Ombre douce */
     display: flex;
     align-items: center;
     gap: 15px;
@@ -2584,6 +2638,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px); /* 🆕 Effet verre */
     z-index: 99998;
     display: flex;
     align-items: center;
@@ -2605,6 +2660,7 @@ body {
     border-top: 5px solid var(--primary-color);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+    box-shadow: 0 4px 15px rgba(255, 122, 0, 0.2); /* 🆕 Ombre douce */
 }
 
 @keyframes spin {
@@ -2612,17 +2668,20 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* 🆕 CARTE PROFIL AVEC OMBRE DOUCE */
 .profile-header-card {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+    backdrop-filter: blur(10px);
     border-radius: 8px; 
     padding: 30px 25px;
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2); /* 🆕 Ombre douce */
     margin-bottom: 25px;
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .profile-header-card::before {
@@ -2649,7 +2708,7 @@ body {
     font-size: 26px; 
     flex-shrink: 0;
     border: 3px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 🆕 Ombre douce */
     z-index: 1;
     letter-spacing: 1px;
 }
@@ -2686,15 +2745,17 @@ body {
     border: 1px solid rgba(52, 211, 153, 0.3);
     width: fit-content;
     letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1);
 }
 
 .profile-section-card {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 8px; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); /* 🆕 Ombre douce */
     margin-bottom: 20px;
     overflow: hidden;
-    border: 1px solid #f0f0f0;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
 }
 
 .profile-section-title {
@@ -2707,7 +2768,7 @@ body {
     align-items: center;
     gap: 10px;
     margin: 0;
-    background: #f8fafc;
+    background: rgba(248, 250, 252, 0.8);
     border-bottom: 1px solid #f1f5f9;
 }
 
@@ -2789,7 +2850,7 @@ body {
 }
 
 .profile-action-btn:hover {
-    background-color: #f8fafc;
+    background-color: rgba(248, 250, 252, 0.8);
 }
 
 .profile-action-left {
@@ -2829,7 +2890,7 @@ body {
 
 .btn-logout-profile {
     width: 100%;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
     color: #e02424;
     border: 2px solid #fde8e8;
     border-radius: 8px;
@@ -2843,6 +2904,7 @@ body {
     gap: 8px;
     transition: all 0.2s;
     margin-top: 10px;
+    box-shadow: 0 6px 20px rgba(224, 36, 36, 0.08); /* 🆕 Ombre douce */
 }
 .btn-logout-profile:hover {
     background-color: #fde8e8;
@@ -2878,7 +2940,7 @@ body {
     max-width: 360px;
     border-radius: 8px; 
     padding: 30px 25px; 
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); /* 🆕 Ombre très douce */
     position: relative;
     font-family: 'Courier New', Courier, monospace;
     animation: slideUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -3015,7 +3077,7 @@ body {
     max-width: 400px;
     border-radius: 8px; 
     padding: 35px 25px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); /* 🆕 Ombre très douce */
     text-align: center;
     position: relative;
     animation: slideUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -3033,6 +3095,7 @@ body {
     font-size: 28px;
     margin: 0 auto 20px auto;
     border: 4px solid #fee2e2;
+    box-shadow: 0 6px 15px rgba(224, 36, 36, 0.15);
 }
 
 .confirm-title {
@@ -3099,19 +3162,17 @@ body {
     .header {
         padding: 12px 15px;
         gap: 10px;
-        min-height: 90px; /* Ajusté pour mobile */
+        min-height: 90px;
     }
     
-    /* On réduit légèrement la taille pour que tout rentre */
     .header-logo span {
-        font-size: 30px; /* Taille ajustée pour mobile */
+        font-size: 30px;
         font-style: italic;
     }
     
-    /* 🆕 Taille du logo bancaire ajustée pour mobile */
     .header-logo::before {
-        width: 46px; /* Ajusté */
-        height: 46px; /* Ajusté */
+        width: 46px;
+        height: 46px;
     }
 
     .header-search-container {
@@ -3149,10 +3210,9 @@ body {
 
 @media (max-width: 400px) {
     .header-logo span {
-        font-size: 24px; /* Taille ajustée pour très petits écrans */
+        font-size: 24px;
     }
     
-    /* 🆕 Taille du logo bancaire ajustée pour très petits écrans */
     .header-logo::before {
         width: 38px;
         height: 38px;
@@ -3192,17 +3252,15 @@ body {
     border-radius: 12px;
     margin-bottom: 20px;
     font-size: 15px;
-    font-weight: 600; /* Augmenté pour plus de netteté */
+    font-weight: 600;
     line-height: 1.5;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Ombre plus propre */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* 🆕 Ombre douce */
     
-    /* 🆕 CORRECTION DU FLOU : Forcer la netteté (antialiasing et rendu GPU) */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     transform: translateY(-15px) translateZ(0); 
     
-    /* 🆕 BORDURE NOIRE LÉGÈRE */
     border: 1px solid rgba(0, 0, 0, 0.25);
 
     opacity: 0;
@@ -3213,10 +3271,9 @@ body {
 
 .transfer-banner.show {
     opacity: 1;
-    transform: translateY(0) translateZ(0); /* Conserve l'accélération GPU */
+    transform: translateY(0) translateZ(0);
 }
 
-/* Couleurs de fond douces et professionnelles (sans bordure colorée car bordure noire) */
 .transfer-banner.received,
 .transfer-banner.sent_completed,
 .transfer-banner.validated_pending {
