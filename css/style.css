@@ -911,6 +911,27 @@ body {
     z-index: 1;
 }
 
+/* 🆕 EFFET DE BRILLANCE (GLASS REFLECTION) SUR LA CARTE */
+.balance-card-new::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0.08) 45%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.08) 55%,
+        rgba(255, 255, 255, 0) 60%
+    );
+    transform: rotate(30deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
 .bcn-top {
     position: relative;
 }
@@ -1091,12 +1112,13 @@ body {
     gap: 2px;
 }
 
+/* 🆕 TEXTE IBAN AJUSTÉ */
 .dash-iban-label {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1e293b;
+    font-size: 16px; /* Augmenté légèrement */
+    font-weight: 800; /* Mis en gras (agla) */
+    color: #0f172a; /* Couleur plus foncée pour bien ressortir */
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 
 .dash-iban-value {
