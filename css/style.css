@@ -1066,8 +1066,8 @@ body {
     top: 0;
     left: 15%; 
     right: 15%; 
-    height: 2px; /* Épaisseur augmentée */
-    background-color: rgba(255, 255, 255, 0.4); /* Couleur plus visible */
+    height: 4px; /* Épaisseur fortement augmentée */
+    background-color: rgba(255, 255, 255, 0.8); /* Couleur beaucoup plus visible */
 }
 
 .bcn-action-btn {
@@ -1085,24 +1085,24 @@ body {
     transform: scale(0.95);
 }
 
-/* 🆕 FOND PLUS VISIBLE & BORDURE VERTE PREMIUM CLAIR */
+/* 🆕 FOND PLUS VISIBLE & BORDURE PREMIUM PLUS FORTE */
 .bcn-icon-circle {
     width: 60px; 
     height: 60px; 
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.25); /* Fond plus visible */
+    background-color: rgba(255, 255, 255, 0.45); /* Fond plus clair et visible */
     color: #ffffff; 
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px; 
-    border: 2px solid #d1fae5; /* Vert premium très clair */
+    border: 4px solid #ffffff; /* Bordure blanche plus épaisse et forte */
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: background 0.2s;
 }
 
 .bcn-icon-circle:hover {
-    background-color: rgba(255, 255, 255, 0.35); 
+    background-color: rgba(255, 255, 255, 0.60); /* Effet hover plus marqué */
 }
 
 .bcn-action-btn span {
@@ -1113,9 +1113,9 @@ body {
 
 /* 🆕 LIGNE VERTICALE PLUS VISIBLE */
 .bcn-divider {
-    width: 2px; /* Épaisseur augmentée */
+    width: 4px; /* Épaisseur fortement augmentée */
     height: 40px; 
-    background-color: rgba(255, 255, 255, 0.4); /* Couleur plus visible */
+    background-color: rgba(255, 255, 255, 0.8); /* Couleur beaucoup plus visible */
     margin: 0 5px;
 }
 
