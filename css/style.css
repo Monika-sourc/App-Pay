@@ -1055,6 +1055,85 @@ body {
     margin: 0 5px;
 }
 
+/* 🆕 CARTE IBAN DASHBOARD */
+.dash-iban-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e8eaee;
+    animation: fadeIn 0.3s ease;
+}
+
+.dash-iban-icon {
+    width: 45px;
+    height: 45px;
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.dash-iban-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dash-iban-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dash-iban-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Courier New', monospace;
+}
+
+.dash-iban-copy-btn {
+    background-color: #1d4ed8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.dash-iban-copy-btn:hover {
+    background-color: #1e3a8a;
+    transform: scale(1.05);
+}
+
+.dash-iban-copy-btn:active {
+    transform: scale(0.95);
+}
+
 @keyframes lampPulse {
     0% { transform: scale(0.9); opacity: 0.8; }
     100% { transform: scale(1.1); opacity: 1; }
