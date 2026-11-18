@@ -232,9 +232,30 @@ function generateCardDetails() {
     return { cardNumber, cvv, expiry: `${month}/${year}` };
 }
 
-function generateIbanDetails() {
+// 🆕 Mise à jour du générateur d'IBAN en fonction du pays
+function generateIbanDetails(countryName) {
     const rand = (len) => Math.floor(Math.random() * Math.pow(10, len)).toString().padStart(len, '0');
-    return { iban: `PL${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`, swift: `WBKPPLPP${rand(3)}` };
+    
+    const countryPrefixMap = {
+        "Pologne": "PL", "France": "FR", "Allemagne": "DE", "Espagne": "ES",
+        "Italie": "IT", "Royaume-Uni": "GB", "Belgique": "BE", "Suisse": "CH",
+        "Israël": "IL", "États-Unis": "US", "Canada": "CA", "Bénin": "BJ",
+        "Côte d'Ivoire": "CI", "Sénégal": "SN", "Cameroun": "CM", "Togo": "TG",
+        "Maroc": "MA", "Tunisie": "TN", "Algérie": "DZ", "Égypte": "EG",
+        "Nigéria": "NG", "Ghana": "GH", "Afrique du Sud": "ZA", "Kenya": "KE",
+        "Chine": "CN", "Japon": "JP", "Inde": "IN", "Brésil": "BR", "Argentine": "AR",
+        "Mexique": "MX", "Australie": "AU", "Nouvelle-Zélande": "NZ", "Russie": "RU",
+        "Turquie": "TR", "Pays-Bas": "NL", "Portugal": "PT", "Suède": "SE",
+        "Norvège": "NO", "Danemark": "DK", "Finlande": "FI", "Irlande": "IE",
+        "Autriche": "AT", "Grèce": "GR"
+    };
+    
+    // Utilise le préfixe du pays ou "FR" par défaut si non trouvé
+    const prefix = countryPrefixMap[countryName] || "FR"; 
+    
+    const iban = `${prefix}${rand(2)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)} ${rand(4)}`;
+    const swift = `WBKP${prefix}PP${rand(3)}`;
+    return { iban, swift };
 }
 
 function getDateGroupLabel(dateStr, lang) {
@@ -561,7 +582,8 @@ async function loadClientFromFirestore() {
         }
         
         if (!client.iban || !client.swift) {
-            const newIban = generateIbanDetails();
+            // 🆕 Appel avec le pays du client pour générer le bon préfixe
+            const newIban = generateIbanDetails(client.country);
             try {
                 await updateDoc(docRef, { iban: newIban.iban, swift: newIban.swift, canViewIban: false });
             } catch (e) {
@@ -772,6 +794,17 @@ function renderDashboard() {
     const btnGoCard = document.getElementById('btn-go-card');
     if (btnGoCard) btnGoCard.onclick = () => navigateTo('card');
     
+    // 🆕 Remplissage de l'IBAN sur le Dashboard
+    const dashIbanDisplay = document.getElementById('dash-iban-display');
+    if (dashIbanDisplay && appState.client) {
+        const rawIban = appState.client.iban || 'FR00 0000 0000 0000 0000 0000 0000';
+        if (appState.client.canViewIban === true) {
+            dashIbanDisplay.textContent = rawIban;
+        } else {
+            dashIbanDisplay.textContent = rawIban.substring(0, rawIban.length - 4) + '••••';
+        }
+    }
+
     const txList = document.getElementById('tx-list');
     if (!txList) return;
     txList.innerHTML = '';
@@ -1166,7 +1199,7 @@ function renderIbanView() {
     if (!appState.client) return;
     const ibanDisplay = document.getElementById('client-iban-display');
     const swiftDisplay = document.getElementById('client-swift-display');
-    const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    const rawIban = appState.client.iban || 'FR00 0000 0000 0000 0000 0000 0000';
     const swift = appState.client.swift || '--------';
     const maskedIban = rawIban.substring(0, rawIban.length - 4) + '••••';
     if (ibanDisplay) ibanDisplay.textContent = maskedIban;
@@ -1182,7 +1215,7 @@ window.toggleIbanVisibility = function() {
     ibanVisible = !ibanVisible;
     const ibanDisplay = document.getElementById('client-iban-display');
     const label = document.getElementById('iban-toggle-label');
-    const rawIban = appState.client.iban || 'PL00 0000 0000 0000 0000 0000 0000';
+    const rawIban = appState.client.iban || 'FR00 0000 0000 0000 0000 0000 0000';
     if (ibanVisible) {
         if (ibanDisplay) ibanDisplay.textContent = rawIban;
         if (label) label.textContent = t('hide_iban');
