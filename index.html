@@ -204,7 +204,7 @@
 <template id="tpl-dashboard">
     <div class="dashboard-body">
         <div class="dashboard-new-header">
-            <!-- 🆕 MODIFICATION ICI : Remplacement de la bulle avatar par la main de salutation -->
+            <!-- Main de salutation -->
             <i class="fa-solid fa-hand" style="font-size: 32px; color: #00246B; transform: rotate(-20deg);"></i>
             <h1 class="dnh-title" style="margin-left: 5px;"><span data-i18n="welcome">Bienvenue</span>, <span id="welcome-name">--</span></h1>
             <div class="dnh-status">
@@ -247,6 +247,20 @@
                     <span data-i18n="virtual_card_btn">Carte virtuelle</span>
                 </div>
             </div>
+        </div>
+
+        <!-- 🆕 CARTE IBAN DASHBOARD -->
+        <div class="dash-iban-card">
+            <div class="dash-iban-icon">
+                <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="dash-iban-info">
+                <div class="dash-iban-label">IBAN</div>
+                <div class="dash-iban-value" id="dash-iban-display">--</div>
+            </div>
+            <button class="dash-iban-copy-btn" onclick="copyIbanInfo('iban')" title="Copier l'IBAN">
+                <i class="fa-regular fa-copy"></i>
+            </button>
         </div>
 
         <div class="stats-grid-new">
