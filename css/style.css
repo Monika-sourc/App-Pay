@@ -462,9 +462,26 @@ body {
     font-style: italic; /* Ajouté : Italique */
 }
 
+/* 🆕 REMPLACEMENT DU LOGO "AP" PAR UN LOGO BANCAIRE OFFICIEL */
 .header-logo-svg {
-    height: 42px; /* Augmenté */
-    width: auto;
+    display: none !important; /* Cache l'ancien logo AP */
+}
+
+.header-logo::before {
+    content: '';
+    display: inline-block;
+    width: 42px;
+    height: 42px;
+    background-color: var(--primary-color); /* Prend la couleur orange du thème */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7h20L12 2zM4 9v8h3V9H4zm6 0v8h3V9h-3zm6 0v8h3V9h-3zM2 19v2h20v-2H2z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7h20L12 2zM4 9v8h3V9H4zm6 0v8h3V9h-3zm6 0v8h3V9h-3zM2 19v2h20v-2H2z'/%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    flex-shrink: 0;
 }
 
 /* 🆕 BARRE DE RECHERCHE DANS LE HEADER */
@@ -3088,7 +3105,9 @@ body {
         font-style: italic;
     }
     
-    .header-logo-svg {
+    /* 🆕 Taille du logo bancaire ajustée pour mobile */
+    .header-logo::before {
+        width: 34px;
         height: 34px;
     }
 
@@ -3129,9 +3148,13 @@ body {
     .header-logo span {
         font-size: 19px;
     }
-    .header-logo-svg {
+    
+    /* 🆕 Taille du logo bancaire ajustée pour très petits écrans */
+    .header-logo::before {
+        width: 30px;
         height: 30px;
     }
+
     .header-search-container {
         width: 22%;
         max-width: 110px;
