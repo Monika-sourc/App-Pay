@@ -443,26 +443,26 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
-    min-height: 95px; /* Augmenté */
+    min-height: 105px; /* Augmenté pour faire de la place au nouveau logo */
     gap: 15px;
 }
 
 .header-logo {
-    font-size: 32px; /* Augmenté */
+    font-size: 38px; /* Taille du texte augmentée */
     font-weight: 900; 
     color: var(--primary-color);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex-shrink: 0;
 }
 
 .header-logo span {
     white-space: nowrap;
-    font-style: italic; /* Ajouté : Italique */
+    font-style: italic;
 }
 
-/* 🆕 REMPLACEMENT DU LOGO "AP" PAR UN LOGO BANCAIRE OFFICIEL */
+/* 🆕 REMPLACEMENT DU LOGO PAR CELUI DE L'IMAGE (Bâtiment + Pièce) */
 .header-logo-svg {
     display: none !important; /* Cache l'ancien logo AP */
 }
@@ -470,11 +470,11 @@ body {
 .header-logo::before {
     content: '';
     display: inline-block;
-    width: 42px;
-    height: 42px;
-    background-color: var(--primary-color); /* Prend la couleur orange du thème */
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7h20L12 2zM4 9v8h3V9H4zm6 0v8h3V9h-3zm6 0v8h3V9h-3zM2 19v2h20v-2H2z'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7h20L12 2zM4 9v8h3V9H4zm6 0v8h3V9h-3zm6 0v8h3V9h-3zM2 19v2h20v-2H2z'/%3E%3C/svg%3E");
+    width: 56px; /* Taille du logo augmentée */
+    height: 56px; /* Taille du logo augmentée */
+    background-color: var(--primary-color);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1L2 7v2h20V7L12 1zM4 10v7h2v-7H4zm5 0v7h2v-7H9zm5 0v7h2v-7h-2zM2 18v2h16v-2H2zm17-7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 1.5l1.5 2.5h-3l1.5-2.5z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1L2 7v2h20V7L12 1zM4 10v7h2v-7H4zm5 0v7h2v-7H9zm5 0v7h2v-7h-2zM2 18v2h16v-2H2zm17-7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 1.5l1.5 2.5h-3l1.5-2.5z'/%3E%3C/svg%3E");
     -webkit-mask-size: contain;
     mask-size: contain;
     -webkit-mask-repeat: no-repeat;
@@ -500,12 +500,12 @@ body {
     display: flex;
     align-items: center;
     background-color: #ffffff;
-    border: 2px solid #94a3b8; /* Bordure plus foncée pour la visibilité */
+    border: 2px solid #94a3b8;
     border-radius: 30px;
     padding: 0 12px;
     height: 50px; 
     transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.08); /* Ombre plus prononcée */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
 }
 
 .header-search-box:focus-within {
@@ -515,7 +515,7 @@ body {
 }
 
 .search-icon {
-    color: #1e293b; /* Icône bien noire */
+    color: #1e293b;
     font-size: 16px;
     margin-right: 8px;
 }
@@ -526,13 +526,13 @@ body {
     background: transparent;
     outline: none;
     font-size: 15px; 
-    font-weight: 700; /* Texte très gras */
-    color: #000; /* Texte noir */
+    font-weight: 700; 
+    color: #000; 
     width: 100%;
 }
 
 #global-search-input::placeholder {
-    color: #1e293b; /* Placeholder bien foncé (non gris) */
+    color: #1e293b;
     font-weight: 600;
 }
 
@@ -659,8 +659,8 @@ body {
 }
 
 .icon-btn {
-    width: 52px; /* Augmenté */
-    height: 52px; /* Augmenté */
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background-color: #e4e6eb;
     display: flex;
@@ -669,7 +669,7 @@ body {
     color: #000;
     cursor: pointer;
     border: none;
-    font-size: 20px; /* Augmenté */
+    font-size: 20px;
     position: relative;
     transition: background 0.2s, transform 0.1s;
 }
@@ -680,16 +680,16 @@ body {
     position: absolute;
     top: 10px; 
     right: 10px; 
-    width: 12px; /* Ajusté */
-    height: 12px; /* Ajusté */
+    width: 12px;
+    height: 12px;
     background-color: #e02424;
     border-radius: 50%;
     border: 2px solid #ffffff;
 }
 
 .user-avatar {
-    width: 52px; /* Augmenté */
-    height: 52px; /* Augmenté */
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background-color: var(--primary-color);
     color: white;
@@ -697,7 +697,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 20px; /* Augmenté */
+    font-size: 20px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
 }
@@ -822,9 +822,9 @@ body {
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15)); 
 }
 
-/* 🆕 REMPLACEMENT DE L'ICÔNE PORTEFEUILLE PAR UNE ICÔNE BANCAIRE OFFICIELLE (1er bouton) */
+/* 🆕 ICÔNE BANCAIRE OFFICIELLE (1er bouton) */
 .nav-links li:first-child i {
-    font-size: 0 !important; /* Masque l'ancienne icône */
+    font-size: 0 !important;
     width: 22px;
     height: 22px;
     display: inline-block;
@@ -837,7 +837,7 @@ body {
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
-    filter: none; /* Nettoie l'ombre pour l'icône SVG */
+    filter: none;
     margin-bottom: 2px;
 }
 
@@ -861,7 +861,7 @@ body {
 }
 
 .nav-links li.active:first-child i {
-    filter: none; /* Retire l'ombre active pour une icône SVG nette */
+    filter: none;
 }
 
 .nav-links li:active {
@@ -1154,21 +1154,21 @@ body {
 
 /* 🆕 TEXTE IBAN AJUSTÉ */
 .dash-iban-label {
-    font-size: 16px; /* Augmenté légèrement */
-    font-weight: 800; /* Mis en gras (agla) */
-    color: #0f172a; /* Couleur plus foncée pour bien ressortir */
+    font-size: 16px; 
+    font-weight: 800; 
+    color: #0f172a; 
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
 
 .dash-iban-value {
-    font-size: 16px; /* Ajusté */
-    font-weight: 600; /* Épaisseur réduite */
+    font-size: 16px; 
+    font-weight: 600; 
     color: #0f172a;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: inherit; /* Utilise la police de l'application (Titillium Web) */
+    font-family: inherit; 
     letter-spacing: 0.5px;
 }
 
@@ -3096,19 +3096,19 @@ body {
     .header {
         padding: 12px 15px;
         gap: 10px;
-        min-height: 80px;
+        min-height: 90px; /* Ajusté pour mobile */
     }
     
     /* On réduit légèrement la taille pour que tout rentre */
     .header-logo span {
-        font-size: 22px; 
+        font-size: 30px; /* Taille ajustée pour mobile */
         font-style: italic;
     }
     
     /* 🆕 Taille du logo bancaire ajustée pour mobile */
     .header-logo::before {
-        width: 34px;
-        height: 34px;
+        width: 46px; /* Ajusté */
+        height: 46px; /* Ajusté */
     }
 
     .header-search-container {
@@ -3146,13 +3146,13 @@ body {
 
 @media (max-width: 400px) {
     .header-logo span {
-        font-size: 19px;
+        font-size: 24px; /* Taille ajustée pour très petits écrans */
     }
     
     /* 🆕 Taille du logo bancaire ajustée pour très petits écrans */
     .header-logo::before {
-        width: 30px;
-        height: 30px;
+        width: 38px;
+        height: 38px;
     }
 
     .header-search-container {
