@@ -1085,7 +1085,7 @@ body {
     transform: scale(0.95);
 }
 
-/* 🆕 FOND PLUS VISIBLE & BORDURE PREMIUM PLUS FORTE */
+/* 🆕 FOND PLUS VISIBLE & BORDURE VERTE FORTE */
 .bcn-icon-circle {
     width: 60px; 
     height: 60px; 
@@ -1096,7 +1096,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 24px; 
-    border: 4px solid #ffffff; /* Bordure blanche plus épaisse et forte */
+    border: 4px solid #00c853; /* Bordure verte bien forte et visible */
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: background 0.2s;
 }
