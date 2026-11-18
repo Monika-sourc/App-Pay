@@ -1100,13 +1100,14 @@ body {
 }
 
 .dash-iban-value {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 17px; /* Légèrement agrandi */
+    font-weight: 800; /* Mis en gras */
     color: #0f172a;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: 'Courier New', monospace;
+    font-family: inherit; /* Utilise la police de l'application (Titillium Web) */
+    letter-spacing: 0.5px;
 }
 
 .dash-iban-copy-btn {
