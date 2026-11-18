@@ -1059,14 +1059,15 @@ body {
     border-top: none; 
 }
 
+/* 🆕 LIGNE HORIZONTALE PLUS VISIBLE */
 .bcn-actions::before {
     content: '';
     position: absolute;
     top: 0;
     left: 15%; 
     right: 15%; 
-    height: 1.5px;
-    background-color: rgba(128, 128, 128, 0.8);
+    height: 2px; /* Épaisseur augmentée */
+    background-color: rgba(255, 255, 255, 0.4); /* Couleur plus visible */
 }
 
 .bcn-action-btn {
@@ -1084,23 +1085,24 @@ body {
     transform: scale(0.95);
 }
 
+/* 🆕 FOND PLUS VISIBLE & BORDURE VERTE PREMIUM CLAIR */
 .bcn-icon-circle {
     width: 60px; 
     height: 60px; 
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.15); 
+    background-color: rgba(255, 255, 255, 0.25); /* Fond plus visible */
     color: #ffffff; 
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px; 
-    border: 2px solid #ffffff; 
+    border: 2px solid #d1fae5; /* Vert premium très clair */
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: background 0.2s;
 }
 
 .bcn-icon-circle:hover {
-    background-color: rgba(255, 255, 255, 0.25); 
+    background-color: rgba(255, 255, 255, 0.35); 
 }
 
 .bcn-action-btn span {
@@ -1109,10 +1111,11 @@ body {
     color: var(--big-card-text-color);
 }
 
+/* 🆕 LIGNE VERTICALE PLUS VISIBLE */
 .bcn-divider {
-    width: 1px; 
+    width: 2px; /* Épaisseur augmentée */
     height: 40px; 
-    background-color: rgba(128, 128, 128, 0.8); 
+    background-color: rgba(255, 255, 255, 0.4); /* Couleur plus visible */
     margin: 0 5px;
 }
 
