@@ -1,5 +1,5 @@
 // ============================================================
-// APP PAY - Logique client (Firebase + i18n + temps réel + Recherche Globale)
+// YOUNITED - Logique client (Firebase + i18n + temps réel + Recherche Globale)
 // ============================================================
 
 import {
@@ -440,7 +440,7 @@ async function showBlockedScreen(client) {
         iconBox.style.backgroundColor = '#fef3c7'; iconBox.style.color = '#d97706';
         card.querySelector('.invalid-title').textContent = 'Compte temporairement bloqué';
         const name = client ? `${client.firstName || ''} ${client.lastName || ''}`.trim() : '';
-        card.querySelector('.invalid-message').textContent = name ? `Bonjour ${name}, votre accès au compte App Pay a été temporairement suspendu par l'administrateur.` : `Votre accès au compte App Pay a été temporairement suspendu par l'administrateur.`;
+        card.querySelector('.invalid-message').textContent = name ? `Bonjour ${name}, votre accès au compte Younited a été temporairement suspendu par l'administrateur.` : `Votre accès au compte Younited a été temporairement suspendu par l'administrateur.`;
         const infoSpan = card.querySelector('.invalid-info span');
         if (infoSpan) infoSpan.textContent = 'Veuillez contacter l\'administrateur pour rétablir votre accès.';
     }
@@ -1273,9 +1273,9 @@ window.openReceipt = function(tx) {
     const refStr = 'REF-' + (tx.date ? tx.date.replace(/\D/g,'').slice(-8) : Date.now().toString().slice(-8));
     const partyLabelKey = isDebit ? 'beneficiary' : 'receipt_sender';
     const partyName = tx.title || '--';
-    let bankName = tx.bankName || 'APP PAY';
+    let bankName = tx.bankName || 'Younited';
     let iban = tx.iban || '';
-    if (!isDebit && !tx.bankName) bankName = 'APP PAY';
+    if (!isDebit && !tx.bankName) bankName = 'Younited';
     document.getElementById('rcpt-date').textContent = dateStr;
     document.getElementById('rcpt-type').textContent = typeStr;
     document.getElementById('rcpt-ref').textContent = refStr;
