@@ -1071,9 +1071,9 @@ body {
 
 .bcn-actions {
     display: flex;
-    justify-content: center; /* Centrer les boutons */
+    justify-content: center;
     align-items: center;
-    gap: 15px; /* Espace entre les boutons et le séparateur */
+    gap: 15px; 
     padding-top: 25px;
     position: relative;
     border-top: none; 
@@ -1086,8 +1086,8 @@ body {
     top: 0;
     left: 5%; 
     right: 5%; 
-    height: 2px; /* Ligne plus épaisse */
-    background-color: #ffffff; /* Ligne blanche opaque pour visibilité */
+    height: 2px; 
+    background-color: #ffffff; 
     opacity: 0.85;
 }
 
@@ -1099,14 +1099,14 @@ body {
     justify-content: flex-start;
     gap: 12px;
     cursor: pointer;
-    width: auto; /* Prend la taille du contenu */
-    flex: 0 1 auto; /* Ne s'étire plus pour remplir la moitié */
-    background-color: rgba(255, 255, 255, 0.15); /* Fond semi-transparent sombre */
+    width: auto; 
+    flex: 0 1 auto; 
+    background-color: rgba(255, 255, 255, 0.15); 
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px; /* Bords bien arrondis */
-    padding: 6px 16px 6px 6px;
+    border-radius: 50px; 
+    padding: 4px 18px 4px 4px; /* Réduction de la hauteur du fond */
     transition: transform 0.2s, background-color 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Effet de relief */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
     backdrop-filter: blur(10px);
 }
 
@@ -1115,24 +1115,24 @@ body {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE */
+/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE (AGRANDI) */
 .bcn-icon-circle {
-    width: 46px; 
-    height: 46px; 
+    width: 52px; /* Taille augmentée pour correspondre à l'image 1 */
+    height: 52px; 
     border-radius: 50%;
-    background-color: #00c853; /* Fond vert plein */
+    background-color: #00c853; 
     color: #ffffff; 
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px; /* Icône blanche */
+    font-size: 24px; /* Icône plus grande */
     flex-shrink: 0;
     border: none;
-    box-shadow: 0 4px 10px rgba(0, 200, 83, 0.4); /* Halo vert */
+    box-shadow: 0 4px 10px rgba(0, 200, 83, 0.4); 
 }
 
 .bcn-action-btn span {
-    font-size: 15px; 
+    font-size: 16px; 
     font-weight: 600;
     color: var(--big-card-text-color);
     white-space: nowrap;
@@ -1143,7 +1143,7 @@ body {
 .bcn-divider {
     width: 2px; 
     height: 30px; 
-    background-color: #ffffff; /* Ligne blanche opaque */
+    background-color: #ffffff; 
     opacity: 0.85;
     margin: 0;
     flex-shrink: 0;
