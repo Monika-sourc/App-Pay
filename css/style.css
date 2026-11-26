@@ -1073,7 +1073,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 20px;
+    padding-top: 25px;
     position: relative;
     border-top: none; 
 }
@@ -1083,61 +1083,69 @@ body {
     content: '';
     position: absolute;
     top: 0;
-    left: 15%; 
-    right: 15%; 
-    height: 4px; 
-    background-color: rgba(255, 255, 255, 0.8); 
+    left: 10%; 
+    right: 10%; 
+    height: 2px; 
+    background-color: rgba(255, 255, 255, 0.3); 
 }
 
+/* 🆕 BOUTONS EN FORME DE PILULE HORIZONTALE */
 .bcn-action-btn {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 12px;
     cursor: pointer;
     flex: 1;
-    transition: transform 0.2s;
+    max-width: 48%;
+    background-color: rgba(255, 255, 255, 0.12); /* Fond semi-transparent sombre */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px; /* Bords bien arrondis */
+    padding: 6px 16px 6px 6px;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Effet de relief */
+    backdrop-filter: blur(10px);
 }
 
 .bcn-action-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* 🆕 BOUTONS VERTS MODERNES AVEC RELIEF */
+/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE */
 .bcn-icon-circle {
-    width: 65px; 
-    height: 65px; 
+    width: 46px; 
+    height: 46px; 
     border-radius: 50%;
     background-color: #00c853; /* Fond vert plein */
     color: #ffffff; 
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px; /* Icône blanche plus grande */
+    font-size: 20px; /* Icône blanche */
+    flex-shrink: 0;
     border: none;
-    box-shadow: 0 6px 15px rgba(0, 200, 83, 0.4); /* Effet de relief */
-    transition: all 0.2s ease;
-}
-
-.bcn-icon-circle:hover {
-    background-color: #00e05d; 
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 200, 83, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 200, 83, 0.4); /* Halo vert */
 }
 
 .bcn-action-btn span {
-    font-size: 17px; 
+    font-size: 15px; 
     font-weight: 600;
     color: var(--big-card-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
 }
 
-/* 🆕 LIGNE VERTICALE PLUS VISIBLE */
+/* 🆕 LIGNE VERTICALE SEPARATRICE */
 .bcn-divider {
-    width: 4px; 
-    height: 40px; 
-    background-color: rgba(255, 255, 255, 0.8); 
-    margin: 0 5px;
+    width: 2px; 
+    height: 35px; 
+    background-color: rgba(255, 255, 255, 0.3); 
+    margin: 0 10px;
+    flex-shrink: 0;
 }
 
 /* 🆕 CARTE IBAN DASHBOARD OMBRE FORTE */
@@ -1158,15 +1166,15 @@ body {
 
 /* 🆕 ICÔNE IBAN AGRANDIE */
 .dash-iban-icon {
-    width: 56px; /* Agrandi */
-    height: 56px;
+    width: 64px; /* Augmenté pour être plus visible */
+    height: 64px;
     background-color: #eff6ff;
     color: #1d4ed8;
-    border-radius: 14px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px; /* Symbole plus grand */
+    font-size: 32px; /* Symbole beaucoup plus grand */
     flex-shrink: 0;
     box-shadow: 0 6px 15px rgba(29, 78, 216, 0.2);
 }
