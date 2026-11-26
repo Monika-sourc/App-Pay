@@ -1071,8 +1071,9 @@ body {
 
 .bcn-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centrer les boutons */
     align-items: center;
+    gap: 15px; /* Espace entre les boutons et le séparateur */
     padding-top: 25px;
     position: relative;
     border-top: none; 
@@ -1083,13 +1084,14 @@ body {
     content: '';
     position: absolute;
     top: 0;
-    left: 10%; 
-    right: 10%; 
-    height: 2px; 
-    background-color: rgba(255, 255, 255, 0.3); 
+    left: 5%; 
+    right: 5%; 
+    height: 2px; /* Ligne plus épaisse */
+    background-color: #ffffff; /* Ligne blanche opaque pour visibilité */
+    opacity: 0.85;
 }
 
-/* 🆕 BOUTONS EN FORME DE PILULE HORIZONTALE */
+/* 🆕 BOUTONS EN FORME DE PILULE HORIZONTALE (TAILLE AJUSTÉE AU CONTENU) */
 .bcn-action-btn {
     display: flex;
     flex-direction: row;
@@ -1097,20 +1099,20 @@ body {
     justify-content: flex-start;
     gap: 12px;
     cursor: pointer;
-    flex: 1;
-    max-width: 48%;
-    background-color: rgba(255, 255, 255, 0.12); /* Fond semi-transparent sombre */
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    width: auto; /* Prend la taille du contenu */
+    flex: 0 1 auto; /* Ne s'étire plus pour remplir la moitié */
+    background-color: rgba(255, 255, 255, 0.15); /* Fond semi-transparent sombre */
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50px; /* Bords bien arrondis */
     padding: 6px 16px 6px 6px;
     transition: transform 0.2s, background-color 0.2s;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Effet de relief */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Effet de relief */
     backdrop-filter: blur(10px);
 }
 
 .bcn-action-btn:active {
     transform: scale(0.96);
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
 /* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE */
@@ -1134,17 +1136,16 @@ body {
     font-weight: 600;
     color: var(--big-card-text-color);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     text-align: left;
 }
 
-/* 🆕 LIGNE VERTICALE SEPARATRICE */
+/* 🆕 LIGNE VERTICALE SEPARATRICE PLUS VISIBLE */
 .bcn-divider {
     width: 2px; 
-    height: 35px; 
-    background-color: rgba(255, 255, 255, 0.3); 
-    margin: 0 10px;
+    height: 30px; 
+    background-color: #ffffff; /* Ligne blanche opaque */
+    opacity: 0.85;
+    margin: 0;
     flex-shrink: 0;
 }
 
