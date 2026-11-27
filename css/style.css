@@ -1104,7 +1104,7 @@ body {
     background-color: rgba(255, 255, 255, 0.15); 
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 100px; 
-    padding: 4px 18px 4px 4px; /* Epouse parfaitement l'icône avec 4px de marge */
+    padding: 0px 14px 0px 0px; /* 🆕 Réduction de la taille du fond */
     transition: transform 0.2s, background-color 0.2s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
     backdrop-filter: blur(10px);
@@ -1115,9 +1115,9 @@ body {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE (AGRANDI) */
+/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE */
 .bcn-icon-circle {
-    width: 54px; /* Taille augmentée pour dominer le fond */
+    width: 54px; 
     height: 54px; 
     border-radius: 50%;
     background-color: #00c853; 
