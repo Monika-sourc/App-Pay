@@ -1250,7 +1250,8 @@ function renderAccountView() {
     setEl('account-email', c.email || '--');
     setEl('account-phone', c.phone || '—');
     setEl('account-country', (c.country || '--') + ' ' + (c.countryFlag || ''));
-    setEl('account-id', c.id ? c.id.toUpperCase() : '--');
+    // 🆕 Remplacement de l'identifiant unique par le texte "Compte personnel"
+    setEl('account-id', 'Compte personnel');
     setEl('account-created', c.createdAt ? new Date(c.createdAt).toLocaleDateString('fr-FR') : '--');
 }
 
