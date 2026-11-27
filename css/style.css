@@ -1101,43 +1101,22 @@ body {
     cursor: pointer;
     width: auto; 
     flex: 0 1 auto; 
-    background-color: transparent; /* 🆕 Retiré le fond direct */
-    border: none; /* 🆕 Retiré la bordure directe */
-    border-radius: 100px; 
-    padding: 0px 16px 0px 0px; /* 🆕 Ajustement du padding */
-    transition: transform 0.2s;
-    position: relative; /* 🆕 Requis pour le pseudo-élément */
-}
-
-/* 🆕 NOUVEAU FOND SÉPARÉ POUR RÉDUIRE LA HAUTEUR */
-.bcn-action-btn::before {
-    content: '';
-    position: absolute;
-    top: 10px; /* 🆕 Réduit la hauteur du fond en haut */
-    bottom: 10px; /* 🆕 Réduit la hauteur du fond en bas */
-    left: 0;
-    right: 0;
     background-color: rgba(255, 255, 255, 0.15); 
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 100px; 
+    padding: 0px 14px 0px 0px; /* 🆕 Réduction de la taille du fond */
+    transition: transform 0.2s, background-color 0.2s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
     backdrop-filter: blur(10px);
-    z-index: 0; /* 🆕 Derrière le contenu */
-    transition: background-color 0.2s;
 }
 
 .bcn-action-btn:active {
     transform: scale(0.96);
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
-.bcn-action-btn:active::before {
-    background-color: rgba(255, 255, 255, 0.25); /* 🆕 Feedback au clic */
-}
-
-/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE (NON MODIFIÉ) */
+/* 🆕 CERCLE VERT AVEC ICÔNE BLANCHE */
 .bcn-icon-circle {
-    position: relative;
-    z-index: 1; /* 🆕 Au-dessus du fond */
     width: 54px; 
     height: 54px; 
     border-radius: 50%;
@@ -1153,8 +1132,6 @@ body {
 }
 
 .bcn-action-btn span {
-    position: relative;
-    z-index: 1; /* 🆕 Au-dessus du fond */
     font-size: 16px; 
     font-weight: 600;
     color: var(--big-card-text-color);
